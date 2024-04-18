@@ -1,0 +1,38 @@
+.primary-navbar {
+  background: linear-gradient(45deg, #0a0a23, #1a0033);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .5rem 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  height: 2.75rem;
+
+  .logo {
+    justify-content: center;
+    align-items: center;
+      img {
+        width: 4.4rem;
+        height: 8rem;
+      }
+  }
+
+  .nav-links {
+      list-style: none;
+      display: flex;
+
+      li {
+          margin: 0 1rem;
+
+          a {
+              color: #ccc;
+              text-decoration: none;
+              transition: color 0.3s;
+
+              &:hover {
+                  color: #6AA3E3;
+              }
+          }
+      }
+  }
+}
