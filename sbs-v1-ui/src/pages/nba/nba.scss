@@ -1,0 +1,11 @@
+$primary-color: #28a745; // Fresh green for energy and sports vibe
+$secondary-color: #17a2b8; // Blue for a calming contrast
+$background-gradient-start: #ffffff; // White to light gray gradient start
+$background-gradient-end: #e9ecef; // Light gray gradient end
+$text-color: #212529; // Nearly black for strong contrast and readability
+$border-color: #ced4da; // Soft gray for borders
+.nba-container {
+    .nba-header {
+        color: $primary-color; // Emphasizing the title with primary color
+    }
+}

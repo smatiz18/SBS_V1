@@ -1,13 +1,15 @@
+import "./nba.scss";
+
 const NBA = () => {
     return (
-        <div className="nba-container">
-            <div className="nba-header">
-                <h3>NBA Games Today</h3>
+        <div className="page-container">
+            <div className="header">
+                <b>NBA Games</b>
             </div>
-            <div className="nba-body">
+            <div className="body">
 
             </div>
-            <div className="nba-footer">
+            <div className="footer">
 
             </div>
        </div>

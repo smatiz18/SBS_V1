@@ -3,36 +3,16 @@ import { Routes } from "../../routes";
 import About from "../about/about";
 import Analytics from "../analytics/analytics";
 import NBA from "../nba/nba";
+import "./container.scss";
 
 const Container = (props: { path: string }) => {
-    const about = {
-        path: Routes.about,
-        label: 'Portfolio Manager'
-    } as TabParams;
-
-    const analytics = {
-        path: Routes.analytics,
-        label: 'Analytics'
-    } as TabParams;
-
-    const nba = {
-        path: Routes.nba,
-        label: 'Research & Development'
-    } as TabParams;
-
-    const tabLinks = [
-       about,
-       analytics,
-       nba,
-    ] as TabParams[];
-
     const currentPage = () => {
         switch (props.path) {
-            case Routes.about:
+            case `${Routes.about}`:
                 return <About/>;
-            case Routes.analytics:
+            case `${Routes.analytics}`:
                 return <Analytics/>;
-            case Routes.nba:
+            case `${Routes.nba}`:
                 return <NBA/>;
             default: 
                 return <div className="default"></div>;
@@ -41,7 +21,9 @@ const Container = (props: { path: string }) => {
 
     return (
         <div className="container">
-            {currentPage()}
+            <div className="content">
+                {currentPage()}
+            </div>
         </div>
     );
 }
