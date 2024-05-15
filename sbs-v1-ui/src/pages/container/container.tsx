@@ -1,4 +1,3 @@
-import { TabParams } from "../../models/tab-params";
 import { Routes } from "../../routes";
 import About from "../about/about";
 import Analytics from "../analytics/analytics";

@@ -4,7 +4,7 @@ const NBA = () => {
     return (
         <div className="page-container">
             <div className="header">
-                <b>NBA Games</b>
+                <b>NBA</b>
             </div>
             <div className="body">
 

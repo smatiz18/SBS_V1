@@ -1,13 +1,13 @@
 import React from 'react';
 import './primary-navbar.scss';
 import { Routes } from '../../routes';
+import sbs_logo from '../../images/sbs_logo.png'
 
 const PrimaryNavbar = () => {
     return (
         <nav className="primary-navbar">
             <div className="logo">
-              {/* <img src={liq_mask_1} alt="Liq v.Alpha"/> */}
-              <b>Sports Betting Sandbox</b>
+              <img src={sbs_logo} alt="Sports Betting Sandbox"/>
             </div>
             <ul className="nav-links">
                 <li><a href={`${Routes.root}${Routes.nba}`}>NBA</a></li>
