@@ -19,8 +19,8 @@ function App() {
               element={<Container path={PageRoutes.about}/>}/>
             <Route path={`${PageRoutes.root}${PageRoutes.analytics}`} 
               element={<Container path={PageRoutes.analytics}/>}/>
-            <Route path={`${PageRoutes.root}${PageRoutes.nba}`} 
-              element={<Container path={PageRoutes.nba}/>}/>
+            <Route path={`${PageRoutes.root}${PageRoutes.sports_categories}${PageRoutes.nba}`} 
+              element={<Container path={`${PageRoutes.sports_categories}${PageRoutes.nba}`}/>}/>
           </Routes>
         </div>
       </BrowserRouter>

@@ -1,7 +1,7 @@
 import { Routes } from "../../routes";
 import About from "../about/about";
 import Analytics from "../analytics/analytics";
-import NBA from "../nba/nba";
+import NBA from "../sports-categories/nba/nba";
 import "./container.scss";
 
 const Container = (props: { path: string }) => {
@@ -11,7 +11,7 @@ const Container = (props: { path: string }) => {
                 return <About/>;
             case `${Routes.analytics}`:
                 return <Analytics/>;
-            case `${Routes.nba}`:
+            case `${Routes.sports_categories}${Routes.nba}`:
                 return <NBA/>;
             default: 
                 return <div className="default"></div>;
