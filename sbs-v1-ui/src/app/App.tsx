@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PrimaryNavbar from './components/primary-navbar/primary-navbar';
 import './App.scss';
-import { Routes as PageRoutes } from './routes';
+import { Routes as PageRoutes } from '../../routes';
 import Container from './pages/container/container';
 
 function App() {
