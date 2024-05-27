@@ -61,10 +61,11 @@ def get_team_lineup_matchups(response):
             # Extract the team from the <a> tag without including the text from <span> tags
             home_team = ''.join([str(content) for content in home_team_a_tag[0] if not content.name == 'span']).strip()
             away_team = ''.join([str(content) for content in away_team_a_tag[0] if not content.name == 'span']).strip()
-
-            team_tuple = (away_team, home_team)
-            matchups.add(team_tuple)
-    return matchups
+            matchups.add(str({
+                'away': away_team,
+                'home': home_team
+            }))
+    return list(matchups)
 #########################################################
 
 #########################################################
