@@ -1,8 +1,9 @@
+import { useEffect } from "react";
 import BasketballGame from "../../../common/game-overview/game-overview";
 import "./nba.scss";
+import { getNbaLineups } from "../../../../services/nba/services";
 
 const NBA = () => {
-
     const homeTeam = {
         name: 'Lakers',
         logo: 'path/to/lakers-logo.png',
@@ -14,6 +15,21 @@ const NBA = () => {
         logo: 'path/to/warriors-logo.png',
         lineup: ['Player A', 'Player B', 'Player C', 'Player D', 'Player E']
     };
+
+    useEffect(() => {
+        fetchInitData();
+      }, []);
+
+    const fetchInitData = async () => {
+        try {
+            const nbaMatchups = await getNbaLineups(); 
+            console.log(nbaMatchups);
+          } catch (error) {
+            /** implement later */
+          } finally {
+            /** implement later */
+          }
+    }
 
     return (
         <div className="page-container">

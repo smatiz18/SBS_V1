@@ -1,10 +1,12 @@
 from flask import Flask, jsonify
-from app.handlers.nba.get_nba_lineups import nba_lineups_bp
+from app.handlers.nba.get_nba_matchups import nba_matchups_bp
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 def register_blueprints():
-    app.register_blueprint(nba_lineups_bp, url_prefix='/')
+    app.register_blueprint(nba_matchups_bp, url_prefix='/')
    
 def init():
     print('Starting SBS_V1 python backend server')

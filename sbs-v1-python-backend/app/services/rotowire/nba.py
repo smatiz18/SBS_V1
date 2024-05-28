@@ -12,12 +12,12 @@ def get_rotowire_nba_lineups_response():
     except Exception as e:
         print('Failure to get response from rotowire:' + e)
 
-    team_lineup_matchups = None
+    team_matchups = None
     try:
-        team_lineup_matchups = get_team_lineup_matchups(rotowire_response)
+        team_matchups = get_team_matchups(rotowire_response)
     except Exception as e:
         is_error = True
-        print('Failure to parse team lineup matchups:' + e)
+        print('Failure to parse team matchups:' + e)
 
     projected_player_lineups_by_team = None
     try:
@@ -34,20 +34,20 @@ def get_rotowire_nba_lineups_response():
         print('Failure to parse sportsbook lines:' + e)
 
     response = {}
-    response['is_error'] = is_error
-    if team_lineup_matchups != None:
-        response['team_lineup_matchups'] = team_lineup_matchups
+    response['isError'] = is_error
+    if team_matchups != None:
+        response['teamMatchups'] = team_matchups
     if projected_player_lineups_by_team != None:
-        response['projected_player_lineups_by_team'] = projected_player_lineups_by_team   
+        response['projectedPlayerLineupsByTeam'] = projected_player_lineups_by_team   
     if sportsbook_lines != None:
-        response['sportsbook_lines'] = sportsbook_lines
+        response['sportsbookLines'] = sportsbook_lines
     
     return response
 #########################################################
 
 
 #########################################################
-def get_team_lineup_matchups(response):
+def get_team_matchups(response):
     soup = BeautifulSoup(response.text, "html.parser")
     matchups = set()
     matchup_divs = soup.find_all("div", class_="lineup__matchup")
@@ -106,6 +106,7 @@ def get_sportsbook_lines(response):
         betmgm_odds = odds_item.find("span", class_=lambda x: x and 'betmgm' in x).get_text().split(" ")
 
         if odds_type == 'O/U':
+            odds_type = 'OU'
             fanduel_odds_obj = fanduel_odds[0]
             draftkings_odds_obj = draftkings_odds[0]
             betmgm_odds_obj = betmgm_odds[0]
