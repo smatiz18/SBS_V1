@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './primary-navbar.scss';
-import { Routes } from '../../routes';
-import sbs_logo from '../../images/basketball_sandbox_mask.png'
+import { Routes } from '../../../routes';
+import sbs_logo from '../../../assets/images/basketball_sandbox_mask.png'
 
 const PrimaryNavbar = () => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);

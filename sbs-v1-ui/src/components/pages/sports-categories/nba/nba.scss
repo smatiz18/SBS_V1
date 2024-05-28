@@ -1,11 +1,89 @@
-$primary-color: #28a745; // Fresh green for energy and sports vibe
-$secondary-color: #17a2b8; // Blue for a calming contrast
-$background-gradient-start: #ffffff; // White to light gray gradient start
-$background-gradient-end: #e9ecef; // Light gray gradient end
-$text-color: #212529; // Nearly black for strong contrast and readability
-$border-color: #ced4da; // Soft gray for borders
+/* Container styles */
 .page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+    /* Header styles */
     .header {
-        color: $primary-color; // Emphasizing the title with primary color
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .header-title {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 2em;
+        font-weight: 400;
+        color: #333;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .button {
+        padding: 10px 20px;
+        font-size: 1em;
+        color: #ffffff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Content styles */
+    .content {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .main-content {
+        flex: 2;
+    }
+
+    .sidebar {
+        flex: 1;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Typography */
+    h1, h2, h3, p {
+        margin: 0 0 10px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+        color: #333;
+    }
+
+    h2 {
+        font-size: 1.5em;
+        color: #333;
+    }
+
+    h3 {
+        font-size: 1.2em;
+        color: #333;
+    }
+
+    p {
+        font-size: 1em;
+        color: #666;
     }
 }

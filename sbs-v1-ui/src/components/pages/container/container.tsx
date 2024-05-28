@@ -1,4 +1,4 @@
-import { Routes } from "../../routes";
+import { Routes } from "../../../routes";
 import About from "../about/about";
 import Analytics from "../analytics/analytics";
 import NBA from "../sports-categories/nba/nba";

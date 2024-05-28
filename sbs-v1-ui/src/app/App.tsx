@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import PrimaryNavbar from './components/primary-navbar/primary-navbar';
+import PrimaryNavbar from '../components/layout/primary-navbar/primary-navbar';
 import './App.scss';
-import { Routes as PageRoutes } from '../../routes';
-import Container from './pages/container/container';
+import { Routes as PageRoutes } from '../routes';
+import Container from '../components/pages/container/container';
 
 function App() {
   return (
