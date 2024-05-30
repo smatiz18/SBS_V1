@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import BasketballGame from "../../../common/game-overview/matchup-component";
+import BasketballGame from "../../../common/matchup/matchup-component";
 import "./nba.scss";
 import { getNbaMatchups } from "../../../../services/nba/services";
 

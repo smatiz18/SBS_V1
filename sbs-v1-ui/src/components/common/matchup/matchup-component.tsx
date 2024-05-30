@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './game-overview.scss';
+import './matchup.component.scss';
 import { Matchup } from '../../../models/services/get-nba-matchups-response';
 
 const MatchupComponent: React.FC<Matchup> = ({ home, away, sportsBookLines}) => {
@@ -33,13 +33,14 @@ const MatchupComponent: React.FC<Matchup> = ({ home, away, sportsBookLines}) => 
       </div>
       <div className="analytics">
         <button onClick={toggleStatsView} className="stats-button">
-          {viewStats ? 'Hide' : 'View'} Analytics & Statistics
+          {viewStats ? 'Hide' : 'View'} Sportsbook Lines & Analysis
         </button>
         {viewStats && (
           <div className="stats-content">
             <h3>Team Analytics</h3>
-            <p>Home Team: {home.nickname} - Average Points per Game: 102.5</p>
-            <p>Away Team: {away.nickname} - Average Points per Game: 98.7</p>
+            <p>LINE: - -</p>
+            <p>SPREAD: - -</p>
+            <p>O/U: - -</p>
             {/* Add more detailed statistics here */}
           </div>
         )}
