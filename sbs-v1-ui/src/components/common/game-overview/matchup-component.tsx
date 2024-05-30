@@ -1,18 +1,8 @@
 import React, { useState } from 'react';
 import './game-overview.scss';
+import { Matchup } from '../../../models/services/get-nba-matchups-response';
 
-interface Team {
-  name: string;
-  logo: string;
-  lineup: string[];
-}
-
-interface BasketballGameProps {
-  homeTeam: Team;
-  awayTeam: Team;
-}
-
-const BasketballGame: React.FC<BasketballGameProps> = ({ homeTeam, awayTeam }) => {
+const MatchupComponent: React.FC<Matchup> = ({ home, away, sportsBookLines}) => {
   const [viewStats, setViewStats] = useState(false);
 
   const toggleStatsView = () => {
@@ -20,22 +10,22 @@ const BasketballGame: React.FC<BasketballGameProps> = ({ homeTeam, awayTeam }) =
   };
 
   return (
-    <div className="basketball-game">
+    <div className="matchup-component">
       <div className="team-info">
-        <div className="team home">
-          <img src={homeTeam.logo} alt={`${homeTeam.name} logo`} className="team-logo" />
-          <h2 className="team-name">{homeTeam.name} (Home)</h2>
+        <div className="team away">
+          <img src={away.logo} alt={`${away.nickname} logo`} className="team-logo" />
+          <h2 className="team-nickname">{away.nickname} (Away)</h2>
           <ul className="team-lineup">
-            {homeTeam.lineup.map(player => (
+            {away.projectedPlayers.map(player => (
               <li key={player} className="player">{player}</li>
             ))}
           </ul>
         </div>
-        <div className="team away">
-          <img src={awayTeam.logo} alt={`${awayTeam.name} logo`} className="team-logo" />
-          <h2 className="team-name">{awayTeam.name} (Away)</h2>
+        <div className="team home">
+          <img src={home.logo} alt={`${home.nickname} logo`} className="team-logo" />
+          <h2 className="team-nickname">{home.nickname} (Home)</h2>
           <ul className="team-lineup">
-            {awayTeam.lineup.map(player => (
+            {home.projectedPlayers.map(player => (
               <li key={player} className="player">{player}</li>
             ))}
           </ul>
@@ -48,8 +38,8 @@ const BasketballGame: React.FC<BasketballGameProps> = ({ homeTeam, awayTeam }) =
         {viewStats && (
           <div className="stats-content">
             <h3>Team Analytics</h3>
-            <p>Home Team: {homeTeam.name} - Average Points per Game: 102.5</p>
-            <p>Away Team: {awayTeam.name} - Average Points per Game: 98.7</p>
+            <p>Home Team: {home.nickname} - Average Points per Game: 102.5</p>
+            <p>Away Team: {away.nickname} - Average Points per Game: 98.7</p>
             {/* Add more detailed statistics here */}
           </div>
         )}
@@ -58,4 +48,4 @@ const BasketballGame: React.FC<BasketballGameProps> = ({ homeTeam, awayTeam }) =
   );
 };
 
-export default BasketballGame;
+export default MatchupComponent;

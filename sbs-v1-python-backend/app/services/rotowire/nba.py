@@ -1,3 +1,4 @@
+import json
 import requests
 from bs4 import BeautifulSoup 
 
@@ -33,15 +34,24 @@ def get_rotowire_nba_lineups_response():
         is_error = True
         print('Failure to parse sportsbook lines:' + e)
 
+    # response construction
     response = {}
+    response['matchups'] = []
     response['isError'] = is_error
-    if team_matchups != None:
-        response['teamMatchups'] = team_matchups
-    if projected_player_lineups_by_team != None:
-        response['projectedPlayerLineupsByTeam'] = projected_player_lineups_by_team   
+    for matchup in team_matchups:
+        matchup_obj = {
+            'away': {
+                'nickname': matchup.get('away'),
+                'projectedPlayers': projected_player_lineups_by_team.get(matchup.get('away'))
+            },
+            'home': {
+                'nickname': matchup.get('home'),
+                'projectedPlayers': projected_player_lineups_by_team.get(matchup.get('home'))
+            },
+        }
+        response.get('matchups').append(matchup_obj)
     if sportsbook_lines != None:
         response['sportsbookLines'] = sportsbook_lines
-    
     return response
 #########################################################
 
@@ -49,7 +59,7 @@ def get_rotowire_nba_lineups_response():
 #########################################################
 def get_team_matchups(response):
     soup = BeautifulSoup(response.text, "html.parser")
-    matchups = set()
+    matchups = []
     matchup_divs = soup.find_all("div", class_="lineup__matchup")
     filtered_matchup_divs = [div for div in matchup_divs if div.find('a', class_=lambda x: x and 'lineup__mteam' in x)]
     
@@ -61,11 +71,11 @@ def get_team_matchups(response):
             # Extract the team from the <a> tag without including the text from <span> tags
             home_team = ''.join([str(content) for content in home_team_a_tag[0] if not content.name == 'span']).strip()
             away_team = ''.join([str(content) for content in away_team_a_tag[0] if not content.name == 'span']).strip()
-            matchups.add(str({
+            matchups.append({
                 'away': away_team,
                 'home': home_team
-            }))
-    return list(matchups)
+            })
+    return matchups
 #########################################################
 
 #########################################################
@@ -97,9 +107,10 @@ def get_sportsbook_lines(response):
     for div in button_divs:
         nickname_by_team_map[div["data-team"]] = div["data-nickname"]
 
-    odds_resp_obj = {}
+    odds_resp_obj = []
     odds_items = soup.find_all("div", class_="lineup__odds-item")
     for odds_item in odds_items:
+        odds_obj = {}
         odds_type = odds_item.find("b").get_text().strip() 
         fanduel_odds = odds_item.find("span", class_=lambda x: x and 'fanduel' in x).get_text().split(" ")
         draftkings_odds = odds_item.find("span", class_=lambda x: x and 'draftkings' in x).get_text().split(" ")
@@ -124,11 +135,12 @@ def get_sportsbook_lines(response):
                 "-" if betmgm_nickname == None else betmgm_nickname : "-" if len(betmgm_odds) < 2 else betmgm_odds[1] 
             }
 
-        odds_resp_obj[odds_type] = { 
+        odds_obj[odds_type] = { 
             "fanduel": fanduel_odds_obj, 
             "draftkings": draftkings_odds_obj, 
             "betmgm": betmgm_odds_obj 
         }
+        odds_resp_obj.append(odds_obj)
     
     return odds_resp_obj
 #########################################################

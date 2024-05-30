@@ -1,16 +1,21 @@
 export interface GetNbaMatchupsResponse {
     isError: boolean,
     error?: string,
-    teamMatchups: TeamMatchup[],
-    projectedPlayerLineupsByTeam: Map<string, string[]>,
-    sportsbookLines: SportsbookLines
+    matchups: Matchup[],
+    sportsbookLines: SportsbookLines[]
 }
 
-export interface TeamMatchup {
-    away: string,
-    home: string
+export interface Matchup {
+    away: TeamInfo,
+    home: TeamInfo,
+    sportsBookLines: SportsbookLines,
 }
 
+export interface TeamInfo {
+    projectedPlayers: string[],
+    nickname: string,
+    logo?: string 
+}
 export interface SportsbookLines {
     LINE: SportsBookObj,
     OU: SportsBookObj,

@@ -1,20 +1,10 @@
-import { useEffect } from "react";
-import BasketballGame from "../../../common/game-overview/game-overview";
+import { useEffect, useState } from "react";
+import BasketballGame from "../../../common/game-overview/matchup-component";
 import "./nba.scss";
-import { getNbaLineups } from "../../../../services/nba/services";
+import { getNbaMatchups } from "../../../../services/nba/services";
 
 const NBA = () => {
-    const homeTeam = {
-        name: 'Lakers',
-        logo: 'path/to/lakers-logo.png',
-        lineup: ['Player 1', 'Player 2', 'Player 3', 'Player 4', 'Player 5']
-      };
-      
-    const awayTeam = {
-        name: 'Warriors',
-        logo: 'path/to/warriors-logo.png',
-        lineup: ['Player A', 'Player B', 'Player C', 'Player D', 'Player E']
-    };
+    const [nbaMatchups, setNbaMatchups] = useState([] as any[]);
 
     useEffect(() => {
         fetchInitData();
@@ -22,8 +12,8 @@ const NBA = () => {
 
     const fetchInitData = async () => {
         try {
-            const nbaMatchups = await getNbaLineups(); 
-            console.log(nbaMatchups);
+            const matchupsResp = await getNbaMatchups();
+            setNbaMatchups(matchupsResp.data.matchups); 
           } catch (error) {
             /** implement later */
           } finally {
@@ -38,11 +28,12 @@ const NBA = () => {
             </div>
             <div className="content">
                 <div className="main-content">
-                    <BasketballGame homeTeam={homeTeam} awayTeam={awayTeam}/>
+                  {nbaMatchups.map(nbaMatchup => (
+                    <BasketballGame away={nbaMatchup.away} home={nbaMatchup.home} sportsBookLines={{} as any}/>
+                  ))}
                 </div>
             </div>
             <div className="footer">
-
             </div>
        </div>
     );
