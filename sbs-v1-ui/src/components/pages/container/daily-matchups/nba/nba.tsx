@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import BasketballGame from "../../../common/matchup/matchup-component";
+import MatchupComponent from "../../../../common/matchup/matchup-component";
 import "./nba.scss";
-import { getNbaMatchups } from "../../../../services/nba/services";
+import { getNbaMatchups } from "../../../../../services/nba/services";
+import { NbaLogoMapper } from "../../../../../assets/images/nba-logo-mapper";
+import { Matchup } from "../../../../../models/services/get-nba-matchups-response";
 
 const NBA = () => {
     const [nbaMatchups, setNbaMatchups] = useState([] as any[]);
@@ -13,7 +15,13 @@ const NBA = () => {
     const fetchInitData = async () => {
         try {
             const matchupsResp = await getNbaMatchups();
+            matchupsResp.data.matchups.map((matchup: Matchup) => { 
+              matchup.away.teamLogo = NbaLogoMapper.get(matchup.away.nickname)!;
+              matchup.home.teamLogo = NbaLogoMapper.get(matchup.home.teamLogo)!;
+              return matchup;
+            });
             setNbaMatchups(matchupsResp.data.matchups); 
+          
           } catch (error) {
             /** implement later */
           } finally {
@@ -28,8 +36,8 @@ const NBA = () => {
             </div>
             <div className="content">
                 <div className="main-content">
-                  {nbaMatchups.map(nbaMatchup => (
-                    <BasketballGame away={nbaMatchup.away} home={nbaMatchup.home} sportsBookLines={{} as any}/>
+                  {nbaMatchups.map((nbaMatchup: Matchup) => (
+                    <MatchupComponent matchup={nbaMatchup}/>
                   ))}
                 </div>
             </div>

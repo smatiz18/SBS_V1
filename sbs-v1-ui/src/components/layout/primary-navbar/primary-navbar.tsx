@@ -18,16 +18,21 @@ const PrimaryNavbar = () => {
             <ul className="nav-links">
                 <li className="nav-link" onMouseEnter={toggleDropdown}
                     onMouseLeave={toggleDropdown}>
-                    <a href={`${Routes.root}${Routes.sports_categories}`}>
-                        Sports
+                    <a href={`${Routes.root}${Routes.dailyMatchups}`}>
+                        Daily Matchups
                     </a>
                     {isDropdownOpen && (
                         <ul className="nav-links-dropdown">
                             <li className="nav-link-dropdown">
-                                <a href={`${Routes.root}${Routes.sports_categories}${Routes.nba}`}>NBA</a>
+                                <a href={`${Routes.root}${Routes.dailyMatchups}${Routes.nba}`}>NBA</a>
                             </li>
                         </ul>
                     )}
+                </li>
+                <li className="nav-link">
+                    <a href={`${Routes.root}${Routes.backtesting}`}>
+                        Backtesting
+                    </a>
                 </li>
                 <li className="nav-link">
                     <a href={`${Routes.root}${Routes.analytics}`}>

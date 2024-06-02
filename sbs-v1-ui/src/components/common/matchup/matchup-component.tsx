@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './matchup.component.scss';
 import { Matchup } from '../../../models/services/get-nba-matchups-response';
 
-const MatchupComponent: React.FC<Matchup> = ({ home, away, sportsBookLines}) => {
+const MatchupComponent: React.FC<{matchup: Matchup}> = ({matchup}) => {
   const [viewStats, setViewStats] = useState(false);
 
   const toggleStatsView = () => {
@@ -13,19 +13,19 @@ const MatchupComponent: React.FC<Matchup> = ({ home, away, sportsBookLines}) => 
     <div className="matchup-component">
       <div className="team-info">
         <div className="team away">
-          <img src={away.logo} alt={`${away.nickname} logo`} className="team-logo" />
-          <h2 className="team-nickname">{away.nickname} (Away)</h2>
+          <img src={matchup.away.teamLogo} alt={`${matchup.away.nickname} logo`} className="team-logo" />
+          <h2 className="team-nickname">{matchup.away.nickname} (Away)</h2>
           <ul className="team-lineup">
-            {away.projectedPlayers.map(player => (
+            {matchup.away.projectedPlayers.map(player => (
               <li key={player} className="player">{player}</li>
             ))}
           </ul>
         </div>
         <div className="team home">
-          <img src={home.logo} alt={`${home.nickname} logo`} className="team-logo" />
-          <h2 className="team-nickname">{home.nickname} (Home)</h2>
+          <img src={matchup.home.teamLogo} alt={`${matchup.home.nickname} logo`} className="team-logo" />
+          <h2 className="team-nickname">{matchup.home.nickname} (Home)</h2>
           <ul className="team-lineup">
-            {home.projectedPlayers.map(player => (
+            {matchup.home.projectedPlayers.map(player => (
               <li key={player} className="player">{player}</li>
             ))}
           </ul>

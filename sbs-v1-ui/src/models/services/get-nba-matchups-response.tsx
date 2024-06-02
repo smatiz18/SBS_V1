@@ -14,8 +14,9 @@ export interface Matchup {
 export interface TeamInfo {
     projectedPlayers: string[],
     nickname: string,
-    logo?: string 
+    teamLogo: string,
 }
+
 export interface SportsbookLines {
     LINE: SportsBookObj,
     OU: SportsBookObj,
