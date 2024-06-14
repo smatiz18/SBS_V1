@@ -4,5 +4,5 @@ export const Routes =  {
     nba: '/nba',
     dailyMatchups: '/daily-matchups',
     analytics: '/analytics',
-    backtesting: '/backtesting'
+    backtest: '/backtest'
 };

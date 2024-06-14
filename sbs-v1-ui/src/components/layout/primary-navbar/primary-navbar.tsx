@@ -30,8 +30,8 @@ const PrimaryNavbar = () => {
                     )}
                 </li>
                 <li className="nav-link">
-                    <a href={`${Routes.root}${Routes.backtesting}`}>
-                        Backtesting
+                    <a href={`${Routes.root}${Routes.backtest}`}>
+                        Backtest
                     </a>
                 </li>
                 <li className="nav-link">

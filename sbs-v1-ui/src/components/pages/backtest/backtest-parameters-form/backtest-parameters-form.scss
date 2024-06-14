@@ -1,0 +1,67 @@
+// MinimalSelect.scss
+$primary-color: #1a73e8;
+$border-radius: 4px;
+$font-size: 12px;
+$label-color: #888; // Lighter color for label text
+
+.minimal-select-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0;
+}
+
+.minimal-select-label {
+  font-size: $font-size;
+  color: $label-color;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.minimal-select {
+  .select__control {
+    border-color: #dfe1e5;
+    box-shadow: none;
+    border-radius: $border-radius;
+    min-height: 20px; // Thinner select component
+    font-size: $font-size;
+    padding: 0 4px;
+    transition: border-color 0.2s ease;
+
+    &:hover {
+      border-color: #c6c6c6;
+    }
+  }
+
+  .select__indicator-separator {
+    display: none;
+  }
+
+  .select__dropdown-indicator {
+    padding: 0;
+    color: $primary-color;
+
+    &:hover {
+      color: darken($primary-color, 10%);
+    }
+  }
+
+  .select__menu {
+    border-radius: $border-radius;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .select__option {
+    font-size: $font-size;
+    padding: 8px;
+
+    &--is-selected {
+      background-color: lighten($primary-color, 40%);
+      color: $primary-color;
+    }
+
+    &--is-focused {
+      background-color: lighten($primary-color, 60%);
+    }
+  }
+}

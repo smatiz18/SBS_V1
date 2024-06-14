@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import MatchupComponent from "../../../../common/matchup/matchup-component";
-import "./nba.scss";
-import { getNbaMatchups } from "../../../../../services/nba/services";
-import { NbaLogoMapper } from "../../../../../assets/images/nba-logo-mapper";
-import { Matchup } from "../../../../../models/services/get-nba-matchups-response";
+import MatchupComponent from "../../../common/matchup/matchup-component";
+import "./nba-daily-matchups.scss";
+import { getNbaMatchups } from "../../../../services/nba/services";
+import { NbaLogoMapper } from "../../../../assets/images/nba-logo-mapper";
+import { Matchup } from "../../../../models/services/get-nba-matchups-response";
 
-const NBA = () => {
+const NbaDailyMatchups = () => {
     const [nbaMatchups, setNbaMatchups] = useState([] as any[]);
 
     useEffect(() => {
@@ -17,7 +17,7 @@ const NBA = () => {
             const matchupsResp = await getNbaMatchups();
             matchupsResp.data.matchups.map((matchup: Matchup) => { 
               matchup.away.teamLogo = NbaLogoMapper.get(matchup.away.nickname)!;
-              matchup.home.teamLogo = NbaLogoMapper.get(matchup.home.teamLogo)!;
+              matchup.home.teamLogo = NbaLogoMapper.get(matchup.home.nickname)!;
               return matchup;
             });
             setNbaMatchups(matchupsResp.data.matchups); 
@@ -47,4 +47,4 @@ const NBA = () => {
     );
 }
 
-export default NBA;
+export default NbaDailyMatchups;

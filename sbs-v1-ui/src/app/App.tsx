@@ -21,6 +21,8 @@ function App() {
               element={<Container path={PageRoutes.analytics}/>}/>
             <Route path={`${PageRoutes.root}${PageRoutes.dailyMatchups}${PageRoutes.nba}`} 
               element={<Container path={`${PageRoutes.dailyMatchups}${PageRoutes.nba}`}/>}/>
+            <Route path={`${PageRoutes.root}${PageRoutes.backtest}`} 
+              element={<Container path={`${PageRoutes.backtest}`}/>}/>
           </Routes>
         </div>
       </BrowserRouter>

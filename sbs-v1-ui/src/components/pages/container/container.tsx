@@ -1,7 +1,8 @@
 import { Routes } from "../../../routes";
 import About from "../about/about";
 import Analytics from "../analytics/analytics";
-import NBA from "../container/daily-matchups/nba/nba";
+import BacktestPage from "../backtest/backtest";
+import NbaDailyMatchups from "../daily-matchups/nba/nba-daily-matchups";
 import "./container.scss";
 
 const Container = (props: { path: string }) => {
@@ -12,7 +13,9 @@ const Container = (props: { path: string }) => {
             case `${Routes.analytics}`:
                 return <Analytics/>;
             case `${Routes.dailyMatchups}${Routes.nba}`:
-                return <NBA/>;
+                return <NbaDailyMatchups/>;
+            case `${Routes.backtest}`:
+                return <BacktestPage/>;
             default: 
                 return <div className="default"></div>;
         }
