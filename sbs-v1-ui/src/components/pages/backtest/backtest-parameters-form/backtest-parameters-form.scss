@@ -1,67 +1,66 @@
-// MinimalSelect.scss
-$primary-color: #1a73e8;
-$border-radius: 4px;
-$font-size: 12px;
-$label-color: #888; // Lighter color for label text
+$primary-color: #4B0082; // Indigo color
+$hover-color: lighten($primary-color, 10%);
+$active-color: lighten($primary-color, 20%);
+$text-color: #ffffff; // White color
+$border-radius: 5px;
+$transition-duration: 0.3s;
 
-.minimal-select-container {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin: 8px 0;
-}
-
-.minimal-select-label {
-  font-size: $font-size;
-  color: $label-color;
-  font-weight: 500;
-  margin-bottom: 4px;
-}
-
-.minimal-select {
-  .select__control {
-    border-color: #dfe1e5;
-    box-shadow: none;
-    border-radius: $border-radius;
-    min-height: 20px; // Thinner select component
-    font-size: $font-size;
-    padding: 0 4px;
-    transition: border-color 0.2s ease;
-
-    &:hover {
-      border-color: #c6c6c6;
-    }
+  // Mixin for box-shadow
+  @mixin box-shadow($color, $spread) {
+    box-shadow: 0px 4px 6px $color $spread;
   }
 
-  .select__indicator-separator {
-    display: none;
-  }
+.backtest-parameters-form-container {
+  
+  .form-body {
+    padding: 5px 0px;
+    
+    .strategy-inputs {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
 
-  .select__dropdown-indicator {
-    padding: 0;
-    color: $primary-color;
+      .run-button {
+        background-color: $primary-color;
+        color: $text-color;
+        border: none;
+        border-radius: $border-radius;
+        cursor: pointer;
+        transition: background-color $transition-duration, transform $transition-duration;
+        @include box-shadow(rgba(0, 0, 0, 0.1), 1px);
+        margin-bottom: -1rem;
+        height: 2rem;
+        width: 5rem;
 
-    &:hover {
-      color: darken($primary-color, 10%);
-    }
-  }
+        &:hover {
+          background-color: $hover-color;
+          transform: translateY(-2px);
+        }
 
-  .select__menu {
-    border-radius: $border-radius;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+        &:active {
+          background-color: $active-color;
+          transform: translateY(1px);
+        }
 
-  .select__option {
-    font-size: $font-size;
-    padding: 8px;
+        &:focus {
+          outline: none;
+          @include box-shadow(rgba(0, 0, 0, 0.2), 2px);
+        }
+      }
 
-    &--is-selected {
-      background-color: lighten($primary-color, 40%);
-      color: $primary-color;
-    }
+      .select-container {
+        display: flex;
+        flex-direction: column;
+        padding: 7px 0px;
 
-    &--is-focused {
-      background-color: lighten($primary-color, 60%);
+        .select-label {
+          padding: 3px 0px;
+          font-size: small;
+          font-weight: 500;
+        }
+      }
     }
   }
 }

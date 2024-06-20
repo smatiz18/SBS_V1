@@ -1,69 +1,44 @@
 import Select from 'react-select';
 import './backtest-parameters-form.scss';
+import { reactSelectStyles } from '../../../../models/form-styles/styles';
 
 const BacktestParametersForm = () => {
+    
+    
+    
+    
     return (
         <div className="backtest-parameters-form-container">
-            <div className="sub-header header">
+            {/* <div className="sub-header header">
                 Backtest Parameters
-            </div>
+            </div> */}
             <form className="form-body">
                 <div className="strategy-inputs">
-                    <div className="minimal-select-container">
-                        <label className="minimal-select-label">Test Label</label>
+                    <div className="select-container">
+                        <label className="select-label">Strategy</label>
                         <Select
-                            className="minimal-select"
                             classNamePrefix="select"
                             options={undefined}
                             value={() => {}}
                             onChange={() => {}}
                             isClearable
+                            styles={reactSelectStyles}
                         />
                     </div>
-                    <div className="minimal-select-container">
-                        <label className="minimal-select-label">Test Label</label>
+                    <div className="select-container">
+                        <label className="select-label">Sports Category</label>
                         <Select
-                            className="minimal-select"
                             classNamePrefix="select"
                             options={undefined}
                             value={() => {}}
                             onChange={() => {}}
                             isClearable
+                            styles={reactSelectStyles}
                         />
                     </div>
-                    <div className="minimal-select-container">
-                        <label className="minimal-select-label">Test Label</label>
-                        <Select
-                            className="minimal-select"
-                            classNamePrefix="select"
-                            options={undefined}
-                            value={() => {}}
-                            onChange={() => {}}
-                            isClearable
-                        />
-                    </div>
-                    <div className="minimal-select-container">
-                        <label className="minimal-select-label">Test Label</label>
-                        <Select
-                            className="minimal-select"
-                            classNamePrefix="select"
-                            options={undefined}
-                            value={() => {}}
-                            onChange={() => {}}
-                            isClearable
-                        />
-                    </div>
-                    <div className="minimal-select-container">
-                        <label className="minimal-select-label">Test Label</label>
-                        <Select
-                            className="minimal-select"
-                            classNamePrefix="select"
-                            options={undefined}
-                            value={() => {}}
-                            onChange={() => {}}
-                            isClearable
-                        />
-                    </div>
+                    <button className="run-button">
+                        Run
+                    </button>
                 </div>
             </form>
         </div>
