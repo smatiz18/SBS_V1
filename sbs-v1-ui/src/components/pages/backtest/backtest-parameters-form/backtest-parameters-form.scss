@@ -50,12 +50,14 @@ $transition-duration: 0.3s;
         }
       }
 
-      .select-container {
+      .select-container,
+      .input-container {
         display: flex;
         flex-direction: column;
         padding: 7px 0px;
 
-        .select-label {
+        .select-label,
+        .input-label {
           padding: 3px 0px;
           font-size: small;
           font-weight: 500;
