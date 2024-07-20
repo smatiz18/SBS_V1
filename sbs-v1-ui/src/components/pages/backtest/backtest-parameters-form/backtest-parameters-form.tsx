@@ -36,6 +36,10 @@ const BacktestParametersForm = () => {
         return { value: v, label: v };
     });
 
+    const openAdvancedSettings = () => {
+
+    };
+
     return (
         <div className="backtest-parameters-form-container">
             {/* <div className="sub-header header">
@@ -110,8 +114,8 @@ const BacktestParametersForm = () => {
                         />
                     </div>
                     <div className="input-container">
-                        <label className="input-label">Initial Bankroll</label>
-                        <input></input>
+                        <label className="input-label">Bankroll USD</label>
+                        <input placeholder='100'></input><span></span>
                     </div>
                     <div className="select-container">
                         <label className="select-label">Model</label>
@@ -124,14 +128,15 @@ const BacktestParametersForm = () => {
                             styles={reactSelectStyles}
                         />
                     </div>
-                    <button className="run-button">
-                        Run
-                    </button>
                 </div>
+                <button className="run-button">
+                        Run
+                </button>
             </form>
-            <div className="advanced-settings-toggle-div">
-                <Switch className="advanced-settings-toggle" defaultChecked size="small"/>
-                <label>Advanced Settings</label>
+            <div className="advanced-settings-div">
+                <span className="text-button" onClick={openAdvancedSettings}>
+                    Advanced Settings
+                </span>
             </div>
         </div>
     );
