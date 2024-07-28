@@ -3,19 +3,23 @@ import './backtest-parameters-form.scss';
 import { reactSelectStyles } from '../../../../models/form-styles/styles';
 import { SportsCategories } from '../../../../models/sports-categories.models';
 import { useState } from 'react';
-import { BetOptions } from '../../../../models/bet-options.models';
-import { BetType } from '../../../../models/bet-types.models';
 import { StakingStrategies } from '../../../../models/staking-strategies.models';
 import { OddsSources } from '../../../../models/odds-sources.models';
-import { Switch } from '@mui/material';
+import { TeamBetTypes } from '../../../../models/team-bet-types.models';
+import { PlayerBetTypes } from '../../../../models/player-bet-types.models';
 
 const BacktestParametersForm = () => {
-    const [sportsCategory, setSportsCategory] = useState(null);
+    const [sportsCategory, setSportsCategory] = useState(null as unknown as SportsCategories);
     const [season, setSeason] = useState(null);
-    const [betOption, setBetOption] = useState(null);
-    const [betType, setBetType] = useState(null);
+    const [betType, setBetType] = useState(null as unknown as TeamBetTypes | PlayerBetTypes);
     const [stakingStrategy, setStakingStrategy] = useState(null); 
     const [oddsSource, setOddsSource] = useState(null);
+    const [isTeamBetType, setIsTeamBetType] = useState(false);
+    const [isPlayerBetType, setIsPlayerBetType] = useState(false);
+    const [teamOptions, setTeamOptions] = useState([] as any);
+    const [playerOptions, setPlayerOptions] = useState([] as any);
+    const [team, setTeam] = useState(null);
+    const [player, setPlayer] = useState(null);
     
     const sportsCategoriesOptions: any[] = Object.values(SportsCategories).map((v) => {
         return { value: v, label: v };
@@ -23,18 +27,73 @@ const BacktestParametersForm = () => {
     const seasonOptions: any[] = [
         { value: 2023, label: 2023 }
     ];
-    const betOptionOptions: any[] = Object.values(BetOptions).map((v) => {
-        return { value: v, label: v };
-    });
-    const betTypeOptions: any[] = Object.values(BetType).map((v) => {
-        return { value: v, label: v };
-    });
+    const betTypeOptions: any[] = [
+        {
+            label: 'Team',
+            options: Object.values(TeamBetTypes).map((v) => {
+                return { value: v, label: v };
+            }),
+        },
+        {
+            label: 'Player',
+            options: Object.values(PlayerBetTypes).map((v) => {
+                return { value: v, label: v }; 
+            })
+        },
+    ];
     const stakingStrategyOptions: any[] = Object.values(StakingStrategies).map((v) => {
         return { value: v, label: v };
     });
     const oddsSourceOptions: any[] = Object.values(OddsSources).map((v) => {
         return { value: v, label: v };
     });
+
+    const onSportsCategorySelection = (sportsCategory: SportsCategories) => {
+        setSportsCategory(sportsCategory);
+        loadTeamOptions(season, sportsCategory);
+    }
+
+    const onSeasonSelection = (season: any) => {
+        setSeason(season);
+        loadTeamOptions(season, sportsCategory);
+    }
+
+    const loadTeamOptions = (season: any, sportsCategory: SportsCategories) => {
+        if (season && sportsCategory) {
+            getTeamOptions(season, sportsCategory);
+        } else {
+            setTeamOptions([] as any);
+        }
+    }
+
+    const runBacktest = () => {
+        const req = {
+            sportsCategory: sportsCategory,
+            season: season,
+            betType: betType,
+            stakingStrategy: stakingStrategy,
+            oddsSource: oddsSource
+        }
+    }
+
+    const onBetTypeSelection = (betType: TeamBetTypes | PlayerBetTypes) => {
+        setBetType(betType);
+        if (new Set(Object.values(TeamBetTypes)).has(betType as TeamBetTypes)) {
+            setIsTeamBetType(true);
+            setIsPlayerBetType(false);
+        } else {
+            setIsPlayerBetType(true);
+            setIsTeamBetType(false);
+        }
+    }
+
+    const getTeamOptions = (season: any, sport: SportsCategories) => {
+        setTeamOptions([] as any);
+    };
+
+    const getPlayerOptions = (season: any, sport: SportsCategories) => {
+        setPlayerOptions([] as any);
+    };
 
     const openAdvancedSettings = () => {
 
@@ -53,7 +112,7 @@ const BacktestParametersForm = () => {
                             classNamePrefix="select"
                             options={sportsCategoriesOptions}
                             value={sportsCategory}
-                            onChange={(x) => setSportsCategory(x)}
+                            onChange={(x: any) => onSportsCategorySelection(x)}
                             isClearable
                             styles={reactSelectStyles}
                         />
@@ -64,33 +123,50 @@ const BacktestParametersForm = () => {
                             classNamePrefix="select"
                             options={seasonOptions}
                             value={season}
-                            onChange={(x) => setSeason(x)}
+                            onChange={(x) => onSeasonSelection(x)}
                             isClearable
                             styles={reactSelectStyles}
                         />
                     </div>
-                    <div className="select-container">
-                        <label className="select-label">Bet Option</label>
-                        <Select
-                            classNamePrefix="select"
-                            options={betOptionOptions}
-                            value={betOption}
-                            onChange={(x) => setBetOption(x)}
-                            isClearable
-                            styles={reactSelectStyles}
-                        />
-                    </div>
+                    {
+                        sportsCategory && season ? 
+                        <div className="select-container">
+                            <label className="select-label">Team</label>
+                            <Select
+                                classNamePrefix="select"
+                                options={teamOptions}
+                                value={team}
+                                onChange={(x) => setTeam(x)}
+                                isClearable
+                                styles={reactSelectStyles}
+                            />
+                        </div> : null
+                    }
                     <div className="select-container">
                         <label className="select-label">Bet Type</label>
                         <Select
                             classNamePrefix="select"
                             options={betTypeOptions}
                             value={betType}
-                            onChange={(x) => setBetType(x)}
+                            onChange={(x: any) => onBetTypeSelection(x)}
                             isClearable
                             styles={reactSelectStyles}
                         />
                     </div>
+                    {
+                        isPlayerBetType && team ? 
+                        <div className="select-container">
+                            <label className="select-label">Player</label>
+                            <Select
+                                classNamePrefix="select"
+                                options={playerOptions}
+                                value={player}
+                                onChange={(x) => setPlayer(x)}
+                                isClearable
+                                styles={reactSelectStyles}
+                            />
+                        </div> : null
+                    }
                     <div className="select-container">
                         <label className="select-label">Staking Strategy</label>
                         <Select
@@ -129,6 +205,9 @@ const BacktestParametersForm = () => {
                         />
                     </div>
                 </div>
+                <button className="run-button" onClick={() => runBacktest()}>
+                        Run
+                </button>
             </form>
             <div className="advanced-settings-div">
                 <span className="text-button" onClick={openAdvancedSettings}>
