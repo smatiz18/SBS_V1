@@ -129,9 +129,6 @@ const BacktestParametersForm = () => {
                         />
                     </div>
                 </div>
-                <button className="run-button">
-                        Run
-                </button>
             </form>
             <div className="advanced-settings-div">
                 <span className="text-button" onClick={openAdvancedSettings}>
