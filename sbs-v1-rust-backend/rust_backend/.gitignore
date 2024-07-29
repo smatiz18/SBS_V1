@@ -1,0 +1,38 @@
+# Compiled output
+/target/
+
+# Build artifacts
+**/*.rs.bk
+
+# Dependencies
+/Cargo.lock
+
+# Generated files
+**/diesel.toml
+**/diesel.rs
+
+# Output logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Environment variables
+.env
+
+# Backup files
+*~
+*.bak
+
+# Ignore the migrations logs
+migrations.log
+
+# Rust specific
+*.rs.bk

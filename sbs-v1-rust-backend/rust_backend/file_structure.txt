@@ -1,0 +1,44 @@
+my_rust_backend/
+├── Cargo.toml
+├── src/
+│   ├── main.rs
+│   ├── lib.rs
+│   ├── config/
+│   │   ├── mod.rs
+│   │   └── settings.rs
+│   ├── db/
+│   │   ├── mod.rs
+│   │   ├── models.rs
+│   │   ├── schema.rs
+│   │   └── connection.rs
+│   ├── handlers/
+│   │   ├── mod.rs
+│   │   ├── user_handler.rs
+│   │   └── product_handler.rs
+│   ├── middleware/
+│   │   ├── mod.rs
+│   │   └── auth.rs
+│   ├── routes/
+│   │   ├── mod.rs
+│   │   ├── user_routes.rs
+│   │   └── product_routes.rs
+│   ├── services/
+│   │   ├── mod.rs
+│   │   ├── user_service.rs
+│   │   └── product_service.rs
+│   ├── utils/
+│   │   ├── mod.rs
+│   │   └── logger.rs
+│   └── errors/
+│       ├── mod.rs
+│       └── error.rs
+├── migrations/
+│   ├── 20210729120000_create_users/
+│   │   ├── up.sql
+│   │   └── down.sql
+│   └── 20210729120001_create_products/
+│       ├── up.sql
+│       └── down.sql
+├── .env
+├── .gitignore
+└── README.md
