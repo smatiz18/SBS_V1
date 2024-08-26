@@ -8,6 +8,10 @@ import { OddsSources } from '../../../../models/odds-sources.models';
 import { TeamBetTypes } from '../../../../models/team-bet-types.models';
 import { PlayerBetTypes } from '../../../../models/player-bet-types.models';
 import { NbaTeams } from '../../../../constants/nba';
+import { get_nba_games_by_team_and_season, get_nba_odds_by_team_and_season } from '../../../../services/nba/services';
+import { NbaGameHistorical } from '../../../../models/nba-game-historical';
+import axios, { AxiosResponse } from 'axios';
+import { NbaOddsHistorical } from '../../../../models/nba-odds-historical';
 
 const BacktestParametersForm = () => {
     const [sportsCategory, setSportsCategory] = useState(null as unknown as SportsCategories);
@@ -21,7 +25,9 @@ const BacktestParametersForm = () => {
     const [playerOptions, setPlayerOptions] = useState([] as any);
     const [team, setTeam] = useState(null);
     const [player, setPlayer] = useState(null);
-    
+    const [historicalGameData, setHistoricalGameData] = useState([] as any);
+    const [historicalOddsData, setHistoricalOddsData] = useState([] as any);
+
     const sportsCategoriesOptions: any[] = Object.values(SportsCategories).map((v) => {
         return { value: v, label: v };
     });
@@ -63,14 +69,37 @@ const BacktestParametersForm = () => {
         getAndSetTeamOptions(season, sportsCategory);
     }
 
-    const runBacktest = () => {
-        const req = {
-            sportsCategory: sportsCategory,
-            season: season,
-            betType: betType,
-            stakingStrategy: stakingStrategy,
-            oddsSource: oddsSource
-        }
+    const runBacktest = ($event: any) => {
+        $event.preventDefault();
+        aggregateData();
+    }
+
+    const aggregateData = () => {
+        switch(sportsCategory) {
+            case (SportsCategories.NBA): {
+
+                const teamName = NbaTeams.find((teamObj: any) => teamObj.teamNickname === team )?.teamName;
+                get_nba_odds_by_team_and_season({ season: season!, teamName: encodeURIComponent(teamName!) })
+                    .then((response: AxiosResponse<NbaOddsHistorical[]>) => {
+                        setHistoricalOddsData(response.data);
+                    })
+                    .catch((error: any) => {
+                        console.error("Error fetching NBA odds:", error);
+                        setHistoricalOddsData([]);
+                    });
+
+                get_nba_games_by_team_and_season({ season: season!, teamNickname: team! })
+                    .then((response: AxiosResponse<NbaGameHistorical[]>) => {
+                        setHistoricalGameData(response.data);
+                    })
+                    .catch((error: any) => {
+                        console.error("Error fetching NBA games:", error);
+                        setHistoricalGameData([]);
+                    });
+                break;
+            }
+            default: break;
+        }        
     }
 
     const onBetTypeSelection = (betType: TeamBetTypes | PlayerBetTypes) => {
@@ -118,7 +147,7 @@ const BacktestParametersForm = () => {
                         <Select
                             classNamePrefix="select"
                             options={sportsCategoriesOptions}
-                            value={sportsCategory}
+                            value={ sportsCategory ? { value: sportsCategory, label: sportsCategory } : null }
                             onChange={(x: any) => onSportsCategorySelection(x.value)}
                             isClearable
                             styles={reactSelectStyles}
@@ -129,7 +158,7 @@ const BacktestParametersForm = () => {
                         <Select
                             classNamePrefix="select"
                             options={seasonOptions}
-                            value={season}
+                            value={ season ? { value: season, label: season } : null }
                             onChange={(x: any) => onSeasonSelection(x.value)}
                             isClearable
                             styles={reactSelectStyles}
@@ -142,7 +171,7 @@ const BacktestParametersForm = () => {
                             <Select
                                 classNamePrefix="select"
                                 options={teamOptions}
-                                value={team}
+                                value={team ? { value: team, label: team } : null}
                                 onChange={(x: any) => setTeam(x.value)}
                                 isClearable
                                 styles={reactSelectStyles}
@@ -154,7 +183,7 @@ const BacktestParametersForm = () => {
                         <Select
                             classNamePrefix="select"
                             options={betTypeOptions}
-                            value={betType}
+                            value={ betType ? { value: betType, label: betType } : null }
                             onChange={(x: any) => onBetTypeSelection(x.value)}
                             isClearable
                             styles={reactSelectStyles}
@@ -167,7 +196,7 @@ const BacktestParametersForm = () => {
                             <Select
                                 classNamePrefix="select"
                                 options={playerOptions}
-                                value={player}
+                                value={ player ? { value: player, label: player } : null }
                                 onChange={(x: any) => setPlayer(x.value)}
                                 isClearable
                                 styles={reactSelectStyles}
@@ -179,8 +208,8 @@ const BacktestParametersForm = () => {
                         <Select
                             classNamePrefix="select"
                             options={stakingStrategyOptions}
-                            value={stakingStrategy}
-                            onChange={(x) => setStakingStrategy(x.value)}
+                            value={ stakingStrategy ? { value: stakingStrategy, label: stakingStrategy } : null }
+                            onChange={(x) => setStakingStrategy(x!.value)}
                             isClearable
                             styles={reactSelectStyles}
                         />
@@ -190,8 +219,8 @@ const BacktestParametersForm = () => {
                         <Select
                             classNamePrefix="select"
                             options={oddsSourceOptions}
-                            value={oddsSource}
-                            onChange={(x) => setOddsSource(x.value)}
+                            value={ oddsSource ? { value: oddsSource, label: oddsSource } : null }
+                            onChange={(x) => setOddsSource(x!.value)}
                             isClearable
                             styles={reactSelectStyles}
                         />
@@ -212,7 +241,7 @@ const BacktestParametersForm = () => {
                         />
                     </div>
                 </div>
-                <button className="run-button" onClick={() => runBacktest()}>
+                <button className="run-button" onClick={runBacktest}>
                         Run
                 </button>
             </form>

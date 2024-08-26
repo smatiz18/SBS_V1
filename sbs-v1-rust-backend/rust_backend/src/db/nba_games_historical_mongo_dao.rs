@@ -5,6 +5,9 @@ use crate::models::db::nba_games_historical::NbaGamesHistorical;
 use mongodb::error::Result;
 
 pub async fn get_nba_games_by_team_and_season(collection: &Collection<Document>, teamNickname: &str, season: f32) -> Result<Vec<NbaGamesHistorical>> {
+   println!("{}", teamNickname);
+   println!("Collection name: {}", collection.name());
+
    let query = doc! { 
         "$or": [ 
             { "teamsHomeNickname": teamNickname }, 

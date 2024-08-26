@@ -4,12 +4,12 @@ use chrono::{DateTime, Utc};
 #[derive(Serialize, Deserialize)]
 pub struct NbaOddsHistorical {
     #[serde(rename = "_id")]
-    mongoId: u32,
+    mongoId: String,
     sportKey: String,
     sportTitle: String,
     awayTeam: String,
     nbaApiId: u32,
-    oddsApiId: u32,
+    oddsApiId: String,
     dateStart: DateTime<Utc>,
     season: u32,
     bookmakerOdds: Vec<BookmakerOdds>

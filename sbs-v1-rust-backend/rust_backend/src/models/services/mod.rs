@@ -1,1 +1,2 @@
 pub mod get_nba_games_req_by_team_and_season;
+pub mod get_nba_odds_req_by_team_and_season;

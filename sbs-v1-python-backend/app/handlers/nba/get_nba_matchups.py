@@ -3,7 +3,7 @@ from app.services.rotowire.nba import get_rotowire_nba_lineups_response
 
 nba_matchups_bp = Blueprint('nba_matchups', __name__)
 
-@nba_matchups_bp.route('/get-nba-matchups', methods=['GET'])
+@nba_matchups_bp.route('/nba-api/get-matchups', methods=['GET'])
 def get_nba_matchups():
     response = {}
     try:
