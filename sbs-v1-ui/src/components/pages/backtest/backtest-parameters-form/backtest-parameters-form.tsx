@@ -9,9 +9,6 @@ import { TeamBetTypes } from '../../../../models/team-bet-types.models';
 import { PlayerBetTypes } from '../../../../models/player-bet-types.models';
 import { NbaTeams } from '../../../../constants/nba';
 import { get_nba_games_by_team_and_season, get_nba_odds_by_team_and_season } from '../../../../services/nba/services';
-import { NbaGameHistorical } from '../../../../models/nba-game-historical';
-import axios, { AxiosResponse } from 'axios';
-import { NbaOddsHistorical } from '../../../../models/nba-odds-historical';
 
 const BacktestParametersForm = () => {
     const [sportsCategory, setSportsCategory] = useState(null as unknown as SportsCategories);
@@ -75,31 +72,38 @@ const BacktestParametersForm = () => {
     }
 
     const aggregateData = () => {
+        let featureMap;
         switch(sportsCategory) {
             case (SportsCategories.NBA): {
-
                 const teamName = NbaTeams.find((teamObj: any) => teamObj.teamNickname === team )?.teamName;
-                get_nba_odds_by_team_and_season({ season: season!, teamName: encodeURIComponent(teamName!) })
-                    .then((response: AxiosResponse<NbaOddsHistorical[]>) => {
-                        setHistoricalOddsData(response.data);
+                const games_p = get_nba_games_by_team_and_season({ season: season!, teamNickname: team! });
+                const odds_p = get_nba_odds_by_team_and_season({ season: season!, teamName: encodeURIComponent(teamName!) })
+                Promise.all([games_p, odds_p])
+                    .then(([games_resp, odds_resp]) => {
+                        setHistoricalGameData(games_resp.data);
+                        setHistoricalOddsData(odds_resp.data);
+                        featureMap = getFeatureMap(historicalGameData, historicalOddsData, betType, oddsSource!);
                     })
                     .catch((error: any) => {
-                        console.error("Error fetching NBA odds:", error);
+                        console.error("Error fetching NBA games and odds data:", error);
+                        setHistoricalGameData([]);
                         setHistoricalOddsData([]);
                     });
 
-                get_nba_games_by_team_and_season({ season: season!, teamNickname: team! })
-                    .then((response: AxiosResponse<NbaGameHistorical[]>) => {
-                        setHistoricalGameData(response.data);
-                    })
-                    .catch((error: any) => {
-                        console.error("Error fetching NBA games:", error);
-                        setHistoricalGameData([]);
-                    });
                 break;
             }
             default: break;
-        }        
+        }
+        return featureMap;
+    }
+
+    const getFeatureMap = (
+        historicalGameData: any, 
+        historicalOddsData: any, 
+        betType: TeamBetTypes | PlayerBetTypes,
+        oddsSource: OddsSources
+    ) => {
+        
     }
 
     const onBetTypeSelection = (betType: TeamBetTypes | PlayerBetTypes) => {
