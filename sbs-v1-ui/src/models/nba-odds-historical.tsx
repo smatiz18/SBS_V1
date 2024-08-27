@@ -26,4 +26,6 @@ export interface Market {
 export interface Outcome {
     name: string;
     price: number;
+    description?: string;
+    point?: number
 }

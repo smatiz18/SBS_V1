@@ -9,6 +9,7 @@ import { TeamBetTypes } from '../../../../models/team-bet-types.models';
 import { PlayerBetTypes } from '../../../../models/player-bet-types.models';
 import { NbaTeams } from '../../../../constants/nba';
 import { get_nba_games_by_team_and_season, get_nba_odds_by_team_and_season } from '../../../../services/nba/services';
+import { Market, NbaOddsHistorical } from '../../../../models/nba-odds-historical';
 
 const BacktestParametersForm = () => {
     const [sportsCategory, setSportsCategory] = useState(null as unknown as SportsCategories);
@@ -82,7 +83,7 @@ const BacktestParametersForm = () => {
                     .then(([games_resp, odds_resp]) => {
                         setHistoricalGameData(games_resp.data);
                         setHistoricalOddsData(odds_resp.data);
-                        featureMap = getFeatureMap(historicalGameData, historicalOddsData, betType, oddsSource!);
+                        featureMap = getFeatureMap(games_resp.data, odds_resp.data, betType, oddsSource!);
                     })
                     .catch((error: any) => {
                         console.error("Error fetching NBA games and odds data:", error);
@@ -103,7 +104,38 @@ const BacktestParametersForm = () => {
         betType: TeamBetTypes | PlayerBetTypes,
         oddsSource: OddsSources
     ) => {
-        
+        const filteredOddsData = parseOddsData(historicalOddsData, betType, oddsSource);
+        console.log("Odds Data.");
+        console.log(filteredOddsData);
+
+        console.log("Games Data.");
+        console.log(historicalGameData);   
+    }
+
+    const parseOddsData = (
+        historicalOddsData: any,
+        betType: TeamBetTypes | PlayerBetTypes,
+        oddsSource: OddsSources
+    ) => {
+        let filteredOddsData; 
+        if (sportsCategory === SportsCategories.NBA) {
+            filteredOddsData = (historicalOddsData as NbaOddsHistorical[]).reduce(
+                (oddsArr, currObj: NbaOddsHistorical) => {
+                    
+                    const oddsForOddsSource = currObj.bookmakerOdds
+                        .find((obj) => obj.title === oddsSource);
+                    const oddsObj = oddsForOddsSource?.markets
+                        .find(obj => obj.key === betType)
+
+                    if (oddsObj) {
+                        oddsArr.push(oddsObj);
+                    }
+                    return oddsArr;
+                },
+                [] as Market[]
+            );
+        }
+        return filteredOddsData;
     }
 
     const onBetTypeSelection = (betType: TeamBetTypes | PlayerBetTypes) => {

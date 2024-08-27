@@ -33,7 +33,9 @@ pub struct Market {
 #[derive(Serialize, Deserialize)]
 pub struct Outcome {
     name: String,
-    price: i32
+    price: i32,
+    description: Option<String>,
+    point: Option<f32>
 }
 
 
