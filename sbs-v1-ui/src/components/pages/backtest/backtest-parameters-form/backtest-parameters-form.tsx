@@ -11,6 +11,8 @@ import { NbaTeams } from '../../../../constants/nba';
 import { get_nba_games_by_team_and_season, get_nba_odds_by_team_and_season } from '../../../../services/nba/services';
 import { Market, NbaOddsHistorical } from '../../../../models/nba-odds-historical';
 
+// TODO add player options
+
 const BacktestParametersForm = () => {
     const [sportsCategory, setSportsCategory] = useState(null as unknown as SportsCategories);
     const [season, setSeason] = useState(null);
