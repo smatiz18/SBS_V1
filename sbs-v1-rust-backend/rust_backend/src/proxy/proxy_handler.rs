@@ -1,9 +1,10 @@
 use actix_web::{web, HttpRequest, HttpResponse, Error};
 use awc::Client;
+use crate::routes::endpoints::SERVER_URL;
 
 pub async fn proxy(req: HttpRequest, payload: web::Payload) -> Result<HttpResponse, Error> {
     // Define the backend server to which you want to forward requests
-    let backend_server_url = "SERVER_URL"; // Replace with actual backend URL
+    let backend_server_url = SERVER_URL; // Replace with actual backend URL
     let path_and_query = req.uri().path_and_query().map(|pq| pq.as_str()).unwrap_or("");
     let target_url = format!("{}{}", backend_server_url, path_and_query);
 
