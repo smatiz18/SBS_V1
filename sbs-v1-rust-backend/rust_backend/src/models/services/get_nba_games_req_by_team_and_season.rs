@@ -1,7 +1,7 @@
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
-pub struct GetNbaGamesReqByTeamAndSeason {
+pub struct GetNbaGamesByTeamAndSeasonRequest {
     pub teamNickname: String,
     pub season: f32,
 }

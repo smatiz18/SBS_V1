@@ -19,7 +19,6 @@ const BacktestParametersForm = () => {
     const [betType, setBetType] = useState(null as unknown as TeamBetTypes | PlayerBetTypes);
     const [stakingStrategy, setStakingStrategy] = useState(null); 
     const [oddsSource, setOddsSource] = useState(null);
-    const [isTeamBetType, setIsTeamBetType] = useState(false);
     const [isPlayerBetType, setIsPlayerBetType] = useState(false);
     const [teamOptions, setTeamOptions] = useState([] as any);
     const [playerOptions, setPlayerOptions] = useState([] as any);
@@ -142,11 +141,9 @@ const BacktestParametersForm = () => {
     const onBetTypeSelection = (betType: TeamBetTypes | PlayerBetTypes) => {
         setBetType(betType);
         if (new Set(Object.values(TeamBetTypes)).has(betType as TeamBetTypes)) {
-            setIsTeamBetType(true);
             setIsPlayerBetType(false);
         } else {
             setIsPlayerBetType(true);
-            setIsTeamBetType(false);
         }
     }
 

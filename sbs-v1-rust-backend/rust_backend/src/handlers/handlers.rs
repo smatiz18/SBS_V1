@@ -1,6 +1,6 @@
 use actix_web::{ web, HttpResponse, Responder};
-use crate::models::services::get_nba_games_req_by_team_and_season::GetNbaGamesReqByTeamAndSeason;
-use crate::models::services::get_nba_odds_req_by_team_and_season::GetNbaOddsReqByTeamAndSeason;
+use crate::models::services::get_nba_games_req_by_team_and_season::GetNbaGamesByTeamAndSeasonRequest;
+use crate::models::services::get_nba_odds_req_by_team_and_season::GetNbaOddsByTeamAndSeasonRequest;
 use crate::models::services::get_nba_players_by_team_and_season::GetNbaPlayersByTeamAndSeason;
 use crate::models::services::get_nba_players_by_team_and_season_response::GetNbaPlayersByTeamAndSeasonResponse;
 use crate::routes::endpoints::{NBA_RAPID_API_ROOT, NBA_RAPID_API_HOST};
@@ -13,7 +13,7 @@ use crate::db::{nba_games_historical_mongo_dao, nba_odds_historical_mongo_dao};
 
 pub async fn get_nba_games_by_team_and_season(
     app_state: web::Data<AppState>, 
-    req: web::Query<GetNbaGamesReqByTeamAndSeason>
+    req: web::Query<GetNbaGamesByTeamAndSeasonRequest>
 ) -> impl Responder {
     info!("Recieved req for nba_historical_game_req team: {}, season: {}", req.teamNickname, req.season);
     let objs_result = nba_games_historical_mongo_dao::get_nba_games_by_team_and_season(
@@ -36,7 +36,7 @@ pub async fn get_nba_games_by_team_and_season(
 
 pub async fn get_nba_odds_by_team_and_season(
     app_state: web::Data<AppState>, 
-    req: web::Query<GetNbaOddsReqByTeamAndSeason>
+    req: web::Query<GetNbaOddsByTeamAndSeasonRequest>
 ) -> impl Responder {
     info!("Recieved req for nba_historical_odds_req team: {}, season: {}", req.teamName, req.season);
     let objs_result = nba_odds_historical_mongo_dao::get_nba_odds_by_team_and_season(
