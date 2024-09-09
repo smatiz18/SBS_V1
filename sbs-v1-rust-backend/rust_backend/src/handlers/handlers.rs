@@ -1,16 +1,18 @@
 use actix_web::{ web, HttpResponse, Responder};
-use crate::models::services::get_nba_games_req_by_team_and_season::GetNbaGamesByTeamAndSeasonRequest;
-use crate::models::services::get_nba_odds_req_by_team_and_season::GetNbaOddsByTeamAndSeasonRequest;
-use crate::models::services::get_nba_players_by_team_and_season::GetNbaPlayersByTeamAndSeason;
+use crate::models::services::get_nba_games_by_team_and_season_request::GetNbaGamesByTeamAndSeasonRequest;
+use crate::models::services::get_nba_odds_by_team_and_season_request::GetNbaOddsByTeamAndSeasonRequest;
+use crate::models::services::get_nba_players_by_team_and_season_request::GetNbaPlayersByTeamAndSeasonRequest;
 use crate::models::services::get_nba_players_by_team_and_season_response::GetNbaPlayersByTeamAndSeasonResponse;
+use crate::models::services::get_nba_player_stats_by_id_and_season_request::GetNbaPlayerStatsByIdAndSeasonRequest;
 use crate::routes::endpoints::{NBA_RAPID_API_ROOT, NBA_RAPID_API_HOST};
 use reqwest::header::{HeaderMap, HeaderValue};
 use std::env;
 use log::{info, error};
 
 use crate::models::app_state::AppState;
-use crate::db::{nba_games_historical_mongo_dao, nba_odds_historical_mongo_dao};
+use crate::db::{nba_games_historical_mongo_dao, nba_odds_historical_mongo_dao, nba_player_game_stats_avgs_historical_mongo_dao};
 
+/******************************** MONGO HANDLERS ********************************/
 pub async fn get_nba_games_by_team_and_season(
     app_state: web::Data<AppState>, 
     req: web::Query<GetNbaGamesByTeamAndSeasonRequest>
@@ -57,9 +59,34 @@ pub async fn get_nba_odds_by_team_and_season(
     }
 }
 
+pub async fn get_nba_player_stats_by_id_and_season(
+    app_state: web::Data<AppState>, 
+    req: web::Query<GetNbaPlayerStatsByIdAndSeasonRequest>
+) -> impl Responder {
+    info!("Recieved req for get_nba_player_stats_by_id_and_season id: {}, season: {}", req.playerId, req.season);
+    let objs_result = nba_player_game_stats_avgs_historical_mongo_dao::get_nba_player_stats_avgs_by_id_and_season(
+        &app_state.as_ref().nba_player_game_stats_avgs_historical_collection, 
+        req.playerId,
+        &req.season
+    ).await; 
+
+    match objs_result {
+        Ok(objs) => {
+            info!("Returned {} docs from mongo", objs.len());
+            HttpResponse::Ok().json(objs)
+        },
+        Err(e) => {
+            error!("Failed to get nba odds by teams and season: {:?}", e);
+            HttpResponse::InternalServerError().body(format!("{:?}", e))
+        }
+    }
+}
+/********************************************************************************/
+
+/******************************* WEB API HANDLERS *******************************/
 pub async fn get_nba_players_by_team_and_season(
-    app_state: web::Data<AppState>,
-    req: web::Query<GetNbaPlayersByTeamAndSeason> 
+    _app_state: web::Data<AppState>,
+    req: web::Query<GetNbaPlayersByTeamAndSeasonRequest> 
 ) -> impl Responder {
     info!("Recieved req for get_nba_players_by_team_and_season, teamId {}, season: {}", req.teamId, req.season);
     let client = reqwest::Client::new();
@@ -70,14 +97,14 @@ pub async fn get_nba_players_by_team_and_season(
     headers.insert("x-rapidapi-key", HeaderValue::from_str(&rapid_api_key).expect("You must set RAPID_API_KEY environment var!"));
 
     match client
-        .get(url)
+        .get(url.clone())
         .headers(headers)
         .send()
         .await {
             Ok(response) => {
                 match response.json::<GetNbaPlayersByTeamAndSeasonResponse>().await {
                     Ok(resp_obj) => {
-                        info!("Returned resp from {}", url);
+                        info!("Returned resp from {}", url.clone());
                         HttpResponse::Ok().json(resp_obj)
                     },
                     Err(e) => {
@@ -92,6 +119,7 @@ pub async fn get_nba_players_by_team_and_season(
             },
         }
 }
+/********************************************************************************/
 
 pub async fn test() -> HttpResponse {
     HttpResponse::Ok().body("Test!")

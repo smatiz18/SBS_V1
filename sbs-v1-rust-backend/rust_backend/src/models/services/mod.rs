@@ -1,4 +1,5 @@
-pub mod get_nba_games_req_by_team_and_season;
-pub mod get_nba_odds_req_by_team_and_season;
-pub mod get_nba_players_by_team_and_season;
+pub mod get_nba_games_by_team_and_season_request;
+pub mod get_nba_odds_by_team_and_season_request;
+pub mod get_nba_players_by_team_and_season_request;
 pub mod get_nba_players_by_team_and_season_response;
+pub mod get_nba_player_stats_by_id_and_season_request;

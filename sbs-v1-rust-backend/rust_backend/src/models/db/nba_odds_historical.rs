@@ -35,7 +35,7 @@ pub struct Outcome {
     name: String,
     price: i32,
     description: Option<String>,
-    point: Option<f32>
+    point: Option<f64>
 }
 
 

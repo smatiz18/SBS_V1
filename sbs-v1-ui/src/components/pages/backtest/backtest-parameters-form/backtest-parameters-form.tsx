@@ -1,15 +1,17 @@
 import Select from 'react-select';
 import './backtest-parameters-form.scss';
 import { reactSelectStyles } from '../../../../models/form-styles/styles';
-import { SportsCategories } from '../../../../models/sports-categories.models';
+import { SportsCategories } from '../../../../models/sports-categories';
 import { useState } from 'react';
-import { StakingStrategies } from '../../../../models/staking-strategies.models';
-import { OddsSources } from '../../../../models/odds-sources.models';
-import { TeamBetTypes } from '../../../../models/team-bet-types.models';
-import { PlayerBetTypes } from '../../../../models/player-bet-types.models';
+import { StakingStrategies } from '../../../../models/staking-strategies';
+import { OddsSources } from '../../../../models/odds-sources';
+import { TeamBetTypes } from '../../../../models/team-bet-types';
+import { PlayerBetTypes } from '../../../../models/player-bet-types';
 import { NbaTeams } from '../../../../constants/nba';
-import { get_nba_games_by_team_and_season, get_nba_odds_by_team_and_season } from '../../../../services/nba/services';
+import { getNbaGamesByTeamAndSeason, getNbaOddsByTeamAndSeason, getNbaPlayersByTeamAndSeason } from '../../../../services/nba/services';
 import { Market, NbaOddsHistorical } from '../../../../models/nba-odds-historical';
+import { GetNbaPlayersByTeamAndSeasonResponse, Player } from '../../../../models/services/get-nba-players-by-team-and-season-response';
+import { AxiosResponse } from 'axios';
 
 // TODO add player options
 
@@ -64,23 +66,19 @@ const BacktestParametersForm = () => {
         loadTeamOptions(season, sportsCategory);
     }
 
-    const loadTeamOptions = (season: any, sportsCategory: SportsCategories) => {
-        getAndSetTeamOptions(season, sportsCategory);
-    }
-
     const runBacktest = ($event: any) => {
         $event.preventDefault();
         aggregateData();
     }
 
-    const aggregateData = () => {
+    const aggregateData = async () => {
         let featureMap;
         switch(sportsCategory) {
             case (SportsCategories.NBA): {
                 const teamName = NbaTeams.find((teamObj: any) => teamObj.teamNickname === team )?.teamName;
-                const games_p = get_nba_games_by_team_and_season({ season: season!, teamNickname: team! });
-                const odds_p = get_nba_odds_by_team_and_season({ season: season!, teamName: encodeURIComponent(teamName!) })
-                Promise.all([games_p, odds_p])
+                const games_p = getNbaGamesByTeamAndSeason({ season: season!, teamNickname: team! });
+                const odds_p = getNbaOddsByTeamAndSeason({ season: season!, teamName: encodeURIComponent(teamName!) })
+                await Promise.all([games_p, odds_p])
                     .then(([games_resp, odds_resp]) => {
                         setHistoricalGameData(games_resp.data);
                         setHistoricalOddsData(odds_resp.data);
@@ -144,10 +142,11 @@ const BacktestParametersForm = () => {
             setIsPlayerBetType(false);
         } else {
             setIsPlayerBetType(true);
+            loadPlayerOptions(season, sportsCategory);
         }
     }
 
-    const getAndSetTeamOptions = (_season: any, sport: SportsCategories) => {
+    const loadTeamOptions = (_season: any, sport: SportsCategories) => {
         switch(sport) {
             case SportsCategories.NBA: {
                 const options = NbaTeams.map(x => { 
@@ -161,9 +160,28 @@ const BacktestParametersForm = () => {
         }
     };
 
-    const getPlayerOptions = (season: any, sport: SportsCategories) => {
-        setPlayerOptions([] as any);
-    };
+    const loadPlayerOptions = (season: any, sport: SportsCategories) => {
+        switch(sport) {
+            case SportsCategories.NBA: {
+                const teamId = NbaTeams.find((currTeam: any) => currTeam.teamNickname === team)!.nbaApiId!;
+                getNbaPlayersByTeamAndSeason({ teamId: teamId, season: season })
+                    .then((response: AxiosResponse<GetNbaPlayersByTeamAndSeasonResponse>) => {
+                        setPlayerOptions(
+                            (response.data?.response || []).map((player: Player) => ({
+                                label: `${player.firstname} ${player.lastname}`,
+                                value: player.id
+                            }))
+                        );
+                    })
+                    .catch((error: any) => {
+                        console.error("Error fetching NBA players: ", error);
+                        setPlayerOptions([] as any);
+                    });
+                break;
+            }
+            default: setPlayerOptions([] as any); break;
+        }
+    }
 
     const openAdvancedSettings = () => {
 
@@ -231,7 +249,7 @@ const BacktestParametersForm = () => {
                                 classNamePrefix="select"
                                 options={playerOptions}
                                 value={ player ? { value: player, label: player } : null }
-                                onChange={(x: any) => { if (x) setPlayer(x.value) }}
+                                onChange={(x: any) => { if (x) setPlayer(x.label) }}
                                 isClearable
                                 styles={reactSelectStyles}
                             />

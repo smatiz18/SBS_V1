@@ -11,6 +11,7 @@ use handlers::handlers::{
    get_nba_games_by_team_and_season, 
    get_nba_odds_by_team_and_season, 
    get_nba_players_by_team_and_season, 
+   get_nba_player_stats_by_id_and_season,
    test
 };
 use routes::endpoints::{
@@ -18,9 +19,15 @@ use routes::endpoints::{
    GET_HISTORICAL_GAMES, 
    GET_HISTORICAL_ODDS, 
    SERVER_URL, 
-   GET_PLAYERS_BY_TEAM_AND_SEASON
+   GET_PLAYERS_BY_TEAM_AND_SEASON,
+   GET_PLAYER_STATS_BY_ID_AND_SEASON
 };
-use db::constants::{SBS_V1_DB_NAME, NBA_GAMES_HISTORICAL_COLLECTION_NAME, NBA_ODDS_HISTORICAL_COLLECTION_NAME};
+use db::constants::{
+   SBS_V1_DB_NAME, 
+   NBA_GAMES_HISTORICAL_COLLECTION_NAME, 
+   NBA_ODDS_HISTORICAL_COLLECTION_NAME, 
+   NBA_PLAYER_GAME_STATS_AVGS_HISTORICAL
+};
 use proxy::proxy_handler::proxy;
 use actix_cors::Cors;
 use models::app_state::AppState;
@@ -44,11 +51,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
       SBS_V1_DB_NAME, 
       NBA_ODDS_HISTORICAL_COLLECTION_NAME
    ).await?;
+   let nba_player_game_stats_avgs_historical_collection = get_collection(
+      &client_uri, 
+      SBS_V1_DB_NAME, 
+      NBA_PLAYER_GAME_STATS_AVGS_HISTORICAL
+   ).await?;
 
    // Wrap collections in AppState
    let app_state = AppState {
       nba_games_historical_collection: nba_games_historical_collection.clone(),
       nba_odds_historical_collection: nba_odds_historical_collection.clone(),
+      nba_player_game_stats_avgs_historical_collection: nba_player_game_stats_avgs_historical_collection.clone()
    };
 
    HttpServer::new(move || {
@@ -66,6 +79,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 .route(GET_HISTORICAL_GAMES, web::get().to(get_nba_games_by_team_and_season))
                 .route(GET_HISTORICAL_ODDS, web::get().to(get_nba_odds_by_team_and_season))
                 .route(GET_PLAYERS_BY_TEAM_AND_SEASON, web::get().to(get_nba_players_by_team_and_season))
+                .route(GET_PLAYER_STATS_BY_ID_AND_SEASON, web::get().to(get_nba_player_stats_by_id_and_season))
                 .route("/test", web::get().to(test))
          )
          .default_service(web::route().to(proxy))  // Uses the proxy handler for all unmatched routes

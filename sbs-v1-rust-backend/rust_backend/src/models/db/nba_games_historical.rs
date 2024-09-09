@@ -4,20 +4,20 @@ use chrono::{DateTime, Utc};
 #[derive(Serialize, Deserialize, Debug)]
 pub struct NbaGamesHistorical {
     #[serde(rename = "_id")]
-    mongoId: f32,
-    id: f32,
+    mongoId: f64,
+    id: f64,
     league: Option<String>,
-    season: f32,
+    season: f64,
     dateStart: DateTime<Utc>,
-    teamsVisitorsId: f32,
+    teamsVisitorsId: f64,
     teamsVisitorsNickname: String,
     teamsVisitorsCode: String,
-    teamsHomeId: f32,
+    teamsHomeId: f64,
     teamsHomeName: String,
     teamsHomeNickname: String,
     teamsHomeCode: String,
     scoresVisitorsLinescore: Vec<String>,
-    scoresVisitorsPoints: f32,
+    scoresVisitorsPoints: f64,
     scoresHomeLinescore: Vec<String>,
-    scoresHomePoints :f32
+    scoresHomePoints :f64
 }
