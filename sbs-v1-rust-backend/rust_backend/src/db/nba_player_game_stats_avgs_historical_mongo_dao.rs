@@ -21,7 +21,6 @@ pub async fn get_nba_player_stats_avgs_by_id_and_season(
             match from_document::<NbaPlayerGameStatsAvgsHistorical>(doc.clone()) {
                 Ok(obj) => Some(obj),
                 Err(e) => {
-                    println!("{}", doc.to_string());
                     println!("Failed to convert doc to obj: {}", e);
                     None
                 }

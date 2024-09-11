@@ -16,7 +16,7 @@ pub struct NbaPlayerGameStatsHistorical {
 
 #[derive(Serialize, Deserialize)]
 pub struct PlayerStatsObj {
-    points: Option<u32>,
+    points: Option<f64>,
     pos: Option<String>,
     min: Option<f64>,
     fgm: Option<f64>,
@@ -30,7 +30,7 @@ pub struct PlayerStatsObj {
     tpp: Option<f64>,
     offReb: Option<f64>,
     defReb: Option<f64>,
-    totReb: Option<u32>,
+    totReb: Option<f64>,
     assists: Option<f64>,
     pFouls: Option<f64>,
     steals: Option<f64>,
