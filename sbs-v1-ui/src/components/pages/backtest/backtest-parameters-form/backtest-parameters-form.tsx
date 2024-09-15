@@ -8,7 +8,7 @@ import { OddsSources } from '../../../../models/odds-sources';
 import { TeamBetTypes } from '../../../../models/team-bet-types';
 import { PlayerBetTypes } from '../../../../models/player-bet-types';
 import { NbaTeams } from '../../../../constants/nba';
-import { getNbaGamesByTeamAndSeason, getNbaOddsByTeamAndSeason, getNbaPlayersByTeamAndSeason } from '../../../../services/nba/services';
+import { getNbaGamesByTeamAndSeason, getNbaOddsByTeamAndSeason, getNbaPlayerStatsByIdAndSeason, getNbaPlayersByTeamAndSeason } from '../../../../services/nba/services';
 import { Market, NbaOddsHistorical } from '../../../../models/nba-odds-historical';
 import { GetNbaPlayersByTeamAndSeasonResponse, Player } from '../../../../models/services/get-nba-players-by-team-and-season-response';
 import { AxiosResponse } from 'axios';
@@ -25,9 +25,12 @@ const BacktestParametersForm = () => {
     const [teamOptions, setTeamOptions] = useState([] as any);
     const [playerOptions, setPlayerOptions] = useState([] as any);
     const [team, setTeam] = useState(null);
-    const [player, setPlayer] = useState(null);
+    const [player, setPlayer] = useState(null as unknown as {
+        value: number; label: string; 
+    });
     const [historicalGameData, setHistoricalGameData] = useState([] as any);
     const [historicalOddsData, setHistoricalOddsData] = useState([] as any);
+    const [historicalPlayersStatsAvgsData, setHistoricalPlayersStatsAvgsData] = useState([] as any);
 
     const sportsCategoriesOptions: any[] = Object.values(SportsCategories).map((v) => {
         return { value: v, label: v };
@@ -76,20 +79,23 @@ const BacktestParametersForm = () => {
         switch(sportsCategory) {
             case (SportsCategories.NBA): {
                 const teamName = NbaTeams.find((teamObj: any) => teamObj.teamNickname === team )?.teamName;
-                const games_p = getNbaGamesByTeamAndSeason({ season: season!, teamNickname: team! });
-                const odds_p = getNbaOddsByTeamAndSeason({ season: season!, teamName: encodeURIComponent(teamName!) })
-                await Promise.all([games_p, odds_p])
-                    .then(([games_resp, odds_resp]) => {
-                        setHistoricalGameData(games_resp.data);
-                        setHistoricalOddsData(odds_resp.data);
-                        featureMap = getFeatureMap(games_resp.data, odds_resp.data, betType, oddsSource!);
+                const gamesP = getNbaGamesByTeamAndSeason({ season: season!, teamNickname: team! });
+                const oddsP = getNbaOddsByTeamAndSeason({ season: season!, teamName: encodeURIComponent(teamName!) })
+                const playerStatsAvgsDataP = getNbaPlayerStatsByIdAndSeason({ playerId: player.value, season: season! }); 
+                
+                await Promise.all([gamesP, oddsP, playerStatsAvgsDataP])
+                    .then(([gamesResp, oddsResp, playerStatsAvgsResp]) => {
+                        setHistoricalGameData(gamesResp.data);
+                        setHistoricalOddsData(oddsResp.data);
+                        setHistoricalPlayersStatsAvgsData(playerStatsAvgsResp.data);
+                        featureMap = getFeatureMap(gamesResp.data, oddsResp.data, betType, oddsSource!, playerStatsAvgsResp.data);
                     })
                     .catch((error: any) => {
                         console.error("Error fetching NBA games and odds data:", error);
                         setHistoricalGameData([]);
                         setHistoricalOddsData([]);
+                        setHistoricalPlayersStatsAvgsData([]);
                     });
-
                 break;
             }
             default: break;
@@ -101,7 +107,8 @@ const BacktestParametersForm = () => {
         historicalGameData: any, 
         historicalOddsData: any, 
         betType: TeamBetTypes | PlayerBetTypes,
-        oddsSource: OddsSources
+        oddsSource: OddsSources,
+        playerStatsAvgsData?: any
     ) => {
         const filteredOddsData = parseOddsData(historicalOddsData, betType, oddsSource);
         console.log("Odds Data.");
@@ -109,6 +116,27 @@ const BacktestParametersForm = () => {
 
         console.log("Games Data.");
         console.log(historicalGameData);   
+
+        if (isPlayerBetType && playerStatsAvgsData) {
+            console.log("Player Data.");
+            console.log (playerStatsAvgsData);
+        }
+
+        return getGamesFeatureMap(historicalGameData)
+            .concat(historicalOddsData)
+            .concat(playerStatsAvgsData || []);
+    }
+
+    const getGamesFeatureMap = (historicalGameData: any): any => {
+        return [];
+    }
+
+    const getOddsFeatureMap = (historicalOddsData: any): any => {
+        return [];
+    }
+
+    const getPlayerStatsFeatureMap = (playerStatsAvgsData: any): any => {
+        return [];
     }
 
     const parseOddsData = (
@@ -248,8 +276,8 @@ const BacktestParametersForm = () => {
                             <Select
                                 classNamePrefix="select"
                                 options={playerOptions}
-                                value={ player ? { value: player, label: player } : null }
-                                onChange={(x: any) => { if (x) setPlayer(x.label) }}
+                                value={ player ? { value: player.value, label: player.label } : null }
+                                onChange={(x: any) => { if (x) setPlayer(x) }}
                                 isClearable
                                 styles={reactSelectStyles}
                             />

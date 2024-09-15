@@ -22,6 +22,7 @@ $transition-duration: 0.3s;
     .strategy-inputs {
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
       align-items: center;
       gap: 1rem;
       width: 100%;
@@ -31,6 +32,7 @@ $transition-duration: 0.3s;
         display: flex;
         flex-direction: column;
         padding: 7px 0px;
+        min-width: 8rem;
 
         input {
           max-width: 5rem;

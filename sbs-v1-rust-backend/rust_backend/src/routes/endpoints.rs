@@ -5,7 +5,7 @@ pub const NBA_API_ROOT: &str = "nba-api";
 pub const GET_HISTORICAL_GAMES: &str = "/historical-games/get";
 pub const GET_HISTORICAL_ODDS: &str = "/historical-odds/get";
 pub const GET_PLAYERS_BY_TEAM_AND_SEASON: &str = "/players-by-team-and-season/get";
-pub const GET_PLAYER_STATS_BY_ID_AND_SEASON: &str = "/player_stats_by_id_and_season/get";
+pub const GET_PLAYER_STATS_BY_ID_AND_SEASON: &str = "/player-stats-by-id-and-season/get";
 
 /* WEB API ROUTES */
 pub const NBA_RAPID_API_HOST: &str = "api-nba-v1.p.rapidapi.com";
