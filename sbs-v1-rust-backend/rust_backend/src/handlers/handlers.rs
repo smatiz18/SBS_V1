@@ -81,6 +81,13 @@ pub async fn get_nba_player_stats_by_id_and_season(
         }
     }
 }
+
+pub async fn get_features_for_nba_game_bet(
+    app_state: web::Data<AppState>, 
+    req: web::Query<GetNbaPlayerStatsByIdAndSeasonRequest>
+) -> impl Responder {
+    info!("Recieved req for get_nba_player_stats_by_id_and_season id: {}, season: {}", req.playerId, req.season);
+}
 /********************************************************************************/
 
 /******************************* WEB API HANDLERS *******************************/
