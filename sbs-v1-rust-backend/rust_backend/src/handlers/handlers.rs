@@ -82,11 +82,12 @@ pub async fn get_nba_player_stats_by_id_and_season(
     }
 }
 
-pub async fn get_features_for_nba_game_bet(
+pub async fn get_feature_map_for_backtest(
     app_state: web::Data<AppState>, 
-    req: web::Query<GetNbaPlayerStatsByIdAndSeasonRequest>
+    req: web::Query<BacktestFeatureMapRequest>
 ) -> impl Responder {
     info!("Recieved req for get_nba_player_stats_by_id_and_season id: {}, season: {}", req.playerId, req.season);
+    return HttpResponse::Ok().body("Implement handler!");
 }
 /********************************************************************************/
 
