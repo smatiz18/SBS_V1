@@ -31,13 +31,17 @@ const BacktestParametersForm = () => {
     const [historicalGameData, setHistoricalGameData] = useState([] as any);
     const [historicalOddsData, setHistoricalOddsData] = useState([] as any);
     const [historicalPlayersStatsAvgsData, setHistoricalPlayersStatsAvgsData] = useState([] as any);
-
+    
+    /* select options ***************************************************************/
+    /********************************************************************************/
     const sportsCategoriesOptions: any[] = Object.values(SportsCategories).map((v) => {
         return { value: v, label: v };
     });
+    
     const seasonOptions: any[] = [
         { value: 2023, label: 2023 }
     ];
+    
     const betTypeOptions: any[] = [
         {
             label: 'Team',
@@ -52,13 +56,55 @@ const BacktestParametersForm = () => {
             })
         },
     ];
+    
     const stakingStrategyOptions: any[] = Object.values(StakingStrategies).map((v) => {
         return { value: v, label: v };
     });
+    
     const oddsSourceOptions: any[] = Object.values(OddsSources).map((v) => {
         return { value: v, label: v };
     });
+    
+    const loadTeamOptions = (_season: any, sport: SportsCategories) => {
+        switch(sport) {
+            case SportsCategories.NBA: {
+                const options = NbaTeams.map(x => { 
+                    return { value: x.teamNickname, label: x.teamNickname }
+                });
+                setTeamOptions(options);
+                break;
+            }
+            default: setTeamOptions([] as any); break;
 
+        }
+    };
+
+    const loadPlayerOptions = (season: any, sport: SportsCategories) => {
+        switch(sport) {
+            case SportsCategories.NBA: {
+                const teamId = NbaTeams.find((currTeam: any) => currTeam.teamNickname === team)!.nbaApiId!;
+                getNbaPlayersByTeamAndSeason({ teamId: teamId, season: season })
+                    .then((response: AxiosResponse<GetNbaPlayersByTeamAndSeasonResponse>) => {
+                        setPlayerOptions(
+                            (response.data?.response || []).map((player: Player) => ({
+                                label: `${player.firstname} ${player.lastname}`,
+                                value: player.id
+                            }))
+                        );
+                    })
+                    .catch((error: any) => {
+                        console.error("Error fetching NBA players: ", error);
+                        setPlayerOptions([] as any);
+                    });
+                break;
+            }
+            default: setPlayerOptions([] as any); break;
+        }
+    }
+    /********************************************************************************/
+
+    /* on selection functions *******************************************************/
+    /********************************************************************************/
     const onSportsCategorySelection = (sportsCategory: SportsCategories) => {
         setSportsCategory(sportsCategory);
         loadTeamOptions(season, sportsCategory);
@@ -69,9 +115,43 @@ const BacktestParametersForm = () => {
         loadTeamOptions(season, sportsCategory);
     }
 
-    const runBacktest = ($event: any) => {
-        $event.preventDefault();
-        aggregateData();
+    const onBetTypeSelection = (betType: TeamBetTypes | PlayerBetTypes) => {
+        setBetType(betType);
+        if (new Set(Object.values(TeamBetTypes)).has(betType as TeamBetTypes)) {
+            setIsPlayerBetType(false);
+        } else {
+            setIsPlayerBetType(true);
+            loadPlayerOptions(season, sportsCategory);
+        }
+    }
+    /********************************************************************************/
+
+
+    /* data aggregation functions ***************************************************/
+    /********************************************************************************/
+    const parseOddsData = (
+        historicalOddsData: any,
+        betType: TeamBetTypes | PlayerBetTypes,
+        oddsSource: OddsSources
+    ) => {
+        let filteredOddsData; 
+        if (sportsCategory === SportsCategories.NBA) {
+            filteredOddsData = (historicalOddsData as NbaOddsHistorical[]).reduce(
+                (oddsArr, currObj: NbaOddsHistorical) => {
+                    const oddsForOddsSource = currObj.bookmakerOdds
+                        .find((obj) => obj.title === oddsSource);
+                    const oddsObj = oddsForOddsSource?.markets
+                        .find(obj => obj.key === betType)
+
+                    if (oddsObj) {
+                        oddsArr.push(oddsObj);
+                    }
+                    return oddsArr;
+                },
+                [] as Market[]
+            );
+        }
+        return filteredOddsData;
     }
 
     const aggregateData = async () => {
@@ -138,83 +218,23 @@ const BacktestParametersForm = () => {
     const getPlayerStatsFeatureMap = (playerStatsAvgsData: any): any => {
         return [];
     }
+    /********************************************************************************/
 
-    const parseOddsData = (
-        historicalOddsData: any,
-        betType: TeamBetTypes | PlayerBetTypes,
-        oddsSource: OddsSources
-    ) => {
-        let filteredOddsData; 
-        if (sportsCategory === SportsCategories.NBA) {
-            filteredOddsData = (historicalOddsData as NbaOddsHistorical[]).reduce(
-                (oddsArr, currObj: NbaOddsHistorical) => {
-                    const oddsForOddsSource = currObj.bookmakerOdds
-                        .find((obj) => obj.title === oddsSource);
-                    const oddsObj = oddsForOddsSource?.markets
-                        .find(obj => obj.key === betType)
-
-                    if (oddsObj) {
-                        oddsArr.push(oddsObj);
-                    }
-                    return oddsArr;
-                },
-                [] as Market[]
-            );
-        }
-        return filteredOddsData;
+    /* action functions *************************************************************/
+    /********************************************************************************/
+    const runBacktest = ($event: any) => {
+        $event.preventDefault();
+        aggregateData();
     }
 
-    const onBetTypeSelection = (betType: TeamBetTypes | PlayerBetTypes) => {
-        setBetType(betType);
-        if (new Set(Object.values(TeamBetTypes)).has(betType as TeamBetTypes)) {
-            setIsPlayerBetType(false);
-        } else {
-            setIsPlayerBetType(true);
-            loadPlayerOptions(season, sportsCategory);
-        }
-    }
-
-    const loadTeamOptions = (_season: any, sport: SportsCategories) => {
-        switch(sport) {
-            case SportsCategories.NBA: {
-                const options = NbaTeams.map(x => { 
-                    return { value: x.teamNickname, label: x.teamNickname }
-                });
-                setTeamOptions(options);
-                break;
-            }
-            default: setTeamOptions([] as any); break;
-
-        }
-    };
-
-    const loadPlayerOptions = (season: any, sport: SportsCategories) => {
-        switch(sport) {
-            case SportsCategories.NBA: {
-                const teamId = NbaTeams.find((currTeam: any) => currTeam.teamNickname === team)!.nbaApiId!;
-                getNbaPlayersByTeamAndSeason({ teamId: teamId, season: season })
-                    .then((response: AxiosResponse<GetNbaPlayersByTeamAndSeasonResponse>) => {
-                        setPlayerOptions(
-                            (response.data?.response || []).map((player: Player) => ({
-                                label: `${player.firstname} ${player.lastname}`,
-                                value: player.id
-                            }))
-                        );
-                    })
-                    .catch((error: any) => {
-                        console.error("Error fetching NBA players: ", error);
-                        setPlayerOptions([] as any);
-                    });
-                break;
-            }
-            default: setPlayerOptions([] as any); break;
-        }
-    }
-
+    
     const openAdvancedSettings = () => {
-
     };
+    /********************************************************************************/
 
+    
+    /* html *************************************************************************/
+    /********************************************************************************/
     return (
         <div className="backtest-parameters-form-container">
             {/* <div className="sub-header header">
@@ -332,6 +352,7 @@ const BacktestParametersForm = () => {
             </div>
         </div>
     );
+    /********************************************************************************/
 }
 
 export default BacktestParametersForm;

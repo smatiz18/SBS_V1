@@ -13,6 +13,7 @@ use crate::models::app_state::AppState;
 use crate::db::{nba_games_historical_mongo_dao, nba_odds_historical_mongo_dao, nba_player_game_stats_avgs_historical_mongo_dao};
 
 /******************************** MONGO HANDLERS ********************************/
+/********************************************************************************/
 pub async fn get_nba_games_by_team_and_season(
     app_state: web::Data<AppState>, 
     req: web::Query<GetNbaGamesByTeamAndSeasonRequest>
@@ -92,6 +93,7 @@ pub async fn get_feature_map_for_backtest(
 /********************************************************************************/
 
 /******************************* WEB API HANDLERS *******************************/
+/********************************************************************************/
 pub async fn get_nba_players_by_team_and_season(
     _app_state: web::Data<AppState>,
     req: web::Query<GetNbaPlayersByTeamAndSeasonRequest> 
