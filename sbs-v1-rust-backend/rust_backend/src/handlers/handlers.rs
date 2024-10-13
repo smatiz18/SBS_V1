@@ -1,4 +1,5 @@
 use actix_web::{ web, HttpResponse, Responder};
+use crate::models::services::get_backtest_feature_map_request::BacktestFeatureMapRequest;
 use crate::models::services::get_nba_games_by_team_and_season_request::GetNbaGamesByTeamAndSeasonRequest;
 use crate::models::services::get_nba_odds_by_team_and_season_request::GetNbaOddsByTeamAndSeasonRequest;
 use crate::models::services::get_nba_players_by_team_and_season_request::GetNbaPlayersByTeamAndSeasonRequest;
@@ -87,7 +88,7 @@ pub async fn get_feature_map_for_backtest(
     app_state: web::Data<AppState>, 
     req: web::Query<BacktestFeatureMapRequest>
 ) -> impl Responder {
-    info!("Recieved req for get_nba_player_stats_by_id_and_season id: {}, season: {}", req.playerId, req.season);
+    info!("Recieved req for get_nba_player_stats_by_id_and_season id: {:?}, season: {}", req.player_id, req.season);
     return HttpResponse::Ok().body("Implement handler!");
 }
 /********************************************************************************/
