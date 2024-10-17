@@ -4,3 +4,4 @@ pub mod get_nba_players_by_team_and_season_request;
 pub mod get_nba_players_by_team_and_season_response;
 pub mod get_nba_player_stats_by_id_and_season_request;
 pub mod get_backtest_feature_map_request;
+pub mod get_backtest_feature_map_response;

@@ -1,5 +1,8 @@
+use serde::Deserialize;
+
 use crate::models::enums::{sports_categories::SportsCategories, staking_strategies::StakingStrategies};
 
+#[derive(Debug, Deserialize)]
 pub struct BacktestFeatureMapRequest {
     pub sports_category: SportsCategories,
     pub season: f64,

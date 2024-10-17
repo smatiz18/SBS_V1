@@ -3,6 +3,7 @@ mod models;
 mod handlers;
 mod routes;
 mod proxy;
+mod aggregators;
 
 use std::env;
 use actix_web::{web, App, HttpServer };
@@ -26,7 +27,8 @@ use db::constants::{
    SBS_V1_DB_NAME, 
    NBA_GAMES_HISTORICAL_COLLECTION_NAME, 
    NBA_ODDS_HISTORICAL_COLLECTION_NAME, 
-   NBA_PLAYER_GAME_STATS_AVGS_HISTORICAL
+   NBA_PLAYER_GAME_STATS_AVGS_HISTORICAL,
+   NBA_GAME_STATS_AVGS_HISTORICAL
 };
 use proxy::proxy_handler::proxy;
 use actix_cors::Cors;
@@ -56,12 +58,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
       SBS_V1_DB_NAME, 
       NBA_PLAYER_GAME_STATS_AVGS_HISTORICAL
    ).await?;
+   let nba_game_stats_avgs_historical_collection = get_collection(
+      &client_uri, 
+      SBS_V1_DB_NAME, 
+      NBA_GAME_STATS_AVGS_HISTORICAL
+   ).await?;
 
    // Wrap collections in AppState
    let app_state = AppState {
       nba_games_historical_collection: nba_games_historical_collection.clone(),
       nba_odds_historical_collection: nba_odds_historical_collection.clone(),
-      nba_player_game_stats_avgs_historical_collection: nba_player_game_stats_avgs_historical_collection.clone()
+      nba_player_game_stats_avgs_historical_collection: nba_player_game_stats_avgs_historical_collection.clone(),
+      nba_game_stats_avgs_historical_collection: nba_game_stats_avgs_historical_collection.clone()
    };
 
    HttpServer::new(move || {
