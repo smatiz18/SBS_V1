@@ -24,7 +24,7 @@ export function getNbaMatchups(): Promise<AxiosResponse<GetNbaMatchupsResponse>>
 }
 
 export function getNbaGamesByTeamAndSeason(req: GetNbaGamesByTeamAndSeasonRequest): Promise<AxiosResponse<NbaGameHistorical[]>> {
-  return axios.get<NbaGameHistorical[]>(`${RUST_SERVER}${GET_NBA_GAMES_BY_TEAM_AND_SEASON}?teamNickname=${req.teamNickname}&season=${req.season}`);
+  return axios.get<NbaGameHistorical[]>(`${RUST_SERVER}${GET_NBA_GAMES_BY_TEAM_AND_SEASON}?teamId=${req.teamId}&season=${req.season}`);
 }
 
 export function getNbaOddsByTeamAndSeason(req: GetNbaOddsByTeamAndSeasonRequest): Promise<AxiosResponse<NbaOddsHistorical[]>> {

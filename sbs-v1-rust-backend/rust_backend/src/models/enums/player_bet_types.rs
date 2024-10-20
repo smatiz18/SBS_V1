@@ -1,7 +1,7 @@
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Debug)]
-pub enum PLayerBetTypes {
+pub enum PlayerBetTypes {
     player_points,
     player_rebounds,
     player_assists,

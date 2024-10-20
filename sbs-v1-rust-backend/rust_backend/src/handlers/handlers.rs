@@ -19,10 +19,10 @@ pub async fn get_nba_games_by_team_and_season(
     app_state: web::Data<AppState>, 
     req: web::Query<GetNbaGamesByTeamAndSeasonRequest>
 ) -> impl Responder {
-    info!("Recieved req for nba_historical_game_req team: {}, season: {}", req.teamNickname, req.season);
+    info!("Recieved req for nba_historical_game_req teamId: {}, season: {}", req.teamId, req.season);
     let objs_result = nba_games_historical_mongo_dao::get_nba_games_by_team_and_season(
         &app_state.as_ref().nba_games_historical_collection, 
-        &req.teamNickname, 
+        req.teamId, 
         req.season
     ).await; 
 
@@ -88,7 +88,7 @@ pub async fn get_feature_map_for_backtest(
     app_state: web::Data<AppState>, 
     req: web::Query<BacktestFeatureMapRequest>
 ) -> impl Responder {
-    info!("Recieved req for get_nba_player_stats_by_id_and_season id: {:?}, season: {}", req.player_id, req.season);
+    info!("Recieved req for get_nba_player_stats_by_id_and_season id: {:?}, season: {}", req.playerId, req.season);
     return HttpResponse::Ok().body("Implement handler!");
 }
 /********************************************************************************/

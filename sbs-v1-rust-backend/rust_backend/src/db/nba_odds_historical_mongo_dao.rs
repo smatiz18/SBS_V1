@@ -4,7 +4,11 @@ use mongodb::bson::{doc, Document, from_document};
 use crate::models::db::nba_odds_historical::NbaOddsHistorical;
 use mongodb::error::Result;
 
-pub async fn get_nba_odds_by_team_and_season(collection: &Collection<Document>, teamName: &str, season: f64) -> Result<Vec<NbaOddsHistorical>> {
+pub async fn get_nba_odds_by_team_and_season(
+   collection: &Collection<Document>, 
+   teamName: &str, 
+   season: f64
+) -> Result<Vec<NbaOddsHistorical>> {
    let query = doc! { 
         "$or": [ 
             { "homeTeam": teamName }, 

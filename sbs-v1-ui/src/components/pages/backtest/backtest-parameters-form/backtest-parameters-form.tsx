@@ -159,7 +159,8 @@ const BacktestParametersForm = () => {
         switch(sportsCategory) {
             case (SportsCategories.NBA): {
                 const teamName = NbaTeams.find((teamObj: any) => teamObj.teamNickname === team )?.teamName;
-                const gamesP = getNbaGamesByTeamAndSeason({ season: season!, teamNickname: team! });
+                const teamId = NbaTeams.find((teamObj: any) => teamObj.teamNickname === team)?.nbaApiId;
+                const gamesP = getNbaGamesByTeamAndSeason({ season: season!, teamId: teamId! });
                 const oddsP = getNbaOddsByTeamAndSeason({ season: season!, teamName: encodeURIComponent(teamName!) })
                 const playerStatsAvgsDataP = getNbaPlayerStatsByIdAndSeason({ playerId: player.value, season: season! }); 
                 

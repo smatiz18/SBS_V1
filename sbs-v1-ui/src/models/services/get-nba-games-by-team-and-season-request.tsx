@@ -1,4 +1,4 @@
 export interface GetNbaGamesByTeamAndSeasonRequest {
-    teamNickname: string,
+    teamId: number,
     season: number
 }
