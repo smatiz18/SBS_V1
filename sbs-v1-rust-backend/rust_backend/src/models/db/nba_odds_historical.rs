@@ -4,38 +4,61 @@ use chrono::{DateTime, Utc};
 #[derive(Serialize, Deserialize)]
 pub struct NbaOddsHistorical {
     #[serde(rename = "_id")]
-    mongoId: String,
-    sportKey: String,
-    sportTitle: String,
-    awayTeam: String,
-    nbaApiId: u32,
-    oddsApiId: String,
-    dateStart: DateTime<Utc>,
-    season: u32,
-    bookmakerOdds: Vec<BookmakerOdds>
+    pub mongo_id: String,
+    
+    #[serde(rename = "sportKey")]
+    pub sport_key: String,
+    
+    #[serde(rename = "sportTitle")]
+    pub sport_title: String,
+    
+    #[serde(rename = "awayTeam")]
+    pub away_team: String,
+    
+    #[serde(rename = "nbaApiId")]
+    pub nba_api_id: u32,
+    
+    #[serde(rename = "oddsApiId")]
+    pub odds_api_id: String,
+    
+    #[serde(rename = "dateStart")]
+    pub date_start: DateTime<Utc>,
+    
+    pub season: u32,
+    
+    #[serde(rename = "bookmakerOdds")]
+    pub bookmaker_odds: Vec<BookmakerOdds>,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct BookmakerOdds {
-    key: String,
-    title: String,
-    lastUpdate: DateTime<Utc>,
-    markets: Vec<Market>
+    pub key: String,
+    
+    pub title: String,
+    
+    #[serde(rename = "lastUpdate")]
+    pub last_update: DateTime<Utc>,
+    
+    pub markets: Vec<Market>,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct Market {
-    key: String,
-    lastUpdate: DateTime<Utc>,
-    outcomes: Vec<Outcome>
+    pub key: String,
+    
+    #[serde(rename = "lastUpdate")]
+    pub last_update: DateTime<Utc>,
+    
+    pub outcomes: Vec<Outcome>,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct Outcome {
-    name: String,
-    price: i32,
-    description: Option<String>,
-    point: Option<f64>
+    pub name: String,
+    
+    pub price: i32,
+    
+    pub description: Option<String>,
+    
+    pub point: Option<f64>,
 }
-
-

@@ -2,6 +2,7 @@ use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 pub struct GetNbaPlayersByTeamAndSeasonRequest {
-    pub teamId: i32,
+    #[serde(rename = "teamId")]
+    pub team_id: i32,
     pub season: i32
 }

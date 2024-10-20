@@ -1,6 +1,7 @@
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Debug)]
+#[allow(warnings)]
 pub enum PlayerBetTypes {
     player_points,
     player_rebounds,

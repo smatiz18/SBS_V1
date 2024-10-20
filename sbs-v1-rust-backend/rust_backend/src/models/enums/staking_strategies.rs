@@ -1,6 +1,7 @@
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Debug)]
+#[allow(warnings)]
 pub enum StakingStrategies {
     KELLY_CRITERION,
     FIXED_STAKE,

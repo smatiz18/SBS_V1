@@ -6,11 +6,11 @@ use crate::models::db::nba_player_game_stats_avgs_historical::NbaPlayerGameStats
 
 pub async fn get_nba_player_stats_avgs_by_id_and_season(
     collection: &Collection<Document>, 
-    id: f64, 
+    player_id: f64, 
     season: &str
 ) -> Result<Vec<NbaPlayerGameStatsAvgsHistorical>> {
     let query = doc! { 
-        "playerId": id,
+        "playerId": player_id,
         "season": season
     };
 

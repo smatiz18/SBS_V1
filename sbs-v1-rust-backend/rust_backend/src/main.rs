@@ -72,7 +72,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
       nba_game_stats_avgs_historical_collection: nba_game_stats_avgs_historical_collection.clone()
    };
 
-   HttpServer::new(move || {
+   let _ = HttpServer::new(move || {
         App::new()
         .wrap(
             Cors::default()

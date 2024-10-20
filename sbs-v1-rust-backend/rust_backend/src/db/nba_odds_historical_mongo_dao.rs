@@ -6,13 +6,13 @@ use mongodb::error::Result;
 
 pub async fn get_nba_odds_by_team_and_season(
    collection: &Collection<Document>, 
-   teamName: &str, 
+   team_name: &str, 
    season: f64
 ) -> Result<Vec<NbaOddsHistorical>> {
    let query = doc! { 
         "$or": [ 
-            { "homeTeam": teamName }, 
-            { "awayTeam": teamName }
+            { "homeTeam": team_name }, 
+            { "awayTeam": team_name }
         ],
         "season": season
     };

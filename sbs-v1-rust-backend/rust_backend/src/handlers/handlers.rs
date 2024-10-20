@@ -19,10 +19,10 @@ pub async fn get_nba_games_by_team_and_season(
     app_state: web::Data<AppState>, 
     req: web::Query<GetNbaGamesByTeamAndSeasonRequest>
 ) -> impl Responder {
-    info!("Recieved req for nba_historical_game_req teamId: {}, season: {}", req.teamId, req.season);
+    info!("Recieved req for nba_historical_game_req teamId: {}, season: {}", req.team_id, req.season);
     let objs_result = nba_games_historical_mongo_dao::get_nba_games_by_team_and_season(
         &app_state.as_ref().nba_games_historical_collection, 
-        req.teamId, 
+        req.team_id, 
         req.season
     ).await; 
 
@@ -42,10 +42,10 @@ pub async fn get_nba_odds_by_team_and_season(
     app_state: web::Data<AppState>, 
     req: web::Query<GetNbaOddsByTeamAndSeasonRequest>
 ) -> impl Responder {
-    info!("Recieved req for nba_historical_odds_req team: {}, season: {}", req.teamName, req.season);
+    info!("Recieved req for nba_historical_odds_req team: {}, season: {}", req.team_name, req.season);
     let objs_result = nba_odds_historical_mongo_dao::get_nba_odds_by_team_and_season(
         &app_state.as_ref().nba_odds_historical_collection, 
-        &req.teamName,
+        &req.team_name,
         req.season
     ).await; 
 
@@ -65,10 +65,10 @@ pub async fn get_nba_player_stats_by_id_and_season(
     app_state: web::Data<AppState>, 
     req: web::Query<GetNbaPlayerStatsByIdAndSeasonRequest>
 ) -> impl Responder {
-    info!("Recieved req for get_nba_player_stats_by_id_and_season id: {}, season: {}", req.playerId, req.season);
+    info!("Recieved req for get_nba_player_stats_by_id_and_season id: {}, season: {}", req.player_id, req.season);
     let objs_result = nba_player_game_stats_avgs_historical_mongo_dao::get_nba_player_stats_avgs_by_id_and_season(
         &app_state.as_ref().nba_player_game_stats_avgs_historical_collection, 
-        req.playerId,
+        req.player_id,
         &req.season
     ).await; 
 
@@ -85,10 +85,10 @@ pub async fn get_nba_player_stats_by_id_and_season(
 }
 
 pub async fn get_feature_map_for_backtest(
-    app_state: web::Data<AppState>, 
+    _app_state: web::Data<AppState>, 
     req: web::Query<BacktestFeatureMapRequest>
 ) -> impl Responder {
-    info!("Recieved req for get_nba_player_stats_by_id_and_season id: {:?}, season: {}", req.playerId, req.season);
+    info!("Recieved req for get_nba_player_stats_by_id_and_season id: {:?}, season: {}", req.player_id, req.season);
     return HttpResponse::Ok().body("Implement handler!");
 }
 /********************************************************************************/
@@ -99,9 +99,9 @@ pub async fn get_nba_players_by_team_and_season(
     _app_state: web::Data<AppState>,
     req: web::Query<GetNbaPlayersByTeamAndSeasonRequest> 
 ) -> impl Responder {
-    info!("Recieved req for get_nba_players_by_team_and_season, teamId {}, season: {}", req.teamId, req.season);
+    info!("Recieved req for get_nba_players_by_team_and_season, teamId {}, season: {}", req.team_id, req.season);
     let client = reqwest::Client::new();
-    let url = format!("{}/players?team={}&season={}", NBA_RAPID_API_ROOT, &req.teamId, &req.season); 
+    let url = format!("{}/players?team={}&season={}", NBA_RAPID_API_ROOT, &req.team_id, &req.season); 
     let rapid_api_key = env::var("RAPID_API_KEY").expect("You must set RAPID_API_KEY environment var!");
     let mut headers = HeaderMap::new();
     headers.insert("x-rapidapi-host", HeaderValue::from_static(NBA_RAPID_API_HOST));

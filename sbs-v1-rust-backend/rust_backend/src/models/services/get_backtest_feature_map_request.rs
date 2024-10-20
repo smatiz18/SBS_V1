@@ -1,16 +1,31 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::models::enums::{ bet_types::BetTypes, sports_categories::SportsCategories, staking_strategies::StakingStrategies};
 
-#[derive(Debug, Deserialize)]
+#[derive(Serialize, Deserialize)]
 pub struct BacktestFeatureMapRequest {
+    #[serde(rename = "sportsCategory")]
     pub sports_category: SportsCategories,
+
     pub season: f64,
-    pub teamId: f64,
-    pub betType: BetTypes,
-    pub stakingStrategy: StakingStrategies,
-    pub oddsSource: String,
-    pub bankRoll: f64,
+
+    #[serde(rename = "teamId")]
+    pub team_id: f64,
+
+    #[serde(rename = "betType")]
+    pub bet_type: BetTypes,
+
+    #[serde(rename = "stakingStrategy")]
+    pub staking_strategy: StakingStrategies,
+
+    #[serde(rename = "oddsSource")]
+    pub odds_source: String,
+
+    #[serde(rename = "bankRoll")]
+    pub bank_roll: f64,
+
     pub model: String,
-    pub playerId: Option<f64>
+
+    #[serde(rename = "playerId")]
+    pub player_id: Option<f64>,
 }
