@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct NbaPlayerGameStatsHistorical {
     #[serde(rename = "_id")]
     pub mongo_id: String,
@@ -25,7 +25,7 @@ pub struct NbaPlayerGameStatsHistorical {
     pub date_start: DateTime<Utc>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct PlayerStatsObj {
     pub points: Option<f64>,
     

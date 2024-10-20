@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct NbaOddsHistorical {
     #[serde(rename = "_id")]
     pub mongo_id: String,
@@ -30,7 +30,7 @@ pub struct NbaOddsHistorical {
     pub bookmaker_odds: Vec<BookmakerOdds>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct BookmakerOdds {
     pub key: String,
     
@@ -42,7 +42,7 @@ pub struct BookmakerOdds {
     pub markets: Vec<Market>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Market {
     pub key: String,
     
@@ -52,7 +52,7 @@ pub struct Market {
     pub outcomes: Vec<Outcome>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Outcome {
     pub name: String,
     

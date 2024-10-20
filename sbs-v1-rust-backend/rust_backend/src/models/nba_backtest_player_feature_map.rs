@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 pub struct NbaBacktestPlayerFeatureMap {
     #[serde(rename = "gameNumber")]
     game_number: f64,

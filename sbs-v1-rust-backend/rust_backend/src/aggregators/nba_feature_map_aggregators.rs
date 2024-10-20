@@ -62,12 +62,14 @@ pub async fn get_feature_map_for_team_bet_type(
     let mut sorted_game_hist = nba_games_hist_res.unwrap()
         .sort_by(|a, b| a.date_start.cmp(&b.date_start));
     
-    // let mut game_stats_avgs_vec = nba_games_avgs_hist_res.unwrap();
-    // let mut game_stats_avgs = game_stats_avgs_vec.get(0).unwrap();
-    // let mut game_stats = game_stats_avgs.game_stats.clone();
-    // let mut expanding_avg = game_stats_avgs.expanding_avg;
-    // let mut rolling_avg_5  = game_stats_avgs.rolling_avg_5;
-    // let mut rolling_avg_10 = game_stats_avgs.rolling_avg_10;
+    let mut game_stats_avgs = nba_games_avgs_hist_res.unwrap()
+        .get(0)
+        .unwrap()
+        .clone();
+
+    let mut expanding_avg = game_stats_avgs.expanding_avg;
+    let mut rolling_avg_5  = game_stats_avgs.rolling_avg_5;
+    let mut rolling_avg_10 = game_stats_avgs.rolling_avg_10;
 
 
 }

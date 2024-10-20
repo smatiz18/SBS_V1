@@ -2,7 +2,7 @@ use serde::Serialize;
 
 use crate::models::{nba_backtest_player_feature_map::NbaBacktestPlayerFeatureMap, nba_backtest_team_feature_map::NbaBacktestTeamFeatureMap};
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 pub struct NbaBacktestFeatureMapResponse {
     pub error: Option<String>,
     pub team_feature_map: Option<Vec<NbaBacktestTeamFeatureMap>>,

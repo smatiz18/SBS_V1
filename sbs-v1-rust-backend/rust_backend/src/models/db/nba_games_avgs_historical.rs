@@ -2,7 +2,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct NbaGamesAvgsHistorical {
     #[serde(rename = "_id")]
     pub mongo_id: String,
@@ -34,7 +34,7 @@ pub struct NbaGamesAvgsHistorical {
     pub rolling_avg_10: HashMap<String, GameStats>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct GameStats {
     pub points: u32,
 

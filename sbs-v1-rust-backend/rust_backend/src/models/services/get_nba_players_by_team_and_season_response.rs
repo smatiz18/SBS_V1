@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct GetNbaPlayersByTeamAndSeasonResponse {
     get: String,
     parameters: Parameters,
@@ -9,13 +9,13 @@ pub struct GetNbaPlayersByTeamAndSeasonResponse {
     response: Vec<Player>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Parameters {
     season: String,
     team: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Player {
     id: u32,
     firstname: String,
@@ -29,32 +29,32 @@ pub struct Player {
     leagues: Option<Leagues>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct BirthInfo {
     date: Option<String>,
     country: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct NbaInfo {
     start: u16,
     pro: u16,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct HeightInfo {
     feets: Option<String>,
     inches: Option<String>,
     meters: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct WeightInfo {
     pounds: Option<String>,
     kilograms: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Leagues {
     standard: Option<LeagueInfo>,
     africa: Option<LeagueInfo>,
@@ -63,7 +63,7 @@ pub struct Leagues {
     sacramento: Option<LeagueInfo>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct LeagueInfo {
     jersey: Option<u8>,
     active: bool,

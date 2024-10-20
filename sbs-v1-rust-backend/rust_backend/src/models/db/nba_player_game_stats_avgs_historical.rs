@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use super::nba_player_game_stats_historical::PlayerStatsObj;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct NbaPlayerGameStatsAvgsHistorical {
     #[serde(rename = "_id")]
     pub mongo_id: String,

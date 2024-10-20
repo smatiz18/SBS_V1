@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::models::enums::{ bet_types::BetTypes, sports_categories::SportsCategories, staking_strategies::StakingStrategies};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct BacktestFeatureMapRequest {
     #[serde(rename = "sportsCategory")]
     pub sports_category: SportsCategories,
