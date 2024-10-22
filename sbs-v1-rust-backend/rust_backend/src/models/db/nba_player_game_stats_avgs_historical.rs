@@ -11,7 +11,7 @@ pub struct NbaPlayerGameStatsAvgsHistorical {
     pub player_id: u32,
     
     #[serde(rename = "teamId")]
-    pub team_id: Option<u32>,
+    pub team_id: f64,
     
     pub season: Option<String>,
     
@@ -28,14 +28,14 @@ pub struct NbaPlayerGameStatsAvgsHistorical {
     pub country_of_birth: Option<String>,
     
     #[serde(rename = "playerStats")]
-    pub player_stats: Option<HashMap<String, PlayerStatsObj>>,
+    pub player_stats: HashMap<String, PlayerStatsObj>,
     
     #[serde(rename = "expandingAvg")]
-    pub expanding_avg: Option<HashMap<String, PlayerStatsObj>>,
+    pub expanding_avg: HashMap<String, PlayerStatsObj>,
     
     #[serde(rename = "rollingAvg5")]
-    pub rolling_avg_5: Option<HashMap<String, PlayerStatsObj>>,
+    pub rolling_avg_5: HashMap<String, PlayerStatsObj>,
     
     #[serde(rename = "rollingAvg10")]
-    pub rolling_avg_10: Option<HashMap<String, PlayerStatsObj>>,
+    pub rolling_avg_10: HashMap<String, PlayerStatsObj>,
 }

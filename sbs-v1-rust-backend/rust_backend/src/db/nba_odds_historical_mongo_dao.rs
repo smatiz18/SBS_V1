@@ -7,7 +7,7 @@ use mongodb::error::Result;
 pub async fn get_nba_odds_by_team_and_season(
    collection: &Collection<Document>, 
    team_name: &str, 
-   season: f64
+   season: u32
 ) -> Result<Vec<NbaOddsHistorical>> {
    let query = doc! { 
         "$or": [ 

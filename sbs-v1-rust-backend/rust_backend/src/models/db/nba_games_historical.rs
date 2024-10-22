@@ -10,7 +10,7 @@ pub struct NbaGamesHistorical {
     
     pub league: Option<String>,
     
-    pub season: f64,
+    pub season: u32,
     
     #[serde(rename = "dateStart")]
     pub date_start: DateTime<Utc>,

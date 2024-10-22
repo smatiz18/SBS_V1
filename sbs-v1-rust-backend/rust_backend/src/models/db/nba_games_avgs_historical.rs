@@ -8,7 +8,7 @@ pub struct NbaGamesAvgsHistorical {
     pub mongo_id: String,
     
     #[serde(rename = "teamId")]
-    pub team_id: u32,
+    pub team_id: f64,
     
     pub season: u32,
     
@@ -39,16 +39,16 @@ pub struct GameStats {
     pub points: u32,
 
     #[serde(rename = "linescoreQ1")]
-    pub l_q1: u32,
+    pub linescore_q1: u32,
 
     #[serde(rename = "linescoreQ2")]
-    pub l_q2: u32,
+    pub linescore_q2: u32,
 
     #[serde(rename = "linescoreQ3")]
-    pub l_q3: u32,
+    pub linescore_q3: u32,
 
     #[serde(rename = "linescoreQ4")]
-    pub l_q4: u32,
+    pub linescore_q4: u32,
 
     #[serde(rename = "gameId")]
     pub game_id: u32,

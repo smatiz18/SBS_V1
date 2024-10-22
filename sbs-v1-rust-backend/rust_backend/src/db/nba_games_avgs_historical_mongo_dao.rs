@@ -7,7 +7,7 @@ use mongodb::error::Result;
 pub async fn get_nba_games_avgs_by_team_and_season(
     collection: &Collection<Document>, 
     team_id: f64, 
-    season: f64
+    season: u32
 ) -> Result<Vec<NbaGamesAvgsHistorical>> {
 
     let query = doc! { 

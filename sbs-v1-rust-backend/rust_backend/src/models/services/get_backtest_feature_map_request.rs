@@ -7,7 +7,7 @@ pub struct BacktestFeatureMapRequest {
     #[serde(rename = "sportsCategory")]
     pub sports_category: SportsCategories,
 
-    pub season: f64,
+    pub season: u32,
 
     #[serde(rename = "teamId")]
     pub team_id: f64,

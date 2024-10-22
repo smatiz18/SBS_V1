@@ -1,17 +1,18 @@
-use serde::Serialize;
+use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Debug, Clone)]
-pub struct NbaBacktestPlayerFeatureMap {
-    #[serde(rename = "gameNumber")]
-    game_number: f64,
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct NbaBacktestPlayerFeatures {
+    #[serde(rename = "dateStart")]
+    pub date_start: DateTime<Utc>,
     
     #[serde(rename = "teamId")]
-    team_id: f64,
+    pub team_id: f64,
     
     #[serde(rename = "opponentTeamId")]
-    opponent_team_id: f64,
+    pub opponent_team_id: f64,
 
-    age: i32,
+    pub age: i32,
 
     /* player stats */
     pub points: Option<f64>,
