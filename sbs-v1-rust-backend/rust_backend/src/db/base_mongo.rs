@@ -1,3 +1,4 @@
+use mongodb::options::{AggregateOptions, FindOptions};
 use mongodb::{Client, Collection};
 use mongodb::bson::Document;
 use mongodb::error::Result;
@@ -19,7 +20,7 @@ pub async fn get_collection(
     Ok(collection)
 }
 
-pub async fn get_document_count(collection: &Collection<Document>) -> Result<u64> {
+pub async fn _get_document_count(collection: &Collection<Document>) -> Result<u64> {
     // Get the count of documents in the collection
     let count = collection.count_documents(None, None).await?;
     Ok(count)
@@ -33,14 +34,15 @@ pub async fn get_document_count(collection: &Collection<Document>) -> Result<u64
 /// 
 /// # Returns
 /// - A vector of documents that match the query.
-pub async fn find_documents<T>(
+pub async fn find<T>(
     collection: &Collection<T>,
     query: Document,
+    options: Option<FindOptions>
 ) -> Result<Vec<T>>
 where
     T: DeserializeOwned + Unpin + Send + Sync,
 {
-    let mut cursor = collection.find(query, None).await?;
+    let mut cursor = collection.find(query, options).await?;
     
     let mut results = Vec::new();
     while let Some(doc) = cursor.try_next().await? {
@@ -49,3 +51,21 @@ where
 
     Ok(results)
 }
+
+pub async fn _aggregate<T>(
+    collection: &Collection<T>,
+    pipelines: Vec<Document>,
+    options: Option<AggregateOptions>
+) -> Result<Vec<Document>>
+where 
+    T: DeserializeOwned + Unpin + Send + Sync,
+{
+    let mut cursor = collection.aggregate(pipelines, options).await?;
+    
+    let mut results = Vec::new();
+    while let Some(doc) = cursor.try_next().await? {
+        results.push(doc);
+    }
+
+    Ok(results)
+} 

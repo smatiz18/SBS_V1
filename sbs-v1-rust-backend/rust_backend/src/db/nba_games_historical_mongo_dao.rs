@@ -1,4 +1,5 @@
-use crate::db::base_mongo::find_documents;
+use crate::db::base_mongo::find as base_find;
+use mongodb::options::FindOptions;
 use mongodb::Collection;
 use mongodb::bson::{doc, Document, from_document};
 use crate::models::db::nba_games_historical::NbaGamesHistorical;
@@ -17,9 +18,22 @@ pub async fn get_nba_games_by_team_and_season(
         "season": season
     };
 
-   let results = find_documents(&collection, query).await?;
+   find(collection, query, None).await
+} 
 
-   let mapped_results: Vec<NbaGamesHistorical> = results.iter()
+pub async fn find(
+   collection: &Collection<Document>,
+   match_query: Document,
+   options: Option<FindOptions>
+) -> Result<Vec<NbaGamesHistorical>> {
+   let results = base_find(&collection, match_query, options).await?;
+    Ok(parse_doc_to_obj(results))
+}
+
+fn parse_doc_to_obj(
+   docs: Vec<Document>
+) -> Vec<NbaGamesHistorical> {
+   docs.iter()
       .flat_map(|doc| 
          match from_document::<NbaGamesHistorical>(doc.clone()) {
             Ok(obj) => Some(obj),
@@ -29,7 +43,5 @@ pub async fn get_nba_games_by_team_and_season(
             }
          }
       )
-      .collect();
-
-    Ok(mapped_results)
-} 
+      .collect()
+}

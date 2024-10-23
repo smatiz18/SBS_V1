@@ -1,4 +1,4 @@
-use crate::db::base_mongo::find_documents;
+use crate::db::base_mongo::find;
 use mongodb::Collection;
 use mongodb::bson::{doc, Document, from_document};
 use crate::models::db::nba_odds_historical::NbaOddsHistorical;
@@ -17,7 +17,7 @@ pub async fn get_nba_odds_by_team_and_season(
         "season": season
     };
 
-   let results = find_documents(&collection, query).await?;
+   let results = find(&collection, query, None).await?;
 
    let mapped_results: Vec<NbaOddsHistorical> = results.iter()
       .flat_map(|doc| 

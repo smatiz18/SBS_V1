@@ -1,4 +1,4 @@
-use crate::db::base_mongo::find_documents;
+use crate::db::base_mongo::find;
 use mongodb::Collection;
 use mongodb::bson::{doc, Document, from_document};
 use mongodb::error::Result;
@@ -14,7 +14,7 @@ pub async fn get_nba_player_stats_avgs_by_id_and_season(
         "season": season
     };
 
-    let results = find_documents(&collection, query).await?;
+    let results = find(&collection, query, None).await?;
 
     let mapped_results: Vec<NbaPlayerGameStatsAvgsHistorical> = results.iter()
         .flat_map(|doc| {
@@ -29,4 +29,5 @@ pub async fn get_nba_player_stats_avgs_by_id_and_season(
         .collect();
 
     Ok(mapped_results)
-} 
+}
+
