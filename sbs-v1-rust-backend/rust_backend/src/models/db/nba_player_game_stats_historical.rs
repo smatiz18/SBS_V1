@@ -75,7 +75,7 @@ pub struct PlayerStatsObj {
     pub plus_minus: Option<f64>,
     
     #[serde(rename = "playerId")]
-    pub player_id: f64,
+    pub player_id: Option<f64>,
     
     #[serde(rename = "playerFirstname")]
     pub player_firstname: Option<String>,
@@ -84,7 +84,7 @@ pub struct PlayerStatsObj {
     pub player_lastname: Option<String>,
     
     #[serde(rename = "teamId")]
-    pub team_id: f64,
+    pub team_id: Option<f64>,
     
     #[serde(rename = "gameId")]
     pub game_id: u32,

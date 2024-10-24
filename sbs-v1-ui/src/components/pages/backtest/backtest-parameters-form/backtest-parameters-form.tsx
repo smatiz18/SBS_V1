@@ -6,14 +6,15 @@ import { useState } from 'react';
 import { StakingStrategies } from '../../../../models/staking-strategies';
 import { OddsSources } from '../../../../models/odds-sources';
 import { TeamBetTypes } from '../../../../models/team-bet-types';
-import { PlayerBetTypes } from '../../../../models/player-bet-types';
+import { PlayerBetTypes } from '../../../../models/nba/player-bet-types';
 import { NbaTeams } from '../../../../constants/nba';
-import { getNbaGamesByTeamAndSeason, getNbaOddsByTeamAndSeason, getNbaPlayerStatsByIdAndSeason, getNbaPlayersByTeamAndSeason } from '../../../../services/nba/services';
-import { Market, NbaOddsHistorical } from '../../../../models/nba-odds-historical';
+import { getNbaPlayersByTeamAndSeason } from '../../../../services/nba/services';
+import { Market, NbaOddsHistorical } from '../../../../models/nba/nba-odds-historical';
 import { GetNbaPlayersByTeamAndSeasonResponse, Player } from '../../../../models/services/get-nba-players-by-team-and-season-response';
 import { AxiosResponse } from 'axios';
-
-// TODO add player options
+import { BacktestFeatureMapRequest } from '../../../../models/services/get-backtest-feature-map-request';
+import { getFeatureMapForBacktest } from '../../../../services/backtest/services';
+import { BacktestFeatureMapResponse } from '../../../../models/services/get-backtest-feature-map-response';
 
 const BacktestParametersForm = () => {
     const [sportsCategory, setSportsCategory] = useState(null as unknown as SportsCategories);
@@ -32,7 +33,7 @@ const BacktestParametersForm = () => {
     const [historicalOddsData, setHistoricalOddsData] = useState([] as any);
     const [historicalPlayersStatsAvgsData, setHistoricalPlayersStatsAvgsData] = useState([] as any);
     
-    /* select options ***************************************************************/
+    /** select options **************************************************************/
     /********************************************************************************/
     const sportsCategoriesOptions: any[] = Object.values(SportsCategories).map((v) => {
         return { value: v, label: v };
@@ -103,7 +104,7 @@ const BacktestParametersForm = () => {
     }
     /********************************************************************************/
 
-    /* on selection functions *******************************************************/
+    /** on selection functions ******************************************************/
     /********************************************************************************/
     const onSportsCategorySelection = (sportsCategory: SportsCategories) => {
         setSportsCategory(sportsCategory);
@@ -127,7 +128,7 @@ const BacktestParametersForm = () => {
     /********************************************************************************/
 
 
-    /* data aggregation functions ***************************************************/
+    /** data aggregation functions **************************************************/
     /********************************************************************************/
     const parseOddsData = (
         historicalOddsData: any,
@@ -158,54 +159,33 @@ const BacktestParametersForm = () => {
         let featureMap;
         switch(sportsCategory) {
             case (SportsCategories.NBA): {
-                const teamName = NbaTeams.find((teamObj: any) => teamObj.teamNickname === team )?.teamName;
-                const teamId = NbaTeams.find((teamObj: any) => teamObj.teamNickname === team)?.nbaApiId;
-                const gamesP = getNbaGamesByTeamAndSeason({ season: season!, teamId: teamId! });
-                const oddsP = getNbaOddsByTeamAndSeason({ season: season!, teamName: encodeURIComponent(teamName!) })
-                const playerStatsAvgsDataP = getNbaPlayerStatsByIdAndSeason({ playerId: player.value, season: season! }); 
                 
-                await Promise.all([gamesP, oddsP, playerStatsAvgsDataP])
-                    .then(([gamesResp, oddsResp, playerStatsAvgsResp]) => {
-                        setHistoricalGameData(gamesResp.data);
-                        setHistoricalOddsData(oddsResp.data);
-                        setHistoricalPlayersStatsAvgsData(playerStatsAvgsResp.data);
-                        featureMap = getFeatureMap(gamesResp.data, oddsResp.data, betType, oddsSource!, playerStatsAvgsResp.data);
-                    })
-                    .catch((error: any) => {
-                        console.error("Error fetching NBA games and odds data:", error);
-                        setHistoricalGameData([]);
-                        setHistoricalOddsData([]);
-                        setHistoricalPlayersStatsAvgsData([]);
-                    });
+                const teamId = NbaTeams.find((currTeam: any) => currTeam.teamNickname === team)?.nbaApiId!
+                if (sportsCategory && season && teamId && betType && stakingStrategy && oddsSource) {
+                    const getFeatureMapReq: BacktestFeatureMapRequest = {
+                        sportsCategory: sportsCategory,
+                        season: season,
+                        teamId: teamId,
+                        teamBetType: new Set(Object.values(TeamBetTypes)).has(betType as TeamBetTypes) ? betType as TeamBetTypes : undefined,
+                        playerBetType: new Set(Object.values(PlayerBetTypes)).has(betType as PlayerBetTypes) ? betType as PlayerBetTypes : undefined,
+                        stakingStrategy: stakingStrategy,
+                        oddsSource: oddsSource,
+                        bankRoll: 100 /* default */,
+                        model: 'random model',
+                        playerId: player?.value ? player.value : undefined
+                    };
+
+                    getFeatureMapForBacktest(getFeatureMapReq)
+                        .then((resp: AxiosResponse<BacktestFeatureMapResponse>) => {
+                            console.log('BACKTEST API RESPONSE: ', resp.data);
+                        })
+                        .catch((error: any) => console.error('ERROR OCCURRED', error));
+                }
                 break;
             }
             default: break;
         }
         return featureMap;
-    }
-
-    const getFeatureMap = (
-        historicalGameData: any, 
-        historicalOddsData: any, 
-        betType: TeamBetTypes | PlayerBetTypes,
-        oddsSource: OddsSources,
-        playerStatsAvgsData?: any
-    ) => {
-        const filteredOddsData = parseOddsData(historicalOddsData, betType, oddsSource);
-        console.log("Odds Data.");
-        console.log(filteredOddsData);
-
-        console.log("Games Data.");
-        console.log(historicalGameData);   
-
-        if (isPlayerBetType && playerStatsAvgsData) {
-            console.log("Player Data.");
-            console.log (playerStatsAvgsData);
-        }
-
-        return getGamesFeatureMap(historicalGameData)
-            .concat(historicalOddsData)
-            .concat(playerStatsAvgsData || []);
     }
 
     const getGamesFeatureMap = (historicalGameData: any): any => {
@@ -221,7 +201,7 @@ const BacktestParametersForm = () => {
     }
     /********************************************************************************/
 
-    /* action functions *************************************************************/
+    /** action functions ************************************************************/
     /********************************************************************************/
     const runBacktest = ($event: any) => {
         $event.preventDefault();
@@ -234,11 +214,11 @@ const BacktestParametersForm = () => {
     /********************************************************************************/
 
     
-    /* html *************************************************************************/
+    /** html ************************************************************************/
     /********************************************************************************/
     return (
         <div className="backtest-parameters-form-container">
-            {/* <div className="sub-header header">
+            {/** <div className="sub-header header">
                 Backtest Parameters
             </div> */}
             <form className="form-body">

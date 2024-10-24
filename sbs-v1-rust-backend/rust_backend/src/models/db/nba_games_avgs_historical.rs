@@ -36,19 +36,19 @@ pub struct NbaGamesAvgsHistorical {
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct GameStats {
-    pub points: u32,
+    pub points: f64,
 
     #[serde(rename = "linescoreQ1")]
-    pub linescore_q1: u32,
+    pub linescore_q1: f64,
 
     #[serde(rename = "linescoreQ2")]
-    pub linescore_q2: u32,
+    pub linescore_q2: f64,
 
     #[serde(rename = "linescoreQ3")]
-    pub linescore_q3: u32,
+    pub linescore_q3: f64,
 
     #[serde(rename = "linescoreQ4")]
-    pub linescore_q4: u32,
+    pub linescore_q4: f64,
 
     #[serde(rename = "gameId")]
     pub game_id: u32,

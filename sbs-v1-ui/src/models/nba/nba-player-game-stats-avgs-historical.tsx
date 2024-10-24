@@ -1,5 +1,5 @@
+import { SeasonType } from "../season-type";
 import { PlayerStatsObj } from "./nba-player-game-stats-historical";
-import { SeasonType } from "./season-type";
 
 export interface NbaPlayerGameStatsAvgsHistorical {
     _id: string;

@@ -16,7 +16,7 @@ pub struct NbaBacktestPlayerFeatures {
 
     /* player stats */
     pub points: f64,
-        
+    
     pub min: f64,
     
     pub fgm: f64,

@@ -1,5 +1,6 @@
 use actix_web::{ web, HttpResponse, Responder};
 use crate::aggregators::nba_feature_map_aggregators::get_nba_backtest_feature_map;
+use crate::models::enums::sports_categories::SportsCategories;
 use crate::models::services::get_backtest_feature_map_request::BacktestFeatureMapRequest;
 use crate::models::services::get_nba_games_by_team_and_season_request::GetNbaGamesByTeamAndSeasonRequest;
 use crate::models::services::get_nba_odds_by_team_and_season_request::GetNbaOddsByTeamAndSeasonRequest;
@@ -70,7 +71,8 @@ pub async fn get_nba_player_stats_by_id_and_season(
     let objs_result = nba_player_game_stats_avgs_historical_mongo_dao::get_nba_player_stats_avgs_by_id_and_season(
         &app_state.as_ref().nba_player_game_stats_avgs_historical_collection, 
         req.player_id,
-        &req.season
+        &req.season,
+        None
     ).await; 
 
     match objs_result {
@@ -87,10 +89,15 @@ pub async fn get_nba_player_stats_by_id_and_season(
 
 pub async fn get_feature_map_for_backtest(
     app_state: web::Data<AppState>, 
-    req: web::Query<BacktestFeatureMapRequest>
+    req: web::Json<BacktestFeatureMapRequest>
 ) -> impl Responder {
     info!("Recieved req for feature map request!");
-    return HttpResponse::Ok().json(get_nba_backtest_feature_map(app_state.get_ref().clone(), req.into_inner()).await);
+    match req.sports_category {
+        SportsCategories::NBA => 
+            HttpResponse::Ok()
+                .json(get_nba_backtest_feature_map(app_state.get_ref().clone(), req.into_inner()).await),
+        _ => HttpResponse::Ok().body("Test!")
+    }
 }
 /********************************************************************************/
 
