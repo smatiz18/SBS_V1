@@ -23,6 +23,12 @@ import sunsLogo from './nba-suns-logo.png';
 import clippersLogo from './nba-clippers-logo.png';
 import warriorsLogo from './nba-warriors-logo.png';
 import trailBlazersLogo from './nba-trail-blazers-logo.png';
+import wizardsLogo from './nba-wizards-logo.png';
+import spursLogo from './nba-spurs-logo.png';
+import okcLogo from './nba-okc-logo.png';
+import nuggetsLogo from './nba-nuggets-logo.png';
+import kingsLogo from './nba-kings-logo.png';
+
 
 export const NbaLogoMapper = new Map([
     ['Celtics', celticsLogo],
@@ -49,5 +55,10 @@ export const NbaLogoMapper = new Map([
     ['Suns', sunsLogo],
     ['Clippers', clippersLogo],
     ['Warriors', warriorsLogo],
-    ['Trail Blazers', trailBlazersLogo]
+    ['Trail Blazers', trailBlazersLogo],
+    ['Wizards', wizardsLogo],
+    ['Spurs', spursLogo],
+    ['Thunder', okcLogo],
+    ['Nuggets', nuggetsLogo],
+    ['Kings', kingsLogo],
 ]);

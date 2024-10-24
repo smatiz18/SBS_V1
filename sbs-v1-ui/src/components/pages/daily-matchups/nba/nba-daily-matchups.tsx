@@ -4,6 +4,7 @@ import "./nba-daily-matchups.scss";
 import { getNbaMatchups } from "../../../../services/nba/services";
 import { NbaLogoMapper } from "../../../../assets/images/nba-logo-mapper";
 import { Matchup } from "../../../../models/services/get-nba-matchups-response";
+import moment from "moment-timezone";
 
 const NbaDailyMatchups = () => {
     const [nbaMatchups, setNbaMatchups] = useState([] as any[]);
@@ -33,6 +34,7 @@ const NbaDailyMatchups = () => {
         <div className="page-container">
             <div className="header">
                 <h1 className="header-title">NBA Matchups</h1>
+                <text className="date-time">{`@${moment().tz("America/New_York").format()}`}</text>
             </div>
             <div className="content">
                 <div className="main-content">

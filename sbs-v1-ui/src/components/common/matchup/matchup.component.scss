@@ -9,77 +9,82 @@
     border: 1px solid #ddd;
     border-radius: 10px;
     background-color: #f9f9f9;
+    min-width: 500px;
+    max-width: 500px;
+    overflow-wrap: normal;
 
     &:hover {
         transform: translateY(-5px);
         box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
     }
-}
-  
-.team-info {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    margin-bottom: 20px;
-}
 
-.team {
-    text-align: center;
-}
+    .team-info {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        margin-bottom: 20px;
 
-.team-logo {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-    margin-bottom: 10px;
-}
+        .team {
+            text-align: center;
+        }
+        
+        .team-logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        
+        .team-name {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        
+        .team-lineup {
+            list-style: none;
+            padding: 0;
+        }
 
-.team-name {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
+        .player {
+            font-size: 1em;
+            margin: 5px 0;
+        }
+    }
 
-.team-lineup {
-    list-style: none;
-    padding: 0;
-}
+    
+    .analytics {
+        width: 100%;
+        text-align: center;
 
-.player {
-    font-size: 1.1em;
-    margin: 5px 0;
-}
-
-.analytics {
-    width: 100%;
-    text-align: center;
-}
-
-.stats-button {
-    padding: 10px 20px;
-    font-size: 1em;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.stats-button:hover {
-    background-color: #0056b3;
-}
-
-.stats-content {
-    margin-top: 20px;
-    padding: 20px;
-    border-top: 1px solid #ddd;
-    text-align: left;
-}
-
-.stats-content h3 {
-    margin-top: 0;
-}
-
-.stats-content p {
-    margin: 10px 0;
+        .stats-button {
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .stats-button:hover {
+            background-color: #0056b3;
+        }
+        
+        .stats-content {
+            margin-top: 20px;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+            text-align: left;
+        }
+        
+        .stats-content h3 {
+            margin-top: 0;
+            font-size: 1em;
+        }
+        
+        .stats-content p {
+            margin: 10px 0;
+        }
+    }  
 }
