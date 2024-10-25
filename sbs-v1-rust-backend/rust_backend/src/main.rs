@@ -10,10 +10,10 @@ use std::env;
 use actix_web::{web, App, HttpServer };
 use db::base_mongo::get_collection;
 use handlers::handlers::{
-   get_feature_map_for_backtest, get_nba_games_by_team_and_season, get_nba_odds_by_team_and_season, get_nba_player_stats_by_id_and_season, get_nba_players_by_team_and_season, test
+   get_feature_map_for_backtest, get_nba_games_by_team_and_season, get_nba_odds_by_team_and_season, get_nba_player_stats_by_id_and_season, get_nba_players_by_team_and_season, get_odds, test
 };
 use routes::endpoints::{
-   BACKTEST_API_ROOT, GET_BACKTEST_FEATURE_MAP, GET_HISTORICAL_GAMES, GET_HISTORICAL_ODDS, GET_PLAYERS_BY_TEAM_AND_SEASON, GET_PLAYER_STATS_BY_ID_AND_SEASON, NBA_API_ROOT, SERVER_URL
+   BACKTEST_API_ROOT, GET_BACKTEST_FEATURE_MAP, GET_HISTORICAL_GAMES, GET_HISTORICAL_ODDS, GET_ODDS, GET_PLAYERS_BY_TEAM_AND_SEASON, GET_PLAYER_STATS_BY_ID_AND_SEASON, NBA_API_ROOT, ODDS_API_ROOT, SERVER_URL
 };
 use db::constants::{
    SBS_V1_DB_NAME, 
@@ -77,6 +77,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .service(
             web::scope(BACKTEST_API_ROOT)
             .route(GET_BACKTEST_FEATURE_MAP, web::post().to(get_feature_map_for_backtest))
+         )
+         .service(
+            web::scope(ODDS_API_ROOT)
+            .route(GET_ODDS, web::post().to(get_odds))
          )
         .service(
             web::scope(NBA_API_ROOT)

@@ -2,6 +2,7 @@
 /* RUST SERVER ROUTES */
 pub const SERVER_URL: &str = "127.0.0.1:8080";
 
+pub const ODDS_API_ROOT: &str = "odds-api";
 pub const BACKTEST_API_ROOT: &str = "backtest-api";
 pub const NBA_API_ROOT: &str = "nba-api";
 
@@ -10,7 +11,9 @@ pub const GET_HISTORICAL_ODDS: &str = "/historical-odds/get";
 pub const GET_PLAYERS_BY_TEAM_AND_SEASON: &str = "/players-by-team-and-season/get";
 pub const GET_PLAYER_STATS_BY_ID_AND_SEASON: &str = "/player-stats-by-id-and-season/get";
 pub const GET_BACKTEST_FEATURE_MAP: &str = "/backtest-feature-map/get";
+pub const GET_ODDS: &str = "/odds/get";
 
 /* WEB API ROUTES */
 pub const NBA_RAPID_API_HOST: &str = "api-nba-v1.p.rapidapi.com";
 pub const NBA_RAPID_API_ROOT: &str = "https://api-nba-v1.p.rapidapi.com";
+pub const THE_ODDS_API_ROOT: &str = "https://api.the-odds-api.com/v4/";

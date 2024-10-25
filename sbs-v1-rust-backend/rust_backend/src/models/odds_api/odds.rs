@@ -1,8 +1,7 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "camelCase")]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Event {
     pub id: String,
     pub sport_key: String,
@@ -13,8 +12,7 @@ pub struct Event {
     pub bookmakers: Vec<Bookmaker>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "camelCase")]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Bookmaker {
     pub key: String,
     pub title: String,
@@ -22,16 +20,14 @@ pub struct Bookmaker {
     pub markets: Vec<Market>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "camelCase")]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Market {
     pub key: String,
     pub last_update: DateTime<Utc>,
     pub outcomes: Vec<Outcome>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "camelCase")]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Outcome {
     pub name: String,
     pub price: f64,
