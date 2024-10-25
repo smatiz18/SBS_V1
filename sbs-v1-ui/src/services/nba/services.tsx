@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { GetNbaMatchupsResponse } from "../../models/services/get-nba-matchups-response";
 import { NbaGameHistorical } from "../../models/nba/nba-game-historical";
-import { NbaOddsHistorical } from "../../models/nba/nba-odds-historical";
+import { NbaOddsHistorical } from "../../models/odds/odds-historical";
 import { GetNbaPlayersByTeamAndSeasonRequest } from "../../models/services/get-nba-players-by-team-and-season-request";
 import { GetNbaPlayersByTeamAndSeasonResponse } from "../../models/services/get-nba-players-by-team-and-season-response";
 import { GetNbaGamesByTeamAndSeasonRequest } from "../../models/services/get-nba-games-by-team-and-season-request";

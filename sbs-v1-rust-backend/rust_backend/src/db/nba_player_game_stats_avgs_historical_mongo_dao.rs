@@ -1,6 +1,5 @@
 use crate::db::base_mongo::find;
 use crate::models::enums::season_type::SeasonType;
-use log::info;
 use mongodb::Collection;
 use mongodb::bson::{doc, Document, from_document};
 use mongodb::error::Result;

@@ -1,7 +1,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::models::{nba_backtest_player_features::NbaBacktestPlayerFeatures, nba_backtest_team_features::NbaBacktestTeamFeatures};
+use crate::models::backtest_features::{nba_backtest_player_features::NbaBacktestPlayerFeatures, nba_backtest_team_features::NbaBacktestTeamFeatures};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum FeatureMaps {

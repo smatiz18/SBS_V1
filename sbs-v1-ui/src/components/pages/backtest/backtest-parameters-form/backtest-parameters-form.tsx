@@ -9,12 +9,13 @@ import { TeamBetTypes } from '../../../../models/team-bet-types';
 import { PlayerBetTypes } from '../../../../models/nba/player-bet-types';
 import { NbaTeams } from '../../../../constants/nba';
 import { getNbaPlayersByTeamAndSeason } from '../../../../services/nba/services';
-import { Market, NbaOddsHistorical } from '../../../../models/nba/nba-odds-historical';
+import { NbaOddsHistorical } from '../../../../models/odds/odds-historical';
 import { GetNbaPlayersByTeamAndSeasonResponse, Player } from '../../../../models/services/get-nba-players-by-team-and-season-response';
 import { AxiosResponse } from 'axios';
 import { BacktestFeatureMapRequest } from '../../../../models/services/get-backtest-feature-map-request';
 import { getFeatureMapForBacktest } from '../../../../services/backtest/services';
 import { BacktestFeatureMapResponse } from '../../../../models/services/get-backtest-feature-map-response';
+import { Market } from '../../../../models/odds/odds';
 
 const BacktestParametersForm = () => {
     const [sportsCategory, setSportsCategory] = useState(null as unknown as SportsCategories);

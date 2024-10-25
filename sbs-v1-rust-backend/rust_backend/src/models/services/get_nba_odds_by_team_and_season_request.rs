@@ -2,9 +2,8 @@ use serde::Deserialize;
 
 
 #[derive(Debug, Deserialize, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct GetNbaOddsByTeamAndSeasonRequest {
-    #[serde(rename = "teamName")]
     pub team_name: String,
-
     pub season: u32,
 }
