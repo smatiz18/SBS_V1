@@ -2,7 +2,7 @@ import json
 import requests
 from bs4 import BeautifulSoup 
 
-url = "https://www.rotowire.com/basketball/nba-lineups.php" 
+url = 'https://www.rotowire.com/basketball/nba-lineups.php' 
 
 #########################################################
 def get_rotowire_nba_lineups_response():
@@ -58,14 +58,14 @@ def get_rotowire_nba_lineups_response():
 
 #########################################################
 def get_team_matchups(response):
-    soup = BeautifulSoup(response.text, "html.parser")
+    soup = BeautifulSoup(response.text, 'html.parser')
     matchups = []
-    matchup_divs = soup.find_all("div", class_="lineup__matchup")
+    matchup_divs = soup.find_all('div', class_='lineup__matchup')
     filtered_matchup_divs = [div for div in matchup_divs if div.find('a', class_=lambda x: x and 'lineup__mteam' in x)]
     
     for matchup in filtered_matchup_divs:
-        home_team_a_tag = matchup.find_all("a", class_=lambda x: x and 'is-home' in x)
-        away_team_a_tag = matchup.find_all("a", class_=lambda x: x and 'is-visit' in x)
+        home_team_a_tag = matchup.find_all('a', class_=lambda x: x and 'is-home' in x)
+        away_team_a_tag = matchup.find_all('a', class_=lambda x: x and 'is-visit' in x)
 
         if (len(home_team_a_tag) > 0 and len(away_team_a_tag) > 0):
             # Extract the team from the <a> tag without including the text from <span> tags
@@ -80,67 +80,80 @@ def get_team_matchups(response):
 
 #########################################################
 def get_projected_player_lineups_by_team(response):
-    soup = BeautifulSoup(response.text, "html.parser")
+    soup = BeautifulSoup(response.text, 'html.parser')
     players_by_team = {}
-    button_divs = soup.find_all("button", class_="see-court-on-off")
+    button_divs = soup.find_all('button', class_='see-court-on-off')
 
     for div in button_divs:
-        nickname = div["data-nickname"]
+        nickname = div['data-nickname']
         players_by_team.update({ nickname: [] })
-        player_ids = div["data-lineup"].split(",")[:5]
+        player_ids = div['data-lineup'].split(',')[:5]
         for player_id in player_ids:
-            player_divs = soup.find_all("li", class_="lineup__player")
+            player_divs = soup.find_all('li', class_='lineup__player')
             for player_div in player_divs:
-                a_tags = player_div.find_all("a", href=lambda href: href and player_id in href)
+                a_tags = player_div.find_all('a', href=lambda href: href and player_id in href)
                 for a_tag in a_tags:
-                    if a_tag["title"] not in players_by_team.get(nickname):
-                        players_by_team[nickname].append(a_tag["title"])
+                    if a_tag['title'] not in players_by_team.get(nickname):
+                        players_by_team[nickname].append(a_tag['title'])
     return players_by_team
 #########################################################
 
 #########################################################
 def get_sportsbook_lines(response):  
-    soup = BeautifulSoup(response.text, "html.parser")
+    soup = BeautifulSoup(response.text, 'html.parser')
     
     nickname_by_team_map = {}
-    button_divs = soup.find_all("button", class_="see-court-on-off")
+    button_divs = soup.find_all('button', class_='see-court-on-off')
     for div in button_divs:
-        nickname_by_team_map[div["data-team"]] = div["data-nickname"]
+        nickname_by_team_map[div['data-team']] = div['data-nickname']
 
-    odds_resp_obj = []
-    odds_items = soup.find_all("div", class_="lineup__odds-item")
-    for odds_item in odds_items:
-        odds_obj = {}
-        odds_type = odds_item.find("b").get_text().strip() 
-        fanduel_odds = odds_item.find("span", class_=lambda x: x and 'fanduel' in x).get_text().split(" ")
-        draftkings_odds = odds_item.find("span", class_=lambda x: x and 'draftkings' in x).get_text().split(" ")
-        betmgm_odds = odds_item.find("span", class_=lambda x: x and 'betmgm' in x).get_text().split(" ")
 
-        if odds_type == 'O/U':
-            odds_type = 'OU'
-            fanduel_odds_obj = fanduel_odds[0]
-            draftkings_odds_obj = draftkings_odds[0]
-            betmgm_odds_obj = betmgm_odds[0]
-        else:
-            fanduel_nickname = nickname_by_team_map.get(fanduel_odds[0])
-            draftkings_nickname = nickname_by_team_map.get(draftkings_odds[0])
-            betmgm_nickname = nickname_by_team_map.get(betmgm_odds[0])
-            fanduel_odds_obj = { 
-                "-" if fanduel_nickname == None else fanduel_nickname : "-" if len(fanduel_odds) < 2 else fanduel_odds[1] 
-            }
-            draftkings_odds_obj = { 
-                "-" if draftkings_nickname == None else fanduel_nickname : "-" if len(draftkings_odds) < 2 else draftkings_odds[1] 
-            }
-            betmgm_odds_obj = { 
-                "-" if betmgm_nickname == None else betmgm_nickname : "-" if len(betmgm_odds) < 2 else betmgm_odds[1] 
-            }
+    all_grouped_odds = soup.find_all('div', class_='lineup__odds is-row')
 
-        odds_obj[odds_type] = { 
-            "fanduel": fanduel_odds_obj, 
-            "draftkings": draftkings_odds_obj, 
-            "betmgm": betmgm_odds_obj 
+    odds_resp_obj = {}
+    for grouped_odds in all_grouped_odds:
+        odds_items = grouped_odds.find_all('div', class_='lineup__odds-item')
+        ou_fanduel_odds = '-'
+        ou_draftkings_odds = '-'
+        ou_betmgm_odds = '-'
+        team_nickname = '-'
+        for odds_item in odds_items:
+            odds_type = odds_item.find('b').get_text().strip() 
+            fanduel_odds_obj = odds_item.find('span', class_=lambda x: x and 'fanduel' in x).get_text().split(' ')
+            draftkings_odds_obj = odds_item.find('span', class_=lambda x: x and 'draftkings' in x).get_text().split(' ')
+            betmgm_odds_obj = odds_item.find('span', class_=lambda x: x and 'betmgm' in x).get_text().split(' ')
+
+            if odds_type == 'O/U':
+                ou_fanduel_odds = fanduel_odds_obj[0]
+                ou_draftkings_odds = draftkings_odds_obj[0]
+                ou_betmgm_odds = betmgm_odds_obj[0]
+            else:
+                fanduel_odds = '-' if len(fanduel_odds_obj) < 2 else fanduel_odds_obj[1]
+                draftkings_odds = '-' if len(draftkings_odds_obj) < 2 else draftkings_odds_obj[1]
+                betmgm_odds = '-' if len(betmgm_odds_obj) < 2 else betmgm_odds_obj[1]
+
+                if nickname_by_team_map.get(fanduel_odds_obj[0]) is not None: 
+                    team_nickname = nickname_by_team_map.get(fanduel_odds_obj[0])
+                elif nickname_by_team_map.get(draftkings_odds_obj[0]):
+                    team_nickname = nickname_by_team_map.get(draftkings_odds_obj[0])
+                else:
+                    team_nickname = nickname_by_team_map.get(betmgm_odds_obj[0])
+
+                if team_nickname is not None:
+                    if team_nickname not in odds_resp_obj:
+                        odds_resp_obj[team_nickname] = {}
+
+                    odds_resp_obj[team_nickname][str(odds_type)] = {
+                        'fanduel': fanduel_odds,
+                        'draftkings': draftkings_odds,
+                        'betmgm': betmgm_odds
+                    }
+        
+        odds_resp_obj[team_nickname]['OU'] = {
+            'fanduel': ou_fanduel_odds,
+            'draftkings': ou_draftkings_odds,
+            'betmgm': ou_betmgm_odds
         }
-        odds_resp_obj.append(odds_obj)
-    
+        team_nickname = '-'
     return odds_resp_obj
 #########################################################

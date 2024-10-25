@@ -22,7 +22,7 @@
         display: flex;
         justify-content: space-around;
         width: 100%;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
 
         .team {
             text-align: center;
@@ -52,39 +52,29 @@
     }
 
     
-    .analytics {
+    .lines-and-stats {
         width: 100%;
         text-align: center;
 
-        .stats-button {
-            padding: 10px 20px;
-            font-size: 1em;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+       .instructions {
+        font-size: small;
+       }
         
-        .stats-button:hover {
-            background-color: #0056b3;
-        }
-        
-        .stats-content {
+        .lines-and-stats-content {
             margin-top: 20px;
             padding: 20px;
             border-top: 1px solid #ddd;
             text-align: left;
-        }
-        
-        .stats-content h3 {
-            margin-top: 0;
-            font-size: 1em;
-        }
-        
-        .stats-content p {
-            margin: 10px 0;
+            
+            h3 {
+                margin-top: 0;
+                font-size: 1em;
+            }
+
+            p {
+                margin: 10px 0;
+                font-size: small;
+            }
         }
     }  
 }

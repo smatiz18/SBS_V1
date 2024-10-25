@@ -2,13 +2,13 @@ export interface GetNbaMatchupsResponse {
     isError: boolean,
     error?: string,
     matchups: Matchup[],
-    sportsbookLines: SportsbookLines[]
+    sportsbookLines: Record<string, SportsbookLines>
 }
 
 export interface Matchup {
     away: TeamInfo,
     home: TeamInfo,
-    sportsBookLines: SportsbookLines,
+    sportsbookLines?: SportsbookLines,
 }
 
 export interface TeamInfo {
@@ -18,6 +18,7 @@ export interface TeamInfo {
 }
 
 export interface SportsbookLines {
+    teamNickname?: string,
     LINE: SportsBookObj,
     OU: SportsBookObj,
     SPREAD: SportsBookObj

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import MatchupComponent from "../../../common/matchup/matchup-component";
+import MatchupComponent from "../../../common/matchup/matchup.component";
 import "./nba-daily-matchups.scss";
 import { getNbaMatchups } from "../../../../services/nba/services";
 import { NbaLogoMapper } from "../../../../assets/images/nba-logo-mapper";
@@ -16,14 +16,22 @@ const NbaDailyMatchups = () => {
     const fetchInitData = async () => {
         try {
             const matchupsResp = await getNbaMatchups();
-            matchupsResp.data.matchups.map((matchup: Matchup) => { 
+            console.log(matchupsResp);
+            const sportsbookLines = matchupsResp.data.sportsbookLines;
+            const enrichedMatchups = matchupsResp.data.matchups.map((matchup: Matchup) => { 
               matchup.away.teamLogo = NbaLogoMapper.get(matchup.away.nickname)!;
               matchup.home.teamLogo = NbaLogoMapper.get(matchup.home.nickname)!;
+              matchup.sportsbookLines = sportsbookLines[matchup.home.nickname] || sportsbookLines[matchup.away.nickname];
+              if (matchup.sportsbookLines) {
+                matchup.sportsbookLines.teamNickname = sportsbookLines[matchup.home.nickname] ? matchup.home.nickname : matchup.away.nickname;
+              }
               return matchup;
             });
-            setNbaMatchups(matchupsResp.data.matchups); 
+            console.log(nbaMatchups);
+            setNbaMatchups(enrichedMatchups); 
           
           } catch (error) {
+            console.error(error);
             /** implement later */
           } finally {
             /** implement later */
