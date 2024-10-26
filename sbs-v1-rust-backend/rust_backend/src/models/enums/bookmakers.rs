@@ -3,18 +3,18 @@ use std::fmt;
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub enum BookMakers {
+pub enum Bookmakers {
     FanDuel,
     DraftKings,
     BetMGM
 }
 
-impl fmt::Display for BookMakers {
+impl fmt::Display for Bookmakers {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            BookMakers::FanDuel => write!(f, "fanduel"),
-            BookMakers::DraftKings => write!(f, "draftkings"),
-            BookMakers::BetMGM => write!(f, "betmgm")
+            Bookmakers::FanDuel => write!(f, "fanduel"),
+            Bookmakers::DraftKings => write!(f, "draftkings"),
+            Bookmakers::BetMGM => write!(f, "betmgm")
         }
     }
 }

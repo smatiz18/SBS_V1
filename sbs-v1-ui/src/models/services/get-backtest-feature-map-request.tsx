@@ -1,7 +1,7 @@
-import { PlayerBetTypes } from "../nba/player-bet-types";
-import { SportsCategories } from "../sports-categories";
-import { StakingStrategies } from "../staking-strategies";
-import { TeamBetTypes } from "../team-bet-types";
+import { PlayerBetTypes } from "../enums/player-bet-types";
+import { SportsCategories } from "../enums/sports-categories";
+import { StakingStrategies } from "../enums/staking-strategies";
+import { TeamBetTypes } from "../enums/team-bet-types";
 
 export interface BacktestFeatureMapRequest {
     sportsCategory: SportsCategories,

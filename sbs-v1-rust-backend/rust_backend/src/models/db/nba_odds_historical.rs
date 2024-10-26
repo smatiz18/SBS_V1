@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
 
-use crate::models::odds_api::odds::Bookmaker;
+use crate::models::odds::odds::Bookmaker;
 
 #[derive(Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]

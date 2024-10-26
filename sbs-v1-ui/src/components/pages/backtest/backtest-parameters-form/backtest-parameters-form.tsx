@@ -1,12 +1,12 @@
 import Select from 'react-select';
 import './backtest-parameters-form.scss';
 import { reactSelectStyles } from '../../../../models/form-styles/styles';
-import { SportsCategories } from '../../../../models/sports-categories';
+import { SportsCategories } from '../../../../models/enums/sports-categories';
 import { useState } from 'react';
-import { StakingStrategies } from '../../../../models/staking-strategies';
-import { OddsSources } from '../../../../models/odds-sources';
-import { TeamBetTypes } from '../../../../models/team-bet-types';
-import { PlayerBetTypes } from '../../../../models/nba/player-bet-types';
+import { StakingStrategies } from '../../../../models/enums/staking-strategies';
+import { Bookmakers } from '../../../../models/enums/bookmakers';
+import { TeamBetTypes } from '../../../../models/enums/team-bet-types';
+import { PlayerBetTypes } from '../../../../models/enums/player-bet-types';
 import { NbaTeams } from '../../../../constants/nba';
 import { getNbaPlayersByTeamAndSeason } from '../../../../services/nba/services';
 import { NbaOddsHistorical } from '../../../../models/odds/odds-historical';
@@ -63,7 +63,7 @@ const BacktestParametersForm = () => {
         return { value: v, label: v };
     });
     
-    const oddsSourceOptions: any[] = Object.values(OddsSources).map((v) => {
+    const oddsSourceOptions: any[] = Object.values(Bookmakers).map((v) => {
         return { value: v, label: v };
     });
     
@@ -134,7 +134,7 @@ const BacktestParametersForm = () => {
     const parseOddsData = (
         historicalOddsData: any,
         betType: TeamBetTypes | PlayerBetTypes,
-        oddsSource: OddsSources
+        bookmakers: Bookmakers
     ) => {
         let filteredOddsData; 
         if (sportsCategory === SportsCategories.NBA) {

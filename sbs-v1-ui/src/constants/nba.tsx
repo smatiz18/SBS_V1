@@ -1,4 +1,10 @@
-export const NbaTeams = [
+export interface NbaTeamIdentifiers {
+    teamName: string,
+    teamNickname: string,
+    nbaApiId: number
+}
+
+export const NbaTeams: NbaTeamIdentifiers[] = [
     { teamName: 'Atlanta Hawks', teamNickname: 'Hawks', nbaApiId: 1 },
     { teamName: 'Boston Celtics', teamNickname: 'Celtics', nbaApiId: 2 },
     { teamName: 'Brooklyn Nets', teamNickname: 'Nets', nbaApiId: 4 },
@@ -29,4 +35,19 @@ export const NbaTeams = [
     { teamName: 'Toronto Raptors', teamNickname: 'Raptors', nbaApiId: 38 },
     { teamName: 'Utah Jazz', teamNickname: 'Jazz', nbaApiId: 40 },
     { teamName: 'Washington Wizards', teamNickname: 'Wizards', nbaApiId: 41 }
-]
+];
+
+export const NbaTeamsMappedByName: Record<string, NbaTeamIdentifiers> = NbaTeams.reduce((map: any, currTeam: any) => {
+    map[currTeam.teamName] = currTeam;
+    return map;
+}, {});
+
+export const NbaTeamsMappedByNickname: Record<string, NbaTeamIdentifiers> = NbaTeams.reduce((map: any, currTeam: any) => {
+    map[currTeam.teamNickname] = currTeam;
+    return map;
+}, {});
+
+export const NbaTeamsMappedByNbaApiId: Record<number, NbaTeamIdentifiers> = NbaTeams.reduce((map: any, currTeam: any) => {
+    map[currTeam.nbaApiId] = currTeam;
+    return map;
+}, {});

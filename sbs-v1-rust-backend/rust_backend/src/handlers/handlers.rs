@@ -1,7 +1,7 @@
 use actix_web::{ web, HttpResponse, Responder};
 use crate::aggregators::nba_feature_map_aggregators::get_nba_backtest_feature_map;
 use crate::models::enums::sports_categories::SportsCategories;
-use crate::models::odds_api::odds::Event;
+use crate::models::odds::odds::Event;
 use crate::models::services::get_backtest_feature_map_request::BacktestFeatureMapRequest;
 use crate::models::services::get_nba_games_by_team_and_season_request::GetNbaGamesByTeamAndSeasonRequest;
 use crate::models::services::get_nba_odds_by_team_and_season_request::GetNbaOddsByTeamAndSeasonRequest;

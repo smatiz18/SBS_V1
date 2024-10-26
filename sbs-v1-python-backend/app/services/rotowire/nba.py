@@ -27,9 +27,9 @@ def get_rotowire_nba_lineups_response():
         is_error = True
         print('Failure to parse projected player lineups:' + e)
 
-    sportsbook_lines = None
+    rotowire_sportsbook_lines = None
     try:
-        sportsbook_lines = get_sportsbook_lines(rotowire_response)
+        rotowire_sportsbook_lines = get_sportsbook_lines(rotowire_response)
     except Exception as e:
         is_error = True
         print('Failure to parse sportsbook lines:' + e)
@@ -41,17 +41,17 @@ def get_rotowire_nba_lineups_response():
     for matchup in team_matchups:
         matchup_obj = {
             'away': {
-                'nickname': matchup.get('away'),
+                'teamNickname': matchup.get('away'),
                 'projectedPlayers': projected_player_lineups_by_team.get(matchup.get('away'))
             },
             'home': {
-                'nickname': matchup.get('home'),
+                'teamNickname': matchup.get('home'),
                 'projectedPlayers': projected_player_lineups_by_team.get(matchup.get('home'))
             },
         }
         response.get('matchups').append(matchup_obj)
-    if sportsbook_lines != None:
-        response['sportsbookLines'] = sportsbook_lines
+    if rotowire_sportsbook_lines != None:
+        response['rotowireSportsbookLines'] = rotowire_sportsbook_lines
     return response
 #########################################################
 

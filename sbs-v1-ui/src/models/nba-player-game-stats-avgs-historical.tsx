@@ -1,4 +1,4 @@
-import { SeasonType } from "../season-type";
+import { SeasonType } from "./enums/season-type";
 import { PlayerStatsObj } from "./nba-player-game-stats-historical";
 
 export interface NbaPlayerGameStatsAvgsHistorical {

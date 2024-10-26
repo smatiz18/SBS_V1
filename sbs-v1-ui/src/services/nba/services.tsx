@@ -1,13 +1,13 @@
 import axios, { AxiosResponse } from "axios";
 import { GetNbaMatchupsResponse } from "../../models/services/get-nba-matchups-response";
-import { NbaGameHistorical } from "../../models/nba/nba-game-historical";
+import { NbaGameHistorical } from "../../models/nba-game-historical";
 import { NbaOddsHistorical } from "../../models/odds/odds-historical";
 import { GetNbaPlayersByTeamAndSeasonRequest } from "../../models/services/get-nba-players-by-team-and-season-request";
 import { GetNbaPlayersByTeamAndSeasonResponse } from "../../models/services/get-nba-players-by-team-and-season-response";
 import { GetNbaGamesByTeamAndSeasonRequest } from "../../models/services/get-nba-games-by-team-and-season-request";
 import { GetNbaOddsByTeamAndSeasonRequest } from "../../models/services/get-nba-odds-by-team-and-season-request";
 import { GetNbaPlayerStatsByIdAndSeasonRequest } from "../../models/services/get-nba-player-stats-by-id-and-season-request";
-import { NbaPlayerGameStatsAvgsHistorical } from "../../models/nba/nba-player-game-stats-avgs-historical";
+import { NbaPlayerGameStatsAvgsHistorical } from "../../models/nba-player-game-stats-avgs-historical";
 import { PYTHON_SERVER, RUST_SERVER } from "../config";
 
 export const NBA_API_ROOT = '/nba-api';
