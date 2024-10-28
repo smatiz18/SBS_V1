@@ -1,9 +1,11 @@
 import { useState } from "react";
+import './matchup-lines-and-stats.component.scss';
 import { Bookmakers } from "../../../models/enums/bookmakers";
 import { MatchupLinesAndStats } from "../../../models/matchup-lines-and-stats";
 import { BetOptions } from "../../../models/enums/bet-options";
 import { Bookmaker, Market, Outcome } from "../../../models/odds/odds";
 import { TeamBetTypes } from "../../../models/enums/team-bet-types";
+import BettingOddsTable from "../betting-odds-table/betting-odds-table.component";
 
 const MatchupLinesAndStatsComponent: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
     const [bookmaker, setBookmaker] = useState(Bookmakers.DraftKings);
@@ -61,43 +63,13 @@ const MatchupLinesAndStatsComponent: React.FC<{matchup: MatchupLinesAndStats}> =
             </div>
         );
     }
+
     return (
         <div className="matchup-lines-and-stats-component-container">
             <div className="header">Sportsbook Lines and Stats</div>
             <div className="content">
                 <div className="sportsbook-lines-container">
-                    { 
-                        betOption === BetOptions.Team && 
-                        (
-                            <div className="team-lines">
-                                {getTeamLinesContent()}
-                            </div>
-                        )
-                    }
-                    { 
-                        betOption === BetOptions.Player && 
-                        (
-                            <div className="player-lines">
-
-                            </div>
-                        )
-                    }
-                </div>
-                <div className="stats-container">
-                    { 
-                        betOption === BetOptions.Team && 
-                        (
-                            <div className="team-stats">
-                            </div>
-                        )
-                    }
-                    { 
-                        betOption === BetOptions.Player && 
-                        (
-                            <div className="player-stats">
-                            </div>
-                        )
-                    }
+                    <BettingOddsTable params={{ bettingOddsCells: []} as any}/>
                 </div>
             </div>
         </div>

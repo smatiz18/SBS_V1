@@ -3,7 +3,6 @@ import MatchupComponent from "../../../common/matchup/matchup.component";
 import "./nba-daily-matchups.scss";
 import { getNbaMatchups } from "../../../../services/nba/services";
 import { NbaLogoMapper } from "../../../../assets/images/nba-logo-mapper";
-import moment from "moment-timezone";
 import { Matchup } from "../../../../models/matchup";
 import { getOdds } from "../../../../services/odds/services";
 import { GetOddsRequest } from "../../../../models/services/get-odds-request";
@@ -14,6 +13,7 @@ import { OddsFormat } from "../../../../models/enums/odds-format";
 import { Bookmakers } from "../../../../models/enums/bookmakers";
 import { Event } from "../../../../models/odds/odds";
 import { NbaTeamsMappedByName } from "../../../../constants/nba";
+import { format, toZonedTime } from 'date-fns-tz';
 
 const NbaDailyMatchups = () => {
     const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
@@ -21,6 +21,17 @@ const NbaDailyMatchups = () => {
     useEffect(() => {
         fetchInitData();
       }, []);
+
+    const getDateEst = () => {
+      const timeZone = 'America/New_York';
+      const date = new Date();
+
+      // Convert UTC date to the specified time zone
+      const zonedDate = toZonedTime(date, timeZone);
+
+      // Format the date in the specified time zone
+      return format(zonedDate, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
+    }
 
     const fetchInitData = async () => {
         try {
@@ -67,7 +78,7 @@ const NbaDailyMatchups = () => {
         <div className="page-container">
             <div className="header">
                 <h1 className="header-title">NBA Matchups</h1>
-                <text className="date-time">{`@${moment().tz("America/New_York").format()}`}</text>
+                <text className="date-time">{`@${getDateEst()} EST`}</text>
             </div>
             <div className="content">
                 <div className="main-content">
