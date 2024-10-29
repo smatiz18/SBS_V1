@@ -1,6 +1,7 @@
+@use '../../../variables';
+
 .primary-navbar {
   background: linear-gradient(45deg, #0a0a23, #1a0033);
-  // padding: .5rem 2rem;
   padding-left: 2rem;
   padding-right: 2rem;
   display: flex;
@@ -29,7 +30,7 @@
       margin-left: 2rem;
 
       a {
-        color: #fff;  // Updated to white for better contrast
+        color: white;
         text-decoration: none;
         padding: 1rem;
         display: block;
@@ -37,7 +38,7 @@
         transition: color 0.3s ease;
 
         &:hover {
-          color: #6AA3E3;
+          color: variables.$blue-highlight;
         }
       }
     }
@@ -46,7 +47,7 @@
       position: absolute;
       top: 100%;
       left: 0;
-      background-color: #1a0033;
+      background-color: variables.$main-purple-dark;
       list-style: none;
       margin: 0;
       padding: 0.4rem 0;
@@ -57,16 +58,13 @@
 
       a {
         padding: 0.5rem 1rem;
-        color: #fff;  // Updated to white for better contrast
+        color: white;
         white-space: nowrap;
         transition: background-color 0.3s ease;
 
         &:hover {
-          background-color: #4b0082;
-          color: #f8f9fa;  // Added for better readability on hover
-
-          // background-color: #f8f9fa;
-          // color: #000;  // Added for better readability on hover
+          background-color: variables.$main-purple;
+          color: white;
         }
       }
     }

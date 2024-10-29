@@ -1,24 +1,26 @@
-    /* Typography */
-    h1, h2, h3, p {
-        margin: 0 0 10px;
-    }
+@use '../variables';
 
-    h1 {
-        font-size: 1.8em;
-        color: #333;
-    }
+/* Typography */
+h1, h2, h3, p {
+    margin: 0 0 10px;
+}
 
-    h2 {
-        font-size: 1.5em;
-        color: #333;
-    }
+h1 {
+    font-size: 1.8em;
+    color: variables.$header-text-color;
+}
 
-    h3 {
-        font-size: 1.2em;
-        color: #333;
-    }
+h2 {
+    font-size: 1.5em;
+    color: variables.$header-text-color;
+}
 
-    p {
-        font-size: 1em;
-        color: #666;
-    }
+h3 {
+    font-size: 1.2em;
+    color: variables.$header-text-color;
+}
+
+p {
+    font-size: 1em;
+    color: variables.$paragraph-text-color;
+}

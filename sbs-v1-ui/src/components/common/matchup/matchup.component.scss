@@ -1,14 +1,16 @@
+@use '../../../variables';
+
 .matchup-component {
     display: flex;
     flex-direction: column;
     align-items: center;
     font-family: Arial, sans-serif;
-    color: #333;
+    color: variables.$header-text-color;
     margin: 20px;
     padding: 20px;
-    border: 1px solid #ddd;
+    border: 1px solid variables.$gray-border;
     border-radius: 10px;
-    background-color: #f9f9f9;
+    background-color: variables.$offwhite-background;
     min-width: 500px;
     max-width: 500px;
     overflow-wrap: normal;
@@ -63,7 +65,7 @@
         .lines-and-stats-content {
             margin-top: 20px;
             padding: 20px;
-            border-top: 1px solid #ddd;
+            border-top: 1px solid variables.$gray-border;
             text-align: left;
             
             h3 {

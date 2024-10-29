@@ -57,6 +57,8 @@ const NbaDailyMatchups = () => {
               const odds = oddsEventMappedByHomeTeam[matchup.home.teamNickname];
               // TODO should check on dates to in the case where a team plays the same team 2 days in a row
               if (odds && matchup.away.teamNickname === NbaTeamsMappedByName[odds.awayTeam]?.teamNickname) {
+                matchup.away.teamName = odds.awayTeam;
+                matchup.home.teamName = odds.homeTeam;
                 matchup.odds = odds;
               }
               return matchup;
