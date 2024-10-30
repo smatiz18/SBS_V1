@@ -25,10 +25,8 @@ const MatchupLinesAndStatsComponent: React.FC<{matchup: MatchupLinesAndStats}> =
                         case TeamBetTypes.H2H.toString():  
                             return market.outcomes.map((outcome: Outcome) => {
                                 return {
-                                    colKey: TeamBetTypes.H2H,
-                                    colLabel: 'Moneyline',
+                                    colKey: 'Moneyline',
                                     rowKey: outcome.name,
-                                    rowLabel: outcome.name, 
                                     point: outcome.point, 
                                     price: outcome.price,
                                     description: outcome.description
@@ -37,10 +35,8 @@ const MatchupLinesAndStatsComponent: React.FC<{matchup: MatchupLinesAndStats}> =
                         case TeamBetTypes.Spreads.toString():
                             return market.outcomes.map((outcome: Outcome) => {
                                 return {
-                                    colKey: TeamBetTypes.Spreads,
-                                    colLabel: 'Spread',
+                                    colKey: 'Spread',
                                     rowKey: outcome.name,
-                                    rowLabel: outcome.name, 
                                     point: outcome.point, 
                                     price: outcome.price,
                                     description: outcome.description
@@ -49,10 +45,8 @@ const MatchupLinesAndStatsComponent: React.FC<{matchup: MatchupLinesAndStats}> =
                         case TeamBetTypes.Totals.toString():          
                             return market.outcomes.map((outcome: Outcome) => {
                                 return {
-                                    colKey: TeamBetTypes.Totals,
-                                    colLabel: 'Total',
+                                    colKey: 'Total',
                                     rowKey: outcome.name === 'Over' ? matchup.away.teamName : matchup.home.teamName,
-                                    rowLabel: outcome.name === 'Over' ? matchup.away.teamName : matchup.home.teamName, 
                                     point: outcome.point, 
                                     price: outcome.price,
                                     description: outcome.description

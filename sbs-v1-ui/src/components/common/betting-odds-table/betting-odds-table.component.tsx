@@ -6,7 +6,7 @@ const BettingOddsTable: React.FC<{params: BettingOddsTableParams}> = ({params}) 
     const uniqueCols = new Set(params.bettingOddsCells.map((param: BettingOddsCell) => param.colKey));
     const uniqueRows = new Set(params.bettingOddsCells.map((param: BettingOddsCell) => param.rowKey));
 
-    /** TODO: assign some type of ordering */
+    /** TODO: assign some type of ordering & error handling */
     
     /** assign indices */
     const colKeyToIndexMap = Array.from(uniqueCols.values()).reduce((prev: any, curr: any, index: number) => {
@@ -21,6 +21,21 @@ const BettingOddsTable: React.FC<{params: BettingOddsTableParams}> = ({params}) 
 
     const bettingOdds2dArr = new Array(uniqueRows.size + 1).fill(0).map(() => new Array(uniqueCols.size + 1).fill(0));
 
+
+    /** populate headers */
+    Object.entries(colKeyToIndexMap).forEach((kv: any[]) => {
+        if (bettingOdds2dArr[0] && bettingOdds2dArr[0][kv[1]]) {
+            bettingOdds2dArr[0][kv[1]] = { header: kv[0] };
+        }
+    });
+
+    Object.entries(rowKeyToIndexMap).forEach((kv: any[], index: number) => {
+        if (bettingOdds2dArr[kv[1]] && bettingOdds2dArr[kv[1]][0]) {
+            bettingOdds2dArr[kv[1]][0] = { header: kv[0] };
+        }
+    });
+
+    /** populate odds cells content */
     params.bettingOddsCells.forEach((bettingOddsCell: BettingOddsCell) => {
         const colIdx = colKeyToIndexMap[bettingOddsCell.colKey];
         const rowIdx = rowKeyToIndexMap[bettingOddsCell.rowKey];
@@ -30,16 +45,27 @@ const BettingOddsTable: React.FC<{params: BettingOddsTableParams}> = ({params}) 
 
     return (
         <div className='betting-odds-table-container'>
-            <table className="custom-table">
+            <table className="betting-odds-table">
                 <tbody>
                 {
                     bettingOdds2dArr.map((row, rowIndex) => (
                         <tr key={rowIndex}>
-                        {row.map((cellContent: BettingOddsCell, colIndex: number) => (
-                            <td key={colIndex}>
-                                <OddsCell params={{ label: cellContent.point?.toString() || '', odds: cellContent.price?.toString() || ''}}/>
-                            </td>
-                        ))}
+                        {row.map((cellContent: any, colIndex: number) => {
+                            if (cellContent.header) {
+                                return (
+                                    <td key={colIndex}>
+                                        <div odds-table-header-cell>
+                                            {cellContent.header}
+                                        </div>
+                                    </td>
+                                );
+                            }
+                            return (
+                                <td key={colIndex}>
+                                    <OddsCell params={{ label: cellContent.point?.toString() || '', odds: cellContent.price?.toString() || ''}}/>
+                                </td>
+                            );     
+                        })}
                         </tr>
                     ))
                 }
