@@ -1,3 +1,27 @@
-table {
-    border-spacing: 1px;
+.betting-odds-table-container {
+    width: 100%;
+    height: 100%;
+
+    .betting-odds-table {
+        margin-left: -7rem;
+        
+        table {
+            border-spacing: 1px;
+        }
+    }
+  
+
+    .odds-table-col-header-cell {
+        padding: .25rem;
+        text-align: center;
+        font-size: .8em;
+    }
+
+    .odds-table-row-header-cell {
+        width: 6.5rem;
+        margin-right: 1rem;
+        text-align: right;
+        font-size: .8em;
+        font-weight: 600;
+    }
 }

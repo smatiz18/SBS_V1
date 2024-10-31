@@ -14,6 +14,7 @@ import { Bookmakers } from "../../../../models/enums/bookmakers";
 import { Event } from "../../../../models/odds/odds";
 import { NbaTeamsMappedByName } from "../../../../constants/nba";
 import { format, toZonedTime } from 'date-fns-tz';
+import { SportsCategories } from "../../../../models/enums/sports-categories";
 
 const NbaDailyMatchups = () => {
     const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
@@ -52,6 +53,7 @@ const NbaDailyMatchups = () => {
             const matchupsResp = await getNbaMatchups();
             
             const enrichedMatchups = matchupsResp.data.matchups.map((matchup: Matchup) => { 
+              matchup.sportsCategory = SportsCategories.NBA;
               matchup.away.teamLogo = NbaLogoMapper.get(matchup.away.teamNickname)!;
               matchup.home.teamLogo = NbaLogoMapper.get(matchup.home.teamNickname)!;
               const odds = oddsEventMappedByHomeTeam[matchup.home.teamNickname];

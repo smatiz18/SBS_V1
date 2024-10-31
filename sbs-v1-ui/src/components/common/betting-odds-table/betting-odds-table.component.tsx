@@ -3,35 +3,40 @@ import OddsCell from "../odds-cell/odds-cell.component";
 import './betting-odds-table.component.scss';
 
 const BettingOddsTable: React.FC<{params: BettingOddsTableParams}> = ({params}) => {
-    const uniqueCols = new Set(params.bettingOddsCells.map((param: BettingOddsCell) => param.colKey));
-    const uniqueRows = new Set(params.bettingOddsCells.map((param: BettingOddsCell) => param.rowKey));
-
-    /** TODO: assign some type of ordering & error handling */
+    const uniqueCols = Array.from(new Set(params.bettingOddsCells.map((param: BettingOddsCell) => param.colKey)));
+    const uniqueRows = Array.from(new Set(params.bettingOddsCells.map((param: BettingOddsCell) => param.rowKey)))
+        .sort((a: any, b: any) => {
+            return params.rowOrdering.findIndex((rowKey: any) => rowKey === a) - params.rowOrdering.findIndex((rowKey: any) => rowKey === b);
+        });
     
     /** assign indices */
-    const colKeyToIndexMap = Array.from(uniqueCols.values()).reduce((prev: any, curr: any, index: number) => {
+    const colKeyToIndexMap = uniqueCols.reduce((prev: any, curr: any, index: number) => {
         prev[curr] = index;
         return prev;
     }, {});
 
-    const rowKeyToIndexMap = Array.from(uniqueRows.values()).reduce((prev: any, curr: any, index: number) => {
+    const rowKeyToIndexMap = uniqueRows.reduce((prev: any, curr: any, index: number) => {
         prev[curr] = index;
         return prev;
     }, {});
 
-    const bettingOdds2dArr = new Array(uniqueRows.size + 1).fill(0).map(() => new Array(uniqueCols.size + 1).fill(0));
-
+    const bettingOdds2dArr = new Array(uniqueRows.length + 1).fill(0).map(() => new Array(uniqueCols.length + 1).fill(0));
 
     /** populate headers */
+    /** empty top left corner cell */
+    if (bettingOdds2dArr[0] !== undefined && bettingOdds2dArr[0][0] !== undefined) {
+        bettingOdds2dArr[0][0] = { colHeader: '' };
+    }
+
     Object.entries(colKeyToIndexMap).forEach((kv: any[]) => {
-        if (bettingOdds2dArr[0] && bettingOdds2dArr[0][kv[1]]) {
-            bettingOdds2dArr[0][kv[1]] = { header: kv[0] };
+        if (bettingOdds2dArr[0] !== undefined && bettingOdds2dArr[0][kv[1] + 1] !== undefined) {
+            bettingOdds2dArr[0][kv[1] + 1] = { colHeader: kv[0] };
         }
     });
 
     Object.entries(rowKeyToIndexMap).forEach((kv: any[], index: number) => {
-        if (bettingOdds2dArr[kv[1]] && bettingOdds2dArr[kv[1]][0]) {
-            bettingOdds2dArr[kv[1]][0] = { header: kv[0] };
+        if (bettingOdds2dArr[kv[1] + 1] !== undefined && bettingOdds2dArr[kv[1] + 1][0] !== undefined) {
+            bettingOdds2dArr[kv[1] + 1][0] = { rowHeader: kv[0] };
         }
     });
 
@@ -45,32 +50,43 @@ const BettingOddsTable: React.FC<{params: BettingOddsTableParams}> = ({params}) 
 
     return (
         <div className='betting-odds-table-container'>
-            <table className="betting-odds-table">
-                <tbody>
-                {
-                    bettingOdds2dArr.map((row, rowIndex) => (
-                        <tr key={rowIndex}>
-                        {row.map((cellContent: any, colIndex: number) => {
-                            if (cellContent.header) {
+            <div className="betting-odds-table">
+                <table >
+                    <tbody>
+                    {
+                        bettingOdds2dArr.map((row, rowIndex) => (
+                            <tr key={rowIndex}>
+                            {row.map((cellContent: any, colIndex: number) => {
+                                if (cellContent.colHeader !== undefined) {
+                                    return (
+                                        <td key={colIndex}>
+                                            <div className="odds-table-col-header-cell">
+                                                {cellContent.colHeader}
+                                            </div>
+                                        </td>
+                                    );
+                                }
+                                if (cellContent.rowHeader !== undefined) {
+                                    return (
+                                        <td key={colIndex}>
+                                            <div className="odds-table-row-header-cell">
+                                                {cellContent.rowHeader}
+                                            </div>
+                                        </td>
+                                    );
+                                }
                                 return (
                                     <td key={colIndex}>
-                                        <div odds-table-header-cell>
-                                            {cellContent.header}
-                                        </div>
+                                        <OddsCell params={{ label: cellContent.point?.toString() || '', odds: cellContent.price?.toString() || ''}}/>
                                     </td>
-                                );
-                            }
-                            return (
-                                <td key={colIndex}>
-                                    <OddsCell params={{ label: cellContent.point?.toString() || '', odds: cellContent.price?.toString() || ''}}/>
-                                </td>
-                            );     
-                        })}
-                        </tr>
-                    ))
-                }
-                </tbody>
-            </table>
+                                );     
+                            })}
+                            </tr>
+                        ))
+                    }
+                    </tbody>
+                </table>
+            </div>
         </div>
     )
 }

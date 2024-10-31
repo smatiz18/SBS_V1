@@ -1,8 +1,8 @@
 @use '../../../variables';
 
 .odds-cell {
-    width: 50px;
-    height: min(100vw, 50px / 1.75);
+    width: 55px;
+    height: min(100vw, 55px / 1.75);
     background-color: variables.$main-purple;
     padding: 15px;
     border-radius: 4px;

@@ -1,8 +1,10 @@
+import { SportsCategories } from "./enums/sports-categories";
 import { Event } from "./odds/odds";
 
 export interface Matchup {
     away: TeamInfo,
     home: TeamInfo,
+    sportsCategory: SportsCategories,
     odds?: Event
 }
 
