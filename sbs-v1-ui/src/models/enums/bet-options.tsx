@@ -1,4 +1,4 @@
 export enum BetOptions {
-    Team = 'TEAM',
-    Player = 'PLAYER'
+    Team = 'Team',
+    Player = 'Player'
 }

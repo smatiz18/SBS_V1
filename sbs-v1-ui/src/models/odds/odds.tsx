@@ -2,7 +2,7 @@ export interface Event {
     id: string;
     sportKey: string;
     sportTitle: string;
-    commenceTime: Date;
+    commenceTime: string;
     homeTeam: string;
     awayTeam: string;
     bookmakers: Bookmaker[];

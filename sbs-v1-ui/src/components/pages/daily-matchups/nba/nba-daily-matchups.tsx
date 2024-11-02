@@ -26,12 +26,20 @@ const NbaDailyMatchups = () => {
     const getDateEst = () => {
       const timeZone = 'America/New_York';
       const date = new Date();
-
-      // Convert UTC date to the specified time zone
       const zonedDate = toZonedTime(date, timeZone);
-
-      // Format the date in the specified time zone
       return format(zonedDate, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
+    }
+
+    function parseOddsData(events: Event[]) {
+      return events.reduce((map: any, event: Event) => {
+        const teamNickname = NbaTeamsMappedByName[event.homeTeam]?.teamNickname;
+        if (!map[teamNickname]) {
+          map[teamNickname] = event;
+        } else if (Date.parse(event.commenceTime) < Date.parse(map[teamNickname].commenceTime)) {
+          map[teamNickname] = event;
+        }
+        return map;
+      }, {});
     }
 
     const fetchInitData = async () => {
@@ -44,20 +52,15 @@ const NbaDailyMatchups = () => {
               bookmakers: Object.values(Bookmakers)
             };
             const initOddsResponse = await getOdds(getOddsReq);
-            const oddsEventMappedByHomeTeam: Record<string, Event> = initOddsResponse.data.reduce((map: any, event: any) => {
-              const teamNickname = NbaTeamsMappedByName[event.homeTeam]?.teamNickname;
-              map[teamNickname] = event;
-              return map;
-            }, {});
-            
+            const oddsEventMappedByHomeTeam = parseOddsData(initOddsResponse.data);
+      
             const matchupsResp = await getNbaMatchups();
-            
             const enrichedMatchups = matchupsResp.data.matchups.map((matchup: Matchup) => { 
               matchup.sportsCategory = SportsCategories.NBA;
               matchup.away.teamLogo = NbaLogoMapper.get(matchup.away.teamNickname)!;
               matchup.home.teamLogo = NbaLogoMapper.get(matchup.home.teamNickname)!;
-              const odds = oddsEventMappedByHomeTeam[matchup.home.teamNickname];
-              // TODO should check on dates to in the case where a team plays the same team 2 days in a row
+              const odds = oddsEventMappedByHomeTeam[matchup.home.teamNickname];              
+              
               if (odds && matchup.away.teamNickname === NbaTeamsMappedByName[odds.awayTeam]?.teamNickname) {
                 matchup.away.teamName = odds.awayTeam;
                 matchup.home.teamName = odds.homeTeam;
@@ -75,8 +78,6 @@ const NbaDailyMatchups = () => {
             /** implement later */
           }
     }
-
-    // TODO put this somehwere <p className='instructions'>Click on Team or Player to view Lines & Stats</p>
 
     return (
         <div className="page-container">

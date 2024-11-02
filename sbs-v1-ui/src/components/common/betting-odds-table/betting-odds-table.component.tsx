@@ -3,8 +3,12 @@ import OddsCell from "../odds-cell/odds-cell.component";
 import './betting-odds-table.component.scss';
 
 const BettingOddsTable: React.FC<{params: BettingOddsTableParams}> = ({params}) => {
-    const uniqueCols = Array.from(new Set(params.bettingOddsCells.map((param: BettingOddsCell) => param.colKey)));
-    const uniqueRows = Array.from(new Set(params.bettingOddsCells.map((param: BettingOddsCell) => param.rowKey)))
+    const uniqueCols = Array.from(new Set(params.bettingOddsCells.map((param: BettingOddsCell) => param.colKey)))
+        .sort((a: any, b: any) => {
+            return params.colOrdering.findIndex((rowKey: any) => rowKey === a) - params.colOrdering.findIndex((rowKey: any) => rowKey === b);
+        });    
+    
+        const uniqueRows = Array.from(new Set(params.bettingOddsCells.map((param: BettingOddsCell) => param.rowKey)))
         .sort((a: any, b: any) => {
             return params.rowOrdering.findIndex((rowKey: any) => rowKey === a) - params.rowOrdering.findIndex((rowKey: any) => rowKey === b);
         });

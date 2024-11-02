@@ -1,6 +1,6 @@
 import Select from 'react-select';
 import './backtest-parameters-form.scss';
-import { reactSelectStyles } from '../../../../models/form-styles/styles';
+import { reactInputStyles } from '../../../../models/form-styles/styles';
 import { SportsCategories } from '../../../../models/enums/sports-categories';
 import { useState } from 'react';
 import { StakingStrategies } from '../../../../models/enums/staking-strategies';
@@ -232,7 +232,6 @@ const BacktestParametersForm = () => {
                             value={ sportsCategory ? { value: sportsCategory, label: sportsCategory } : null }
                             onChange={(x: any) => onSportsCategorySelection(x.value)}
                             isClearable
-                            styles={reactSelectStyles}
                         />
                     </div>
                     <div className="select-container">
@@ -243,7 +242,6 @@ const BacktestParametersForm = () => {
                             value={ season ? { value: season, label: season } : null }
                             onChange={(x: any) => { if (x) onSeasonSelection(x.value) }}
                             isClearable
-                            styles={reactSelectStyles}
                         />
                     </div>
                     {
@@ -256,7 +254,6 @@ const BacktestParametersForm = () => {
                                 value={team ? { value: team, label: team } : null}
                                 onChange={(x: any) => { if (x ) setTeam(x.value) }}
                                 isClearable
-                                styles={reactSelectStyles}
                             />
                         </div> : null
                     }
@@ -268,7 +265,6 @@ const BacktestParametersForm = () => {
                             value={ betType ? { value: betType, label: betType } : null }
                             onChange={(x: any) => { if (x) onBetTypeSelection(x.value) }}
                             isClearable
-                            styles={reactSelectStyles}
                         />
                     </div>
                     {
@@ -281,7 +277,6 @@ const BacktestParametersForm = () => {
                                 value={ player ? { value: player.value, label: player.label } : null }
                                 onChange={(x: any) => { if (x) setPlayer(x) }}
                                 isClearable
-                                styles={reactSelectStyles}
                             />
                         </div> : null
                     }
@@ -293,7 +288,6 @@ const BacktestParametersForm = () => {
                             value={ stakingStrategy ? { value: stakingStrategy, label: stakingStrategy } : null }
                             onChange={(x: any) => { if (x) setStakingStrategy(x.value) }}
                             isClearable
-                            styles={reactSelectStyles}
                         />
                     </div>
                     <div className="select-container">
@@ -304,12 +298,11 @@ const BacktestParametersForm = () => {
                             value={ oddsSource ? { value: oddsSource, label: oddsSource } : null }
                             onChange={(x: any) => { if (x) setOddsSource(x.value) }}
                             isClearable
-                            styles={reactSelectStyles}
                         />
                     </div>
                     <div className="input-container">
                         <label className="input-label">Bankroll USD</label>
-                        <input placeholder='100'></input><span></span>
+                        <input placeholder='100' style={reactInputStyles as any}></input><span></span>
                     </div>
                     <div className="select-container">
                         <label className="select-label">Model</label>
@@ -319,7 +312,6 @@ const BacktestParametersForm = () => {
                             value={() => {}}
                             onChange={() => {}}
                             isClearable
-                            styles={reactSelectStyles}
                         />
                     </div>
                 </div>
