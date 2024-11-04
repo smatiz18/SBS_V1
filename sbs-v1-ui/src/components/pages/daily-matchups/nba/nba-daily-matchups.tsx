@@ -15,12 +15,13 @@ import { Event } from "../../../../models/odds/odds";
 import { NbaTeamsMappedByName } from "../../../../constants/nba";
 import { format, toZonedTime } from 'date-fns-tz';
 import { SportsCategories } from "../../../../models/enums/sports-categories";
+import { GetNbaMatchupsMockResonse, GetNbaOddsMockResponse } from "../../../../test/nba-matchups-mocks";
 
 const NbaDailyMatchups = () => {
     const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
 
     useEffect(() => {
-        fetchInitData();
+        fetchInitData(true);
       }, []);
 
     const getDateEst = () => {
@@ -42,7 +43,7 @@ const NbaDailyMatchups = () => {
       }, {});
     }
 
-    const fetchInitData = async () => {
+    const fetchInitData = async (useMock: boolean) => {
         try {
             const getOddsReq: GetOddsRequest = {
               sports: OddsApiSports.BasketballNba,
@@ -51,10 +52,18 @@ const NbaDailyMatchups = () => {
               oddsFormat: OddsFormat.American,
               bookmakers: Object.values(Bookmakers)
             };
-            const initOddsResponse = await getOdds(getOddsReq);
+            
+            let initOddsResponse;
+            let matchupsResp;
+            if (useMock) {
+              initOddsResponse = { data: GetNbaOddsMockResponse } as any;
+              matchupsResp = { data: GetNbaMatchupsMockResonse } as any;
+            } else {
+              initOddsResponse = await getOdds(getOddsReq);
+              matchupsResp = await getNbaMatchups();
+            }
+         
             const oddsEventMappedByHomeTeam = parseOddsData(initOddsResponse.data);
-      
-            const matchupsResp = await getNbaMatchups();
             const enrichedMatchups = matchupsResp.data.matchups.map((matchup: Matchup) => { 
               matchup.sportsCategory = SportsCategories.NBA;
               matchup.away.teamLogo = NbaLogoMapper.get(matchup.away.teamNickname)!;

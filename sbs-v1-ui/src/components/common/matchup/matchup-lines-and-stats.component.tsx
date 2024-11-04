@@ -9,26 +9,31 @@ import BettingOddsTable from "../betting-odds-table/betting-odds-table.component
 import { BettingOddsCell, BettingOddsTableParams } from "../../../models/component/betting-odds-table-params";
 import { SportsCategories } from "../../../models/enums/sports-categories";
 import { NbaTeamsMappedByName } from "../../../constants/nba";
-import Select from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import React from "react";
+import OptimalOddsTable from "../optimal-odds-table/optimal-odds-table.component";
 
 const MatchupLinesAndStatsComponent: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
     const [bookmaker, setBookmaker] = useState(Bookmakers.DraftKings);
     const [betOption, setBetOption] = useState(BetOptions.Team);
-    const [lineOptions, setLineOptions] = useState([{ label: 'Team Lines', value: 'TeamLines'}]);
-    const [alignment, setAlignment] = useState('draftkings');
-
-    const handleChange = (
-      event: React.MouseEvent<HTMLElement>,
-      newAlignment: string,
+    const [currentLine, setCurrentLine] = useState('TeamLines');
+    const lineOptions = [{ label: 'Team Lines', value: 'TeamLines'}];
+    
+    const handleBookmakerChange = (
+      _event: React.MouseEvent<HTMLElement>,
+      bookmaker: string,
     ) => {
-      setAlignment(newAlignment);
+      setBookmaker(bookmaker as Bookmakers);
     };
 
+    const handleLineOptionsChange = (event: SelectChangeEvent) => {
+        setCurrentLine(event.target.value as string);
+      };
+    
 
     function getBettingOddsTableRowOrdering() {
         switch (matchup.sportsCategory) {
@@ -55,7 +60,8 @@ const MatchupLinesAndStatsComponent: React.FC<{matchup: MatchupLinesAndStats}> =
             bettingOddsCells: getBettingOddsCells(), 
             rowOrdering: getBettingOddsTableRowOrdering(), 
             colOrdering: getBettingOddsTableColOrdering(),
-            betOption: betOption 
+            betOption: betOption,
+            bookmaker: bookmaker
         } as BettingOddsTableParams;
     }
 
@@ -118,25 +124,52 @@ const MatchupLinesAndStatsComponent: React.FC<{matchup: MatchupLinesAndStats}> =
         }
     }
 
-    /* TODO: GO OVER STYLE */
-    const toggleButtonSx = {
+
+    // TODO move styles to different file
+    const dkToggle = {
         textTransform: 'none',
+        border: `1px solid #ddd;`,
         fontFamily: 'IBM Plex Sans, sans-serif',
-        backgroundColor: 'rgba(26, 27, 65, 0.1725)', // Muted dark blue background with low opacity
-        color: '$text-subtle', // Subtle text color for default state
-        border: `1px solid ${'$gray-border'}`, // Light gray border for separation
+        fontSize: '0.8rem',  
+        transition: 'background-color 0.3s, color 0.3s',
+        backgroundColor: '#f9f9f9',
+        color: '#a9a9a9',
         '&.Mui-selected': {
-            backgroundColor: 'rgba(75, 0, 130, 0.4)', // Slightly opaque main purple when selected
-            color: '#FFFFFF', // White text when selected for better contrast
+            backgroundColor: '#242424', 
+            color: '#53d337',
         },
-        '&:hover': {
-            backgroundColor: 'rgba(46, 44, 92, 0.3)', // Dark purple for hover with increased opacity
-            color: '$text-color'
+    };
+
+    const fdToggle = {
+        textTransform: 'none',
+        border: `1px solid #ddd;`,
+        fontFamily: 'IBM Plex Sans, sans-serif',
+        fontSize: '0.8rem', 
+        transition: 'background-color 0.3s, color 0.3s',
+        backgroundColor: '#f9f9f9',
+        color: '#a9a9a9',
+        '&.Mui-selected': {
+            backgroundColor: '#455058', 
+            color: '#1493FF',
         },
-        '&.Mui-disabled': {
-            backgroundColor: '$offwhite-background', // Off-white background for disabled state
-            color: '$text-subtle', // Subtle text color for disabled state
+    };
+
+    const betMGMToggle = {
+        textTransform: 'none',
+        border: `1px solid #ddd;`,
+        fontFamily: 'IBM Plex Sans, sans-serif',
+        fontSize: '0.8rem', 
+        transition: 'background-color 0.3s, color 0.3s',
+        backgroundColor: '#f9f9f9',
+        color: '#a9a9a9',
+        '&.Mui-selected': {
+            backgroundColor: '#000', 
+            color: '#d4b962',
         },
+    };
+
+    const selectSx = {
+        fontFamily: 'IBM Plex Sans, sans-serif',
     };
 
     return (
@@ -148,44 +181,47 @@ const MatchupLinesAndStatsComponent: React.FC<{matchup: MatchupLinesAndStats}> =
                     </div>
                     <div className="market-toggle-container">
                         <ToggleButtonGroup size="small"
-                            value={alignment}
+                            value={bookmaker.toString()}
                             exclusive
-                            onChange={handleChange}
+                            onChange={handleBookmakerChange}
                             aria-label="Small sizes"
                         >
-                            <ToggleButton value="draftkings" sx={toggleButtonSx}>Draftkings</ToggleButton>
-                            <ToggleButton value="fanduel" sx={toggleButtonSx}>Fanduel</ToggleButton>
-                            <ToggleButton value="betMGM" sx={toggleButtonSx}>BetMGM</ToggleButton>
+                            <ToggleButton value="DraftKings" sx={dkToggle}>DraftKings</ToggleButton>
+                            <ToggleButton value="FanDuel" sx={fdToggle}>FanDuel</ToggleButton>
+                            <ToggleButton value="BetMGM" sx={betMGMToggle}>BetMGM</ToggleButton>
                         </ToggleButtonGroup>
                     </div>
                 </div>
                 <div className="sportsbook-lines-table-container">
                     <div className="select-wrapper">
                     <FormControl variant="standard" sx={{ minWidth: 128 }}>
-                        {/* <InputLabel id="demo-simple-select-standard-label">Age</InputLabel> */}
                         <Select
                             labelId="demo-simple-select-standard-label"
                             id="demo-simple-select-standard"
-                            value={undefined}
-                            onChange={() => {}}
-                            label="Age"
+                            value={currentLine}
+                            onChange={handleLineOptionsChange}
+                            sx={selectSx}
                         >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
+                            {
+                                lineOptions.map((o) => (
+                                    <MenuItem value={o.value}>{o.label}</MenuItem>
+                                ))
+                            }
                         </Select>
                     </FormControl>
                     </div>
                     <div className="table-wrapper">
                         {
-                            // TODO optimize this
-                            getBettingOddsCells().length > 1 && (<BettingOddsTable params={getBettingOddsTableParams()}/>)
+                            matchup.odds?.bookmakers !== undefined && (<BettingOddsTable params={getBettingOddsTableParams()}/>)
                         }
 
                     </div>
+                    
+                </div>
+                <div className="optimal-odds-table">
+                        {
+                            matchup.odds?.bookmakers !== undefined && (<OptimalOddsTable params={{}}/>)
+                        }
                 </div>
             </div>
         </div>

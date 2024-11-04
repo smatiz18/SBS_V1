@@ -81,7 +81,13 @@ const BettingOddsTable: React.FC<{params: BettingOddsTableParams}> = ({params}) 
                                 }
                                 return (
                                     <td key={colIndex}>
-                                        <OddsCell params={{ label: cellContent.point?.toString() || '', odds: cellContent.price?.toString() || ''}}/>
+                                        <OddsCell params={
+                                            { 
+                                                label: cellContent.point?.toString() || '', 
+                                                odds: cellContent.price?.toString() || '',
+                                                bookmaker: params.bookmaker
+                                            }
+                                        }/>
                                     </td>
                                 );     
                             })}
