@@ -1,1 +1,2 @@
 pub mod nba_feature_map_aggregators;
+pub mod optimal_odds_aggregators;

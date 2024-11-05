@@ -1,5 +1,6 @@
 use actix_web::{ web, HttpResponse, Responder};
 use crate::aggregators::nba_feature_map_aggregators::get_nba_backtest_feature_map;
+use crate::aggregators::optimal_odds_aggregators::get_optimal_odds_by_event_map;
 use crate::models::enums::sports_categories::SportsCategories;
 use crate::models::odds::odds::Event;
 use crate::models::services::get_backtest_feature_map_request::BacktestFeatureMapRequest;
@@ -9,6 +10,7 @@ use crate::models::services::get_nba_players_by_team_and_season_request::GetNbaP
 use crate::models::services::get_nba_players_by_team_and_season_response::GetNbaPlayersByTeamAndSeasonResponse;
 use crate::models::services::get_nba_player_stats_by_id_and_season_request::GetNbaPlayerStatsByIdAndSeasonRequest;
 use crate::models::services::get_odds_request::GetOddsRequest;
+use crate::models::services::get_odds_response::GetOddsResponse;
 use crate::routes::endpoints::{NBA_RAPID_API_HOST, NBA_RAPID_API_ROOT, THE_ODDS_API_ROOT};
 use reqwest::header::{HeaderMap, HeaderValue};
 use std::env;
@@ -190,8 +192,13 @@ pub async fn get_odds(
         .await {
             Ok(response) =>
                 match response.json::<Vec<Event>>().await { 
-                    Ok(resp_obj) => {
+                    Ok(events) => {
                         info!("Returned resp from {}", url.clone());
+
+                        let resp_obj = GetOddsResponse {
+                            events: events.clone(),
+                            optimal_odds_map: get_optimal_odds_by_event_map(events.clone()),
+                        };
                         HttpResponse::Ok().json(resp_obj)
                     },
                     Err(e) => {

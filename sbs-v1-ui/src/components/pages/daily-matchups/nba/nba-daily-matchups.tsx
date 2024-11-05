@@ -16,6 +16,7 @@ import { NbaTeamsMappedByName } from "../../../../constants/nba";
 import { format, toZonedTime } from 'date-fns-tz';
 import { SportsCategories } from "../../../../models/enums/sports-categories";
 import { GetNbaMatchupsMockResonse, GetNbaOddsMockResponse } from "../../../../test/nba-matchups-mocks";
+import { GetOddsResponse } from "../../../../models/services/get-odds-response";
 
 const NbaDailyMatchups = () => {
     const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
@@ -31,8 +32,8 @@ const NbaDailyMatchups = () => {
       return format(zonedDate, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
     }
 
-    function parseOddsData(events: Event[]) {
-      return events.reduce((map: any, event: Event) => {
+    function parseOddsData(getOddsResponse: GetOddsResponse) {
+      return getOddsResponse.events.reduce((map: any, event: Event) => {
         const teamNickname = NbaTeamsMappedByName[event.homeTeam]?.teamNickname;
         if (!map[teamNickname]) {
           map[teamNickname] = event;
