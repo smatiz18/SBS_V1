@@ -16,6 +16,9 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import React from "react";
 import OptimalOddsTable from "../optimal-odds-table/optimal-odds-table.component";
+import { selectSx } from "../../../models/form-styles/styles";
+import { OptimalOddsTableParams } from "../../../models/component/optimal-odds-table-params";
+import { OptimalOdds } from "../../../models/services/get-odds-response";
 
 const MatchupLinesAndStatsComponent: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
     const [bookmaker, setBookmaker] = useState(Bookmakers.DraftKings);
@@ -36,8 +39,8 @@ const MatchupLinesAndStatsComponent: React.FC<{matchup: MatchupLinesAndStats}> =
     
 
     function getBettingOddsTableRowOrdering() {
-        switch (matchup.sportsCategory) {
-            case SportsCategories.NBA:
+        switch (betOption) {
+            case BetOptions.Team:
                 /* maybe make only for team bet types */
                 return [matchup.away.teamNickname, matchup.home.teamNickname]; 
             default:
@@ -46,9 +49,9 @@ const MatchupLinesAndStatsComponent: React.FC<{matchup: MatchupLinesAndStats}> =
     }
 
     function getBettingOddsTableColOrdering() {
-        switch (matchup.sportsCategory) {
+        switch (betOption) {
             /* maybe make only for team bet types */
-            case SportsCategories.NBA:
+            case BetOptions.Team:
                 return ['Spread', 'Total', 'Moneyline']; 
             default:
                 return undefined;
@@ -64,6 +67,71 @@ const MatchupLinesAndStatsComponent: React.FC<{matchup: MatchupLinesAndStats}> =
             bookmaker: bookmaker
         } as BettingOddsTableParams;
     }
+
+    function getOptimalOddsTableRowOrdering() {
+        switch (betOption) {
+            /* maybe make only for team bet types */
+            case BetOptions.Team:
+                return ['Spread', 'Total', 'Moneyline']; 
+            default:
+                return undefined;
+        }
+    }
+
+    function getOptimalOddsTableColOrdering() {
+        return ['Odds', 'Sportsbook']
+    }
+
+    function transformOptimalOddsToOptimalOddsTableRow(optimalOdds: OptimalOdds) {
+        return [
+            {
+                rowKey: optimalOdds.betType,
+                colKey: 'Odds',
+                point: optimalOdds.point, 
+                price: optimalOdds.price, 
+            } as BettingOddsCell,
+            {
+                rowKey: optimalOdds.betType,
+                colKey: 'Sportsbook',
+                sportsbook: optimalOdds.bookmaker
+            }
+        ];
+    }
+
+    function getOptimalOddsTableParams() {
+        let optimalOddsTableParams;
+        if (betOption === BetOptions.Team) {
+            const awayTeamOptimalOddsCells = matchup.optimalOdds?.filter(
+                (optimalOdds: OptimalOdds) => optimalOdds.name === matchup.away.teamName
+            )
+            .flatMap(transformOptimalOddsToOptimalOddsTableRow);
+
+            const homeTeamOptimalOddsCells = matchup.optimalOdds?.filter(
+                (optimalOdds: OptimalOdds) => optimalOdds.name === matchup.home.teamName
+            )
+            .flatMap(transformOptimalOddsToOptimalOddsTableRow);
+
+            optimalOddsTableParams = [
+                {
+                    optimalOddsCells: awayTeamOptimalOddsCells,
+                    rowOrdering: getOptimalOddsTableRowOrdering(),
+                    colOrdering: getOptimalOddsTableColOrdering(),
+                    betOption: betOption,
+                    description: matchup.away.teamNickname
+                } as OptimalOddsTableParams,
+                {
+                    optimalOddsCells: awayTeamOptimalOddsCells,
+                    rowOrdering: getOptimalOddsTableRowOrdering(),
+                    colOrdering: getOptimalOddsTableColOrdering(),
+                    betOption: betOption,
+                    description: matchup.home.teamNickname
+                } as OptimalOddsTableParams
+            ];
+        }
+
+        return optimalOddsTableParams || [];
+    }
+
 
     function getBettingOddsCells() {
         let oddsCells: BettingOddsCell[] = [];
@@ -168,10 +236,6 @@ const MatchupLinesAndStatsComponent: React.FC<{matchup: MatchupLinesAndStats}> =
         },
     };
 
-    const selectSx = {
-        fontFamily: 'IBM Plex Sans, sans-serif',
-    };
-
     return (
         <div className="matchup-lines-and-stats-component-container">
             <div className="sportsbook-lines-container">
@@ -219,13 +283,14 @@ const MatchupLinesAndStatsComponent: React.FC<{matchup: MatchupLinesAndStats}> =
                     
                 </div>
                 <div className="optimal-odds-table">
-                        {
-                            matchup.odds?.bookmakers !== undefined && (<OptimalOddsTable params={{}}/>)
-                        }
+                    {
+                        matchup.optimalOdds !== undefined && getOptimalOddsTableParams()
+                            .map((optimalOddsTableParams) => (<OptimalOddsTable params={optimalOddsTableParams}/>))
+                    }
                 </div>
             </div>
         </div>
     );
 }
 
-export default MatchupLinesAndStatsComponent;
+export default MatchupLinesAndStatsComponent; 

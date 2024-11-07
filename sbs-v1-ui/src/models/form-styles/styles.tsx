@@ -7,3 +7,7 @@ export const reactInputStyles = {
   fontSize: '16px', // Same font size
   boxSizing: 'border-box', // Ensures padding is included in the height/width
 }
+
+export const selectSx = {
+  fontFamily: 'IBM Plex Sans, sans-serif',
+};

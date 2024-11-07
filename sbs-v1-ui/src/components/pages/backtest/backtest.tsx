@@ -1,5 +1,5 @@
-import BacktestParametersForm from "./backtest-parameters-form/backtest-parameters-form";
 import './backtest.scss';
+import BacktestParametersForm from "./backtest-parameters-form/backtest-parameters-form";
 import PerformanceChart from "./performance-chart/performance-chart";
 
 const Backtest = () => {

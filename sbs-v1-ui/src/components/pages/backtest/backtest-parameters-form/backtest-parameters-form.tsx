@@ -1,6 +1,5 @@
-import Select from 'react-select';
 import './backtest-parameters-form.scss';
-import { reactInputStyles } from '../../../../models/form-styles/styles';
+import { reactInputStyles, selectSx } from '../../../../models/form-styles/styles';
 import { SportsCategories } from '../../../../models/enums/sports-categories';
 import { useState } from 'react';
 import { StakingStrategies } from '../../../../models/enums/staking-strategies';
@@ -16,7 +15,12 @@ import { BacktestFeatureMapRequest } from '../../../../models/services/get-backt
 import { getFeatureMapForBacktest } from '../../../../services/backtest/services';
 import { BacktestFeatureMapResponse } from '../../../../models/services/get-backtest-feature-map-response';
 import { Market } from '../../../../models/odds/odds';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 
+// TODO finish this and clean it up
 const BacktestParametersForm = () => {
     const [sportsCategory, setSportsCategory] = useState(null as unknown as SportsCategories);
     const [season, setSeason] = useState(null);
@@ -30,42 +34,42 @@ const BacktestParametersForm = () => {
     const [player, setPlayer] = useState(null as unknown as {
         value: number; label: string; 
     });
-    const [historicalGameData, setHistoricalGameData] = useState([] as any);
-    const [historicalOddsData, setHistoricalOddsData] = useState([] as any);
-    const [historicalPlayersStatsAvgsData, setHistoricalPlayersStatsAvgsData] = useState([] as any);
     
     /** select options **************************************************************/
     /********************************************************************************/
-    const sportsCategoriesOptions: any[] = Object.values(SportsCategories).map((v) => {
-        return { value: v, label: v };
-    });
+    const getMenuItemsFromEnum = (e: any, addNone?: boolean) => {
+        const items =  Object.values(e).map((enumVal: any) => {
+            return <MenuItem value={enumVal}>{enumVal}</MenuItem>;
+        });
+        
+        return addNone ? items.concat([
+            <MenuItem value="">
+                <em>None</em>
+            </MenuItem>
+        ]) : items;
+    }
+
+    const getMenuItemsFromStrings = (strs: any, addNone?: boolean) => {
+        const items = strs.map((str: any) => {
+            return <MenuItem value={str}>{str}</MenuItem>;
+        });
+        
+        return addNone ? items.concat([
+            <MenuItem value="">
+                <em>None</em>
+            </MenuItem>
+        ]) : items;
+    }
+    const sportsCategoriesOptions: any[] = getMenuItemsFromEnum(SportsCategories, true);
     
-    const seasonOptions: any[] = [
-        { value: 2023, label: 2023 }
-    ];
+    const seasonOptions: any[] = getMenuItemsFromStrings(['2023'], true);
     
-    const betTypeOptions: any[] = [
-        {
-            label: 'Team',
-            options: Object.values(TeamBetTypes).map((v) => {
-                return { value: v, label: v };
-            }),
-        },
-        {
-            label: 'Player',
-            options: Object.values(PlayerBetTypes).map((v) => {
-                return { value: v, label: v }; 
-            })
-        },
-    ];
+    const betTypeOptions: any[] = getMenuItemsFromEnum(TeamBetTypes)
+        .concat(getMenuItemsFromEnum(PlayerBetTypes, true));
     
-    const stakingStrategyOptions: any[] = Object.values(StakingStrategies).map((v) => {
-        return { value: v, label: v };
-    });
-    
-    const oddsSourceOptions: any[] = Object.values(Bookmakers).map((v) => {
-        return { value: v, label: v };
-    });
+    const stakingStrategyOptions = getMenuItemsFromEnum(StakingStrategies, true);
+
+    const oddsSourceOptions = getMenuItemsFromEnum(Bookmakers, true);
     
     const loadTeamOptions = (_season: any, sport: SportsCategories) => {
         switch(sport) {
@@ -77,7 +81,6 @@ const BacktestParametersForm = () => {
                 break;
             }
             default: setTeamOptions([] as any); break;
-
         }
     };
 
@@ -117,8 +120,8 @@ const BacktestParametersForm = () => {
         loadTeamOptions(season, sportsCategory);
     }
 
-    const onBetTypeSelection = (betType: TeamBetTypes | PlayerBetTypes) => {
-        setBetType(betType);
+    const handleBetTypeChange = (betType: any) => {
+        setBetType(betType.target.value);
         if (new Set(Object.values(TeamBetTypes)).has(betType as TeamBetTypes)) {
             setIsPlayerBetType(false);
         } else {
@@ -126,6 +129,31 @@ const BacktestParametersForm = () => {
             loadPlayerOptions(season, sportsCategory);
         }
     }
+
+
+    const handleSportsCategoryChange = (event: SelectChangeEvent) => {
+        setSportsCategory(event.target.value as any);
+    };
+
+    const handleSeasonChange = (event: SelectChangeEvent) => {
+        setSeason(event.target.value as any);
+    };
+
+    // const handleBetTypeChange = (event: SelectChangeEvent) => {
+    //     setBetType(event.target.value as any);
+    // };
+
+    const handlePlayerChange = (event: SelectChangeEvent) => {
+        setPlayer(event.target.value as any);
+    };
+
+    const handleStakingStrategyChange = (event: SelectChangeEvent) => {
+        setStakingStrategy(event.target.value as any);
+    };
+
+    const handleOddsSourceChange = (event: SelectChangeEvent) => {
+        setOddsSource(event.target.value as any);
+    };
     /********************************************************************************/
 
 
@@ -219,10 +247,91 @@ const BacktestParametersForm = () => {
     /********************************************************************************/
     return (
         <div className="backtest-parameters-form-container">
-            {/** <div className="sub-header header">
-                Backtest Parameters
-            </div> */}
-            <form className="form-body">
+            <div className="backtest-parameters-form">
+                <FormControl variant="standard" sx={{ minWidth: 145 }}>
+                    <InputLabel id="demo-simple-select-label">Sports Category</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        value={''}
+                        onChange={handleSportsCategoryChange}
+                        sx={selectSx}
+                    >
+                        {sportsCategoriesOptions}
+                    </Select>
+                </FormControl>
+                <FormControl variant="standard" sx={{ minWidth: 145 }}>
+                    <InputLabel id="demo-simple-select-label">Season</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        value={''}
+                        onChange={handleSeasonChange}
+                        sx={selectSx}
+                    >
+                        {seasonOptions}
+                    </Select>
+                </FormControl>
+                <FormControl variant="standard" sx={{ minWidth: 145 }}>
+                    <InputLabel id="demo-simple-select-label">Bet Type</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        value={''}
+                        onChange={handleBetTypeChange}
+                        sx={selectSx}
+                    >
+                        {betTypeOptions}
+                    </Select>
+                </FormControl>
+                <FormControl variant="standard" sx={{ minWidth: 145 }}>
+                    <InputLabel id="demo-simple-select-label">Player</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        value={undefined}
+                        onChange={handlePlayerChange}
+                        sx={selectSx}
+                    >
+                    </Select>
+                </FormControl>
+                <FormControl variant="standard" sx={{ minWidth: 145 }}>
+                    <InputLabel id="demo-simple-select-label">Staking Strategy</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        value={undefined}
+                        onChange={handleStakingStrategyChange}
+                        sx={selectSx}
+                    >
+                        {stakingStrategyOptions}
+                    </Select>
+                    </FormControl>
+                <FormControl variant="standard" sx={{ minWidth: 145 }}>
+                    <InputLabel id="demo-simple-select-label">Odds Source</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        value={undefined}
+                        onChange={handleOddsSourceChange}
+                        sx={selectSx}
+                    >
+                        {oddsSourceOptions}
+                    </Select>
+                </FormControl>
+                {/* <FormControl variant="standard" sx={{ minWidth: 128 }}>
+                    <InputLabel id="demo-simple-select-label">Bankroll USD</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        value={{}}
+                        onChange={handleBankrollUSD}
+                        sx={selectSx}
+                    >
+                    </Select>
+                </FormControl> */}
+            </div>
+            {/* <form className="form-body">
                 <div className="strategy-inputs">
                     <div className="select-container">
                         <label className="select-label">Sports Category</label>
@@ -318,7 +427,7 @@ const BacktestParametersForm = () => {
                 <button className="run-button" onClick={runBacktest}>
                         Run
                 </button>
-            </form>
+            </form> */}
             <div className="advanced-settings-div">
                 <span className="text-button" onClick={openAdvancedSettings}>
                     Advanced Settings

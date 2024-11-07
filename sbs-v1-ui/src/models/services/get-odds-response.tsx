@@ -5,11 +5,11 @@ import { Event } from "../odds/odds"
 
 export interface GetOddsResponse {
     events: Event[],
-    optimalOdds?: Record<string, OptimalOdds>
+    optimalOdds?: Record<string, OptimalOdds[]>
 }
 
 export interface OptimalOdds {
-    bookamer: Bookmakers,
+    bookmaker: Bookmakers,
     name: string,
     price: number,
     betType: TeamBetTypes | PlayerBetTypes,

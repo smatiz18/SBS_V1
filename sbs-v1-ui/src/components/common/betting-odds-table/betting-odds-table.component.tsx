@@ -8,7 +8,7 @@ const BettingOddsTable: React.FC<{params: BettingOddsTableParams}> = ({params}) 
             return params.colOrdering.findIndex((rowKey: any) => rowKey === a) - params.colOrdering.findIndex((rowKey: any) => rowKey === b);
         });    
     
-        const uniqueRows = Array.from(new Set(params.bettingOddsCells.map((param: BettingOddsCell) => param.rowKey)))
+    const uniqueRows = Array.from(new Set(params.bettingOddsCells.map((param: BettingOddsCell) => param.rowKey)))
         .sort((a: any, b: any) => {
             return params.rowOrdering.findIndex((rowKey: any) => rowKey === a) - params.rowOrdering.findIndex((rowKey: any) => rowKey === b);
         });

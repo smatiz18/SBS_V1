@@ -17,7 +17,7 @@ export const NbaTeams: NbaTeamIdentifiers[] = [
     { teamName: 'Golden State Warriors', teamNickname: 'Warriors', nbaApiId: 11 },
     { teamName: 'Houston Rockets', teamNickname: 'Rockets', nbaApiId: 14 },
     { teamName: 'Indiana Pacers', teamNickname: 'Pacers', nbaApiId: 15 },
-    { teamName: 'LA Clippers', teamNickname: 'Clippers', nbaApiId: 16 },
+    { teamName: 'Los Angeles Clippers', teamNickname: 'Clippers', nbaApiId: 16 },
     { teamName: 'Los Angeles Lakers', teamNickname: 'Lakers', nbaApiId: 17 },
     { teamName: 'Memphis Grizzlies', teamNickname: 'Grizzlies', nbaApiId: 19 },
     { teamName: 'Miami Heat', teamNickname: 'Heat', nbaApiId: 20 },

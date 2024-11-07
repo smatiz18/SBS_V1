@@ -11,41 +11,13 @@ $transition-duration: 0.3s;
   }
 
 .backtest-parameters-form-container {
-  
-  .form-body {
+  display: flex;
+  flex-direction: column;
+
+  .backtest-parameters-form {
     display: flex;
     flex-direction: row;
-    padding: 5px 0px;
-    align-items: center;
-    justify-content: space-between;
-    
-    .strategy-inputs {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 1rem;
-      width: 100%;
-
-      .select-container,
-      .input-container {
-        display: flex;
-        flex-direction: column;
-        padding: 7px 0px;
-        min-width: 8rem;
-
-        input {
-          max-width: 5rem;
-        }
-
-        .select-label,
-        .input-label {
-          padding: 3px 0px;
-          font-size: small;
-          font-weight: 500;
-        }
-      }
-    }
+    gap: 1em;
   }
 
   .run-button {
@@ -77,6 +49,9 @@ $transition-duration: 0.3s;
   }
 
   .advanced-settings-div {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    
     .text-button {
       display: inline-block;
       color: variables.$main-purple;

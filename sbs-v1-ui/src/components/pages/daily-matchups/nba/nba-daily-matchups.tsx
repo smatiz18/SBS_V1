@@ -17,6 +17,7 @@ import { format, toZonedTime } from 'date-fns-tz';
 import { SportsCategories } from "../../../../models/enums/sports-categories";
 import { GetNbaMatchupsMockResonse, GetNbaOddsMockResponse } from "../../../../test/nba-matchups-mocks";
 import { GetOddsResponse } from "../../../../models/services/get-odds-response";
+import { AxiosResponse } from "axios";
 
 const NbaDailyMatchups = () => {
     const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
@@ -54,7 +55,7 @@ const NbaDailyMatchups = () => {
               bookmakers: Object.values(Bookmakers)
             };
             
-            let initOddsResponse;
+            let initOddsResponse: AxiosResponse<GetOddsResponse, any>;
             let matchupsResp;
             if (useMock) {
               initOddsResponse = { data: GetNbaOddsMockResponse } as any;
@@ -70,11 +71,11 @@ const NbaDailyMatchups = () => {
               matchup.away.teamLogo = NbaLogoMapper.get(matchup.away.teamNickname)!;
               matchup.home.teamLogo = NbaLogoMapper.get(matchup.home.teamNickname)!;
               const odds = oddsEventMappedByHomeTeam[matchup.home.teamNickname];              
-              
               if (odds && matchup.away.teamNickname === NbaTeamsMappedByName[odds.awayTeam]?.teamNickname) {
                 matchup.away.teamName = odds.awayTeam;
                 matchup.home.teamName = odds.homeTeam;
                 matchup.odds = odds;
+                matchup.optimalOdds = (initOddsResponse.data.optimalOdds || {})[odds.id];
               }
               return matchup;
             });
