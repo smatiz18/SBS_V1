@@ -100,9 +100,8 @@ const MatchupOptimalOdds: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}
         <div className="matchup-optimal-odds-component-container">
             <div className="optimal-odds-container">
                 <div className="header-container">
-                    <div className="header-wrapper">
-                        <h3>Optimal Odds</h3>
-                    </div>
+                    <h3>Optimal Odds</h3>
+                    <div className="line"></div>
                 </div>
                 <div className="optimal-odds-tables-container">
                     <div className="optimal-odds-tables">

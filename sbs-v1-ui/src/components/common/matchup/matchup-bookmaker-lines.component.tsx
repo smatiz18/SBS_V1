@@ -171,39 +171,42 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
         <div className="matchup-bookmaker-lines-component-container">
             <div className="sportsbook-lines-container">
                 <div className="header-container">
-                    <div className="header-wrapper">
-                        <h3>Sportsbook Lines</h3>
-                    </div>
-                    <div className="market-toggle-container">
-                        <ToggleButtonGroup size="small"
-                            value={bookmaker.toString()}
-                            exclusive
-                            onChange={handleBookmakerChange}
-                            aria-label="Small sizes"
-                        >
-                            <ToggleButton value="DraftKings" sx={dkToggle}>DraftKings</ToggleButton>
-                            <ToggleButton value="FanDuel" sx={fdToggle}>FanDuel</ToggleButton>
-                            <ToggleButton value="BetMGM" sx={betMGMToggle}>BetMGM</ToggleButton>
-                        </ToggleButtonGroup>
-                    </div>
+                    <h3>Sportsbook Lines</h3>
+                    <div className="line"></div>
                 </div>
+                
                 <div className="sportsbook-lines-table-container">
-                    <div className="select-wrapper">
-                    <FormControl variant="standard" sx={{ minWidth: 128 }}>
-                        <Select
-                            labelId="demo-simple-select-standard-label"
-                            id="demo-simple-select-standard"
-                            value={currentLine}
-                            onChange={handleLineOptionsChange}
-                            sx={selectSx}
-                        >
-                            {
-                                lineOptions.map((o) => (
-                                    <MenuItem value={o.value}>{o.label}</MenuItem>
-                                ))
-                            }
-                        </Select>
-                    </FormControl>
+                    <div className="table-actions">
+                        <div className="select-wrapper">
+                            <FormControl variant="standard" sx={{ width: '100%' }}>
+                                <Select
+                                    labelId="demo-simple-select-standard-label"
+                                    id="demo-simple-select-standard"
+                                    value={currentLine}
+                                    onChange={handleLineOptionsChange}
+                                    sx={selectSx}
+                                >
+                                    {
+                                        lineOptions.map((o) => (
+                                            <MenuItem value={o.value}>{o.label}</MenuItem>
+                                        ))
+                                    }
+                                </Select>
+                            </FormControl>
+                        </div>
+                        <div className="market-toggle-container">
+                            <ToggleButtonGroup size="small"
+                                value={bookmaker.toString()}
+                                exclusive
+                                onChange={handleBookmakerChange}
+                                aria-label="Small sizes"
+                                sx={{ width: '100%' }}
+                            >
+                                <ToggleButton value="DraftKings" sx={dkToggle}>DraftKings</ToggleButton>
+                                <ToggleButton value="FanDuel" sx={fdToggle}>FanDuel</ToggleButton>
+                                <ToggleButton value="BetMGM" sx={betMGMToggle}>BetMGM</ToggleButton>
+                            </ToggleButtonGroup>
+                        </div>
                     </div>
                     <div className="table-wrapper">
                         {

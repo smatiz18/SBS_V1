@@ -10,4 +10,5 @@ export const reactInputStyles = {
 
 export const selectSx = {
   fontFamily: 'IBM Plex Sans, sans-serif',
+  width: '100%'
 };

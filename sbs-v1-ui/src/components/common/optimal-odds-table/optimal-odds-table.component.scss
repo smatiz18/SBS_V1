@@ -2,13 +2,11 @@
 
 .optimal-odds-table-container {
     .optimal-odds-table {
-
         table {
             border-collapse: collapse;
             text-align: center;
 
             th, td {
-                border: 1px solid variables.$dk-dark-gray; // Border between cells
                 vertical-align: middle;
 
                 div[class*="odds-cell-"] {
@@ -31,6 +29,11 @@
                 .optimal-odds-table-col-header-cell,
                 .optimal-odds-table-row-header-cell {
                     width: 70px;
+                }
+
+                .optimal-odds-table-row-header-cell {
+                    text-align: right;
+                    padding-right: 5px;
                 }
 
                 .optimal-odds-table-description-cell {

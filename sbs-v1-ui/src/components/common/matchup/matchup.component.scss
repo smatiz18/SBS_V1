@@ -63,10 +63,25 @@
        }
         
         .lines-and-stats-content {
-            margin-top: 20px;
-            padding: 20px;
-            border-top: 1px solid variables.$gray-border;
             text-align: left;
+
+            .header-container {
+                display: flex;
+                align-items: center;
+                gap: 1rem; // Space between the text and the line
+                padding-top: 40px;
+                padding-bottom: 1.2rem;
+              
+                .line {
+                  flex-grow: 1;
+                  height: 1px; // Adjust thickness
+                  background-color: variables.$gray-border; // Adjust color as needed
+                }
+              
+                h3 {
+                  margin: 0; // Remove default margin for a cleaner look
+                }
+            }
             
             h3 {
                 margin-top: 0;

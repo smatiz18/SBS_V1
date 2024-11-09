@@ -6,11 +6,10 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup})
         <div className="matchup-quick-stats-component-container">
             <div className="quick-stats-container">
                 <div className="header-container">
-                        <div className="header-wrapper">
-                            <h3>Quick Stats</h3>
-                        </div>
-                    </div>
+                    <h3>Quick Stats</h3>
+                    <div className="line"></div>
                 </div>
+            </div>
         </div>
     )
 }

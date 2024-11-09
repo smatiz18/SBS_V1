@@ -9,21 +9,20 @@
         display: flex;
         flex-direction: column;
 
-        .header-container {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-        }
-
         .sportsbook-lines-table-container {
             display: flex;
             flex-direction: column;
+            gap: 1.25rem;
 
-            .select-wrapper {
-                width: 8rem;
-                padding-top: .5rem;
-                padding-bottom: .5rem;
+            .table-actions {
+                display: flex;
+                flex-direction: column;
+                gap: .75rem;
+                width: 100%;
+
+                .select-wrapper {
+                    width: 13.4rem;
+                }
             }
 
             .table-wrapper {
@@ -31,11 +30,6 @@
                 flex-direction: column;
                 justify-content: center;
             }
-        }
-
-        .market-toggle-container {
-            background-color: white;
-            color: white;
         }
     }
 }
