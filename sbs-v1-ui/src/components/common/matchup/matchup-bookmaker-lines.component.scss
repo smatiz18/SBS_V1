@@ -1,8 +1,10 @@
-@import "@radix-ui/colors/black-alpha.css";
-@import "@radix-ui/colors/mauve.css";
-@import "@radix-ui/colors/violet.css";
+@use '../../../variables';
 
-.matchup-lines-and-stats-component-container {
+.matchup-bookmaker-lines-component-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
     .sportsbook-lines-container {
         display: flex;
         flex-direction: column;

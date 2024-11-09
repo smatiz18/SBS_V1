@@ -44,7 +44,7 @@
 .odds-cell-DraftKings,
 .odds-cell-FanDuel,
 .odds-cell-BetMGM,
-.odds-cell- {
+div[className=".odds-cell-"] {
 
   width: 50px;
   height: min(100vw, 50px / 1.75);

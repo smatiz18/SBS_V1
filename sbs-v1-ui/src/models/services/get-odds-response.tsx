@@ -5,7 +5,7 @@ import { Event } from "../odds/odds"
 
 export interface GetOddsResponse {
     events: Event[],
-    optimalOdds?: Record<string, OptimalOdds[]>
+    optimalOddsMap?: Record<string, OptimalOdds[]>
 }
 
 export interface OptimalOdds {

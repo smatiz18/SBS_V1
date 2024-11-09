@@ -3,15 +3,13 @@ import { Bookmakers } from "../enums/bookmakers";
 import { BettingOddsCell } from "./betting-odds-table-params";
 
 export interface OptimalOddsTableParams {
-    optimalOddsCells: (BettingOddsCell | SportsbookCell)[],
-    rowOrdering?: string[],
-    colOrdering?: string[],
-    description?: string
+    optimalOddsCells: OptimalOddsCell[],
+    rowOrdering: any[],
+    colOrdering: any[],
+    description: any
     betOption: BetOptions,
 };
 
-export interface SportsbookCell {
-    rowKey: any,
-    colKey: any,
-    sportsbook: Bookmakers
+export interface OptimalOddsCell extends BettingOddsCell {
+    bookmaker: Bookmakers
 }

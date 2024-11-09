@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './matchup.component.scss';
 import { Matchup } from '../../../models/matchup';
-import MatchupLinesAndStatsComponent from './matchup-lines-and-stats.component';
 import { MatchupLinesAndStats } from '../../../models/matchup-lines-and-stats';
+import MatchupBookmakerLines from './matchup-bookmaker-lines.component';
+import MatchupOptimalOdds from './matchup-optimal-odds.component';
+import MatchupQuickStats from './matchup-quick-stats.component';
 
 const MatchupComponent: React.FC<{matchup: Matchup}> = ({matchup}) => {
   return (
@@ -31,7 +33,13 @@ const MatchupComponent: React.FC<{matchup: Matchup}> = ({matchup}) => {
       </div>
       <div className="lines-and-stats">
           <div className="lines-and-stats-content">
-            <MatchupLinesAndStatsComponent matchup={{...matchup} as MatchupLinesAndStats}/>
+            <MatchupBookmakerLines matchup={{...matchup} as MatchupLinesAndStats}/>
+          </div>
+          <div className="lines-and-stats-content">
+            <MatchupOptimalOdds matchup={{...matchup} as MatchupLinesAndStats}/>
+          </div>
+          <div className="lines-and-stats-content">
+            <MatchupQuickStats matchup={{...matchup} as MatchupLinesAndStats}/>
           </div>
       </div>
     </div>
