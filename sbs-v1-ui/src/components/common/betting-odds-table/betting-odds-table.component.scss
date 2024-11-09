@@ -4,7 +4,7 @@
 
     .betting-odds-table {        
         table {
-            border-spacing: 1px;
+            border-collapse: collapse;
         }
     }
     
@@ -16,8 +16,7 @@
     }
 
     .odds-table-row-header-cell {
-        width: 6.5rem;
-        margin-right: 1rem;
+        padding-right: .35rem;
         text-align: right;
         font-size: .8em;
     }

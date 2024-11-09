@@ -9,15 +9,15 @@
             th, td {
                 vertical-align: middle;
 
-                div[class*="odds-cell-"] {
-                    width: 40px;
-                    height: 8px;
-                }
+                // div[class*="odds-cell-"] {
+                //     width: 45px;
+                //     height: min(100vw, 40px / 1.75);
+                // }
             }
 
-            td {
-                font-size: .9rem;
-            }
+            // td {
+            //     font-size: .9rem;
+            // }
 
             th {
                 font-size: .8rem;
@@ -33,7 +33,7 @@
 
                 .optimal-odds-table-row-header-cell {
                     text-align: right;
-                    padding-right: 5px;
+                    padding-right: .35rem;
                 }
 
                 .optimal-odds-table-description-cell {

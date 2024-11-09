@@ -45,10 +45,9 @@
 .odds-cell-FanDuel,
 .odds-cell-BetMGM,
 div[className=".odds-cell-"] {
-
   width: 50px;
-  height: min(100vw, 50px / 1.75);
-  padding: 15px;
+  height: min(100vw, 40px / 1.75);
+  padding: 10px;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
@@ -62,11 +61,11 @@ div[className=".odds-cell-"] {
   }
 
   .odds-label {
-    font-size: .8em;
+    font-size: .7em;
   }
 
   .odds-value {
-    font-size: .8em;
+    font-size: .7em;
     font-weight: 600;
   }
 }

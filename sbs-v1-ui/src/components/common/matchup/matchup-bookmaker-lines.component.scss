@@ -10,22 +10,25 @@
         flex-direction: column;
 
         .sportsbook-lines-table-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            align-items: center;
+            width: 100%;
+            
             .table-actions {
                 display: flex;
                 flex-direction: column;
-                gap: .75rem;
+                align-items: center;
                 width: 100%;
-
+                gap: .75rem;
+                
                 .select-wrapper {
-                    width: 13.4rem;
+                    width: 9.25rem;
                 }
             }
 
             .table-wrapper {
+                width: 100%;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;

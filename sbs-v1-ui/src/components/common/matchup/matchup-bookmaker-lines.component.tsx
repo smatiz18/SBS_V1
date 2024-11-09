@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import './matchup-bookmaker-lines.component.scss';
 import { Bookmakers } from "../../../models/enums/bookmakers";
 import { MatchupLinesAndStats } from "../../../models/matchup-lines-and-stats";
@@ -12,8 +12,6 @@ import { NbaTeamsMappedByName } from "../../../constants/nba";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import React from "react";
 import { selectSx } from "../../../models/form-styles/styles";
 import { getBetTypeLabel } from "../../../utils/utils";
@@ -24,11 +22,8 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
     const [currentLine, setCurrentLine] = useState('TeamLines');
     const lineOptions = [{ label: 'Team Lines', value: 'TeamLines'}];
     
-    const handleBookmakerChange = (
-      _event: React.MouseEvent<HTMLElement>,
-      bookmaker: string,
-    ) => {
-      setBookmaker(bookmaker as Bookmakers);
+    const handleBookmakerChange = (event: SelectChangeEvent) => {
+      setBookmaker(event.target.value as Bookmakers);
     };
 
     const handleLineOptionsChange = (event: SelectChangeEvent) => {
@@ -174,7 +169,6 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
                     <h3>Sportsbook Lines</h3>
                     <div className="line"></div>
                 </div>
-                
                 <div className="sportsbook-lines-table-container">
                     <div className="table-actions">
                         <div className="select-wrapper">
@@ -194,18 +188,22 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
                                 </Select>
                             </FormControl>
                         </div>
-                        <div className="market-toggle-container">
-                            <ToggleButtonGroup size="small"
-                                value={bookmaker.toString()}
-                                exclusive
-                                onChange={handleBookmakerChange}
-                                aria-label="Small sizes"
-                                sx={{ width: '100%' }}
-                            >
-                                <ToggleButton value="DraftKings" sx={dkToggle}>DraftKings</ToggleButton>
-                                <ToggleButton value="FanDuel" sx={fdToggle}>FanDuel</ToggleButton>
-                                <ToggleButton value="BetMGM" sx={betMGMToggle}>BetMGM</ToggleButton>
-                            </ToggleButtonGroup>
+                        <div className="select-wrapper">
+                            <FormControl variant="standard" sx={{ width: '100%' }}>
+                                <Select
+                                    labelId="demo-simple-select-standard-label"
+                                    id="demo-simple-select-standard"
+                                    value={bookmaker}
+                                    onChange={handleBookmakerChange}
+                                    sx={selectSx}
+                                >
+                                    {
+                                        Object.values(Bookmakers).map((o) => (
+                                            <MenuItem value={o}>{o}</MenuItem>
+                                        ))
+                                    }
+                                </Select>
+                            </FormControl>
                         </div>
                     </div>
                     <div className="table-wrapper">
