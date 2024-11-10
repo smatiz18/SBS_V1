@@ -10,6 +10,7 @@ pub const GET_HISTORICAL_GAMES: &str = "/historical-games/get";
 pub const GET_HISTORICAL_ODDS: &str = "/historical-odds/get";
 pub const GET_PLAYERS_BY_TEAM_AND_SEASON: &str = "/players-by-team-and-season/get";
 pub const GET_PLAYER_STATS_BY_ID_AND_SEASON: &str = "/player-stats-by-id-and-season/get";
+pub const GET_GAME_STATS_AVGS: &str = "/game-stats-avgs/get";
 pub const GET_BACKTEST_FEATURE_MAP: &str = "/backtest-feature-map/get";
 pub const GET_ODDS: &str = "/odds/get";
 

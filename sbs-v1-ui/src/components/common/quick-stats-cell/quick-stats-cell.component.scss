@@ -1,0 +1,11 @@
+@use '../../../variables';
+
+.quick-stats-cell-container {
+    .quick-stats-label-positive {
+        color: variables.$color-1;
+    }
+
+    .quick-stats-label-negative {
+        color: variables.$color-6;
+    }
+}

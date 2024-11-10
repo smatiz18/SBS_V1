@@ -13,13 +13,11 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             align-items: center;
-            width: 100%;
             
             .table-actions {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                width: 100%;
                 gap: .75rem;
                 
                 .select-wrapper {
@@ -28,10 +26,7 @@
             }
 
             .table-wrapper {
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
+                padding-right: 25px;
             }
         }
     }

@@ -7,3 +7,5 @@ pub mod get_backtest_feature_map_request;
 pub mod get_backtest_feature_map_response;
 pub mod get_odds_request;
 pub mod get_odds_response;
+pub mod get_nba_game_stats_avgs_request;
+pub mod get_nba_game_stats_avgs_response;

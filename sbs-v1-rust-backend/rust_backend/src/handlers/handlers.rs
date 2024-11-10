@@ -1,9 +1,12 @@
 use actix_web::{ web, HttpResponse, Responder};
 use crate::aggregators::nba_feature_map_aggregators::get_nba_backtest_feature_map;
 use crate::aggregators::optimal_odds_aggregators::get_optimal_odds_by_event_map;
+use crate::models::db::nba_game_stats_avgs_historical::NbaGameStatsAvgsHistorical;
 use crate::models::enums::sports_categories::SportsCategories;
 use crate::models::odds::odds::Event;
 use crate::models::services::get_backtest_feature_map_request::BacktestFeatureMapRequest;
+use crate::models::services::get_nba_game_stats_avgs_request::GetNbaGameStatsAvgRequest;
+use crate::models::services::get_nba_game_stats_avgs_response::GetNbaGameStatsAvgResponse;
 use crate::models::services::get_nba_games_by_team_and_season_request::GetNbaGamesByTeamAndSeasonRequest;
 use crate::models::services::get_nba_odds_by_team_and_season_request::GetNbaOddsByTeamAndSeasonRequest;
 use crate::models::services::get_nba_players_by_team_and_season_request::GetNbaPlayersByTeamAndSeasonRequest;
@@ -13,11 +16,12 @@ use crate::models::services::get_odds_request::GetOddsRequest;
 use crate::models::services::get_odds_response::GetOddsResponse;
 use crate::routes::endpoints::{NBA_RAPID_API_HOST, NBA_RAPID_API_ROOT, THE_ODDS_API_ROOT};
 use reqwest::header::{HeaderMap, HeaderValue};
+use std::collections::HashMap;
 use std::env;
 use log::{info, error};
 
 use crate::models::app_state::AppState;
-use crate::db::{nba_games_historical_mongo_dao, nba_odds_historical_mongo_dao, nba_player_game_stats_avgs_historical_mongo_dao};
+use crate::db::{nba_game_stats_avgs_historical_mongo_dao, nba_games_historical_mongo_dao, nba_odds_historical_mongo_dao, nba_player_game_stats_avgs_historical_mongo_dao};
 
 /** mongo handlers **************************************************************/
 /********************************************************************************/
@@ -101,6 +105,38 @@ pub async fn get_feature_map_for_backtest(
             HttpResponse::Ok()
                 .json(get_nba_backtest_feature_map(app_state.get_ref().clone(), req.into_inner()).await),
         _ => HttpResponse::Ok().body("Test!")
+    }
+}
+
+pub async fn get_nba_game_stats_avg_response(
+    app_state: web::Data<AppState>,
+    req: web::Json<GetNbaGameStatsAvgRequest>
+) -> impl Responder {
+    info!("Recieved req for get_nba_game_stats_avg_response id");
+    let objs_result = nba_game_stats_avgs_historical_mongo_dao::get_nba_game_stats_avgs_by_team_and_season(
+        &app_state.nba_game_stats_avgs_historical_collection, 
+        req.team_ids.to_owned(), 
+        req.season, 
+        req.season_type.to_owned()
+    ).await;
+
+    match objs_result {
+        Ok(objs) => {
+            info!("Returned {} docs from mongo", objs.len());
+            let mapped_objs: HashMap<String, NbaGameStatsAvgsHistorical> = objs.into_iter()
+                .map(|obj| (obj.team_id.to_string(), obj))
+                .collect();
+
+            let response_obj = GetNbaGameStatsAvgResponse {
+                game_stats_avgs: mapped_objs
+            };
+
+            HttpResponse::Ok().json(response_obj)
+        },
+        Err(e) => {
+            error!("Failed to get nba stats avgs: {:?}", e);
+            HttpResponse::InternalServerError().body(format!("{:?}", e))
+        }
     }
 }
 /********************************************************************************/

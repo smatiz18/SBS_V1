@@ -10,10 +10,10 @@ use std::env;
 use actix_web::{web, App, HttpServer };
 use db::base_mongo::get_collection;
 use handlers::handlers::{
-   get_feature_map_for_backtest, get_nba_games_by_team_and_season, get_nba_odds_by_team_and_season, get_nba_player_stats_by_id_and_season, get_nba_players_by_team_and_season, get_odds, test
+   get_feature_map_for_backtest, get_nba_game_stats_avg_response, get_nba_games_by_team_and_season, get_nba_odds_by_team_and_season, get_nba_player_stats_by_id_and_season, get_nba_players_by_team_and_season, get_odds, test
 };
 use routes::endpoints::{
-   BACKTEST_API_ROOT, GET_BACKTEST_FEATURE_MAP, GET_HISTORICAL_GAMES, GET_HISTORICAL_ODDS, GET_ODDS, GET_PLAYERS_BY_TEAM_AND_SEASON, GET_PLAYER_STATS_BY_ID_AND_SEASON, NBA_API_ROOT, ODDS_API_ROOT, SERVER_URL
+   BACKTEST_API_ROOT, GET_BACKTEST_FEATURE_MAP, GET_GAME_STATS_AVGS, GET_HISTORICAL_GAMES, GET_HISTORICAL_ODDS, GET_ODDS, GET_PLAYERS_BY_TEAM_AND_SEASON, GET_PLAYER_STATS_BY_ID_AND_SEASON, NBA_API_ROOT, ODDS_API_ROOT, SERVER_URL
 };
 use db::constants::{
    SBS_V1_DB_NAME, 
@@ -88,6 +88,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                .route(GET_HISTORICAL_ODDS, web::get().to(get_nba_odds_by_team_and_season))
                .route(GET_PLAYERS_BY_TEAM_AND_SEASON, web::get().to(get_nba_players_by_team_and_season))
                .route(GET_PLAYER_STATS_BY_ID_AND_SEASON, web::get().to(get_nba_player_stats_by_id_and_season))
+               .route(GET_GAME_STATS_AVGS, web::post().to(get_nba_game_stats_avg_response))
                .route("/test", web::get().to(test)),
          )
          .default_service(web::route().to(proxy))  // Uses the proxy handler for all unmatched routes

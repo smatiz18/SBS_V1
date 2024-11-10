@@ -36,12 +36,13 @@ const MatchupComponent: React.FC<{matchup: Matchup}> = ({matchup}) => {
             <MatchupBookmakerLines matchup={{...matchup} as MatchupLinesAndStats}/>
           </div>
           <div className="lines-and-stats-content">
-            <MatchupOptimalOdds matchup={{...matchup} as MatchupLinesAndStats}/>
-          </div>
-          <div className="lines-and-stats-content">
             <MatchupQuickStats matchup={{...matchup} as MatchupLinesAndStats}/>
           </div>
+          <div className="lines-and-stats-content">
+            <MatchupOptimalOdds matchup={{...matchup} as MatchupLinesAndStats}/>
+          </div>
       </div>
+      <div className="footer"></div>
     </div>
   );
 };

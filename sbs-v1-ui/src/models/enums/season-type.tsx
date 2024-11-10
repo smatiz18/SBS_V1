@@ -1,5 +1,5 @@
 export enum SeasonType {
-    Regular = 'REGULER',
+    Regular = 'REGULAR',
     Playoff = 'PLAYOFF',
     All = 'ALL'
 }

@@ -4,13 +4,13 @@ use bson::{doc, Document};
 use chrono::{NaiveDate, Utc};
 use mongodb::Collection;
 
-use crate::db::nba_games_avgs_historical_mongo_dao::get_nba_games_avgs_by_team_and_season;
+use crate::db::nba_game_stats_avgs_historical_mongo_dao::get_nba_game_stats_avgs_by_team_and_season;
 use crate::db::nba_games_historical_mongo_dao::{find as nba_games_hist_coll_find, get_nba_games_by_team_and_season};
 use crate::db::nba_player_game_stats_avgs_historical_mongo_dao::get_nba_player_stats_avgs_by_id_and_season;
 use crate::models::app_state::AppState;
 use crate::models::backtest_features::nba_backtest_player_features::NbaBacktestPlayerFeatures;
 use crate::models::backtest_features::nba_backtest_team_features::NbaBacktestTeamFeatures;
-use crate::models::db::nba_games_avgs_historical::GameStats;
+use crate::models::db::nba_game_stats_avgs_historical::GameStats;
 use crate::models::db::nba_player_game_stats_historical::PlayerStatsObj;
 use crate::models::enums::feature_maps::FeatureMaps;
 use crate::models::services::get_backtest_feature_map_request::BacktestFeatureMapRequest;
@@ -62,7 +62,7 @@ pub async fn get_nba_backtest_feature_map(
 pub async fn get_feature_map_for_team_bet_type(
     req: BacktestFeatureMapRequest, 
     nba_games_historical_mongo_coll: Collection<Document>,
-    nba_games_avgs_historical_mongo_coll: Collection<Document> 
+    nba_game_stats_avgs_historical_mongo_coll: Collection<Document> 
 ) -> FeatureMaps {
     let mut nba_games_hist_res = get_nba_games_by_team_and_season(
         &nba_games_historical_mongo_coll, 
@@ -74,9 +74,9 @@ pub async fn get_feature_map_for_team_bet_type(
 
     nba_games_hist_res.sort_by(|a, b| a.date_start.cmp(&b.date_start));
 
-    let nba_games_avgs_hist_res = get_nba_games_avgs_by_team_and_season(
-        &nba_games_avgs_historical_mongo_coll, 
-        req.team_id, 
+    let nba_games_avgs_hist_res = get_nba_game_stats_avgs_by_team_and_season(
+        &nba_game_stats_avgs_historical_mongo_coll, 
+        vec!(req.team_id), 
         req.season,
         Some(req.season_type)
     )
