@@ -8,15 +8,27 @@ const QuickStatsCell: React.FC<{params: QuickStatsCellParams}> = ({params}) => {
         <div className="quick-stats-cell-container">
             { 
                 params.positive && 
-                <span className="quick-stats-label-positive">{fixedLabel}</span>
+                <div className="quick-stats-label-positive">
+                    <span>{fixedLabel}</span>
+                </div>
             }
             { 
                 params.negative && 
-                <span className="quick-stats-label-negative">{fixedLabel}</span>
+                <div className="quick-stats-label-negative">
+                    <span>{fixedLabel}</span>
+                </div>
             }
             {
-                !params.positive && !params.negative &&
-                <span className="quick-stats-label">{fixedLabel}</span>
+                params.aggregation &&
+                <div className="quick-stats-label-aggregation">
+                    <span >{fixedLabel}</span>
+                </div>
+            }
+            {
+                !params.positive && !params.negative && !params.aggregation &&
+                <div className="quick-stats-label">
+                    <span>{fixedLabel}</span>
+                </div>
             }
         </div>
     );

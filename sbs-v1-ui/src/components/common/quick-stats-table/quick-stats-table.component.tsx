@@ -31,18 +31,6 @@ const QuickStatsTable: React.FC<{params: QuickStatsTableParams}> = ({params}) =>
                         )
                     })
                 }
-                {
-                    params.aggregations && 
-                        params.aggregations.map((aggRow) => (
-                            <tr>
-                                {
-                                    aggRow.map((agg: any) => (
-                                        <td className="agg-cell">{agg}</td>
-                                    ))
-                                }
-                            </tr>    
-                        ))
-                }
             </table>
         </div>
     );

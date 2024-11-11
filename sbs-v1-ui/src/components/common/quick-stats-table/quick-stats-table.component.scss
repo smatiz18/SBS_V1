@@ -5,6 +5,10 @@
         border-collapse: collapse;
         width: 100%;
 
+        th {
+            background-color: rgb(variables.$fd-gray, .2);
+        }
+
         th, td {
             font-size: .7em;
         }
@@ -12,12 +16,6 @@
         td, th {
             border: 1px solid variables.$gray-border;
             padding: 3px;
-        }
-
-        td {
-            .agg-cell {
-                font-weight: 600;
-            }
         }
     }
 

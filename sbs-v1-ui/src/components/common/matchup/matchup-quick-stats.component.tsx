@@ -10,6 +10,7 @@ import { SeasonType } from "../../../models/enums/season-type";
 import { GameStats, NbaGameStatsAvgsHistorical } from "../../../models/services/get-nba-game-stats-avgs-response";
 import { GamePeriods } from "../../../models/enums/game-periods";
 import QuickStatsTable from "../quick-stats-table/quick-stats-table.component";
+import { QuickStatsCellParams } from "../../../models/component/quick-stats-cell-params";
 
 const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
     const [betOption, setBetOption] = useState(BetOptions.Team); 
@@ -17,7 +18,7 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup})
     const [gamePeriod, setGamePeriod] = useState(GamePeriods.Total);
     const [quickStatsTableRows, setQuickStatsTableRows] = useState([] as any[]);
     const [quickStatsTableHeaders, setQuickStatsTableHeaders] = useState([] as any[]);
-    const [quickStatsTableAggregations, setQuickStatsTableAggregations] = useState([] as any[]);
+    
     /** init api calls */
     useEffect(() => {    
         setQuickStatsTable();
@@ -26,7 +27,7 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup})
 
     function getTeamStatsAvgTableHeaders() {
         // This can be used for quarters or halves linescores 
-        return ['Team', '# Games', 'Streak', 'W/L', 'Avg', '5 Avg', '10 Avg', 'Std. Dev.'];
+        return ['Team', 'Avg', '5 Avg', '10 Avg', 'σ'];
     }   
 
     function getGamesStatsPeriodValue(obj: GameStats) {
@@ -89,9 +90,6 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup})
 
         return [
             { label: obj.teamNickname },
-            { label: Object.values(obj.gameStats).length },
-            { label: '-' },
-            { label: '-' },
             expandingAvgCellParams,
             avg5CellParams,
             avg10CellParams,
@@ -112,8 +110,7 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup})
         });
         aggRow[0] = 'Aggregation';
 
-        
-        // TODO make this as QuickStatsCell and just configure styling there
+        aggRow = aggRow.map((agg) => ({ label: agg, aggregation: true } as QuickStatsCellParams));
         return aggRow; 
     }
     
@@ -133,13 +130,13 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup})
                 const homeTeamAvgs = gameStatsAvgs.data.gameStatsAvgs[homeTeamId];
                 const awayTeamAvgsRow = mapNbaGameStatsAvgsQuickStatsToQuickStatsTableRowCells(awayTeamAvgs) || [];
                 const homeTeamAvgsRow = mapNbaGameStatsAvgsQuickStatsToQuickStatsTableRowCells(homeTeamAvgs) || [];
-                const aggregatedTotalsRow = aggregateTotals([awayTeamAvgsRow, homeTeamAvgsRow], [4,5,6]);
+                const aggregatedTotalsRow = aggregateTotals([awayTeamAvgsRow, homeTeamAvgsRow], [1,2,3,4]);
                 setQuickStatsTableRows([
                     awayTeamAvgsRow,
                     homeTeamAvgsRow,
+                    aggregatedTotalsRow
                 ]);
                 setQuickStatsTableHeaders(getTeamStatsAvgTableHeaders);
-                setQuickStatsTableAggregations([aggregatedTotalsRow]);
                 break;
             case QuickStatsAggregation.Probabilities:
                 setQuickStatsTableRows([]);
@@ -162,7 +159,6 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup})
                         {
                             rows: quickStatsTableRows, 
                             headers: quickStatsTableHeaders, 
-                            aggregations: quickStatsTableAggregations
                         }
                     }
                     />

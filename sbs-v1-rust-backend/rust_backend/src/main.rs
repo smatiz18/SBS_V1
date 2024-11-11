@@ -5,6 +5,7 @@ mod routes;
 mod proxy;
 mod aggregators;
 mod utils;
+mod constants;
 
 use std::env;
 use actix_web::{web, App, HttpServer };
