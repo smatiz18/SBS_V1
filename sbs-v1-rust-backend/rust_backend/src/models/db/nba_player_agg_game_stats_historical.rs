@@ -1,9 +1,10 @@
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
-use super::nba_player_game_stats_historical::PlayerStatsObj;
+
+use super::nba_game_team_stats_historical::PlayerStatsObj;
 
 #[derive(Serialize, Deserialize, Clone)]
-pub struct NbaPlayerGameStatsAvgsHistorical {
+pub struct NbaPlayerAggGameStatsHistorical {
     #[serde(rename = "_id")]
     pub mongo_id: String,
     
@@ -29,13 +30,4 @@ pub struct NbaPlayerGameStatsAvgsHistorical {
     
     #[serde(rename = "playerStats")]
     pub player_stats: HashMap<String, PlayerStatsObj>,
-    
-    #[serde(rename = "expandingAvg")]
-    pub expanding_avg: HashMap<String, PlayerStatsObj>,
-    
-    #[serde(rename = "rollingAvg5")]
-    pub rolling_avg_5: HashMap<String, PlayerStatsObj>,
-    
-    #[serde(rename = "rollingAvg10")]
-    pub rolling_avg_10: HashMap<String, PlayerStatsObj>,
 }

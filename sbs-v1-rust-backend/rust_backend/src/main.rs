@@ -6,23 +6,19 @@ mod proxy;
 mod aggregators;
 mod utils;
 mod constants;
+mod data_loaders;
 
 use std::env;
 use actix_web::{web, App, HttpServer };
-use db::base_mongo::get_collection;
 use handlers::handlers::{
-   get_feature_map_for_backtest, get_nba_game_stats_avg_response, get_nba_games_by_team_and_season, get_nba_odds_by_team_and_season, get_nba_player_stats_by_id_and_season, get_nba_players_by_team_and_season, get_odds, test
+   get_feature_map_for_backtest, get_nba_games_by_team_and_season, get_nba_odds_by_team_and_season, get_nba_player_stats_by_id_and_season, get_nba_players_by_team_and_season, get_nba_team_agg_game_stats, get_odds, test
 };
 use routes::endpoints::{
-   BACKTEST_API_ROOT, GET_BACKTEST_FEATURE_MAP, GET_GAME_STATS_AVGS, GET_HISTORICAL_GAMES, GET_HISTORICAL_ODDS, GET_ODDS, GET_PLAYERS_BY_TEAM_AND_SEASON, GET_PLAYER_STATS_BY_ID_AND_SEASON, NBA_API_ROOT, ODDS_API_ROOT, SERVER_URL
+   BACKTEST_API_ROOT, GET_BACKTEST_FEATURE_MAP, GET_NBA_TEAM_AGG_GAME_STATS, GET_HISTORICAL_GAMES, GET_HISTORICAL_ODDS, GET_ODDS, GET_PLAYERS_BY_TEAM_AND_SEASON, GET_PLAYER_STATS_BY_ID_AND_SEASON, NBA_API_ROOT, ODDS_API_ROOT, SERVER_URL
 };
-use db::constants::{
-   SBS_V1_DB_NAME, 
-   NBA_GAMES_HISTORICAL_COLLECTION_NAME, 
-   NBA_ODDS_HISTORICAL_COLLECTION_NAME, 
-   NBA_PLAYER_GAME_STATS_AVGS_HISTORICAL,
-   NBA_GAME_STATS_AVGS_HISTORICAL
-};
+use db::{base_mongo::get_collection, constants::{
+   NBA_GAMES_HISTORICAL_COLLECTION_NAME, NBA_ODDS_HISTORICAL_COLLECTION_NAME, NBA_PLAYER_AGGREGATED_GAME_STATS_HISTORICAL, NBA_TEAM_AGGREGATED_GAME_STATS_HISTORICAL, SBS_V1_DB_NAME
+}};
 use proxy::proxy_handler::proxy;
 use actix_cors::Cors;
 use models::app_state::AppState;
@@ -46,23 +42,23 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
       SBS_V1_DB_NAME, 
       NBA_ODDS_HISTORICAL_COLLECTION_NAME
    ).await?;
-   let nba_player_game_stats_avgs_historical_collection = get_collection(
+   let nba_player_aggregated_game_stats_historical_collection = get_collection(
       &client_uri, 
       SBS_V1_DB_NAME, 
-      NBA_PLAYER_GAME_STATS_AVGS_HISTORICAL
+      NBA_PLAYER_AGGREGATED_GAME_STATS_HISTORICAL
    ).await?;
-   let nba_game_stats_avgs_historical_collection = get_collection(
+   let nba_team_aggregated_game_stats_historical_collection = get_collection(
       &client_uri, 
       SBS_V1_DB_NAME, 
-      NBA_GAME_STATS_AVGS_HISTORICAL
+      NBA_TEAM_AGGREGATED_GAME_STATS_HISTORICAL
    ).await?;
 
    // Wrap collections in AppState
    let app_state = AppState {
       nba_games_historical_collection: nba_games_historical_collection.clone(),
       nba_odds_historical_collection: nba_odds_historical_collection.clone(),
-      nba_player_game_stats_avgs_historical_collection: nba_player_game_stats_avgs_historical_collection.clone(),
-      nba_game_stats_avgs_historical_collection: nba_game_stats_avgs_historical_collection.clone()
+      nba_player_aggregated_game_stats_historical_collection: nba_player_aggregated_game_stats_historical_collection.clone(),
+      nba_team_aggregated_game_stats_historical_collection: nba_team_aggregated_game_stats_historical_collection.clone()
    };
 
    let _ = HttpServer::new(move || {
@@ -89,7 +85,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                .route(GET_HISTORICAL_ODDS, web::get().to(get_nba_odds_by_team_and_season))
                .route(GET_PLAYERS_BY_TEAM_AND_SEASON, web::get().to(get_nba_players_by_team_and_season))
                .route(GET_PLAYER_STATS_BY_ID_AND_SEASON, web::get().to(get_nba_player_stats_by_id_and_season))
-               .route(GET_GAME_STATS_AVGS, web::post().to(get_nba_game_stats_avg_response))
+               .route(GET_NBA_TEAM_AGG_GAME_STATS, web::post().to(get_nba_team_agg_game_stats))
                .route("/test", web::get().to(test)),
          )
          .default_service(web::route().to(proxy))  // Uses the proxy handler for all unmatched routes

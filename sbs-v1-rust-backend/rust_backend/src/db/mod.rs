@@ -1,7 +1,7 @@
 pub mod base_mongo;
 pub mod nba_games_historical_mongo_dao;
 pub mod nba_odds_historical_mongo_dao;
-pub mod nba_player_game_stats_avgs_historical_mongo_dao;
+pub mod nba_player_aggregated_game_stats_historical_mongo_dao;
 pub mod constants;
-pub mod nba_game_stats_avgs_historical_mongo_dao;
+pub mod nba_team_aggregated_game_stats_historical_mongo_dao;
 pub mod nba_team_stats_historical_mongo_dao;

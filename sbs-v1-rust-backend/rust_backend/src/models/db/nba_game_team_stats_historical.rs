@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
 
 #[derive(Serialize, Deserialize, Clone)]
-pub struct NbaPlayerGameStatsHistorical {
+pub struct NbaGameTeamStatsHistorical {
     #[serde(rename = "_id")]
     pub mongo_id: String,
     

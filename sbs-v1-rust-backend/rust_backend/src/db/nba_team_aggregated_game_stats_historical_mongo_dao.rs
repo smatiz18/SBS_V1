@@ -1,16 +1,16 @@
 use bson::{doc, from_document, Document};
 use mongodb::Collection;
 use crate::db::base_mongo::find;
-use crate::models::db::nba_game_stats_avgs_historical::NbaGameStatsAvgsHistorical;
+use crate::models::db::nba_team_agg_game_stats_historical::NbaTeamAggGameStatsHistorical;
 use crate::models::enums::season_type::SeasonType;
 use mongodb::error::Result;
 
-pub async fn get_nba_game_stats_avgs_by_team_and_season(
+pub async fn get_nba_team_agg_game_stats(
     collection: &Collection<Document>, 
     team_ids: Vec<f64>, 
     season: u32,
     season_type: Option<SeasonType>
-) -> Result<Vec<NbaGameStatsAvgsHistorical>> {
+) -> Result<Vec<NbaTeamAggGameStatsHistorical>> {
 
    let query = match season_type {
       Some(s) => {
@@ -31,9 +31,9 @@ pub async fn get_nba_game_stats_avgs_by_team_and_season(
 
    let results = find(&collection, query, None).await?;
 
-   let mapped_results: Vec<NbaGameStatsAvgsHistorical> = results.iter()
+   let mapped_results: Vec<NbaTeamAggGameStatsHistorical> = results.iter()
       .flat_map(|doc| 
-         match from_document::<NbaGameStatsAvgsHistorical>(doc.clone()) {
+         match from_document::<NbaTeamAggGameStatsHistorical>(doc.clone()) {
             Ok(obj) => Some(obj),
             Err(e) => {
                println!("Failed to convert doc to obj: {}", e);

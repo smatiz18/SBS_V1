@@ -1,12 +1,12 @@
 use actix_web::{ web, HttpResponse, Responder};
 use crate::aggregators::nba_feature_map_aggregators::get_nba_backtest_feature_map;
 use crate::aggregators::optimal_odds_aggregators::get_optimal_odds_by_event_map;
-use crate::models::db::nba_game_stats_avgs_historical::NbaGameStatsAvgsHistorical;
+use crate::models::db::nba_team_agg_game_stats_historical::NbaTeamAggGameStatsHistorical;
 use crate::models::enums::sports_categories::SportsCategories;
 use crate::models::odds::odds::Event;
 use crate::models::services::get_backtest_feature_map_request::BacktestFeatureMapRequest;
-use crate::models::services::get_nba_game_stats_avgs_request::GetNbaGameStatsAvgRequest;
-use crate::models::services::get_nba_game_stats_avgs_response::GetNbaGameStatsAvgResponse;
+use crate::models::services::get_nba_team_agg_game_stats_request::GetNbaTeamAggGameStatsRquest;
+use crate::models::services::get_nba_team_agg_game_stats_response::GetNbaTeamAggGameStatsResponse;
 use crate::models::services::get_nba_games_by_team_and_season_request::GetNbaGamesByTeamAndSeasonRequest;
 use crate::models::services::get_nba_odds_by_team_and_season_request::GetNbaOddsByTeamAndSeasonRequest;
 use crate::models::services::get_nba_players_by_team_and_season_request::GetNbaPlayersByTeamAndSeasonRequest;
@@ -21,7 +21,7 @@ use std::env;
 use log::{info, error};
 
 use crate::models::app_state::AppState;
-use crate::db::{nba_game_stats_avgs_historical_mongo_dao, nba_games_historical_mongo_dao, nba_odds_historical_mongo_dao, nba_player_game_stats_avgs_historical_mongo_dao};
+use crate::db::{nba_team_aggregated_game_stats_historical_mongo_dao, nba_games_historical_mongo_dao, nba_odds_historical_mongo_dao, nba_player_aggregated_game_stats_historical_mongo_dao};
 
 /** mongo handlers **************************************************************/
 /********************************************************************************/
@@ -76,8 +76,8 @@ pub async fn get_nba_player_stats_by_id_and_season(
     req: web::Query<GetNbaPlayerStatsByIdAndSeasonRequest>
 ) -> impl Responder {
     info!("Recieved req for get_nba_player_stats_by_id_and_season id: {}, season: {}", req.player_id, req.season);
-    let objs_result = nba_player_game_stats_avgs_historical_mongo_dao::get_nba_player_stats_avgs_by_id_and_season(
-        &app_state.as_ref().nba_player_game_stats_avgs_historical_collection, 
+    let objs_result = nba_player_aggregated_game_stats_historical_mongo_dao::get_nba_agg_player_stats_by_id_and_season(
+        &app_state.as_ref().nba_player_aggregated_game_stats_historical_collection, 
         req.player_id,
         &req.season,
         None
@@ -108,13 +108,13 @@ pub async fn get_feature_map_for_backtest(
     }
 }
 
-pub async fn get_nba_game_stats_avg_response(
+pub async fn get_nba_team_agg_game_stats(
     app_state: web::Data<AppState>,
-    req: web::Json<GetNbaGameStatsAvgRequest>
+    req: web::Json<GetNbaTeamAggGameStatsRquest>
 ) -> impl Responder {
     info!("Recieved req for get_nba_game_stats_avg_response id");
-    let objs_result = nba_game_stats_avgs_historical_mongo_dao::get_nba_game_stats_avgs_by_team_and_season(
-        &app_state.nba_game_stats_avgs_historical_collection, 
+    let objs_result = nba_team_aggregated_game_stats_historical_mongo_dao::get_nba_team_agg_game_stats(
+        &app_state.nba_team_aggregated_game_stats_historical_collection, 
         req.team_ids.to_owned(), 
         req.season, 
         req.season_type.to_owned()
@@ -123,11 +123,11 @@ pub async fn get_nba_game_stats_avg_response(
     match objs_result {
         Ok(objs) => {
             info!("Returned {} docs from mongo", objs.len());
-            let mapped_objs: HashMap<String, NbaGameStatsAvgsHistorical> = objs.into_iter()
+            let mapped_objs: HashMap<String, NbaTeamAggGameStatsHistorical> = objs.into_iter()
                 .map(|obj| (obj.team_id.to_string(), obj))
                 .collect();
 
-            let response_obj = GetNbaGameStatsAvgResponse {
+            let response_obj = GetNbaTeamAggGameStatsResponse {
                 game_stats_avgs: mapped_objs
             };
 
