@@ -1,0 +1,6 @@
+/** nba daily loader commmand */
+RUST_LOG=info cargo run --bin nba_daily_data_loaders
+
+/** nba api */
+/* TODO: Move this to seperate bin */
+RUST_LOG=info cargo run --bin rust_backend

@@ -585,7 +585,7 @@ def populate_missing_nba_games_to_date():
         game_ids_inserted.append(obj.get('id'))
         try:
             result = nba_games_historical_collection.insert_one(obj)
-            print(print_result)
+            print(result)
         except Exception as e:
             print(e)
 
