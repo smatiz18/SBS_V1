@@ -12,10 +12,10 @@ use crate::models::app_state::AppState;
 
 // TODO set env variables from bash script to load in
 // ENV Variables
-// PYO3_PYTHON=/Users/smati/SBS_V1/sbs-v1-python-backend/venv/bin/python3.13
-// PKG_CONFIG_PATH=/Users/smati/python-shared/lib/pkgconfig:
-// RUSTFLAGS=-L/Users/smati/python-shared/lib -lpython3.13
-// PYTHONPATH=/Users/smati/SBS_V1/sbs-v1-python-backend/venv/lib/python3.13:/Users/smati/SBS_V1/sbs-v1-python-backend/venv/lib/python3.13/site-packages
+// PYO3_PYTHON=$HOME/SBS_V1/sbs-v1-python-backend/venv/bin/python3.13
+// PKG_CONFIG_PATH=$HOME/python-shared/lib/pkgconfig:
+// RUSTFLAGS=-L$HOME/python-shared/lib -lpython3.13
+// PYTHONPATH=$HOME/SBS_V1/sbs-v1-python-backend/venv/lib/python3.13:/Users/smati/SBS_V1/sbs-v1-python-backend/venv/lib/python3.13/site-packages
 
 pub fn daily_nba_game_data_loader() -> PyResult<()> {
     let file_name = "nba_mongo_loaders.py";
@@ -49,9 +49,9 @@ pub fn daily_nba_game_data_loader() -> PyResult<()> {
 
         match loader_source_code.call_method0(py, "run_nba_daily_games_data_loader")  {
             Ok(res) => info!("Success in running run_nba_daily_games_data_loader: {:?}", res),
-            Err(e) => info!("Failed to run run_nba_daily_games_data_loader: {:?}", e)
-        }
-        
+            Err(e) => info!("Failed to run run_nba_daily_games_data_loader: {:?}", e),
+        };
+
         Ok(())
     })
 }
