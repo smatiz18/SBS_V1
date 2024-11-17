@@ -7,6 +7,7 @@ mod aggregators;
 mod utils;
 mod constants;
 mod data_loaders;
+mod constants;
 
 use std::env;
 use actix_web::{web, App, HttpServer };
