@@ -2,8 +2,8 @@
 # GLOBAL ENVIRONMENT VARIABLES MUST BE SET MANUALLY
 
 sudo apt-get update
+sudo apt install pkg-config
 sudo apt-get install build-essential libssl-dev libffi-dev zlib1g-dev
-
 sudo apt install curl
 sudo apt install wget
 
