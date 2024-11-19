@@ -21,7 +21,7 @@ make install
 cd $HOME
 
 SBS_V1_UI_PATH=$HOME/projects/SBS_V1/sbs-v1-ui
-export SBS_V1_PYTHON_BACKEND_PATH=$HOME/projects/SBS_V1/sbs-v1-python-backend
+SBS_V1_PYTHON_BACKEND_PATH=$HOME/projects/SBS_V1/sbs-v1-python-backend
 SBS_V1_JUPYTER_PATH=$HOME/projects/SBS_V1/sbs-v1-jupyter
 
 # create virtual environments and install required libraries
