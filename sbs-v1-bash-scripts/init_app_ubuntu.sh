@@ -9,6 +9,7 @@ sudo apt-get install build-essential libssl-dev libffi-dev zlib1g-dev
 sudo apt install curl
 sudo apt install wget
 sudo apt-get install python3-venv
+sudo apt-get install python3-pip
 
 # download python
 wget https://www.python.org/ftp/python/3.13.0/Python-3.13.0.tgz
@@ -26,7 +27,8 @@ SBS_V1_JUPYTER_PATH=$HOME/projects/SBS_V1/sbs-v1-jupyter
 
 # create virtual environments and install required libraries
 # set linker to python-shared 
-LD_LIBRARY_PATH=$HOME/python-shared/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$HOME/python-shared/lib:$LD_LIBRARY_PATH
+
 $HOME/python-shared/bin/python3 -m venv $SBS_V1_PYTHON_BACKEND_PATH/venv
 $HOME/python-shared/bin/python3 -m venv $SBS_V1_JUPYTER_PATH/venv
 
