@@ -50,4 +50,4 @@ cd $SBS_V1_UI_PATH
 npm install
 
 cd $HOME
-source ~/.bashrc
+. ~/.bashrc
