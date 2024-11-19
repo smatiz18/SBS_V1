@@ -33,11 +33,11 @@ $HOME/python-shared/bin/python3 -m venv $SBS_V1_PYTHON_BACKEND_PATH/venv
 $HOME/python-shared/bin/python3 -m venv $SBS_V1_JUPYTER_PATH/venv
 
 source $SBS_V1_PYTHON_BACKEND_PATH/venv/bin/activate
-pip install -r $SBS_V1_PYTHON_BACKEND_PATH/requirements.txt
+$SBS_V1_PYTHON_BACKEND_PATH/venv/bin/pip install -r $SBS_V1_PYTHON_BACKEND_PATH/requirements.txt
 deactivate
 
 source $SBS_V1_JUPYTER_PATH/venv/bin/activate
-pip install -r $SBS_V1_JUPYTER_PATH/requirements.txt
+$SBS_V1_JUPYTER_PATH/venv/bin/pip install -r $SBS_V1_JUPYTER_PATH/requirements.txt
 deactivate
 
 # install rust
@@ -50,3 +50,4 @@ cd $SBS_V1_UI_PATH
 npm install
 
 cd $HOME
+source ~/.bashrc
