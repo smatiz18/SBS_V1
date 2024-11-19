@@ -17,10 +17,11 @@ cd Python-3.13.0
 make -j$(nproc) 
 make install
 
+cd $HOME
+
 SBS_V1_UI_PATH=$HOME/projects/SBS_V1/sbs-v1-ui
 SBS_V1_PYTHON_BACKEND_PATH=$HOME/projects/SBS_V1/sbs-v1-python-backend
 SBS_V1_JUPYTER_PATH=$HOME/projects/SBS_V1/sbs-v1-jupyter
-
 
 # create virtual environments and install required libraries
 $HOME/python-shared/bin/python3 -m venv $SBS_V1_PYTHON_BACKEND_PATH/venv
