@@ -8,6 +8,7 @@ sudo apt install pkg-config
 sudo apt-get install build-essential libssl-dev libffi-dev zlib1g-dev
 sudo apt install curl
 sudo apt install wget
+sudo apt-get install python3-venv
 
 # download python
 wget https://www.python.org/ftp/python/3.13.0/Python-3.13.0.tgz
