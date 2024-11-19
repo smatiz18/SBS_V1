@@ -21,10 +21,12 @@ make install
 cd $HOME
 
 SBS_V1_UI_PATH=$HOME/projects/SBS_V1/sbs-v1-ui
-SBS_V1_PYTHON_BACKEND_PATH=$HOME/projects/SBS_V1/sbs-v1-python-backend
+export SBS_V1_PYTHON_BACKEND_PATH=$HOME/projects/SBS_V1/sbs-v1-python-backend
 SBS_V1_JUPYTER_PATH=$HOME/projects/SBS_V1/sbs-v1-jupyter
 
 # create virtual environments and install required libraries
+# set linker to python-shared 
+LD_LIBRARY_PATH=$HOME/python-shared/lib:$LD_LIBRARY_PATH
 $HOME/python-shared/bin/python3 -m venv $SBS_V1_PYTHON_BACKEND_PATH/venv
 $HOME/python-shared/bin/python3 -m venv $SBS_V1_JUPYTER_PATH/venv
 
