@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Paths to the encrypted and temporary files
-ENCRYPTED_FILE="sbs_v1_env_vars.txt.enc"
-TEMP_FILE="decrypted_sbs_v1_env_vars.txt"
+ENCRYPTED_FILE="$HOME/projects/SBS_V1/env-vars/sbs_v1_env_vars.txt.enc"
+TEMP_FILE="$HOME/projects/SBS_V1/env-vars/decrypted_sbs_v1_env_vars.txt"
 
 # Ensure OpenSSL is installed
 if ! command -v openssl &> /dev/null; then
