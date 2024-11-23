@@ -1,1 +1,1 @@
-Run ./set_env_vars.sh to set needed env variables to run SBS_V1
+Run ./set_interactive_shell_env_vars.sh to set needed env variables to run SBS_V1

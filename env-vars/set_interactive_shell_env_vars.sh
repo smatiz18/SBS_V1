@@ -37,6 +37,6 @@ cat "$TEMP_FILE" >> ~/.bashrc
 # Remove the temporary decrypted file
 rm -f "$TEMP_FILE"
 
-echo "Environment variables have been successfully set for the current session and added to ~/.bashrc."
+echo "Environment variables have been successfully set for ~/.bashrc ."
 
 echo "Run source ~/.bashrc to apply new env variables to current shell."
