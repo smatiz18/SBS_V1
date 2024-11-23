@@ -1,4 +1,4 @@
-use std::fs;
+use std::{env, fs};
 
 use chrono::Local;
 use log::info;
@@ -27,12 +27,12 @@ fn main() {
     };
     info!("---------------- Complete! ----------------");
 
-
     /* Send email verification */
     let today = Local::now();
     let iso_date = today.format("%Y-%m-%d").to_string();
     let daily_loaders_subject_root = format!("SBS V1 Daily Data Loaders Job Complete: {}", iso_date);
-    let std_out = match fs::read_to_string(DAILY_DATA_LOADERS_LOG_PATH) {
+    let home_path: &str = &env::var("HOME").expect("HOME environment var is not set!");
+    let std_out = match fs::read_to_string(format!("{}/{}", home_path, DAILY_DATA_LOADERS_LOG_PATH)) {
         Ok(out) => out,
         Err(_e) => "Logs unavailable".to_owned()
     };
