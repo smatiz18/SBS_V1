@@ -1,14 +1,48 @@
+use std::fs;
+
+use chrono::Local;
 use log::info;
-use rust_backend::data_loaders::nba::daily_loaders::{daily_nba_game_data_loader, daily_nba_player_data_loader};
+use rust_backend::{constants::ec2_paths::DAILY_DATA_LOADERS_LOG_PATH, data_loaders::nba::daily_loaders::{daily_nba_game_data_loader, daily_nba_player_data_loader}, utils::email_util::send_email};
+
 
 fn main() {
+    /* Run process s*/
     env_logger::init();
-    
+    let mut errors: Vec<String> = vec!();
     info!("---------------- Running daily NBA Game Data Loader! ----------------");
-    let _ = daily_nba_game_data_loader();
+    let _ = match daily_nba_game_data_loader() {
+        Err(e) => {
+            errors.push(e.to_string());
+        },
+        _ => {}
+    };
     info!("---------------- Complete! ----------------");
 
     info!("---------------- Running daily NBA Player Data Loader! ----------------");
-    let _ = daily_nba_player_data_loader();
+    let _ = match daily_nba_player_data_loader() {
+        Err(e) => {
+            errors.push(e.to_string())
+        }, 
+        _ => {}
+    };
     info!("---------------- Complete! ----------------");
+
+
+    /* Send email verification */
+    let today = Local::now();
+    let iso_date = today.format("%Y-%m-%d").to_string();
+    let daily_loaders_subject_root = format!("SBS V1 Daily Data Loaders Job Complete: {}", iso_date);
+    let std_out = match fs::read_to_string(DAILY_DATA_LOADERS_LOG_PATH) {
+        Ok(out) => out,
+        Err(_e) => "Logs unavailable".to_owned()
+    };
+    let body_as_std_out = format!("STDOUT: {}", std_out);
+    if errors.len() > 0 {
+        let errors_as_str = errors.join("\n");
+        let subject = format!("{}: ERRORS", daily_loaders_subject_root);
+        let body = format!("ERROS: {}\n\n{}", errors_as_str, body_as_std_out);
+        let _ = send_email(&subject, &body);
+    } else {
+        let _ = send_email(&daily_loaders_subject_root, &body_as_std_out);
+    }
 }

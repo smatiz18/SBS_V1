@@ -32,13 +32,16 @@ pub fn daily_nba_game_data_loader() -> PyResult<()> {
             Ok(resp) => resp.into(),
             Err(e) => {
                 error!("---------------- unable to load PyModule ----------------: {:?}", e);
-                return Ok(());
+                return Err(e);
             }
         };
 
         match loader_source_code.call_method0(py, NBA_GAME_DATA_LOADER_RUNNER_FUNCTION)  {
             Ok(res) => info!("---------------- Success in running run_nba_daily_games_data_loader ----------------: {:?}", res),
-            Err(e) => error!("---------------- Failed to run run_nba_daily_games_data_loader ----------------: {:?}", e),
+            Err(e) => {
+                error!("---------------- Failed to run run_nba_daily_games_data_loader ----------------: {:?}", e);
+                return Err(e);
+            },
         };
 
         Ok(())
@@ -53,7 +56,7 @@ pub fn daily_nba_player_data_loader() -> PyResult<()> {
         },
         Err(e) => { 
             error!("---------------- failed to open filed at path ----------------: {:?}", e);
-            return Ok(());
+            return Err(e.into());
         }
     };
 
@@ -68,13 +71,16 @@ pub fn daily_nba_player_data_loader() -> PyResult<()> {
             Ok(resp) => resp.into(),
             Err(e) => {
                 error!("---------------- unable to load PyModule ----------------: {:?}", e);
-                return Ok(());
+                return Err(e);
             }
         };
 
         match loader_source_code.call_method0(py, NBA_PLAYER_DATA_LOADER_RUNNER_FUNCTION)  {
             Ok(res) => info!("---------------- Success in running run_nba_daily_player_data_loader ----------------: {:?}", res),
-            Err(e) => error!("---------------- Failed to run run_nba_daily_player_data_loader ----------------: {:?}", e),
+            Err(e) => {
+                error!("---------------- Failed to run run_nba_daily_player_data_loader ----------------: {:?}", e);
+                return Err(e);
+            },
         };
 
         Ok(())

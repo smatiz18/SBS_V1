@@ -1,41 +1,47 @@
-// use std::env;
+use std::env;
 
-// use lettre::{transport::smtp::authentication::Credentials, Message, SmtpTransport};
+use lettre::{transport::smtp::authentication::Credentials, Message, SmtpTransport, Transport};
+use log::{error, info};
 
-// const SBS_V1_EMAIL: &str = "sportsbettingsanbox@gmail.com";
-// const PASSWORD: &str = get_email_password();
-// pub fn send_email(
-//     from: &str, 
-//     to: &str, 
-//     subject: &str, 
-//     body: &str
-// ) -> Result<(), Box<dyn std::error::Error>> {
-//     let email = Message::builder()
-//         .from(from.parse().unwrap())
-//         .to(to.parse().unwrap())
-//         .subject(subject)
-//         .body(String::from(body))
-//         .unwrap();
+const SBS_V1_EMAIL: &str = "sportsbettingsandbox@gmail.com";
+const SMTP: &str = "smtp.gmail.com";
 
-//     // Set up SMTP transport with credentials
-//     let creds = Credentials::new(
-//         SBS_V1_EMAIL.to_string(), 
-//         PASSWORD.to_string(),
-//     );
+pub fn send_email(
+    subject: &str, 
+    body: &str
+) -> Result<(), Box<dyn std::error::Error>> {
+    let email = Message::builder()
+        .from(SBS_V1_EMAIL.parse()?)
+        .to(SBS_V1_EMAIL.parse()?)
+        .subject(subject)
+        .body(String::from(body))
+        .unwrap();
 
-//     let mailer = SmtpTransport::relay("SBS_V1_EMAIL")
-//         .unwrap()
-//         .credentials(creds)
-//         .build();
+    // Set up SMTP transport with credentials
+    let creds = Credentials::new(
+        SBS_V1_EMAIL.to_string(), 
+        get_email_password(),
+    );
 
-//     match mailer::send(&email) {
-//         Ok(_) => print!("pee"),
-//         Err(e) => print!("poop")
-//     }
-// }
+    let mailer: SmtpTransport = SmtpTransport::relay(SMTP)
+        .unwrap()
+        .credentials(creds)
+        .build();
 
-// pub fn get_email_password() -> &str {
-//     let email_password: &str = &env::var("SPORTS_BETTING_SANDBOX_EMAIL_PW").expect("You must set the SPORTS_BETTING_SANDBOX_EMAIL_PW environment var!");
-//     return email_password;
-// }
+    match mailer.send(&email) {
+        Ok(_) => {
+            info!("{}", format!("Sent email with subject: {} to {}", subject, SBS_V1_EMAIL));
+            return Ok(());
+        },
+        Err(e) => {
+            error!("{}", format!("Failed to send email with subject: {} to {}, error: {:?}", subject, SBS_V1_EMAIL, e));
+            return Err(Box::new(e));
+        }
+    }
+}
+
+fn get_email_password() -> String {
+    let email_password: &str = &env::var("SBS_V1_APP_PW").expect("You must set the SBS_V1_APP_PW environment var!");
+    return email_password.to_owned();
+}
 

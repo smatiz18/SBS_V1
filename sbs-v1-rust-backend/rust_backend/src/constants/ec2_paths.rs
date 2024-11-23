@@ -1,0 +1,1 @@
+pub const DAILY_DATA_LOADERS_LOG_PATH: &str = "$HOME/logs/SBS_V1/sbs_v1_daily_data_loaders.log";
