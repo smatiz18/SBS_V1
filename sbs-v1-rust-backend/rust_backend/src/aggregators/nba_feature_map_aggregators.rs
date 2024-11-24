@@ -76,8 +76,8 @@ pub async fn get_feature_map_for_team_bet_type(
 
     let nba_games_avgs_hist_res = get_nba_team_agg_game_stats(
         &nba_team_agg_game_stats_mongo_coll, 
-        vec!(req.team_id), 
-        req.season,
+        Some(vec!(req.team_id)), 
+        Some(req.season),
         Some(req.season_type)
     )
     .await

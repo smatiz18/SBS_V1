@@ -115,8 +115,8 @@ pub async fn get_nba_team_agg_game_stats(
     info!("Recieved req for get_nba_game_stats_avg_response id");
     let objs_result = nba_team_aggregated_game_stats_historical_mongo_dao::get_nba_team_agg_game_stats(
         &app_state.nba_team_aggregated_game_stats_historical_collection, 
-        req.team_ids.to_owned(), 
-        req.season, 
+        Some(req.team_ids.to_owned()), 
+        Some(req.season), 
         req.season_type.to_owned()
     ).await;
 
@@ -140,6 +140,8 @@ pub async fn get_nba_team_agg_game_stats(
     }
 }
 /********************************************************************************/
+
+
 
 /** web api handlers ************************************************************/
 /********************************************************************************/

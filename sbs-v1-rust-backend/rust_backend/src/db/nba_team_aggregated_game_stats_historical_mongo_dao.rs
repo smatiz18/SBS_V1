@@ -7,27 +7,21 @@ use mongodb::error::Result;
 
 pub async fn get_nba_team_agg_game_stats(
     collection: &Collection<Document>, 
-    team_ids: Vec<f64>, 
-    season: u32,
-    season_type: Option<SeasonType>
+    team_ids_opt: Option<Vec<f64>>, 
+    season_opt: Option<u32>,
+    season_type_opt: Option<SeasonType>
 ) -> Result<Vec<NbaTeamAggGameStatsHistorical>> {
-
-   let query = match season_type {
-      Some(s) => {
-         let json_string = serde_json::to_string(&s).unwrap();
-         let trimmed = &json_string[1..json_string.len()-1];  
-         doc! { 
-            "teamId": { "$in": team_ids },
-            "season": season,
-            "seasonType": trimmed
-         }
-      },
-      None => 
-         doc! { 
-            "teamId": { "$in": team_ids },
-            "season": season,
-         },    
-   };
+   
+   let mut query: Document = doc! {};
+   if team_ids_opt.is_some() {
+      query.insert("teamId",  doc! { "$in": team_ids_opt.unwrap() });
+   }
+   if season_opt.is_some() {
+      query.insert("season", season_opt.unwrap());
+   }
+   if season_type_opt.is_some() {
+      query.insert("seasonType", season_type_opt.unwrap().to_string());
+   }
 
    let results = find(&collection, query, None).await?;
 

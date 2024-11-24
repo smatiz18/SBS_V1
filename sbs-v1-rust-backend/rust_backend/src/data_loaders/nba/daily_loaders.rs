@@ -1,9 +1,10 @@
 #![allow(dead_code)]
 
 use std::fs;
+use bson::doc;
 use log::{error, info};
 use pyo3::{types::PyModule, Py, PyAny, PyResult, Python};
-use crate::constants::python_script_paths::{get_nba_mongo_loader_path, NBA_GAME_DATA_LOADER_RUNNER_FUNCTION, NBA_MONGO_LOADER_FILE, NBA_PLAYER_DATA_LOADER_RUNNER_FUNCTION, SBS_V1_PYTHON_BACKEND_MODULE};
+use crate::{constants::{dates::{get_season_types, NBA_SEASON_DATE_MAP}, python_script_paths::{get_nba_mongo_loader_path, NBA_GAME_DATA_LOADER_RUNNER_FUNCTION, NBA_MONGO_LOADER_FILE, NBA_PLAYER_DATA_LOADER_RUNNER_FUNCTION, SBS_V1_PYTHON_BACKEND_MODULE}}, db::{nba_games_historical_mongo_dao, nba_team_aggregated_game_stats_historical_mongo_dao}, models::{app_state::AppState, db::{nba_game_team_stats_historical, nba_team_agg_game_stats_historical::NbaTeamAggGameStatsHistorical}}};
 
 /** Old loader logic that is already written in python will stay that way. In the future 
  * we should migrate this over to rust but for the sake of prototyping let's keep it in python
@@ -86,3 +87,31 @@ pub fn daily_nba_player_data_loader() -> PyResult<()> {
         Ok(())
     })
 }
+
+// pub async fn load_nba_daily_stats_cache(app_state: AppState, season: u32) -> Result<String, String> {
+
+//     let season_types = get_season_types(NBA_SEASON_DATE_MAP.clone(), season);
+
+//     let team_stats = match nba_team_aggregated_game_stats_historical_mongo_dao::get_nba_team_agg_game_stats(
+//         &app_state.nba_team_aggregated_game_stats_historical_collection, 
+//         None, 
+//         Some(season), 
+//         None
+//     ).await {
+//         Ok(team_stats) => team_stats,
+//         Err(e) => { 
+//             return Err(format!("{:?}", e));
+//         }
+//     };
+
+//     season_types.into_iter().map(|st| {
+//         let docs: Vec<NbaTeamAggGameStatsHistorical> = team_stats.into_iter()
+//             .filter(|ts| { ts.season_type == st })
+//             .map(|ts| {
+
+//             })
+//             .collect();
+//     })
+
+//     Ok("".to_string())
+// }

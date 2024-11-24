@@ -4,6 +4,7 @@ use chrono::Local;
 use log::info;
 use rust_backend::{constants::ec2_paths::DAILY_DATA_LOADERS_LOG_PATH, data_loaders::nba::daily_loaders::{daily_nba_game_data_loader, daily_nba_player_data_loader}, utils::email_util::send_email};
 
+pub const CURRENT_SEASON: u32 = 2024;
 
 fn main() {
     /* Run process s*/

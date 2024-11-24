@@ -2,7 +2,10 @@
 #![allow(dead_code)]
 
 use std::collections::HashMap;
+use chrono::Local;
 use once_cell::sync::Lazy;
+
+use crate::models::enums::season_type::SeasonType;
 
 #[derive(Clone)]
 pub struct SeasonDateObj {
@@ -14,8 +17,8 @@ pub struct SeasonDateObj {
     pub all_season_end: &'static str
 }
 
-static NBA_SEASON_DATE_MAP: Lazy<HashMap<i32, SeasonDateObj>> = Lazy::new(|| {
-    let mut map = HashMap::new();
+pub static NBA_SEASON_DATE_MAP: Lazy<HashMap<u32, SeasonDateObj>> = Lazy::new(|| {
+    let mut map  = HashMap::new();
     map.insert(
         2023, 
         SeasonDateObj {
@@ -40,5 +43,28 @@ static NBA_SEASON_DATE_MAP: Lazy<HashMap<i32, SeasonDateObj>> = Lazy::new(|| {
     );
     map
 });
+
+pub fn get_season_types(season_date_map: HashMap<u32, SeasonDateObj>, season: u32) -> Vec<SeasonType> {
+    match season_date_map.get(&season)  {
+        Some(season_date_obj) => {
+            let today = Local::now();
+            let iso_date: String = today.format("%Y-%m-%d").to_string();
+
+            let mut season_types: Vec<SeasonType> = vec!();
+            if season_date_obj.all_season_start.to_string() <= iso_date && iso_date <= season_date_obj.all_season_end.to_string() {
+                season_types.push(SeasonType::ALL);
+            }
+            if season_date_obj.regular_season_start.to_string() <= iso_date && iso_date <= season_date_obj.regular_season_end.to_string() {
+                season_types.push(SeasonType::REGULAR);
+            }
+            if season_date_obj.playoff_season_start.to_string() <= iso_date && iso_date <= season_date_obj.playoff_season_end.to_string() {
+                season_types.push(SeasonType::PLAYOFF);
+            }
+
+            season_types
+        },
+        None => vec![SeasonType::ALL],
+    }
+}
     
    
