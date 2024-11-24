@@ -88,30 +88,30 @@ pub fn daily_nba_player_data_loader() -> PyResult<()> {
     })
 }
 
-// pub async fn load_nba_daily_stats_cache(app_state: AppState, season: u32) -> Result<String, String> {
+pub async fn load_nba_daily_stats_cache(app_state: AppState, season: u32) -> Result<String, String> {
 
-//     let season_types = get_season_types(NBA_SEASON_DATE_MAP.clone(), season);
+    let season_types = get_season_types(NBA_SEASON_DATE_MAP.clone(), season);
 
-//     let team_stats = match nba_team_aggregated_game_stats_historical_mongo_dao::get_nba_team_agg_game_stats(
-//         &app_state.nba_team_aggregated_game_stats_historical_collection, 
-//         None, 
-//         Some(season), 
-//         None
-//     ).await {
-//         Ok(team_stats) => team_stats,
-//         Err(e) => { 
-//             return Err(format!("{:?}", e));
-//         }
-//     };
+    let team_stats = match nba_team_aggregated_game_stats_historical_mongo_dao::get_nba_team_agg_game_stats(
+        &app_state.nba_team_aggregated_game_stats_historical_collection, 
+        None, 
+        Some(season), 
+        None
+    ).await {
+        Ok(team_stats) => team_stats,
+        Err(e) => { 
+            return Err(format!("{:?}", e));
+        }
+    };
 
-//     season_types.into_iter().map(|st| {
-//         let docs: Vec<NbaTeamAggGameStatsHistorical> = team_stats.into_iter()
-//             .filter(|ts| { ts.season_type == st })
-//             .map(|ts| {
+    season_types.into_iter().map(|st| {
+        let docs: Vec<NbaTeamAggGameStatsHistorical> = team_stats.into_iter()
+            .filter(|ts| { ts.season_type == st })
+            .map(|ts| {
 
-//             })
-//             .collect();
-//     })
+            })
+            .collect();
+    })
 
-//     Ok("".to_string())
-// }
+    Ok("".to_string())
+}
