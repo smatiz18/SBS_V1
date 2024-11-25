@@ -7,6 +7,8 @@ pub struct NbaTeamStats {
     #[serde(rename = "_id")]
     pub mongo_id: String,
     pub team_id: f64,
+    pub team_name: String,
+    pub team_nickname: String,
     pub season: u32,
     pub season_type: SeasonType,
     pub last_game_id: u32,

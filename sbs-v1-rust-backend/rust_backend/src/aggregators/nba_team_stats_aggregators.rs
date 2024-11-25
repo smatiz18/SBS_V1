@@ -13,6 +13,8 @@ pub fn map_nba_team_aggregated_game_stats_to_nba_team_stats(
                 NbaTeamStats {
                     mongo_id: format!("{:?}-{:?}-{}", tag.team_id as u32, tag.season, tag.season_type),
                     team_id: tag.team_id,
+                    team_name: tag.team_name,
+                    team_nickname: tag.team_nickname,
                     season: tag.season,
                     season_type: SeasonType::from_str(&tag.season_type).unwrap_or(SeasonType::ALL),
                     last_game_id: 0,
@@ -39,6 +41,8 @@ pub fn map_nba_team_aggregated_game_stats_to_nba_team_stats(
                 NbaTeamStats {
                     mongo_id: format!("{:?}-{:?}-{}", tag.team_id as u32, tag.season, tag.season_type),
                     team_id: tag.team_id,
+                    team_name: tag.team_name,
+                    team_nickname: tag.team_nickname,
                     season: tag.season,
                     season_type: SeasonType::from_str(&tag.season_type).unwrap_or(SeasonType::ALL),
                     last_game_id: sorted_game_stats.get(0).unwrap().game_id,

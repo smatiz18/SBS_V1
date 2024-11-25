@@ -3,8 +3,8 @@ use crate::{db::{base_mongo::get_collection, constants::{NBA_GAMES_HISTORICAL_CO
 
 pub async fn initialize_app_state() -> Result<AppState, Box<dyn std::error::Error>> {
     // Load the MongoDB connection string from an environment variable:
-   let client_uri =
-   env::var("SBS_V1_MONGO_URI").expect("You must set the SBS_V1_MONGO_URI environment var!");
+    let client_uri =
+        env::var("SBS_V1_MONGO_URI").expect("You must set the SBS_V1_MONGO_URI environment var!");
 
     let nba_games_historical_collection = get_collection(
         &client_uri, 
@@ -26,7 +26,7 @@ pub async fn initialize_app_state() -> Result<AppState, Box<dyn std::error::Erro
         SBS_V1_DB_NAME, 
         NBA_TEAM_AGGREGATED_GAME_STATS_HISTORICAL
     ).await?;
-        let nba_team_stats_collection = get_collection(
+    let nba_team_stats_collection = get_collection(
         &client_uri, 
         SBS_V1_DB_NAME, 
         NBA_TEAM_STATS
