@@ -2,13 +2,17 @@ use std::{env, fs};
 
 use chrono::Local;
 use log::info;
-use rust_backend::{constants::ec2_paths::DAILY_DATA_LOADERS_LOG_PATH, data_loaders::nba::daily_loaders::{daily_nba_game_data_loader, daily_nba_player_data_loader}, utils::email_util::send_email};
+use rust_backend::{constants::ec2_paths::DAILY_DATA_LOADERS_LOG_PATH, data_loaders::nba::daily_loaders::{daily_nba_game_data_loader, daily_nba_player_data_loader, load_nba_daily_stats_cache}, initializers::initialize_app_state, utils::email_util::send_email};
 
 pub const CURRENT_SEASON: u32 = 2024;
 
-fn main() {
-    /* Run process s*/
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    /* Run processes */
     env_logger::init();
+    
+    let app_state = initialize_app_state().await?;
+    
     let mut errors: Vec<String> = vec!();
     info!("---------------- Running daily NBA Game Data Loader! ----------------");
     let _ = match daily_nba_game_data_loader() {
@@ -25,6 +29,15 @@ fn main() {
             errors.push(e.to_string())
         }, 
         _ => {}
+    };
+    info!("---------------- Complete! ----------------");
+
+    info!("---------------- Running daily NBA Team Stats Loader! ----------------");
+    let _ = match load_nba_daily_stats_cache(app_state, CURRENT_SEASON).await {
+        Ok(output) => info!("{}", output),
+        Err(e) => {
+            errors.push(e)
+        }
     };
     info!("---------------- Complete! ----------------");
 
@@ -46,4 +59,8 @@ fn main() {
     } else {
         let _ = send_email(&daily_loaders_subject_root, &body_as_std_out);
     }
+
+    info!("Loader job complete!");
+
+    Ok(())
 }

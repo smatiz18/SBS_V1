@@ -36,4 +36,6 @@ export interface NbaPlayerGameStatsHistorical {
     teamId?: number;
     gameId?: number;
     dateStart?: string;
+    win: boolean,
+    isHome: boolean
   }

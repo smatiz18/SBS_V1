@@ -91,4 +91,9 @@ pub struct PlayerStatsObj {
     
     #[serde(rename = "dateStart")]
     pub date_start: DateTime<Utc>,
+
+    pub win: bool,
+
+    #[serde(rename = "isHome")]
+    pub is_home: bool
 }

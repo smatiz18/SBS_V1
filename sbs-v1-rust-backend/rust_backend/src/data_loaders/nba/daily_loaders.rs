@@ -1,10 +1,9 @@
 #![allow(dead_code)]
 
 use std::fs;
-use bson::doc;
 use log::{error, info};
 use pyo3::{types::PyModule, Py, PyAny, PyResult, Python};
-use crate::{constants::{dates::{get_season_types, NBA_SEASON_DATE_MAP}, python_script_paths::{get_nba_mongo_loader_path, NBA_GAME_DATA_LOADER_RUNNER_FUNCTION, NBA_MONGO_LOADER_FILE, NBA_PLAYER_DATA_LOADER_RUNNER_FUNCTION, SBS_V1_PYTHON_BACKEND_MODULE}}, db::{nba_games_historical_mongo_dao, nba_team_aggregated_game_stats_historical_mongo_dao}, models::{app_state::AppState, db::{nba_game_team_stats_historical, nba_team_agg_game_stats_historical::NbaTeamAggGameStatsHistorical}}};
+use crate::{aggregators::nba_team_stats_aggregators::map_nba_team_aggregated_game_stats_to_nba_team_stats, constants::{dates::{get_season_types, NBA_SEASON_DATE_MAP}, python_script_paths::{get_nba_mongo_loader_path, NBA_GAME_DATA_LOADER_RUNNER_FUNCTION, NBA_MONGO_LOADER_FILE, NBA_PLAYER_DATA_LOADER_RUNNER_FUNCTION, SBS_V1_PYTHON_BACKEND_MODULE}}, db::{nba_team_aggregated_game_stats_historical_mongo_dao, nba_team_stats_mongo_dao}, models::{app_state::AppState, db::{nba_team_agg_game_stats_historical::NbaTeamAggGameStatsHistorical, nba_team_stats::NbaTeamStats}}};
 
 /** Old loader logic that is already written in python will stay that way. In the future 
  * we should migrate this over to rust but for the sake of prototyping let's keep it in python
@@ -89,7 +88,6 @@ pub fn daily_nba_player_data_loader() -> PyResult<()> {
 }
 
 pub async fn load_nba_daily_stats_cache(app_state: AppState, season: u32) -> Result<String, String> {
-
     let season_types = get_season_types(NBA_SEASON_DATE_MAP.clone(), season);
 
     let team_stats = match nba_team_aggregated_game_stats_historical_mongo_dao::get_nba_team_agg_game_stats(
@@ -104,14 +102,15 @@ pub async fn load_nba_daily_stats_cache(app_state: AppState, season: u32) -> Res
         }
     };
 
-    season_types.into_iter().map(|st| {
-        let docs: Vec<NbaTeamAggGameStatsHistorical> = team_stats.into_iter()
-            .filter(|ts| { ts.season_type == st })
-            .map(|ts| {
+    let team_stats_to_upsert: Vec<NbaTeamStats> = season_types.into_iter()
+        .flat_map(|st| {
+            let agg_stats_for_season: Vec<NbaTeamAggGameStatsHistorical> = team_stats.to_owned()
+                .into_iter()
+                .filter(|ts| { ts.season_type == st.to_string() })
+                .collect();
+            map_nba_team_aggregated_game_stats_to_nba_team_stats(agg_stats_for_season)
+        })
+        .collect();
 
-            })
-            .collect();
-    })
-
-    Ok("".to_string())
+    nba_team_stats_mongo_dao::upsert(&app_state.nba_team_stats_collection, team_stats_to_upsert).await
 }

@@ -11,6 +11,7 @@ export interface GameStats {
     linescore: number[],
     win: boolean,
     dateStart: string;
+    isHome: boolean;
 }
 
 export interface NbaTeamAggGameStatsHistorical {

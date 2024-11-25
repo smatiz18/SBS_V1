@@ -34,5 +34,7 @@ pub struct GameStats {
 
     pub date_start: DateTime<Utc>, 
 
-    pub game_id: u32
+    pub game_id: u32,
+
+    pub is_home: bool
 }

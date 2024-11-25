@@ -7,3 +7,4 @@ pub mod models;
 pub mod proxy;
 pub mod routes;
 pub mod utils;
+pub mod initializers;

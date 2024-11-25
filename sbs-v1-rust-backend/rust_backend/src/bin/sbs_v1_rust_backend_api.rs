@@ -1,6 +1,5 @@
-use std::env;
 use log::info;
-use rust_backend::{db, handlers, models, proxy, routes};
+use rust_backend::{handlers, initializers::initialize_app_state, proxy, routes};
 use actix_web::{web, App, HttpServer };
 use handlers::handlers::{
    get_feature_map_for_backtest, get_nba_games_by_team_and_season, get_nba_odds_by_team_and_season, get_nba_player_stats_by_id_and_season, get_nba_players_by_team_and_season, get_nba_team_agg_game_stats, get_odds, test
@@ -8,50 +7,16 @@ use handlers::handlers::{
 use routes::endpoints::{
    BACKTEST_API_ROOT, GET_BACKTEST_FEATURE_MAP, GET_NBA_TEAM_AGG_GAME_STATS, GET_HISTORICAL_GAMES, GET_HISTORICAL_ODDS, GET_ODDS, GET_PLAYERS_BY_TEAM_AND_SEASON, GET_PLAYER_STATS_BY_ID_AND_SEASON, NBA_API_ROOT, ODDS_API_ROOT, SERVER_URL
 };
-use db::{base_mongo::get_collection, constants::{
-   NBA_GAMES_HISTORICAL_COLLECTION_NAME, NBA_ODDS_HISTORICAL_COLLECTION_NAME, NBA_PLAYER_AGGREGATED_GAME_STATS_HISTORICAL, NBA_TEAM_AGGREGATED_GAME_STATS_HISTORICAL, SBS_V1_DB_NAME
-}};
 use proxy::proxy_handler::proxy;
 use actix_cors::Cors;
-use models::app_state::AppState;
 use env_logger;
 
 #[actix_web::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
    env_logger::init();
 
-   // Load the MongoDB connection string from an environment variable:
-   let client_uri =
-      env::var("SBS_V1_MONGO_URI").expect("You must set the SBS_V1_MONGO_URI environment var!");
-
-   let nba_games_historical_collection = get_collection(
-      &client_uri, 
-      SBS_V1_DB_NAME, 
-      NBA_GAMES_HISTORICAL_COLLECTION_NAME
-   ).await?;
-   let nba_odds_historical_collection = get_collection(
-      &client_uri, 
-      SBS_V1_DB_NAME, 
-      NBA_ODDS_HISTORICAL_COLLECTION_NAME
-   ).await?;
-   let nba_player_aggregated_game_stats_historical_collection = get_collection(
-      &client_uri, 
-      SBS_V1_DB_NAME, 
-      NBA_PLAYER_AGGREGATED_GAME_STATS_HISTORICAL
-   ).await?;
-   let nba_team_aggregated_game_stats_historical_collection = get_collection(
-      &client_uri, 
-      SBS_V1_DB_NAME, 
-      NBA_TEAM_AGGREGATED_GAME_STATS_HISTORICAL
-   ).await?;
-
    // Wrap collections in AppState
-   let app_state = AppState {
-      nba_games_historical_collection: nba_games_historical_collection.clone(),
-      nba_odds_historical_collection: nba_odds_historical_collection.clone(),
-      nba_player_aggregated_game_stats_historical_collection: nba_player_aggregated_game_stats_historical_collection.clone(),
-      nba_team_aggregated_game_stats_historical_collection: nba_team_aggregated_game_stats_historical_collection.clone()
-   };
+   let app_state = initialize_app_state().await?;
 
    info!("---------------- Starting SBS V1 RUST BACKEND API ----------------");
 

@@ -1,12 +1,9 @@
-use std::{fmt::format, str::FromStr};
-use futures::future;
+use std::str::FromStr;
 
-use bson::doc;
 
-use crate::{db::nba_games_historical_mongo_dao, models::{app_state::AppState, db::{nba_team_agg_game_stats_historical::{GameStats, NbaTeamAggGameStatsHistorical}, nba_team_stats::NbaTeamStats}, enums::season_type::SeasonType}};
+use crate::models::{db::{nba_team_agg_game_stats_historical::{GameStats, NbaTeamAggGameStatsHistorical}, nba_team_stats::NbaTeamStats}, enums::season_type::SeasonType};
 
 pub fn map_nba_team_aggregated_game_stats_to_nba_team_stats(
-    app_state: AppState, 
     tags: Vec<NbaTeamAggGameStatsHistorical>
 ) -> Vec<NbaTeamStats> {
     tags.into_iter()
@@ -14,75 +11,128 @@ pub fn map_nba_team_aggregated_game_stats_to_nba_team_stats(
 
             if tag.game_stats.to_owned().is_empty() {
                 NbaTeamStats {
-                    mongo_id: format!("{:?}-{:?}-{:?}", tag.team_id, tag.season, tag.season_type),
+                    mongo_id: format!("{:?}-{:?}-{}", tag.team_id as u32, tag.season, tag.season_type),
                     team_id: tag.team_id,
                     season: tag.season,
                     season_type: SeasonType::from_str(&tag.season_type).unwrap_or(SeasonType::ALL),
                     last_game_id: 0,
+                    total_streak: "-".to_string(),
+                    home_streak: "-".to_string(),
+                    away_streak: "-".to_string(),
                     total_wins: 0,
                     total_losses: 0,
-                    total_streak: 0,
+                    last_ten_total_wins: 0,
+                    last_ten_total_losses: 0,
                     home_wins: 0,
                     home_losses: 0,
-                    home_streak: 0,
+                    last_ten_home_wins: 0,
+                    last_ten_home_losses: 0,
                     away_wins: 0,
                     away_losses: 0,
-                    away_streak: 0,
-                    streak_type: None
+                    last_ten_away_wins: 0,
+                    last_ten_away_losses: 0,
                 }
             } else {
-                let last_game_id = tag.game_stats.to_owned()
-                .into_values()
-                .max_by(|x, y| x.date_start.cmp(&y.date_start))
-                .unwrap()
-                .game_id;
-
-                let total_wins = tag.game_stats.to_owned()
-                    .into_values()
-                    .fold(0, |acc, gs| {
-                        let mut res;
-                        if gs.win {
-                            res = acc + 1;
-                        }
-                        res
-                    });
-
-                let game_stats = tag.game_stats.into_values().collect::<Vec<GameStats>>();
-
-                game_stats
-                    .sort_by(|x, y| y.date_start.cmp(&x.date_start));
-                
-                let all_streak_type = last_10_game_stats.get(0).unwrap().win;
-            
-
-                // TODO add isHome field to game stats agg obj
-
-                // TODO add isHome and win field to player stats agg obj 
-                // let home_streak_type = 
-                // let away_steak_type: bool = 
-
+                let game_stats = tag.game_stats.to_owned().into_values().collect();
+                let sorted_game_stats = sort_game_stats_last_to_first(game_stats);
 
                 NbaTeamStats {
-                    mongo_id: format!("{:?}-{:?}-{:?}", tag.team_id, tag.season, tag.season_type),
+                    mongo_id: format!("{:?}-{:?}-{}", tag.team_id as u32, tag.season, tag.season_type),
                     team_id: tag.team_id,
                     season: tag.season,
                     season_type: SeasonType::from_str(&tag.season_type).unwrap_or(SeasonType::ALL),
-                    last_game_id: last_game_id,
-                    total_wins: total_wins,
-                    total_losses: (tag.game_stats.into_values().len() as u32) - total_wins,
-                    total_streak: ,
-                    home_wins: todo!(),
-                    home_losses: todo!(),
-                    home_streak: todo!(),
-                    away_wins: todo!(),
-                    away_losses: todo!(),
-                    away_streak: todo!(),
-                    streak_type:
+                    last_game_id: sorted_game_stats.get(0).unwrap().game_id,
+                    total_streak: get_streak(sorted_game_stats.clone(), GameLocation::Total),
+                    home_streak: get_streak(sorted_game_stats.clone(), GameLocation::Home),
+                    away_streak: get_streak(sorted_game_stats.clone(), GameLocation::Away),
+                    total_wins: num_wins(sorted_game_stats.clone(), None, GameLocation::Total),
+                    total_losses: num_losses(sorted_game_stats.clone(), None, GameLocation::Total),
+                    last_ten_total_wins:  num_wins(sorted_game_stats.clone(), Some(10), GameLocation::Total),
+                    last_ten_total_losses:  num_losses(sorted_game_stats.clone(), Some(10), GameLocation::Total),
+                    home_wins: num_wins(sorted_game_stats.clone(), None, GameLocation::Home),
+                    home_losses: num_losses(sorted_game_stats.clone(), None, GameLocation::Home),
+                    last_ten_home_wins: num_wins(sorted_game_stats.clone(), Some(10), GameLocation::Home),
+                    last_ten_home_losses: num_losses(sorted_game_stats.clone(), Some(10), GameLocation::Home),
+                    away_wins: num_wins(sorted_game_stats.clone(), None, GameLocation::Away),
+                    away_losses: num_losses(sorted_game_stats.clone(), None, GameLocation::Away),
+                    last_ten_away_wins: num_wins(sorted_game_stats.clone(), Some(10), GameLocation::Away),
+                    last_ten_away_losses: num_losses(sorted_game_stats.clone(), Some(10), GameLocation::Away),
                 }
             }
         })
         .collect()
+}
+
+enum GameLocation {
+    Home,
+    Away,
+    Total
+}
+
+fn get_streak(sorted_game_stats: Vec<GameStats>, game_loc: GameLocation) -> String {
+    let filtered_game_stats: Vec<GameStats> = sorted_game_stats.into_iter()
+        .filter(|gs| {
+            match game_loc {
+                GameLocation::Home => gs.is_home,
+                GameLocation::Away => !gs.is_home,
+                GameLocation::Total => true
+            }
+        })
+        .collect();
+
+    match filtered_game_stats.get(0) {
+        Some(gs) => {
+            let streak_type = gs.win;
+
+            let mut streak_count = 0;
+            while 
+                filtered_game_stats.get(streak_count).is_some() && 
+                filtered_game_stats.get(streak_count).unwrap().win == streak_type {
+                streak_count+=1;
+            }
+            
+            match streak_type  {
+                true => format!("{}W", streak_count),
+                false => format!("{}L", streak_count)
+            }
+        },
+        None => "0".to_string()
     }
+}
 
+fn num_wins(sorted_game_stats: Vec<GameStats>, segment_length: Option<u32>, game_loc: GameLocation) -> u32 {
+    let full_len = sorted_game_stats.len();
+    let filtered_game_stats: Vec<GameStats> = sorted_game_stats.into_iter()
+        .take(segment_length.unwrap_or(full_len as u32) as usize)
+        .filter(|gs| {
+            let game_loc_bool_arg = match game_loc {
+                GameLocation::Home => gs.is_home,
+                GameLocation::Away => !gs.is_home,
+                GameLocation::Total => true
+            };
+            gs.win && game_loc_bool_arg
+        })
+        .collect();
+    filtered_game_stats.len() as u32
+}
 
-fn get_num_home_wins(num: u32, games: Vec<>)
+fn num_losses(sorted_game_stats: Vec<GameStats>, segment_length: Option<u32>, game_loc: GameLocation) -> u32 {
+    let full_len = sorted_game_stats.len();
+    let filtered_game_stats: Vec<GameStats> = sorted_game_stats.into_iter()
+        .take(segment_length.unwrap_or(full_len as u32) as usize)
+        .filter(|gs| {
+            let game_loc_bool_arg = match game_loc {
+                GameLocation::Home => gs.is_home,
+                GameLocation::Away => !gs.is_home,
+                GameLocation::Total => true
+            };
+            !gs.win && game_loc_bool_arg
+        })
+        .collect();
+    filtered_game_stats.len() as u32
+}
+
+fn sort_game_stats_last_to_first(mut game_stats: Vec<GameStats>) -> Vec<GameStats> {
+    game_stats.sort_by(|x, y| y.date_start.cmp(&x.date_start));
+    game_stats
+}
