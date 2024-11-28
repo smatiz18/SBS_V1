@@ -12,6 +12,7 @@ use crate::models::services::get_nba_odds_by_team_and_season_request::GetNbaOdds
 use crate::models::services::get_nba_players_by_team_and_season_request::GetNbaPlayersByTeamAndSeasonRequest;
 use crate::models::services::get_nba_players_by_team_and_season_response::GetNbaPlayersByTeamAndSeasonResponse;
 use crate::models::services::get_nba_player_stats_by_id_and_season_request::GetNbaPlayerStatsByIdAndSeasonRequest;
+use crate::models::services::get_nba_team_stats_request::GetNbaTeamStatsRequest;
 use crate::models::services::get_odds_request::GetOddsRequest;
 use crate::models::services::get_odds_response::GetOddsResponse;
 use crate::routes::endpoints::{NBA_RAPID_API_HOST, NBA_RAPID_API_ROOT, THE_ODDS_API_ROOT};
@@ -21,7 +22,7 @@ use std::env;
 use log::{info, error};
 
 use crate::models::app_state::AppState;
-use crate::db::{nba_team_aggregated_game_stats_historical_mongo_dao, nba_games_historical_mongo_dao, nba_odds_historical_mongo_dao, nba_player_aggregated_game_stats_historical_mongo_dao};
+use crate::db::{nba_games_historical_mongo_dao, nba_odds_historical_mongo_dao, nba_player_aggregated_game_stats_historical_mongo_dao, nba_team_aggregated_game_stats_historical_mongo_dao, nba_team_stats_mongo_dao};
 
 /** mongo handlers **************************************************************/
 /********************************************************************************/
@@ -112,7 +113,7 @@ pub async fn get_nba_team_agg_game_stats(
     app_state: web::Data<AppState>,
     req: web::Json<GetNbaTeamAggGameStatsRquest>
 ) -> impl Responder {
-    info!("Recieved req for get_nba_game_stats_avg_response id");
+    info!("Recieved req for get_nba_game_stats_avg_response");
     let objs_result = nba_team_aggregated_game_stats_historical_mongo_dao::get_nba_team_agg_game_stats(
         &app_state.nba_team_aggregated_game_stats_historical_collection, 
         Some(req.team_ids.to_owned()), 
@@ -136,6 +137,30 @@ pub async fn get_nba_team_agg_game_stats(
         Err(e) => {
             error!("Failed to get nba stats avgs: {:?}", e);
             HttpResponse::InternalServerError().body(format!("{:?}", e))
+        }
+    }
+}
+
+
+pub async fn get_nba_team_stats(
+    app_state: web::Data<AppState>,
+    req: web::Json<GetNbaTeamStatsRequest>
+) -> impl Responder {
+    info!("Recieved req for get_nba_team_stats {:?}" , req);
+
+    match nba_team_stats_mongo_dao::get_nba_team_stats(
+        &app_state.nba_team_stats_collection, 
+        req.team_ids.clone(), 
+        req.season, 
+        req.season_type.clone()
+    ).await {
+        Ok(team_stats) => {
+            info!("Returned {} docs from mongo", team_stats.len());
+            HttpResponse::Ok().json(team_stats)
+        },
+        Err(e) => {
+            error!("Failed to fetch data: {:?}", e);
+            HttpResponse::InternalServerError().body("Failed to fetch data")
         }
     }
 }

@@ -1,5 +1,5 @@
 use log::info;
-use rust_backend::{handlers, initializers::initialize_app_state, proxy, routes};
+use rust_backend::{handlers::{self, handlers::get_nba_team_stats}, initializers::initialize_app_state, proxy, routes::{self, endpoints::GET_NBA_TEAM_STATS}};
 use actix_web::{web, App, HttpServer };
 use handlers::handlers::{
    get_feature_map_for_backtest, get_nba_games_by_team_and_season, get_nba_odds_by_team_and_season, get_nba_player_stats_by_id_and_season, get_nba_players_by_team_and_season, get_nba_team_agg_game_stats, get_odds, test
@@ -45,6 +45,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                .route(GET_PLAYERS_BY_TEAM_AND_SEASON, web::get().to(get_nba_players_by_team_and_season))
                .route(GET_PLAYER_STATS_BY_ID_AND_SEASON, web::get().to(get_nba_player_stats_by_id_and_season))
                .route(GET_NBA_TEAM_AGG_GAME_STATS, web::post().to(get_nba_team_agg_game_stats))
+               .route(GET_NBA_TEAM_STATS, web::post().to(get_nba_team_stats))
                .route("/test", web::get().to(test)),
          )
          .default_service(web::route().to(proxy))  // Uses the proxy handler for all unmatched routes

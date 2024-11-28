@@ -9,3 +9,4 @@ pub mod get_odds_request;
 pub mod get_odds_response;
 pub mod get_nba_team_agg_game_stats_request;
 pub mod get_nba_team_agg_game_stats_response;
+pub mod get_nba_team_stats_request;

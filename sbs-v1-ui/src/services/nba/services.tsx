@@ -11,6 +11,8 @@ import { NbaPlayerGameStatsAvgsHistorical } from "../../models/nba-player-game-s
 import { PYTHON_SERVER, RUST_SERVER } from "../config";
 import { GetNbaTeamAggGameStatsRequest } from "../../models/services/get-nba-team-agg-game-stats-request";
 import { GetNbaTeamAggGameStatsResponse } from "../../models/services/get-nba-team-agg-game-stats-response";
+import { GetNbaTeamStatsRequest } from "../../models/services/get-nba-team-stats-request";
+import { NbaTeamStats } from "../../models/nba-team-stats";
 
 export const NBA_API_ROOT = '/nba-api';
 
@@ -20,6 +22,7 @@ export const GET_NBA_ODDS_BY_TEAM_AND_SEASON = `${NBA_API_ROOT}/historical-odds/
 export const GET_NBA_PLAYERS_BY_TEAM_AND_SEASON = `${NBA_API_ROOT}/players-by-team-and-season/get`;
 export const GET_NBA_PLAYER_STATS_BY_ID_AND_SEASON = `${NBA_API_ROOT}/player-stats-by-id-and-season/get`;
 export const GET_NBA_TEAM_AGG_GAME_STATS = `${NBA_API_ROOT}/team-agg-game-stats/get`;
+export const GET_NBA_TEAM_STATS = `${NBA_API_ROOT}/team-stats/get`;
 
 export function getNbaMatchups(): Promise<AxiosResponse<GetNbaMatchupsResponse>> {
   return axios.get<GetNbaMatchupsResponse>(`${PYTHON_SERVER}${GET_NBA_LINEUPS}`);
@@ -43,4 +46,8 @@ export function getNbaPlayerStatsByIdAndSeason(req: GetNbaPlayerStatsByIdAndSeas
 
 export function getNbaTeamAggGameStats(req: GetNbaTeamAggGameStatsRequest) {
   return axios.post<GetNbaTeamAggGameStatsResponse>(`${RUST_SERVER}${GET_NBA_TEAM_AGG_GAME_STATS}`, req);
+}
+
+export function getNbaTeamStats(req: GetNbaTeamStatsRequest) {
+  return axios.post<NbaTeamStats[]>(`${RUST_SERVER}${GET_NBA_TEAM_STATS}`, req);
 }

@@ -34,9 +34,7 @@ pub async fn upsert(
 
     let mut errors: Vec<String> = vec!();
     let mut successes: Vec<String> = vec!();
-
-    // info!("NBA TEAM STATS {:?}:", nba_team_stats);
-
+    
     let update_result_futs: Vec<_> = nba_team_stats.into_iter()
         .flat_map(|ts| { 
             match to_document(&ts) {
