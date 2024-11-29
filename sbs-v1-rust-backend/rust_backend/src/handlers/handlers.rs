@@ -141,7 +141,6 @@ pub async fn get_nba_team_agg_game_stats(
     }
 }
 
-
 pub async fn get_nba_team_stats(
     app_state: web::Data<AppState>,
     req: web::Json<GetNbaTeamStatsRequest>

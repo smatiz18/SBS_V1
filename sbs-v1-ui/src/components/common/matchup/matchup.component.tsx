@@ -5,14 +5,18 @@ import { MatchupLinesAndStats } from '../../../models/matchup-lines-and-stats';
 import MatchupBookmakerLines from './matchup-bookmaker-lines.component';
 import MatchupOptimalOdds from './matchup-optimal-odds.component';
 import MatchupQuickStats from './matchup-quick-stats.component';
+import MatchupTeamStats from './matchup-team-stats.component';
 
 const MatchupComponent: React.FC<{matchup: Matchup}> = ({matchup}) => {
   return (
     <div className="matchup-component">
       <div className="team-info">
         <div className="team away">
-          <img src={matchup.away.teamLogo} alt={`${matchup.away.teamNickname} logo`} className="team-logo" />
+          <img src={matchup.away.teamLogo} alt={`${matchup.away.teamNickname} logo`} className="team-logo" /> 
           <h2 className="team-nickname">{matchup.away.teamNickname} (Away)</h2>
+          <div className='team-stats-wrapper'>
+            <MatchupTeamStats teamStats={matchup.away.teamStats} sportsCategory={matchup.sportsCategory} isHome={false}/>
+          </div>
           <ul className="team-lineup">
             {matchup.away.projectedPlayers.map(player => (
               <li key={player} className="player">{player}</li>
@@ -20,8 +24,11 @@ const MatchupComponent: React.FC<{matchup: Matchup}> = ({matchup}) => {
           </ul>
         </div>
         <div className="team home">
-          <img src={matchup.home.teamLogo} alt={`${matchup.home.teamNickname} logo`} className="team-logo" />
+          <img src={matchup.home.teamLogo} alt={`${matchup.home.teamNickname} logo`} className="team-logo" />  
           <h2 className="team-nickname">{matchup.home.teamNickname} (Home)</h2>
+          <div className='team-stats-wrapper'>
+            <MatchupTeamStats teamStats={matchup.home.teamStats} sportsCategory={matchup.sportsCategory} isHome={true}/>
+          </div>
           <ul className="team-lineup">
             {
               matchup.home.projectedPlayers.map(player => (
@@ -46,5 +53,7 @@ const MatchupComponent: React.FC<{matchup: Matchup}> = ({matchup}) => {
     </div>
   );
 };
+
+
 
 export default MatchupComponent;
