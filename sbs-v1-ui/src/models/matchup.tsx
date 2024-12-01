@@ -1,6 +1,7 @@
 import { SportsCategories } from "./enums/sports-categories";
 import { NbaTeamStats } from "./nba-team-stats";
 import { Event } from "./odds/odds";
+import { NbaTeamAggGameStatsHistorical } from "./services/get-nba-team-agg-game-stats-response";
 import { OptimalOdds } from "./services/get-odds-response";
 
 export interface Matchup {
@@ -8,7 +9,8 @@ export interface Matchup {
     home: TeamInfo,
     sportsCategory: SportsCategories,
     odds?: Event,
-    optimalOdds?: OptimalOdds[]
+    optimalOdds?: OptimalOdds[],
+    dateStart?: any;
 }
 
 export interface TeamInfo {

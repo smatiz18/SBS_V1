@@ -9,24 +9,133 @@ import { SeasonType } from "../../../models/enums/season-type";
 import { GamePeriods } from "../../../models/enums/game-periods";
 import QuickStatsTable from "../quick-stats-table/quick-stats-table.component";
 import { QuickStatsCellParams } from "../../../models/component/quick-stats-cell-params";
+import { getNbaTeamAggGameStats } from "../../../services/nba/services";
+import { GameStats, GetNbaTeamAggGameStatsResponse, NbaTeamAggGameStatsHistorical } from "../../../models/services/get-nba-team-agg-game-stats-response";
+import { SportsCategories } from "../../../models/enums/sports-categories";
+import { match } from "assert";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import { selectSx } from "../../../models/form-styles/styles";
 
 const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
     const [betOption, setBetOption] = useState(BetOptions.Team); 
     const [quickStatsAgg, setQuickStatsAgg] = useState(QuickStatsAggregation.Averages);
-    const [gamePeriod, setGamePeriod] = useState(GamePeriods.Total);
     const [quickStatsTableRows, setQuickStatsTableRows] = useState([] as any[]);
     const [quickStatsTableHeaders, setQuickStatsTableHeaders] = useState([] as any[]);
+    const [seasonType, setSeasonType] = useState(SeasonType.All);
+    const [stats, setStats] = useState({} as Record<any, NbaTeamAggGameStatsHistorical>)
+    const [colHeaders, setColHeaders] = useState([] as any[]);
+    const [rowHeaders, setRowHeaders] = useState([] as any[]); 
+    const [avgsValToColMap, setAvgsValToColMap] = useState({1: 3, 2: 5, 3: 10 } as any);
     
     /** init api calls */
     useEffect(() => {    
-        setQuickStatsTable();
+        const _ = async () => {
+            await initQuickStatsData();
+            setQuickStatsTable();
+        }
     }, []);
 
+    async function initQuickStatsData() {
+        let requestedStats = {};
+        switch (matchup.sportsCategory) {
+            case SportsCategories.NBA: {
+                if (betOption === BetOptions.Team) {
+                    const req: GetNbaTeamAggGameStatsRequest = {
+                        teamIds: [matchup.away.teamStats._id, matchup.home.teamStats._id],
+                        season: [matchup.home.teamStats.season],
+                        seasonType: seasonType
+                    };
+                    requestedStats = (await getNbaTeamAggGameStats(req)).data.aggGameStats;
+                }
+            }
+        }
+        setStats(requestedStats);
+    }
 
-    function getTeamStatsAvgTableHeaders() {
-        // This can be used for quarters or halves linescores 
-        // return ['', 'Avg', '5 Avg', '10 Avg', 'σ'];
-    }   
+    const mean = (vec: number[]) => vec.reduceRight((prev: number, curr: number) => prev + curr, 0) / vec.length;
+    const sliceLast = (vec: number[], slice: number) => vec.slice(vec.length - slice); 
+    const sliceFirst = (vec: number[], slice: number) => vec.slice(0, slice);
+    const range = (start: number, end: number): number[] => {
+        return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+    };
+    const avgSelect = (initVal: number, idx: number) => (
+        <div className="select-wrapper" id={idx.toString()}>
+            <FormControl variant="standard" sx={{ width: '100%' }}>
+                <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    value={initVal}
+                    onChange={(val: any) => calculateTable(val, idx)}
+                    sx={selectSx}
+                >
+                    {
+                        range(1,20).map((o) => (
+                            <MenuItem value={o}>{`${o} Avg`}</MenuItem>
+                        ))
+                    }
+                </Select>
+            </FormControl>
+        </div>
+    );
+    const initAvgsColHeaders = () => [
+        '', 
+        avgSelect(3 /* initVal */, 1 /* idx */), 
+        avgSelect(5 /* initVal */, 2 /* idx */), 
+        avgSelect(10 /* initVal */, 3 /* idx */), 
+        'σ'
+    ];
+    const initAvgsRowHeaders = () => [
+        'team',
+        'q1',
+        'q2',
+        'h1',
+        'q3',
+        'q4',
+        'h2',
+        'total',
+    ];
+    const nbaAvgTeamRows = () => {
+        /* calculated avg columns are idx 1,2,3 std dev col is 4 */
+        Nbamatchup.home.teamName
+        const awayStats = stats[]
+        const homeStats = 
+        const calculatedAvgsCols = colHeaders.filter((colH) => colH.props?.id !== undefined)
+            .reduce((prev, curr: Nba) => {
+                
+                prev[curr.props.id] =                
+            }, {}); 
+        calc
+        
+    }
+
+
+    function calculateTable(val: SelectChangeEvent, colIdx?: number): any {
+        let newAvgsValToColMap = { ...avgsValToColMap };
+        if (colIdx !== undefined) {
+            newAvgsValToColMap[colIdx] = val.target.value;
+        }
+        setAvgsValToColMap(newAvgsValToColMap);
+        let rows;
+        switch (matchup.sportsCategory) {
+            case SportsCategories.NBA: {
+                if (betOption === BetOptions.Team) {
+                    switch (quickStatsAgg) {
+                        case QuickStatsAggregation.Averages: {
+                            if (!colHeaders || colHeaders.length === 0) {
+                                setColHeaders(initAvgsColHeaders());
+                                setRowHeaders(initAvgsRowHeaders());
+                            }
+                            rows = nbaAvgTeamRows();       
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+
 
 
     // function getGamesStatsPeriodValue(obj: GameStats) {
@@ -50,9 +159,9 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup})
     //     }
     // }
 
-    // function getLatestGameStatsObj(stats: GameStats[]) {
-    //     return stats.sort((a, b) => Date.parse(a.dateStart) - Date.parse(b.dateStart)).pop();
-    // }
+    function sortGameStatsObjs(stats: GameStats[]) {
+        return stats.sort((a, b) => Date.parse(a.dateStart) - Date.parse(b.dateStart));
+    }
 
     // function getStdDeviation(nums: number[]) {
     //     if (nums.length === 0) return 0;
@@ -114,35 +223,40 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup})
     }
     
     async function setQuickStatsTable() {
-          //TODO do more logic to incorporate different sports and line types
-        switch (quickStatsAgg) {
-            case QuickStatsAggregation.Averages:
-                // const awayTeamId = NbaTeamsMappedByNickname[matchup.away.teamNickname].nbaApiId;
-                // const homeTeamId = NbaTeamsMappedByNickname[matchup.home.teamNickname].nbaApiId;
-                // const req: GetNbaTeamAggGameStatsRequest = {
-                //     teamIds: [awayTeamId, homeTeamId],
-                //     season: 2024,
-                //     seasonType: SeasonType.Regular
-                // };
-                // const gameStatsAvgs = await getNbaGameStatsAvgs(req);
-                // const awayTeamAvgs = gameStatsAvgs.data.gameStatsAvgs[awayTeamId];
-                // const homeTeamAvgs = gameStatsAvgs.data.gameStatsAvgs[homeTeamId];
-                // const awayTeamAvgsRow = mapNbaGameStatsAvgsQuickStatsToQuickStatsTableRowCells(awayTeamAvgs) || [];
-                // const homeTeamAvgsRow = mapNbaGameStatsAvgsQuickStatsToQuickStatsTableRowCells(homeTeamAvgs) || [];
-                // const aggregatedTotalsRow = aggregateTotals([awayTeamAvgsRow, homeTeamAvgsRow], [1,2,3]);
-                // setQuickStatsTableRows([
-                //     awayTeamAvgsRow,
-                //     homeTeamAvgsRow,
-                //     aggregatedTotalsRow
-                // ]);
-                // setQuickStatsTableHeaders(getTeamStatsAvgTableHeaders);
-                break;
-            case QuickStatsAggregation.Probabilities:
-                setQuickStatsTableRows([]);
-                break;
-            default: 
-                setQuickStatsTableRows([]);
-                break;
+        switch (matchup.sportsCategory) {
+            case SportsCategories.NBA: {
+                if (betOption === BetOptions.Team) {
+                    switch (quickStatsAgg) {
+                        case QuickStatsAggregation.Averages:
+                            // const awayTeamId = NbaTeamsMappedByNickname[matchup.away.teamNickname].nbaApiId;
+                            // const homeTeamId = NbaTeamsMappedByNickname[matchup.home.teamNickname].nbaApiId;
+                            // const req: GetNbaTeamAggGameStatsRequest = {
+                            //     teamIds: [awayTeamId, homeTeamId],
+                            //     season: 2024,
+                            //     seasonType: SeasonType.Regular
+                            // };
+                            // const gameStatsAvgs = await getNbaGameStatsAvgs(req);
+                            // const awayTeamAvgs = gameStatsAvgs.data.gameStatsAvgs[awayTeamId];
+                            // const homeTeamAvgs = gameStatsAvgs.data.gameStatsAvgs[homeTeamId];
+                            // const awayTeamAvgsRow = mapNbaGameStatsAvgsQuickStatsToQuickStatsTableRowCells(awayTeamAvgs) || [];
+                            // const homeTeamAvgsRow = mapNbaGameStatsAvgsQuickStatsToQuickStatsTableRowCells(homeTeamAvgs) || [];
+                            // const aggregatedTotalsRow = aggregateTotals([awayTeamAvgsRow, homeTeamAvgsRow], [1,2,3]);
+                            // setQuickStatsTableRows([
+                            //     awayTeamAvgsRow,
+                            //     homeTeamAvgsRow,
+                            //     aggregatedTotalsRow
+                            // ]);
+                            // setQuickStatsTableHeaders(getTeamStatsAvgTableHeaders);
+                            break;
+                        case QuickStatsAggregation.Probabilities:
+                            setQuickStatsTableRows([]);
+                            break;
+                        default: 
+                            setQuickStatsTableRows([]);
+                            break;
+                    }
+                }
+            }
         }
     }
 

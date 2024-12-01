@@ -27,7 +27,7 @@ const NbaDailyMatchups = () => {
     const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
 
     useEffect(() => {
-        fetchInitData(true);
+        fetchInitData(false);
       }, []);
 
     const getDateEst = () => {
@@ -102,6 +102,7 @@ const NbaDailyMatchups = () => {
                 matchup.home.teamName = odds.homeTeam;
                 matchup.odds = odds;
                 matchup.optimalOdds = (initOddsResponse.data.optimalOddsMap || {})[odds.id];
+                matchup.dateStart = odds.commenceTime;
               }
               return matchup;
             });

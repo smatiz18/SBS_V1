@@ -8,6 +8,26 @@ import MatchupQuickStats from './matchup-quick-stats.component';
 import MatchupTeamStats from './matchup-team-stats.component';
 
 const MatchupComponent: React.FC<{matchup: Matchup}> = ({matchup}) => {
+
+  const getHoursAndMinutesEtc = (dateString: string) => {
+    const date = new Date(dateString);
+
+    const options: Intl.DateTimeFormatOptions = {
+      timeZone: 'America/New_York',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    };
+
+    const dateStringAsEst = new Intl.DateTimeFormat('en-US', options).format(date);
+
+    if (dateStringAsEst && dateStringAsEst[0] === '0') {
+      return dateStringAsEst.slice(1);
+    }
+    return dateStringAsEst;
+  };
+
+  console.log(getHoursAndMinutesEtc(matchup.dateStart));
   return (
     <div className="matchup-component">
       <div className="team-info">
@@ -22,6 +42,9 @@ const MatchupComponent: React.FC<{matchup: Matchup}> = ({matchup}) => {
               <li key={player} className="player">{player}</li>
             ))}
           </ul>
+        </div>
+        <div className='date-start'>
+          {`@${getHoursAndMinutesEtc(matchup.dateStart)} EST`}
         </div>
         <div className="team home">
           <img src={matchup.home.teamLogo} alt={`${matchup.home.teamNickname} logo`} className="team-logo" />  
