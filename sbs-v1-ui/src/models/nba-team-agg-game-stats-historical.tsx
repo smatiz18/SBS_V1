@@ -1,8 +1,4 @@
-import { SeasonType } from "../enums/season-type";
-
-export interface GetNbaTeamAggGameStatsResponse {
-    aggGameStats: Record<any, NbaTeamAggGameStatsHistorical>;
-}
+import { SeasonType } from "./enums/season-type";
 
 export interface GameStats {
     teamId: any,

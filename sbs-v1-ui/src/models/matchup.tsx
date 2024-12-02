@@ -1,7 +1,7 @@
 import { SportsCategories } from "./enums/sports-categories";
+import { NbaTeamAggGameStatsHistorical } from "./nba-team-agg-game-stats-historical";
 import { NbaTeamStats } from "./nba-team-stats";
 import { Event } from "./odds/odds";
-import { NbaTeamAggGameStatsHistorical } from "./services/get-nba-team-agg-game-stats-response";
 import { OptimalOdds } from "./services/get-odds-response";
 
 export interface Matchup {
@@ -16,6 +16,7 @@ export interface Matchup {
 export interface TeamInfo {
     projectedPlayers: string[],
     teamStats: NbaTeamStats; // expand this to include other sport types
+    teamAggGameStats: NbaTeamAggGameStatsHistorical,
     teamName: string,
     teamNickname: string,
     teamLogo: string,

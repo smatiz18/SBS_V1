@@ -17,7 +17,6 @@ use crate::models::services::get_odds_request::GetOddsRequest;
 use crate::models::services::get_odds_response::GetOddsResponse;
 use crate::routes::endpoints::{NBA_RAPID_API_HOST, NBA_RAPID_API_ROOT, THE_ODDS_API_ROOT};
 use reqwest::header::{HeaderMap, HeaderValue};
-use std::collections::HashMap;
 use std::env;
 use log::{info, error};
 
@@ -124,15 +123,7 @@ pub async fn get_nba_team_agg_game_stats(
     match objs_result {
         Ok(objs) => {
             info!("Returned {} docs from mongo", objs.len());
-            let mapped_objs: HashMap<String, NbaTeamAggGameStatsHistorical> = objs.into_iter()
-                .map(|obj| (obj.team_id.to_string(), obj))
-                .collect();
-
-            let response_obj = GetNbaTeamAggGameStatsResponse {
-                game_stats_avgs: mapped_objs
-            };
-
-            HttpResponse::Ok().json(response_obj)
+            HttpResponse::Ok().json(objs)
         },
         Err(e) => {
             error!("Failed to get nba stats avgs: {:?}", e);

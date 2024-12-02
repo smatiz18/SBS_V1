@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MatchupComponent from "../../../common/matchup/matchup.component";
 import "./nba-daily-matchups.scss";
-import { getNbaMatchups, getNbaTeamStats } from "../../../../services/nba/services";
+import { getNbaMatchups, getNbaTeamAggGameStats, getNbaTeamStats } from "../../../../services/nba/services";
 import { NbaLogoMapper } from "../../../../assets/images/nba-logo-mapper";
 import { Matchup } from "../../../../models/matchup";
 import { getOdds } from "../../../../services/odds/services";
@@ -22,12 +22,14 @@ import { NbaTeamStats } from "../../../../models/nba-team-stats";
 import { GetNbaTeamStatsRequest } from "../../../../models/services/get-nba-team-stats-request";
 import { SeasonType } from "../../../../models/enums/season-type";
 import { getCurrentNbaSeason } from "../../../../utils/utils";
+import { GetNbaTeamAggGameStatsRequest } from "../../../../models/services/get-nba-team-agg-game-stats-request";
+import { NbaTeamAggGameStatsHistorical } from "../../../../models/nba-team-agg-game-stats-historical";
 
 const NbaDailyMatchups = () => {
     const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
 
     useEffect(() => {
-        fetchInitData(false);
+        fetchInitData(true);
       }, []);
 
     const getDateEst = () => {
@@ -79,9 +81,16 @@ const NbaDailyMatchups = () => {
               seasonType: SeasonType.All
             };
 
-            const nbaTeamStats =  await getNbaTeamStats(nbaTeamStatsReq);
+            const nbaTeamStats = await getNbaTeamStats(nbaTeamStatsReq);
             const nbaTeamStatsMappedByTeamNickname = nbaTeamStats.data
               .reduce((agg: Record<string, NbaTeamStats>, curr: NbaTeamStats) => {
+                agg[curr.teamNickname] = curr;
+                return agg;
+              }, {});
+
+            const nbaTeamAggGameStats = await getNbaTeamAggGameStats(nbaTeamStatsReq as GetNbaTeamAggGameStatsRequest);
+            const nbaTeamAggGameStatsMappedByTeamNickname = nbaTeamAggGameStats.data
+              .reduce((agg: Record<string, NbaTeamAggGameStatsHistorical>, curr: NbaTeamAggGameStatsHistorical) => {
                 agg[curr.teamNickname] = curr;
                 return agg;
               }, {});
@@ -92,9 +101,11 @@ const NbaDailyMatchups = () => {
               
               matchup.away.teamLogo = NbaLogoMapper.get(matchup.away.teamNickname)!;
               matchup.away.teamStats = nbaTeamStatsMappedByTeamNickname[matchup.away.teamNickname];
+              matchup.away.teamAggGameStats = nbaTeamAggGameStatsMappedByTeamNickname[matchup.away.teamNickname];
 
               matchup.home.teamLogo = NbaLogoMapper.get(matchup.home.teamNickname)!;
               matchup.home.teamStats = nbaTeamStatsMappedByTeamNickname[matchup.home.teamNickname];
+              matchup.home.teamAggGameStats = nbaTeamAggGameStatsMappedByTeamNickname[matchup.home.teamNickname];
 
               const odds = oddsEventMappedByHomeTeam[matchup.home.teamNickname];              
               if (odds && matchup.away.teamNickname === NbaTeamsMappedByName[odds.awayTeam]?.teamNickname) {
@@ -104,6 +115,7 @@ const NbaDailyMatchups = () => {
                 matchup.optimalOdds = (initOddsResponse.data.optimalOddsMap || {})[odds.id];
                 matchup.dateStart = odds.commenceTime;
               }
+              
               return matchup;
             });
           

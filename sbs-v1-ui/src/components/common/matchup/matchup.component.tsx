@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './matchup.component.scss';
 import { Matchup } from '../../../models/matchup';
 import { MatchupLinesAndStats } from '../../../models/matchup-lines-and-stats';
@@ -10,6 +10,8 @@ import MatchupTeamStats from './matchup-team-stats.component';
 const MatchupComponent: React.FC<{matchup: Matchup}> = ({matchup}) => {
 
   const getHoursAndMinutesEtc = (dateString: string) => {
+    if (!dateString) return "-";
+
     const date = new Date(dateString);
 
     const options: Intl.DateTimeFormatOptions = {
@@ -19,15 +21,14 @@ const MatchupComponent: React.FC<{matchup: Matchup}> = ({matchup}) => {
       hour12: true,
     };
 
-    const dateStringAsEst = new Intl.DateTimeFormat('en-US', options).format(date);
 
+    const dateStringAsEst = new Intl.DateTimeFormat('en-US', options).format(date);
     if (dateStringAsEst && dateStringAsEst[0] === '0') {
       return dateStringAsEst.slice(1);
     }
     return dateStringAsEst;
   };
 
-  console.log(getHoursAndMinutesEtc(matchup.dateStart));
   return (
     <div className="matchup-component">
       <div className="team-info">

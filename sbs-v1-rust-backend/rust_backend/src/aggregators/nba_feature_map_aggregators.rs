@@ -83,32 +83,32 @@ pub async fn get_feature_map_for_team_bet_type(
     .await
     .unwrap();
 
-    let game_stats_avgs = nba_games_avgs_hist_res.get(0)
+    let agg_game_stats = nba_games_avgs_hist_res.get(0)
         .unwrap()
         .clone();
 
-    let mut game_stats: Vec<GameStats> = game_stats_avgs.game_stats
+    let mut game_stats: Vec<GameStats> = agg_game_stats.game_stats
         .values()
         .cloned()
         .collect();
 
     game_stats.sort_by(|a, b| a.date_start.cmp(&b.date_start));
 
-    // let mut expanding_avg: Vec<GameStats> = game_stats_avgs.expanding_avg
+    // let mut expanding_avg: Vec<GameStats> = agg_game_stats.expanding_avg
     //     .values()
     //     .cloned()
     //     .collect();
 
     // expanding_avg.sort_by(|a, b| a.date_start.cmp(&b.date_start));
 
-    // let mut rolling_avg_5: Vec<GameStats> = game_stats_avgs.rolling_avg_5
+    // let mut rolling_avg_5: Vec<GameStats> = agg_game_stats.rolling_avg_5
     //     .values()
     //     .cloned()
     //     .collect();
 
     // rolling_avg_5.sort_by(|a, b| a.date_start.cmp(&b.date_start));
 
-    // let mut rolling_avg_10: Vec<GameStats> = game_stats_avgs.rolling_avg_10
+    // let mut rolling_avg_10: Vec<GameStats> = agg_game_stats.rolling_avg_10
     //     .values()
     //     .cloned()
     //     .collect();

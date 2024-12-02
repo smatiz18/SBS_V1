@@ -10,9 +10,9 @@ import { GetNbaPlayerStatsByIdAndSeasonRequest } from "../../models/services/get
 import { NbaPlayerGameStatsAvgsHistorical } from "../../models/nba-player-game-stats-avgs-historical";
 import { PYTHON_SERVER, RUST_SERVER } from "../config";
 import { GetNbaTeamAggGameStatsRequest } from "../../models/services/get-nba-team-agg-game-stats-request";
-import { GetNbaTeamAggGameStatsResponse } from "../../models/services/get-nba-team-agg-game-stats-response";
 import { GetNbaTeamStatsRequest } from "../../models/services/get-nba-team-stats-request";
 import { NbaTeamStats } from "../../models/nba-team-stats";
+import { NbaTeamAggGameStatsHistorical } from "../../models/nba-team-agg-game-stats-historical";
 
 export const NBA_API_ROOT = '/nba-api';
 
@@ -45,7 +45,7 @@ export function getNbaPlayerStatsByIdAndSeason(req: GetNbaPlayerStatsByIdAndSeas
 }
 
 export function getNbaTeamAggGameStats(req: GetNbaTeamAggGameStatsRequest) {
-  return axios.post<GetNbaTeamAggGameStatsResponse>(`${RUST_SERVER}${GET_NBA_TEAM_AGG_GAME_STATS}`, req);
+  return axios.post<NbaTeamAggGameStatsHistorical[]>(`${RUST_SERVER}${GET_NBA_TEAM_AGG_GAME_STATS}`, req);
 }
 
 export function getNbaTeamStats(req: GetNbaTeamStatsRequest) {

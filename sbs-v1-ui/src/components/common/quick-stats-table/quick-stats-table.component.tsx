@@ -3,7 +3,6 @@ import QuickStatsCell from "../quick-stats-cell/quick-stats-cell.component";
 import './quick-stats-table.component.scss';
 
 const QuickStatsTable: React.FC<{params: QuickStatsTableParams}> = ({params}) => {
-
     return (
         <div className="quick-stats-table-component-container">
             <table>
