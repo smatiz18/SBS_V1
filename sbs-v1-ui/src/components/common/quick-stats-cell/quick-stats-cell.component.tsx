@@ -2,32 +2,25 @@ import { QuickStatsCellParams } from "../../../models/component/quick-stats-cell
 import './quick-stats-cell.component.scss';
 
 const QuickStatsCell: React.FC<{params: QuickStatsCellParams}> = ({params}) => {
-
     const fixedLabel = isNaN(params.label) ? params.label : params.label.toFixed(2);
+    const getPositiveOrNegative = () => params.positive ? 
+        <span className="positive">{fixedLabel}</span> : 
+            params.negative ? 
+                <span className="negative">{fixedLabel}</span> : 
+                    <span className="label">{fixedLabel}</span>;
+
     return (
         <div className="quick-stats-cell-container">
             { 
-                params.positive && 
-                <div className="quick-stats-label-positive">
-                    <span>{fixedLabel}</span>
+                params.aggregation &&
+                <div className="quick-stats-agg">
+                    {getPositiveOrNegative()}
                 </div>
             }
             { 
-                params.negative && 
-                <div className="quick-stats-label-negative">
-                    <span>{fixedLabel}</span>
-                </div>
-            }
-            {
-                params.aggregation &&
-                <div className="quick-stats-label-aggregation">
-                    <span >{fixedLabel}</span>
-                </div>
-            }
-            {
-                !params.positive && !params.negative && !params.aggregation &&
-                <div className="quick-stats-label">
-                    <span>{fixedLabel}</span>
+                !params.aggregation &&
+                <div className="quick-stats">
+                    {getPositiveOrNegative()}
                 </div>
             }
         </div>

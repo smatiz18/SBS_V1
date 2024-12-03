@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { BetOptions } from "../../../models/enums/bet-options";
 import { MatchupLinesAndStats } from "../../../models/matchup-lines-and-stats";
-import './matchup-quick-stats.component.scss';
 import { QuickStatsAggregation } from "../../../models/enums/quick-stats-aggregation";
 import { SeasonType } from "../../../models/enums/season-type";
 import { QuickStatsCellParams } from "../../../models/component/quick-stats-cell-params";
@@ -12,6 +11,9 @@ import MenuItem from "@mui/material/MenuItem";
 import { selectSx } from "../../../models/form-styles/styles";
 import { GameStats, NbaTeamAggGameStatsHistorical } from "../../../models/nba-team-agg-game-stats-historical";
 import QuickStatsTable from "../quick-stats-table/quick-stats-table.component";
+import _ from "lodash";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import './matchup-quick-stats.component.scss';
 
 const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
     const FIRST_AGG_COL_IDX = 2;
@@ -23,12 +25,15 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup})
     aggToColIdxMap[SECOND_AGG_COL_IDX] = 5;
     aggToColIdxMap[THIRD_AGG_COL_IDX] = 10;
 
+    const AGG_COL_IDXS = [2,3,4,5];
+
     const [betOption, setBetOption] = useState(BetOptions.Team); 
     const [quickStatsAgg, setQuickStatsAgg] = useState(QuickStatsAggregation.Averages);
     const [quickStatsTableRows, setQuickStatsTableRows] = useState([] as any[]);
     const [seasonType, setSeasonType] = useState(SeasonType.All);
     const [aggsValToColMap, setAggsValToColMap] = useState(aggToColIdxMap);
     const [quickStatsTableHeaders, setQuickStatsTableHeaders] = useState([] as any[]);
+    const [aggregatableColIdxs, setAggregatableColIdxs] = useState(AGG_COL_IDXS);
     let colHeaders: any[] = [];
     let rowHeaders: any[] = [];
     
@@ -62,26 +67,35 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup})
     const range = (start: number, end: number): number[] => {
         return Array.from({ length: end - start + 1 }, (_, i) => start + i);
     };
-    
-    const avgSelect = (idx: number) => (
-        <div className="select-wrapper" id={idx.toString()}>
-            <FormControl variant="standard" sx={{ width: '100%'}}>
-                <Select
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    value={aggsValToColMap[idx]}
-                    onChange={(val: any) => updateAggValToColMap(val, idx)}
-                    sx={{...selectSx, fontSize: '.75rem'}}
-                >
-                    {
-                        range(1,20).map((o) => (
-                            <MenuItem value={o}>{`${o} Avg`}</MenuItem>
-                        ))
-                    }
-                </Select>
-            </FormControl>
-        </div>
-    );
+
+    const avgSelect = (idx: number) => {
+        const darkTheme = createTheme({
+            palette: {
+              mode: 'dark',
+            },
+        });
+        return (
+            <div className="select-wrapper" id={idx.toString()}>
+                <ThemeProvider theme={darkTheme}>
+                    <FormControl variant="standard" sx={{ width: '100%'}}>
+                        <Select
+                            labelId="demo-simple-select-standard-label"
+                            id="demo-simple-select-standard"
+                            value={aggsValToColMap[idx]}
+                            onChange={(val: any) => updateAggValToColMap(val, idx)}
+                            sx={{...selectSx, fontSize: '.7rem'}}
+                        >
+                            {
+                                range(1,20).map((o) => (
+                                    <MenuItem value={o}>{`${o} Avg`}</MenuItem>
+                                ))
+                            }
+                        </Select>
+                    </FormControl>
+                </ThemeProvider>
+            </div>
+        );
+    };
     
     const initAvgsColHeaders = () => [
         'Team',
@@ -102,6 +116,26 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup})
         'h2',
         'total',
     ];
+
+    const sumTeamStatsAgg = (rows: [][], colIdxsToAgg: Set<number>) => {
+        const aggIndex = colHeaders.findIndex((col) => col === 'Agg');
+        const groupedRows = _.groupBy(rows, (row) => row[aggIndex]); 
+        const rowsWithAggSum = Object.values(groupedRows).flatMap((aggRows) => {
+            
+            const aggSumRow = aggRows[0].map((v: any, idx: number) => {
+                if (colIdxsToAgg.has(idx)) {
+                    return v + aggRows[1][idx];
+                }
+                if (idx === aggIndex) {
+                    return 'Sum'
+                }
+                return '-';
+            });
+            aggRows.push(aggSumRow as any);
+            return aggRows;
+        })
+        return rowsWithAggSum;
+    }
     
     const nbaAvgTeamRows = () => {
         /* calculated avg columns are idx 2,3,4 std dev col is 5 */
@@ -259,7 +293,7 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup})
                 }
             });
         });
-        return rows;
+        return sumTeamStatsAgg(rows as any, new Set(aggregatableColIdxs));
     }
 
     function updateAggValToColMap(val?: SelectChangeEvent, colIdx?: number) {
@@ -281,11 +315,11 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup})
                                 rowHeaders = initTeamAvgsRowHeaders();
                             }
                             const rows = nbaAvgTeamRows();
-                            console.log('ROWS: ', rows);
                             const cellMappedRows = mapRawCellsToQuickStatsTableCell(
                                 rows as [][],
                                 new Set(Object.keys(aggsValToColMap).map(k => parseInt(k)) as any), 
-                                ALL_COL_IDX
+                                ALL_COL_IDX,
+                                (row) => row[1] === 'Sum',
                             );
                             setQuickStatsTableHeaders(colHeaders);
                             setQuickStatsTableRows(cellMappedRows);
@@ -296,100 +330,30 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup})
         }
     }
 
-    function mapRawCellsToQuickStatsTableCell(rows: any[][], aggColIdxs: Set<number>, comparatorIdx: number): any {
-        return rows.map(row => (
-            row.map((colVal: any, idx: number) => {
+    function mapRawCellsToQuickStatsTableCell(
+        rows: any[][], 
+        aggColIdxs: Set<number>, 
+        comparatorIdx: number,
+        rowAggComparator?: (x: any) => boolean,
+        cellAggComparator?: (x: any) => boolean
+    ): any {
+        return rows.map(row => {
+            const addAggToCellParams = rowAggComparator && rowAggComparator(row);
+            return row.map((colVal: any, idx: number) => {
                 if (aggColIdxs.has(idx)) {
                     return {
                         label: colVal,
                         positive: colVal > row[comparatorIdx],
                         negative: colVal < row[comparatorIdx],
+                        aggregation: addAggToCellParams || (cellAggComparator && cellAggComparator(colVal))
                     } as QuickStatsCellParams;
                 }
                 return {
-                    label: colVal
+                    label: colVal,
+                    aggregation: addAggToCellParams || (cellAggComparator && cellAggComparator(colVal))
                 } as QuickStatsCellParams;
-            })
-        ));
-    }
-    
-
-
-
-    // function getGamesStatsPeriodValue(obj: GameStats) {
-    //     switch (gamePeriod) {
-    //         case GamePeriods.Total: 
-    //             return obj.points;
-    //         case GamePeriods.FirstHalf:
-    //             return obj.linescoreQ1 + obj.linescoreQ2;
-    //         case GamePeriods.SecondHalf:
-    //             return obj.linescoreQ3 + obj.linescoreQ4;
-    //         case GamePeriods.Q1:
-    //             return obj.linescoreQ1;
-    //         case GamePeriods.Q2:
-    //             return obj.linescoreQ2;
-    //         case GamePeriods.Q3:
-    //             return obj.linescoreQ3;
-    //         case GamePeriods.Q4:
-    //             return obj.linescoreQ4;
-    //         default:
-    //             return 0; 
-    //     }
-    // }
-
-    function aggregateTotals(arrs: any[][], idxs: number[]) {
-        let aggRow = new Array(arrs[0].length).fill('-');
-
-        idxs.forEach((idx: number) => {
-            aggRow[idx] = 0;
-            arrs.forEach((arr: any[]) => {
-                if (!isNaN(arr[idx]?.label || '')) {
-                    aggRow[idx] += arr[idx].label; 
-                }
             });
         });
-        aggRow[0] = 'Aggregation';
-
-        aggRow = aggRow.map((agg) => ({ label: agg, aggregation: true } as QuickStatsCellParams));
-        return aggRow; 
-    }
-    
-    async function setQuickStatsTable() {
-        switch (matchup.sportsCategory) {
-            case SportsCategories.NBA: {
-                if (betOption === BetOptions.Team) {
-                    switch (quickStatsAgg) {
-                        case QuickStatsAggregation.Averages:
-                            // const awayTeamId = NbaTeamsMappedByNickname[matchup.away.teamNickname].nbaApiId;
-                            // const homeTeamId = NbaTeamsMappedByNickname[matchup.home.teamNickname].nbaApiId;
-                            // const req: GetNbaTeamAggGameStatsRequest = {
-                            //     teamIds: [awayTeamId, homeTeamId],
-                            //     season: 2024,
-                            //     seasonType: SeasonType.Regular
-                            // };
-                            // const gameStatsAvgs = await getNbaGameStatsAvgs(req);
-                            // const awayTeamAvgs = gameStatsAvgs.data.gameStatsAvgs[awayTeamId];
-                            // const homeTeamAvgs = gameStatsAvgs.data.gameStatsAvgs[homeTeamId];
-                            // const awayTeamAvgsRow = mapNbaGameStatsAvgsQuickStatsToQuickStatsTableRowCells(awayTeamAvgs) || [];
-                            // const homeTeamAvgsRow = mapNbaGameStatsAvgsQuickStatsToQuickStatsTableRowCells(homeTeamAvgs) || [];
-                            // const aggregatedTotalsRow = aggregateTotals([awayTeamAvgsRow, homeTeamAvgsRow], [1,2,3]);
-                            // setQuickStatsTableRows([
-                            //     awayTeamAvgsRow,
-                            //     homeTeamAvgsRow,
-                            //     aggregatedTotalsRow
-                            // ]);
-                            // setQuickStatsTableHeaders(getTeamStatsAvgTableHeaders);
-                            break;
-                        case QuickStatsAggregation.Probabilities:
-                            setQuickStatsTableRows([]);
-                            break;
-                        default: 
-                            setQuickStatsTableRows([]);
-                            break;
-                    }
-                }
-            }
-        }
     }
 
     return (

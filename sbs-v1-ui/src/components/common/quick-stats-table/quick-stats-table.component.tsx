@@ -9,7 +9,11 @@ const QuickStatsTable: React.FC<{params: QuickStatsTableParams}> = ({params}) =>
                 <tr>
                     {
                         params.headers.map((header) => (
-                            <th>{header}</th>
+                            <th>
+                                <div className="header-wrapper">
+                                    {header}
+                                </div>
+                            </th>
                         ))
                     }
                 </tr>

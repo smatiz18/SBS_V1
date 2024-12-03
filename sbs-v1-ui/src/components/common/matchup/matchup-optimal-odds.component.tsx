@@ -38,7 +38,7 @@ const MatchupOptimalOdds: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}
                 rowKey: optimalOdds.betType === TeamBetTypes.Totals ? optimalOdds.name : getBetTypeLabel(optimalOdds.betType),
                 colKey: 'Odds', 
                 point: optimalOdds.point, 
-                price: optimalOdds.price, 
+                price: optimalOdds.price > 0 ? `+${optimalOdds.price}` : optimalOdds.price, 
                 bookmaker: optimalOdds.bookmaker
             } as BettingOddsCell,
             {
