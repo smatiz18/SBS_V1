@@ -24,3 +24,22 @@ export const getCurrentNbaSeason = () => {
     }
     return parseInt(currDate.split("-")[0]);
 };
+
+    
+export const range = (start: number, end: number): number[] => {
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+};
+
+export const mean = (vec: number[]) => vec.reduceRight((prev: number, curr: number) => prev + curr, 0) / vec.length;
+    
+export const sliceLast = (vec: number[], slice: number) => vec.slice(vec.length - slice); 
+
+export const sliceFirst = (vec: number[], slice: number) => vec.slice(0, slice);  
+
+export const stdDeviation = (vec: number[]) => {
+    if (vec.length === 0) return 0;
+    const mean = vec.reduce((acc, num) => acc + num, 0) / vec.length;
+    const squaredDiffs = vec.map(num => Math.pow(num - mean, 2));
+    const variance = squaredDiffs.reduce((acc, diff) => acc + diff, 0) / vec.length;
+    return Math.sqrt(variance);
+}

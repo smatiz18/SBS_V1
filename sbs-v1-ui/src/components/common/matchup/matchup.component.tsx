@@ -4,11 +4,10 @@ import { Matchup } from '../../../models/matchup';
 import { MatchupLinesAndStats } from '../../../models/matchup-lines-and-stats';
 import MatchupBookmakerLines from './matchup-bookmaker-lines.component';
 import MatchupOptimalOdds from './matchup-optimal-odds.component';
-import MatchupQuickStats from './matchup-quick-stats.component';
+import MatchupQuickStats from './matchup-quick-stats/matchup-quick-stats.component';
 import MatchupTeamStats from './matchup-team-stats.component';
 
 const MatchupComponent: React.FC<{matchup: Matchup}> = ({matchup}) => {
-
   const getHoursAndMinutesEtc = (dateString: string) => {
     if (!dateString) return "-";
 
