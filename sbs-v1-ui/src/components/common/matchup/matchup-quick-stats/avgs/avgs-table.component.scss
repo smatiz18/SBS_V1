@@ -1,0 +1,12 @@
+@use '../../../../../variables';
+
+.quick-stats-table-container {
+    .quick-stats-header-container {
+        padding: 0 0 .33rem 0;
+
+        .quick-stats-header {
+            font-size: 1rem;
+            color: variables.$header-text-color;
+        }
+    }
+}

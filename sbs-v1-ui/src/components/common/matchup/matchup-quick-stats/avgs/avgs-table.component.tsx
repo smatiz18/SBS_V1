@@ -1,9 +1,9 @@
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import { MatchupLinesAndStats } from "../../../../../models/matchup-lines-and-stats";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { mean, range, sliceLast, stdDeviation } from "../../../../../utils/utils";
-import { selectSx } from "../../../../../models/form-styles/styles";
+import { darkTheme, selectSx } from "../../../../../models/form-styles/styles";
 import { useEffect, useState } from "react";
 import QuickStatsTable from "../../../quick-stats-table/quick-stats-table.component";
 import { BetOptions } from "../../../../../models/enums/bet-options";
@@ -13,6 +13,7 @@ import { SportsCategories } from "../../../../../models/enums/sports-categories"
 import { QuickStatsCellParams } from "../../../../../models/component/quick-stats-cell-params";
 import _ from "lodash";
 import Filters from "../filters/filters.component";
+import './avgs-table.component.scss';
 
 const AvgsTable: React.FC<{
     matchup: MatchupLinesAndStats, 
@@ -41,12 +42,6 @@ const AvgsTable: React.FC<{
     let rowHeaders: any[] = [];
 
     const avgSelect = (idx: number, isComparator?: boolean) => {
-        const darkTheme = createTheme({
-            palette: {
-              mode: 'dark',
-            },
-        });
-
         let selectOptions = range(1,20).map((o) => (
             <MenuItem value={o}>
                 {`${isComparator ? 'Comp' : ''} ${o} Avg`}</MenuItem>
@@ -347,6 +342,11 @@ const AvgsTable: React.FC<{
 
     return (
         <div className="quick-stats-table-container">
+            <div className="quick-stats-header-container">
+                <div className="quick-stats-header">
+                    Game Averages
+                </div>
+            </div>
             <Filters betOption={betOption} matchup={matchup}/>
             <QuickStatsTable params={
                 {
