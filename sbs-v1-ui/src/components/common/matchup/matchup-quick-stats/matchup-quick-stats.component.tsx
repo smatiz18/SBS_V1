@@ -7,10 +7,13 @@ import _ from "lodash";
 import './matchup-quick-stats.component.scss';
 import Pagination from "@mui/material/Pagination";
 import './matchup-quick-stats.component.scss';
+import { paginationSx } from "../../../../models/form-styles/styles";
+import PaginationItem from "@mui/material/PaginationItem";
 
 const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
     const [betOption, setBetOption] = useState(BetOptions.Team); 
     const [quickStatsAgg, setQuickStatsAgg] = useState(QuickStatsAggregation.Averages);
+    const pageLabels = ['Game Averages', 'Chart Analyzer', 'Past Occurences']; 
 
     return (
         <div className="quick-stats-container">
@@ -21,7 +24,16 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup})
             <div className="avgs-table-wrapper">
                 <AvgsTable matchup={matchup} betOption={betOption}/>
             </div>
-            <Pagination count={10} shape="rounded" />
+            <div className="pagination-wrapper">
+                <Pagination count={3} shape="rounded" sx={paginationSx}
+                    renderItem={(item) => (
+                        <PaginationItem
+                          {...item}
+                          page={pageLabels[item.page! - 1] || item.page}
+                        />
+                    )}
+                />
+            </div>
         </div>
     );
 }

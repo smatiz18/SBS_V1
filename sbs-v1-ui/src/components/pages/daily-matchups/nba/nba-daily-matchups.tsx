@@ -29,7 +29,7 @@ const NbaDailyMatchups = () => {
     const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
 
     useEffect(() => {
-        fetchInitData(true);
+        fetchInitData(false);
       }, []);
 
     const getDateEst = () => {

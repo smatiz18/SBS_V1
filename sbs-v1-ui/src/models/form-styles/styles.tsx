@@ -66,3 +66,10 @@ export const formLabelSx = {
   fontSize: '.8rem',
   fontFamily: 'IBM Plex Sans, sans-serif' 
 };
+
+export const paginationSx = {
+  display: 'flex',
+  justifyContent: 'center', 
+  fontSize: '.8rem',
+  fontFamily: 'IBM Plex Sans, sans-serif' 
+};
