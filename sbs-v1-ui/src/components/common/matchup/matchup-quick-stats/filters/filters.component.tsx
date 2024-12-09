@@ -14,11 +14,33 @@ import Radio from "@mui/material/Radio";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 
 import './filters.component.scss';
+import { TeamBetOptionFilter } from "../../../../../models/enums/team-bet-option-filter";
 
-const Filters: React.FC<{betOption: BetOptions, matchup: Matchup}> = ({betOption, matchup}) => {
-    const [isExpanded, setIsExpanded] = useState(false);
+const Filters: React.FC<{betOption: BetOptions, matchup: Matchup, handleFilterChange: any}>
+ = ({betOption, matchup, handleFilterChange}) => {
+    
+    const [teamFilters, setTeamFilters] = useState({ 
+        away: TeamBetOptionFilter.All,
+        home: TeamBetOptionFilter.All
+    });
+
+    const onTeamFilterChange = (params: any) => {
+        const isHome = params.target.value.split('_')[0] === matchup.home.teamNickname;
+        const filter = params.target.value.split('_')[1] as TeamBetOptionFilter;
+
+        const update = isHome ? { home: filter } : { away: filter };
+        setTeamFilters(
+            {
+                ...teamFilters,
+                ...update
+            }
+        );
+        handleFilterChange(isHome ? { home: filter } : { away: filter });
+    }
 
     const getTeamFilterOptions = (teamInfo: TeamInfo) => {
+        const isHome = teamInfo.teamNickname === matchup.home.teamNickname;
+        const filter = isHome ? teamFilters.home : teamFilters.away;
         return (
             <div className="team-filters">
                 <div className='team-filters-header-container'>
@@ -34,12 +56,12 @@ const Filters: React.FC<{betOption: BetOptions, matchup: Matchup}> = ({betOption
                                 row
                                 aria-labelledby="demo-row-radio-buttons-group-label"
                                 name="row-radio-buttons-group"
-                                value={'All'}
-                                onChange={() => {}}
+                                value={`${teamInfo.teamNickname}_${filter}`}
+                                onChange={onTeamFilterChange}
                             >
-                                <FormControlLabel sx={radioLabelSx} value="Away" control={<Radio sx={radioIconSx}/>} label="Away" />
-                                <FormControlLabel sx={radioLabelSx} value="Home" control={<Radio sx={radioIconSx}/>} label="Home" />
-                                <FormControlLabel sx={radioLabelSx} value="All" control={<Radio sx={radioIconSx}/>} label="All" />
+                                <FormControlLabel sx={radioLabelSx} value={`${teamInfo.teamNickname}_Away`} control={<Radio sx={radioIconSx}/>} label="Away" />
+                                <FormControlLabel sx={radioLabelSx} value={`${teamInfo.teamNickname}_Home`} control={<Radio sx={radioIconSx}/>} label="Home" />
+                                <FormControlLabel sx={radioLabelSx} value={`${teamInfo.teamNickname}_All`} control={<Radio sx={radioIconSx}/>} label="All" />
                             </RadioGroup>
                         </FormControl>
                     </div>

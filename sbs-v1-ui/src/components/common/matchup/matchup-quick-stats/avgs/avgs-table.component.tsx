@@ -14,6 +14,7 @@ import { QuickStatsCellParams } from "../../../../../models/component/quick-stat
 import _ from "lodash";
 import Filters from "../filters/filters.component";
 import './avgs-table.component.scss';
+import { TeamBetOptionFilter } from "../../../../../models/enums/team-bet-option-filter";
 
 const AvgsTable: React.FC<{
     matchup: MatchupLinesAndStats, 
@@ -36,10 +37,22 @@ const AvgsTable: React.FC<{
     const [quickStatsTableRows, setQuickStatsTableRows] = useState([] as any[]);
     const [quickStatsTableColHeaders, setQuickStatsTableColHeaders] = useState([] as any[]);
     const [colIdxToAggValMap, setColIdxToAggValMap] = useState(initColIdxToAggValMap);
+    const [teamFilters, setTeamFilters] = useState({ 
+        away: TeamBetOptionFilter.All,
+        home: TeamBetOptionFilter.All
+    });
     const aggregatableColIdxs = AGG_COL_IDXS;
 
     let colHeaders: any[] = [];
     let rowHeaders: any[] = [];
+
+    const handleFilterChange = (value: any) => {
+        const filtersUpdate = {
+            ...teamFilters, 
+            ...value
+        };
+        setTeamFilters(filtersUpdate);
+    };
 
     const avgSelect = (idx: number, isComparator?: boolean) => {
         let selectOptions = range(1,20).map((o) => (
@@ -95,7 +108,7 @@ const AvgsTable: React.FC<{
     useEffect(() => {
         initializeComponentVars();
         calculateTable();
-    }, [betOption, colIdxToAggValMap]);
+    }, [betOption, colIdxToAggValMap, teamFilters]);
     /********************************************************************************/
 
     const initializeComponentVars = () => {
@@ -128,7 +141,19 @@ const AvgsTable: React.FC<{
         /* calculated avg columns are idx 2,3,4 std dev col is 5 */
         const teamsAggStats = [matchup.away.teamAggGameStats, matchup.home.teamAggGameStats];
         const rows = teamsAggStats.flatMap((currStats: NbaTeamAggGameStatsHistorical) => {    
-            const sortedStats = sortGameStatsObjs(Object.values(currStats.gameStats));
+            const isHome = matchup.home.teamNickname === currStats.teamNickname;
+            const sortedStats = sortGameStatsObjs(Object.values(currStats.gameStats)).filter((x: GameStats) => {
+                if (isHome && teamFilters.home === TeamBetOptionFilter.Away) {
+                    return !x.isHome;
+                } else if (isHome && teamFilters.home === TeamBetOptionFilter.Home) {
+                    return x.isHome;
+                } else if (!isHome && teamFilters.away === TeamBetOptionFilter.Away) {
+                    return !x.isHome;
+                } else if (!isHome && teamFilters.away === TeamBetOptionFilter.Home) {
+                    return x.isHome;
+                }
+                return true;
+            });
             return rowHeaders.map((currRow: string) => {
                 switch (currRow) {
                     case 'Team': {
@@ -342,7 +367,7 @@ const AvgsTable: React.FC<{
 
     return (
         <div className="quick-stats-table-container">
-            <Filters betOption={betOption} matchup={matchup}/>
+            <Filters handleFilterChange={handleFilterChange} betOption={betOption} matchup={matchup}/>
             <QuickStatsTable params={
                 {
                     rows: quickStatsTableRows, 
