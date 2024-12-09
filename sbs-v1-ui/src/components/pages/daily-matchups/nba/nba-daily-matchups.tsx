@@ -117,7 +117,8 @@ const NbaDailyMatchups = () => {
               }
               
               return matchup;
-            });
+            })
+            .filter((m: Matchup) => m.dateStart !== undefined);
           
             setNbaMatchups(enrichedMatchups); 
           } catch (error) {

@@ -29,23 +29,23 @@ export const filterAccordianSx = {
   backgroundColor: '#242424',
   '&.MuiAccordion-root': {
     boxShadow: 'none',
-    borderBottom: '1px solid #ccc', // Optional: Add a subtle separator
+    borderBottom: '1px solid #ccc',
   },
   '& .MuiAccordionSummary-root': {
-    padding: '4px 10px', // Slightly increased padding for top and sides
-    minHeight: '34px', // Adjusted for slightly larger height
+    padding: '4px 10px',
+    minHeight: '34px',
     '&.Mui-expanded': {
-      minHeight: '34px', // Maintain consistent height on expand
+      minHeight: '34px',
     },
   },
   '& .MuiAccordionSummary-content': {
     margin: 0,
     '&.Mui-expanded': {
-      margin: 0, // Ensure no extra margin when expanded
+      margin: 0,
     },
   },
   '& .MuiAccordionDetails-root': {
-    padding: '6px 10px', // Slightly increased padding for details
+    padding: '6px 10px',
   },
 };
 
@@ -73,3 +73,11 @@ export const paginationSx = {
   fontSize: '.8rem',
   fontFamily: 'IBM Plex Sans, sans-serif' 
 };
+
+export const accordianSummarySx = {
+    margin: 0, 
+    padding: 0, 
+    backgroundColor: 'rgb(#455058, .5)',
+    border: '1px solid #242424', 
+    borderRadius: '4px'
+  }

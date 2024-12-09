@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { MatchupLinesAndStats } from "../../../models/matchup-lines-and-stats";
-import { BetOptions } from "../../../models/enums/bet-options";
-import { OptimalOdds } from "../../../models/services/get-odds-response";
-import { getBetTypeLabel } from "../../../utils/utils";
-import { BettingOddsCell } from "../../../models/component/betting-odds-table-params";
-import { TeamBetTypes } from "../../../models/enums/team-bet-types";
-import { OptimalOddsTableParams } from "../../../models/component/optimal-odds-table-params";
-import OptimalOddsTable from "../optimal-odds-table/optimal-odds-table.component";
+import { MatchupLinesAndStats } from "../../../../../models/matchup-lines-and-stats";
+import { BetOptions } from "../../../../../models/enums/bet-options";
+import { OptimalOdds } from "../../../../../models/services/get-odds-response";
+import { getBetTypeLabel } from "../../../../../utils/utils";
+import { BettingOddsCell } from "../../../../../models/component/betting-odds-table-params";
+import { TeamBetTypes } from "../../../../../models/enums/team-bet-types";
+import { OptimalOddsTableParams } from "../../../../../models/component/optimal-odds-table-params";
+import OptimalOddsTable from "../../../optimal-odds-table/optimal-odds-table.component";
 import './matchup-optimal-odds.component.scss';
 
 const MatchupOptimalOdds: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
@@ -99,10 +99,6 @@ const MatchupOptimalOdds: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}
     return (
         <div className="matchup-optimal-odds-component-container">
             <div className="optimal-odds-container">
-                <div className="header-container">
-                    <h3>Optimal Odds</h3>
-                    <div className="line"></div>
-                </div>
                 <div className="optimal-odds-tables-container">
                     <div className="optimal-odds-tables">
                         { 

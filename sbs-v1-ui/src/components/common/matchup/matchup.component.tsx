@@ -2,10 +2,9 @@ import React from 'react';
 import './matchup.component.scss';
 import { Matchup } from '../../../models/matchup';
 import { MatchupLinesAndStats } from '../../../models/matchup-lines-and-stats';
-import MatchupBookmakerLines from './matchup-bookmaker-lines.component';
-import MatchupOptimalOdds from './matchup-optimal-odds.component';
 import MatchupQuickStats from './matchup-quick-stats/matchup-quick-stats.component';
 import MatchupTeamStats from './matchup-team-stats.component';
+import MatchupLines from './matchup-lines/matchup-lines.component';
 
 const MatchupComponent: React.FC<{matchup: Matchup}> = ({matchup}) => {
   const getHoursAndMinutesEtc = (dateString: string) => {
@@ -62,14 +61,11 @@ const MatchupComponent: React.FC<{matchup: Matchup}> = ({matchup}) => {
         </div>
       </div>
       <div className="lines-and-stats">
-          <div className="lines-and-stats-content">
-            <MatchupBookmakerLines matchup={{...matchup} as MatchupLinesAndStats}/>
+          <div className='lines-and-stats-content'>
+            <MatchupLines matchup={{...matchup} as MatchupLinesAndStats}/>
           </div>
           <div className="lines-and-stats-content">
             <MatchupQuickStats matchup={{...matchup} as MatchupLinesAndStats}/>
-          </div>
-          <div className="lines-and-stats-content">
-            <MatchupOptimalOdds matchup={{...matchup} as MatchupLinesAndStats}/>
           </div>
       </div>
       <div className="footer"></div>

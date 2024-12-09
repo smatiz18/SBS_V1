@@ -1,20 +1,20 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import './matchup-bookmaker-lines.component.scss';
-import { Bookmakers } from "../../../models/enums/bookmakers";
-import { MatchupLinesAndStats } from "../../../models/matchup-lines-and-stats";
-import { BetOptions } from "../../../models/enums/bet-options";
-import { Bookmaker, Market, Outcome } from "../../../models/odds/odds";
-import { TeamBetTypes } from "../../../models/enums/team-bet-types";
-import BettingOddsTable from "../betting-odds-table/betting-odds-table.component";
-import { BettingOddsCell, BettingOddsTableParams } from "../../../models/component/betting-odds-table-params";
-import { SportsCategories } from "../../../models/enums/sports-categories";
-import { NbaTeamsMappedByName } from "../../../constants/nba";
+import { Bookmakers } from "../../../../../models/enums/bookmakers";
+import { MatchupLinesAndStats } from "../../../../../models/matchup-lines-and-stats";
+import { BetOptions } from "../../../../../models/enums/bet-options";
+import { Bookmaker, Market, Outcome } from "../../../../../models/odds/odds";
+import { TeamBetTypes } from "../../../../../models/enums/team-bet-types";
+import BettingOddsTable from "../../../betting-odds-table/betting-odds-table.component";
+import { BettingOddsCell, BettingOddsTableParams } from "../../../../../models/component/betting-odds-table-params";
+import { SportsCategories } from "../../../../../models/enums/sports-categories";
+import { NbaTeamsMappedByName } from "../../../../../constants/nba";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
-import { selectSx } from "../../../models/form-styles/styles";
-import { getBetTypeLabel } from "../../../utils/utils";
+import { selectSx } from "../../../../../models/form-styles/styles";
+import { getBetTypeLabel } from "../../../../../utils/utils";
 
 const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
     const [bookmaker, setBookmaker] = useState(Bookmakers.DraftKings);
@@ -165,10 +165,6 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
     return (
         <div className="matchup-bookmaker-lines-component-container">
             <div className="sportsbook-lines-container">
-                <div className="header-container">
-                    <h3>Sportsbook Lines</h3>
-                    <div className="line"></div>
-                </div>
                 <div className="sportsbook-lines-table-container">
                     <div className="table-actions">
                         <div className="select-wrapper">

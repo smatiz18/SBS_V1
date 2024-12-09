@@ -5,7 +5,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Accordion from "@mui/material/Accordion";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { darkTheme, filterAccordianSx, formLabelSx, radioIconSx, radioLabelSx } from "../../../../../models/form-styles/styles";
+import { accordianSummarySx, darkTheme, filterAccordianSx, formLabelSx, radioIconSx, radioLabelSx } from "../../../../../models/form-styles/styles";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -72,7 +72,7 @@ const Filters: React.FC<{betOption: BetOptions, matchup: Matchup}> = ({betOption
                         expandIcon={<ExpandMoreIcon/>}
                         aria-controls="panel1-content"
                         id="panel1-header"
-                        sx={{ margin: 0, padding: 0 }}
+                        sx={accordianSummarySx}
                     >
                         Filters
                     </AccordionSummary>
