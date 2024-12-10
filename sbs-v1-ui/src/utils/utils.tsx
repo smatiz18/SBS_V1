@@ -32,9 +32,20 @@ export const range = (start: number, end: number): number[] => {
 
 export const mean = (vec: number[]) => vec.reduceRight((prev: number, curr: number) => prev + curr, 0) / vec.length;
     
-export const sliceLast = (vec: number[], slice: number) => vec.slice(vec.length - slice); 
+export const sliceLast = (vec: number[], slice: number) => {
+    if (slice >= vec.length) {
+        return vec;
+    }
 
-export const sliceFirst = (vec: number[], slice: number) => vec.slice(0, slice);  
+    return vec.slice(vec.length - slice);
+} 
+
+export const sliceFirst = (vec: number[], slice: number) => {
+    if (slice >= vec.length) {
+        return vec;
+    }
+    return vec.slice(0, slice);
+}  
 
 export const stdDeviation = (vec: number[]) => {
     if (vec.length === 0) return 0;
