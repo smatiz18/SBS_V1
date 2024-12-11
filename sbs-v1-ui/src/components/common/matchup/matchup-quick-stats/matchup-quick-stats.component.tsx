@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, ReactElement, useState } from "react";
 import { BetOptions } from "../../../../models/enums/bet-options";
 import { MatchupLinesAndStats } from "../../../../models/matchup-lines-and-stats";
 import { QuickStatsAggregation } from "../../../../models/enums/quick-stats-aggregation";
@@ -10,10 +10,24 @@ import './matchup-quick-stats.component.scss';
 import { paginationSx } from "../../../../models/form-styles/styles";
 import PaginationItem from "@mui/material/PaginationItem";
 
-const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
-    const [betOption, setBetOption] = useState(BetOptions.Team); 
-    const [quickStatsAgg, setQuickStatsAgg] = useState(QuickStatsAggregation.Averages);
+const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats, betOption: BetOptions}> = ({matchup, betOption}) => {
+    const avgsTable = <AvgsTable matchup={matchup} betOption={betOption}/>;
+    const chartAnalyzer = <div className="chart-analyzer"></div>;
+    const pastOccurences = <div className="past-occurences"></div>;
+    const pageToCompMap: Record<string, ReactElement> = {
+        '1': avgsTable,
+        '2': chartAnalyzer,
+        '3': pastOccurences
+    };
+
     const pageLabels = ['Game Averages', 'Chart Analyzer', 'Past Occurences']; 
+
+    const [quickStatsAgg, setQuickStatsAgg] = useState(QuickStatsAggregation.Averages);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const handlePaginationChange = (_: ChangeEvent<unknown>, page: number) => {
+        setCurrentPage(page);
+    }
 
     return (
         <div className="quick-stats-container">
@@ -25,7 +39,11 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup})
                 <AvgsTable matchup={matchup} betOption={betOption}/>
             </div>
             <div className="pagination-wrapper">
-                <Pagination count={3} shape="rounded" sx={paginationSx}
+                <Pagination 
+                    count={3} 
+                    shape="rounded" 
+                    sx={paginationSx}
+                    onChange={handlePaginationChange}
                     renderItem={(item) => (
                         <PaginationItem
                           {...item}

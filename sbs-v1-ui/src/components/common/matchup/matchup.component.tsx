@@ -5,6 +5,7 @@ import { MatchupLinesAndStats } from '../../../models/matchup-lines-and-stats';
 import MatchupQuickStats from './matchup-quick-stats/matchup-quick-stats.component';
 import MatchupTeamStats from './matchup-team-stats.component';
 import MatchupLines from './matchup-lines/matchup-lines.component';
+import { BetOptions } from '../../../models/enums/bet-options';
 
 const MatchupComponent: React.FC<{matchup: Matchup}> = ({matchup}) => {
   const getHoursAndMinutesEtc = (dateString: string) => {
@@ -65,7 +66,7 @@ const MatchupComponent: React.FC<{matchup: Matchup}> = ({matchup}) => {
             <MatchupLines matchup={{...matchup} as MatchupLinesAndStats}/>
           </div>
           <div className="lines-and-stats-content">
-            <MatchupQuickStats matchup={{...matchup} as MatchupLinesAndStats}/>
+            <MatchupQuickStats matchup={{...matchup} as MatchupLinesAndStats} betOption={BetOptions.Team}/>
           </div>
       </div>
       <div className="footer"></div>
@@ -73,6 +74,6 @@ const MatchupComponent: React.FC<{matchup: Matchup}> = ({matchup}) => {
   );
 };
 
-
+// TODO get bet options for other components from MatchupLines component
 
 export default MatchupComponent;
