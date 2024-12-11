@@ -75,9 +75,15 @@ export const paginationSx = {
 };
 
 export const accordianSummarySx = {
-    margin: 0, 
-    padding: 0, 
-    backgroundColor: 'rgb(#455058, .5)',
-    border: '1px solid #242424', 
-    borderRadius: '4px'
-  }
+  margin: 0, 
+  padding: 0, 
+  backgroundColor: 'rgb(#455058, .5)',
+  border: '1px solid #242424', 
+  borderRadius: '4px'
+};
+
+export const quickStatsLineChartStyle = {
+  fontSize: '.8rem',
+  fontFamily: 'IBM Plex Sans, sans-serif' 
+};
+

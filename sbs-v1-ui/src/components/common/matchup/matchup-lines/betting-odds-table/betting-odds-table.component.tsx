@@ -1,4 +1,4 @@
-import { BettingOddsCell, BettingOddsTableParams } from "../../../models/component/betting-odds-table-params";
+import { BettingOddsCell, BettingOddsTableParams } from "../../../../../models/component/betting-odds-table-params";
 import OddsCell from "../odds-cell/odds-cell.component";
 import './betting-odds-table.component.scss';
 

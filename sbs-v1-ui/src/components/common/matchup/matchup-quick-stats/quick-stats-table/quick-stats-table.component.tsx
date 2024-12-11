@@ -1,4 +1,4 @@
-import { QuickStatsTableParams } from "../../../models/component/quick-stats-table-params";
+import { QuickStatsTableParams } from "../../../../../models/component/quick-stats-table-params";
 import QuickStatsCell from "../quick-stats-cell/quick-stats-cell.component";
 import './quick-stats-table.component.scss';
 

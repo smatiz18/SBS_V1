@@ -1,6 +1,6 @@
 import React from 'react';
 import './odds-cell.component.scss';
-import { OddsCellParams } from '../../../models/component/odds-cell-params';
+import { OddsCellParams } from '../../../../../models/component/odds-cell-params';
 
 const OddsCell: React.FC<{params: OddsCellParams}> = ({params}) => {
 

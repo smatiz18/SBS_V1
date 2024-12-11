@@ -9,10 +9,11 @@ import Pagination from "@mui/material/Pagination";
 import './matchup-quick-stats.component.scss';
 import { paginationSx } from "../../../../models/form-styles/styles";
 import PaginationItem from "@mui/material/PaginationItem";
+import ChartAnalyzer from "./chart-analyzer/chart-analyzer.component";
 
 const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats, betOption: BetOptions}> = ({matchup, betOption}) => {
     const avgsTable = <AvgsTable matchup={matchup} betOption={betOption}/>;
-    const chartAnalyzer = <div className="chart-analyzer"></div>;
+    const chartAnalyzer = <ChartAnalyzer matchup={matchup} betOption={betOption}/>
     const pastOccurences = <div className="past-occurences"></div>;
     const pageToCompMap: Record<string, ReactElement> = {
         '1': avgsTable,
@@ -35,9 +36,7 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats, betOption: Bet
                 <h3>Quick Stats</h3>                    
                 <div className="line"></div>
             </div>
-            <div className="avgs-table-wrapper">
-                <AvgsTable matchup={matchup} betOption={betOption}/>
-            </div>
+            {pageToCompMap[currentPage.toString()] || <div className='empty-comp'></div>}
             <div className="pagination-wrapper">
                 <Pagination 
                     count={3} 

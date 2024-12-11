@@ -1,5 +1,5 @@
-import { OptimalOddsCell, OptimalOddsTableParams } from "../../../models/component/optimal-odds-table-params";
-import OddsCell from "../odds-cell/odds-cell.component";
+import { OptimalOddsTableParams, OptimalOddsCell } from '../../../../../models/component/optimal-odds-table-params';
+import OddsCell from '../odds-cell/odds-cell.component';
 import './optimal-odds-table.component.scss';
 
 const OptimalOddsTable: React.FC<{params: OptimalOddsTableParams}> = ({params}) => {

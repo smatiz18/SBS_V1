@@ -1,11 +1,8 @@
 import { useState } from "react";
-import { BetOptions } from "../../../../../models/enums/bet-options";
-import { Matchup, TeamInfo } from "../../../../../models/matchup";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Accordion from "@mui/material/Accordion";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { accordianSummarySx, darkTheme, filterAccordianSx, formLabelSx, radioIconSx, radioLabelSx } from "../../../../../models/form-styles/styles";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -13,10 +10,13 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Radio from "@mui/material/Radio";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 
-import './filters.component.scss';
-import { TeamBetOptionFilter } from "../../../../../models/enums/team-bet-option-filter";
+import './avgs-filters.component.scss';
+import { TeamBetOptionFilter } from "../../../../../../models/enums/team-bet-option-filter";
+import { BetOptions } from "../../../../../../models/enums/bet-options";
+import { formLabelSx, radioLabelSx, radioIconSx, darkTheme, filterAccordianSx, accordianSummarySx } from "../../../../../../models/form-styles/styles";
+import { Matchup, TeamInfo } from "../../../../../../models/matchup";
 
-const Filters: React.FC<{betOption: BetOptions, matchup: Matchup, handleFilterChange: any}>
+const AvgsFilters: React.FC<{betOption: BetOptions, matchup: Matchup, handleFilterChange: any}>
  = ({betOption, matchup, handleFilterChange}) => {
     
     const [teamFilters, setTeamFilters] = useState({ 
@@ -107,4 +107,4 @@ const Filters: React.FC<{betOption: BetOptions, matchup: Matchup, handleFilterCh
     );
 }
 
-export default Filters;
+export default AvgsFilters;

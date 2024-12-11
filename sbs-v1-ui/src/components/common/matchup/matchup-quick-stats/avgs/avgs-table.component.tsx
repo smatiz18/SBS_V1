@@ -5,16 +5,16 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { mean, range, sliceLast, stdDeviation } from "../../../../../utils/utils";
 import { darkTheme, selectSx } from "../../../../../models/form-styles/styles";
 import { useEffect, useState } from "react";
-import QuickStatsTable from "../../../quick-stats-table/quick-stats-table.component";
+import QuickStatsTable from "../quick-stats-table/quick-stats-table.component";
 import { BetOptions } from "../../../../../models/enums/bet-options";
 import MenuItem from "@mui/material/MenuItem";
 import { GameStats, NbaTeamAggGameStatsHistorical } from "../../../../../models/nba-team-agg-game-stats-historical";
 import { SportsCategories } from "../../../../../models/enums/sports-categories";
 import { QuickStatsCellParams } from "../../../../../models/component/quick-stats-cell-params";
 import _ from "lodash";
-import Filters from "../filters/filters.component";
 import './avgs-table.component.scss';
 import { TeamBetOptionFilter } from "../../../../../models/enums/team-bet-option-filter";
+import AvgsFilters from "./avgs-filters/avgs-filters.component";
 
 const AvgsTable: React.FC<{
     matchup: MatchupLinesAndStats, 
@@ -367,7 +367,7 @@ const AvgsTable: React.FC<{
 
     return (
         <div className="quick-stats-table-container">
-            <Filters handleFilterChange={handleFilterChange} betOption={betOption} matchup={matchup}/>
+            <AvgsFilters handleFilterChange={handleFilterChange} betOption={betOption} matchup={matchup}/>
             <QuickStatsTable params={
                 {
                     rows: quickStatsTableRows, 

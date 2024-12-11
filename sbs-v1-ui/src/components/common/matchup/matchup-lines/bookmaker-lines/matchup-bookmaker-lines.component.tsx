@@ -5,7 +5,7 @@ import { MatchupLinesAndStats } from "../../../../../models/matchup-lines-and-st
 import { BetOptions } from "../../../../../models/enums/bet-options";
 import { Bookmaker, Market, Outcome } from "../../../../../models/odds/odds";
 import { TeamBetTypes } from "../../../../../models/enums/team-bet-types";
-import BettingOddsTable from "../../../betting-odds-table/betting-odds-table.component";
+import BettingOddsTable from "../betting-odds-table/betting-odds-table.component";
 import { BettingOddsCell, BettingOddsTableParams } from "../../../../../models/component/betting-odds-table-params";
 import { SportsCategories } from "../../../../../models/enums/sports-categories";
 import { NbaTeamsMappedByName } from "../../../../../constants/nba";

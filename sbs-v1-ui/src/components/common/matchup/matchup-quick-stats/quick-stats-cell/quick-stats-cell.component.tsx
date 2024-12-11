@@ -1,4 +1,4 @@
-import { QuickStatsCellParams } from "../../../models/component/quick-stats-cell-params";
+import { QuickStatsCellParams } from '../../../../../models/component/quick-stats-cell-params';
 import './quick-stats-cell.component.scss';
 
 const QuickStatsCell: React.FC<{params: QuickStatsCellParams}> = ({params}) => {

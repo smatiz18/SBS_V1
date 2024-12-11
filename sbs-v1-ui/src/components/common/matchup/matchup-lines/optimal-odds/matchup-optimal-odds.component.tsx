@@ -6,8 +6,8 @@ import { getBetTypeLabel } from "../../../../../utils/utils";
 import { BettingOddsCell } from "../../../../../models/component/betting-odds-table-params";
 import { TeamBetTypes } from "../../../../../models/enums/team-bet-types";
 import { OptimalOddsTableParams } from "../../../../../models/component/optimal-odds-table-params";
-import OptimalOddsTable from "../../../optimal-odds-table/optimal-odds-table.component";
 import './matchup-optimal-odds.component.scss';
+import OptimalOddsTable from "../optimal-odds-table/optimal-odds-table.component";
 
 const MatchupOptimalOdds: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
     const [betOption, setBetOption] = useState(BetOptions.Team);
