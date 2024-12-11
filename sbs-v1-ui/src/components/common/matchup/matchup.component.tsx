@@ -3,7 +3,7 @@ import './matchup.component.scss';
 import { Matchup } from '../../../models/matchup';
 import { MatchupLinesAndStats } from '../../../models/matchup-lines-and-stats';
 import MatchupQuickStats from './matchup-quick-stats/matchup-quick-stats.component';
-import MatchupTeamStats from './matchup-team-stats.component';
+import MatchupTeamStats from './matchup-team-stats/matchup-team-stats.component';
 import MatchupLines from './matchup-lines/matchup-lines.component';
 import { BetOptions } from '../../../models/enums/bet-options';
 

@@ -1,5 +1,5 @@
-import { SportsCategories } from '../../../models/enums/sports-categories';
-import { NbaTeamStats } from '../../../models/nba-team-stats';
+import { SportsCategories } from '../../../../models/enums/sports-categories';
+import { NbaTeamStats } from '../../../../models/nba-team-stats';
 import './matchup-team-stats.component.scss';
 
 const MatchupTeamStats: React.FC<{teamStats: NbaTeamStats, sportsCategory: SportsCategories, isHome: boolean}> = ({teamStats, sportsCategory, isHome}) => {
