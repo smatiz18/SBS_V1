@@ -1,5 +1,6 @@
 import { PlayerBetTypes } from "../models/enums/player-bet-types";
 import { TeamBetTypes } from "../models/enums/team-bet-types";
+import { GameStats } from "../models/nba-team-agg-game-stats-historical";
 
 export const getBetTypeLabel = (betType: TeamBetTypes | PlayerBetTypes) => {
     switch (betType) {
@@ -53,4 +54,8 @@ export const stdDeviation = (vec: number[]) => {
     const squaredDiffs = vec.map(num => Math.pow(num - mean, 2));
     const variance = squaredDiffs.reduce((acc, diff) => acc + diff, 0) / vec.length;
     return Math.sqrt(variance);
+}
+
+export const sortGameStatsObjs = (stats: GameStats[]) => {
+    return stats.sort((a, b) => Date.parse(a.dateStart) - Date.parse(b.dateStart));
 }

@@ -2,7 +2,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { MatchupLinesAndStats } from "../../../../../models/matchup-lines-and-stats";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { mean, range, sliceLast, stdDeviation } from "../../../../../utils/utils";
+import { mean, range, sliceLast, sortGameStatsObjs, stdDeviation } from "../../../../../utils/utils";
 import { darkTheme, selectSx } from "../../../../../models/form-styles/styles";
 import { useEffect, useState } from "react";
 import QuickStatsTable from "../quick-stats-table/quick-stats-table.component";
@@ -13,7 +13,7 @@ import { SportsCategories } from "../../../../../models/enums/sports-categories"
 import { QuickStatsCellParams } from "../../../../../models/component/quick-stats-cell-params";
 import _ from "lodash";
 import './avgs-table.component.scss';
-import { TeamBetOptionFilter } from "../../../../../models/enums/team-bet-option-filter";
+import { GameLocationsFilter } from "../../../../../models/enums/game-locations-filter";
 import AvgsFilters from "./avgs-filters/avgs-filters.component";
 
 const AvgsTable: React.FC<{
@@ -38,8 +38,8 @@ const AvgsTable: React.FC<{
     const [quickStatsTableColHeaders, setQuickStatsTableColHeaders] = useState([] as any[]);
     const [colIdxToAggValMap, setColIdxToAggValMap] = useState(initColIdxToAggValMap);
     const [teamFilters, setTeamFilters] = useState({ 
-        away: TeamBetOptionFilter.All,
-        home: TeamBetOptionFilter.All
+        away: GameLocationsFilter.All,
+        home: GameLocationsFilter.All
     });
     const aggregatableColIdxs = AGG_COL_IDXS;
 
@@ -143,13 +143,13 @@ const AvgsTable: React.FC<{
         const rows = teamsAggStats.flatMap((currStats: NbaTeamAggGameStatsHistorical) => {    
             const isHome = matchup.home.teamNickname === currStats.teamNickname;
             const sortedStats = sortGameStatsObjs(Object.values(currStats.gameStats)).filter((x: GameStats) => {
-                if (isHome && teamFilters.home === TeamBetOptionFilter.Away) {
+                if (isHome && teamFilters.home === GameLocationsFilter.Away) {
                     return !x.isHome;
-                } else if (isHome && teamFilters.home === TeamBetOptionFilter.Home) {
+                } else if (isHome && teamFilters.home === GameLocationsFilter.Home) {
                     return x.isHome;
-                } else if (!isHome && teamFilters.away === TeamBetOptionFilter.Away) {
+                } else if (!isHome && teamFilters.away === GameLocationsFilter.Away) {
                     return !x.isHome;
-                } else if (!isHome && teamFilters.away === TeamBetOptionFilter.Home) {
+                } else if (!isHome && teamFilters.away === GameLocationsFilter.Home) {
                     return x.isHome;
                 }
                 return true;
@@ -339,10 +339,6 @@ const AvgsTable: React.FC<{
             newColIdxToAggValMap[colIdx] = val.target.value;
         }
         setColIdxToAggValMap(newColIdxToAggValMap);
-    }
-
-    const sortGameStatsObjs = (stats: GameStats[]) => {
-        return stats.sort((a, b) => Date.parse(a.dateStart) - Date.parse(b.dateStart));
     }
 
     const sumTeamStatsAgg = (rows: [][], colIdxsToAgg: Set<number>) => {

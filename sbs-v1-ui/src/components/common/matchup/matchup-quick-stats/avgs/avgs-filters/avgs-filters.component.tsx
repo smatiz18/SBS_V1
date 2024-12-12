@@ -11,7 +11,7 @@ import Radio from "@mui/material/Radio";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 
 import './avgs-filters.component.scss';
-import { TeamBetOptionFilter } from "../../../../../../models/enums/team-bet-option-filter";
+import { GameLocationsFilter } from "../../../../../../models/enums/game-locations-filter";
 import { BetOptions } from "../../../../../../models/enums/bet-options";
 import { formLabelSx, radioLabelSx, radioIconSx, darkTheme, filterAccordianSx, accordianSummarySx } from "../../../../../../models/form-styles/styles";
 import { Matchup, TeamInfo } from "../../../../../../models/matchup";
@@ -20,13 +20,13 @@ const AvgsFilters: React.FC<{betOption: BetOptions, matchup: Matchup, handleFilt
  = ({betOption, matchup, handleFilterChange}) => {
     
     const [teamFilters, setTeamFilters] = useState({ 
-        away: TeamBetOptionFilter.All,
-        home: TeamBetOptionFilter.All
+        away: GameLocationsFilter.All,
+        home: GameLocationsFilter.All
     });
 
     const onTeamFilterChange = (params: any) => {
         const isHome = params.target.value.split('_')[0] === matchup.home.teamNickname;
-        const filter = params.target.value.split('_')[1] as TeamBetOptionFilter;
+        const filter = params.target.value.split('_')[1] as GameLocationsFilter;
 
         const update = isHome ? { home: filter } : { away: filter };
         setTeamFilters(

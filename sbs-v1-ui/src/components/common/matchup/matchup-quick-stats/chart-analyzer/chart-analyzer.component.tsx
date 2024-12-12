@@ -1,45 +1,32 @@
 import { useState } from "react";
 import { BetOptions } from "../../../../../models/enums/bet-options";
-import { TeamBetOptionFilter } from "../../../../../models/enums/team-bet-option-filter";
+import { GameLocationsFilter } from "../../../../../models/enums/game-locations-filter";
 import { Matchup } from "../../../../../models/matchup";
-import LineChartComponent from "../../../line-chart/line-chart.component";
 import { ResponsiveContainer, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Line } from "recharts";
 import { quickStatsLineChartStyle } from "../../../../../models/form-styles/styles";
 import { SportsCategories } from "../../../../../models/enums/sports-categories";
 import { QuickStatsAggregation } from "../../../../../models/enums/quick-stats-aggregation";
+import { GameStatsOption } from "../../../../../models/enums/game-stats-option";
+import { TeamOptionsFilter } from "../../../../../models/enums/team-options-filter";
+import { sortGameStatsObjs } from "../../../../../utils/utils";
 
 // TODO FINISH THIS COMPONENT ASAP
 const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({matchup, betOption}) => {
-    enum MatchTeamOption {
-        Away = 'Away',
-        Home = 'Home'
-    };
-
-    enum GameStatsOption {
-        q1 = 'q1',
-        q2 = 'q2',
-        h1 = 'h1',
-        q3 = 'q3',
-        q4 = 'q4',
-        h2 = 'h4',
-        total = 'total'
-    };
-
-    interface GameStatsLine {
-        gameStatsOption: GameStatsOption,
-        aggregation: QuickStatsAggregation,
-        avgsScope?: number
-    }
-
+    /* consts ***********************************************************************/
     const [nbaTeamFilters, setNbaTeamFilters] = useState({ 
-        teamFilter: MatchTeamOption.Away,
+        teamFilter: TeamOptionsFilter.Away,
+        gameLocationFilter: GameLocationsFilter.All,
         gameStatsLineComparator: {
             gameStatsOption: GameStatsOption.total,
             aggregation: QuickStatsAggregation.Actual,
+            lineOfBestFit: true
         },
         additionalGameStatsLines: [],
     });
-    
+
+    const [chartData, setChartData] = useState([]);
+    /********************************************************************************/
+
     // TODO replace mock data 
     const data = [
         { date: '2024-01-01', value: 400 },
@@ -50,16 +37,30 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
         // Add more data points as needed
     ];
 
-    function getInitChartData() {
-        // switch (matchup.sportsCategory) {
-        //     case SportsCategories.NBA:
-        //         if (betOption === BetOptions.Team) {
-        //             get
-        //         }
-        // }
-    }
+    /* chart data getters ***********************************************************/
+    const getNbaChartDataForTeamBetOption = () => {
+        // TODO implement for different season ehhh
+        let gameStats = nbaTeamFilters.teamFilter === TeamOptionsFilter.Home ? 
+            matchup.home.teamAggGameStats.gameStats : 
+            matchup.away.teamAggGameStats.gameStats;
+
+        const comparatorLineChartData = sortGameStatsObjs(Object.values(gameStats));
+
+        return [];
+    };
+
+    const getInitChartData = () => {
+        switch (matchup.sportsCategory) {
+            case SportsCategories.NBA:
+                if (betOption === BetOptions.Team) {
+                    setChartData(getNbaChartDataForTeamBetOption()); 
+                }
+        }
+    };
+    /********************************************************************************/
     
     const handleFilterChange = (value: any) => {
+        // implement this after filters are implemented
         // const filtersUpdate = {
         //     ...teamFilters, 
         //     ...value
@@ -67,11 +68,11 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
         // setTeamFilters(filtersUpdate);
     };
 
-    const lineChart = () => {
+    const getLineChart = () => {
         return (
-            <ResponsiveContainer width="100%" height={400}>
+            <ResponsiveContainer width="100%" height={350}>
                 <LineChart
-                    data={data}
+                    data={chartData}
                     margin={{
                         top: 10, right: 30, left: 0, bottom: 0,
                     }}
@@ -90,7 +91,7 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
     return (
         <div className="chart-analyzer-container">
             <div className="chart-wrapper">
-                {lineChart()}
+                {getLineChart()}
             </div>
         </div>
     );
