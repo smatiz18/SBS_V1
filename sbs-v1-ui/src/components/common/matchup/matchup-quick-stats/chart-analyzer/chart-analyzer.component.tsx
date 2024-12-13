@@ -11,6 +11,8 @@ import { TeamOptionsFilter } from "../../../../../models/enums/team-options-filt
 import { calculateRollingAverages, sortGameStatsObjs } from "../../../../../utils/utils";
 import { GameStats } from "../../../../../models/nba-team-agg-game-stats-historical";
 import { GameStatsFilters, NbaTeamFilters } from "../../../../../models/component/nba-team-filters";
+import ChartAnalyzerFilters from "./chart-analyzer-filters/chart-analyzer-filters.component";
+import './chart-analyzer.component.scss';
 
 // TODO APPLY FILTERS
 const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({matchup, betOption}) => {
@@ -91,7 +93,7 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
         switch (matchup.sportsCategory) {
             case SportsCategories.NBA:
                 if (betOption === BetOptions.Team) {
-                    setChartData(getNbaChartDataForTeamBetOption() as any); 
+                    setChartData(getNbaChartDataForTeamBetOption() as any);                  
                 }
         }
     };
@@ -115,7 +117,7 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
                         top: 0, right: 0, left: -30, bottom: 0,
                     }}
                 >
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid stroke="#ddd" vertical={false}/>
                     <XAxis dataKey="date" style={quickStatsLineChartStyle} hide={true}/>
                     <YAxis style={quickStatsLineChartStyle}/>
                     <Tooltip />
@@ -128,6 +130,7 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
     
     return (
         <div className="chart-analyzer-container">
+            <ChartAnalyzerFilters/>
             <div className="chart-wrapper">
                 {getLineChart()}
             </div>

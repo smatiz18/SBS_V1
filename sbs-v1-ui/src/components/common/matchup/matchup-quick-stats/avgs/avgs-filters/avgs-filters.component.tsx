@@ -87,7 +87,7 @@ const AvgsFilters: React.FC<{betOption: BetOptions, matchup: Matchup, handleFilt
     }
 
     return (
-        <div className="filters-container">
+        <div className="avgs-filters-container">
             <ThemeProvider theme={darkTheme}>
                 <Accordion sx={filterAccordianSx}>
                     <AccordionSummary

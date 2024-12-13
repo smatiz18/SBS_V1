@@ -61,15 +61,14 @@ export const sortGameStatsObjs = (stats: GameStats[]) => {
 }
 
 export const calculateRollingAverages = (vec: number[], period: number) => {
-    if (period >= vec.length) { return vec; }
-    let left = period-1;
-    let right = left + period;
-    let rollingAvg = [];
-    while (right < vec.length) {
-        const avg = mean(vec.slice(left, right));
-        rollingAvg.push(avg);
-        right += 1;
-        left += 1; 
+    let rollingAvgs = [];
+    let idx = 0;
+    while (idx < vec.length) {
+        if (idx - period < 0) {
+            rollingAvgs.push(mean(vec.slice(0, idx)));
+        } else {
+            rollingAvgs.push(mean(vec.slice(idx - period, idx)));
+        }
     }
-    return vec.slice(0, period).concat(rollingAvg);
+    return rollingAvgs;
 };
