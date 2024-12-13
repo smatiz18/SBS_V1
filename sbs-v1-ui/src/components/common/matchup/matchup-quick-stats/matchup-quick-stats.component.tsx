@@ -23,7 +23,7 @@ const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats, betOption: Bet
 
     const pageLabels = ['Game Averages', 'Chart Analyzer', 'Past Occurences']; 
 
-    const [quickStatsAgg, setQuickStatsAgg] = useState(QuickStatsAggregation.Averages);
+    const [quickStatsAgg, setQuickStatsAgg] = useState(QuickStatsAggregation.ExpandingAverage);
     const [currentPage, setCurrentPage] = useState(1);
 
     const handlePaginationChange = (_: ChangeEvent<unknown>, page: number) => {

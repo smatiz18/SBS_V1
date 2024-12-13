@@ -59,3 +59,17 @@ export const stdDeviation = (vec: number[]) => {
 export const sortGameStatsObjs = (stats: GameStats[]) => {
     return stats.sort((a, b) => Date.parse(a.dateStart) - Date.parse(b.dateStart));
 }
+
+export const calculateRollingAverages = (vec: number[], period: number) => {
+    if (period >= vec.length) { return vec; }
+    let left = period-1;
+    let right = left + period;
+    let rollingAvg = [];
+    while (right < vec.length) {
+        const avg = mean(vec.slice(left, right));
+        rollingAvg.push(avg);
+        right += 1;
+        left += 1; 
+    }
+    return vec.slice(0, period).concat(rollingAvg);
+};

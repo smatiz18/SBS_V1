@@ -1,4 +1,5 @@
 export enum QuickStatsAggregation {
     Actual = 'Actual',
-    Averages = 'Averages',
+    RollingAverage = 'RollingAverage',
+    ExpandingAverage = 'ExpandingAverage'
 }
