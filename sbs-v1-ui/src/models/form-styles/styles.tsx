@@ -1,5 +1,7 @@
 import { createTheme } from "@mui/material/styles";
 
+// TODO set hex codes as const variables
+
 export const reactInputStyles = {
   width: '100%', // Match width of the select component
   height: '40px', // Same height as React Select
@@ -29,7 +31,8 @@ export const filterAccordianSx = {
   backgroundColor: '#242424',
   '&.MuiAccordion-root': {
     boxShadow: 'none',
-    borderBottom: '1px solid #ccc',
+    border: '1px solid #455058',
+    borderRadius: '4px'
   },
   '& .MuiAccordionSummary-root': {
     padding: '4px 10px',
@@ -59,7 +62,8 @@ export const subFilterAccordianSx = {
   backgroundColor: '#242424',
   '&.MuiAccordion-root': {
     boxShadow: 'none',
-    borderBottom: '1px solid #ccc',
+    border: '1px solid #455058',
+    borderRadius: '4px'
   },
   '& .MuiAccordionSummary-root': {
     padding: '4px 10px',
@@ -108,8 +112,7 @@ export const paginationSx = {
 export const accordianSummarySx = {
   margin: 0, 
   padding: 0, 
-  backgroundColor: 'rgb(#455058, .5)',
-  border: '1px solid #242424', 
+  backgroundColor: '#242424',
   borderRadius: '4px'
 };
 
@@ -119,10 +122,14 @@ export const quickStatsLineChartStyle = {
 };
 
 export const checkboxFormControlLabelSx = {
-    '& .MuiFormControlLabel-label': {
-        fontSize: '0.8rem', 
-    },
-    '& .MuiSvgIcon-root': {
-        fontSize: '1rem',
-    },
+  '& .MuiFormControlLabel-label': {
+    fontSize: '0.8rem', 
+  },
+  '& .MuiSvgIcon-root': {
+    fontSize: '1rem',
+  },
+};
+
+export const chartAnalyzerDeleteIconSx = {
+  fontSize: '1rem',
 };
