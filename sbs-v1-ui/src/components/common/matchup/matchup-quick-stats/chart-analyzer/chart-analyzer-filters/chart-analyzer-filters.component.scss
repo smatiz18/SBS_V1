@@ -1,10 +1,18 @@
 .chart-analyzer-filters-container {
-    .team-filters {
-        .comparator-filter {
-            .comparator-filter-header {
-                font-weight: 600;
-            }
-        }    
+    .accordian-summary-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+
+        .summary-wrapper {
+            width: 100%;
+        }
+
+        .delete-icon-wrapper {
+            padding: 0 .55rem 0 .55rem;
+        }
     }
 
     .filter-options {

@@ -9,7 +9,7 @@ import { GameLocationsFilter } from "../../../../../../models/enums/game-locatio
 import { GameStatsOption } from "../../../../../../models/enums/game-stats-option";
 import { QuickStatsAggregation } from "../../../../../../models/enums/quick-stats-aggregation";
 import { GameStatsFilters, NbaTeamFilters } from "../../../../../../models/component/nba-team-filters";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BetOptions } from "../../../../../../models/enums/bet-options";
 import { Matchup, TeamInfo } from "../../../../../../models/matchup";
 import FormControl from "@mui/material/FormControl";
@@ -23,11 +23,13 @@ import './chart-analyzer-filters.component.scss';
 import MenuItem from "@mui/material/MenuItem";
 import { range } from "../../../../../../utils/utils";
 import Button from "@mui/material/Button";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { SportsCategories } from "../../../../../../models/enums/sports-categories";
 
 const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, handleFilterChange: any}> = 
     ({betOption, matchup, handleFilterChange}) => {
     
-        const [nbaTeamFilters, setNbaTeamFilters] = useState({ 
+    const [nbaTeamFilters, setNbaTeamFilters] = useState({ 
         teamFilter: TeamOptionsFilter.Away,
         gameLocationFilter: GameLocationsFilter.All,
         gameStatsLineComparator: {
@@ -37,6 +39,37 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
         } as GameStatsFilters,
         additionalGameStatsLines: [],
     } as NbaTeamFilters);
+
+    const [chartFilterAccordianDetails, setChartFilterAccordianDetails] = useState([] as any);
+
+    useEffect(() => {
+        initChartFilterAccordians();
+    }, []);
+
+    const initChartFilterAccordians = () => {
+        let currAccordianDetails: any = [];
+        if (betOption === BetOptions.Team) {
+            switch (matchup.sportsCategory) {
+                case SportsCategories.NBA: {
+                    currAccordianDetails = [getTeamFilterOptions(matchup.away, true, 'comparator')];
+                    break;
+                }
+            }
+        }
+        setChartFilterAccordianDetails(currAccordianDetails);
+    }
+
+    const addNewChartDataSet = () => {
+        setChartFilterAccordianDetails(
+            chartFilterAccordianDetails.concat(
+                getTeamFilterOptions(
+                    matchup.away, 
+                    false, 
+                    (chartFilterAccordianDetails.length - 1).toString()
+                )
+            )
+        );
+    }
 
     const getTeamFilterOptionsHelper = (teamInfo: TeamInfo, isComparator: boolean) => {
         const numOfGamesSelectOptions = range(1, Object.values(teamInfo.teamStats).length).map((o) => (
@@ -129,35 +162,28 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
         );
     };
 
-    const getTeamFilterOptions = (teamInfo: TeamInfo) => {
-        return (
-            <div className="team-filters">
-                <Accordion sx={subFilterAccordianSx}>
+    const getTeamFilterOptions = (teamInfo: TeamInfo, isComparator: boolean, id: string) => (
+        <Accordion sx={subFilterAccordianSx}>
+            <div className="accordian-summary-header">
+                <div className="summary-wrapper">
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon/>}
                         aria-controls="panel1-content"
                         id="panel1-header"
                         sx={accordianSummarySx}
                     >
-                        Comparator
+                        {isComparator ? 'Comparator' : id }
                     </AccordionSummary>
-                    <AccordionDetails>
-                        {getTeamFilterOptionsHelper(teamInfo, true)}
-                    </AccordionDetails>
-                </Accordion>
-            </div>
-        );
-    };
-
-    const getAccordianDetails = () => {
-        if (betOption === BetOptions.Team) {
-            return (
-                <div className="accordian-details-wrapper">
-                    {getTeamFilterOptions(matchup.away)}
                 </div>
-            )
-        }
-    }
+                <div className="delete-icon-wrapper">
+                    <DeleteIcon sx={{ fontSize: '1rem' }}/>
+                </div>
+            </div>
+            <AccordionDetails>
+                {getTeamFilterOptionsHelper(teamInfo, isComparator)}
+            </AccordionDetails>
+        </Accordion>
+    );
     
     return (
         <div className="chart-analyzer-filters-container">
@@ -171,11 +197,13 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
                     >
                         Filters
                     </AccordionSummary>
+                        <AccordionDetails>
+                            <div className="accordian-details-wrapper">
+                                {chartFilterAccordianDetails}
+                            </div>
+                        </AccordionDetails>
                     <AccordionDetails>
-                        {getAccordianDetails()}
-                    </AccordionDetails>
-                    <AccordionDetails>
-                        <Button variant="outlined" size="small">+</Button>
+                        <Button variant="outlined" size="small" onClick={addNewChartDataSet}>+</Button>
                     </AccordionDetails>
                 </Accordion>
             </ThemeProvider>
