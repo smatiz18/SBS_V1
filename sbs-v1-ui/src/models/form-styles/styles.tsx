@@ -45,8 +45,39 @@ export const filterAccordianSx = {
     },
   },
   '& .MuiAccordionDetails-root': {
+    display: 'flex',
+    justifyContent: 'center',
     padding: '6px 10px',
   },
+};
+
+export const subFilterAccordianSx = {
+  fontSize: '.85rem',
+  fontFamily: 'IBM Plex Sans, sans-serif',
+  margin: 0,
+  padding: 0,
+  backgroundColor: '#242424',
+  '&.MuiAccordion-root': {
+    boxShadow: 'none',
+    borderBottom: '1px solid #ccc',
+  },
+  '& .MuiAccordionSummary-root': {
+    padding: '4px 10px',
+    minHeight: '34px',
+    '&.Mui-expanded': {
+      minHeight: '34px',
+    },
+  },
+  '& .MuiAccordionSummary-content': {
+    margin: 0,
+    '&.Mui-expanded': {
+      margin: 0,
+    },
+  },
+  '& .MuiAccordionDetails-root': {
+    display: 'flex',
+    justifyContent: 'center',
+  }
 };
 
 export const radioIconSx = {
@@ -87,3 +118,11 @@ export const quickStatsLineChartStyle = {
   fontFamily: 'IBM Plex Sans, sans-serif' 
 };
 
+export const checkboxFormControlLabelSx = {
+    '& .MuiFormControlLabel-label': {
+        fontSize: '0.8rem', 
+    },
+    '& .MuiSvgIcon-root': {
+        fontSize: '1rem',
+    },
+};

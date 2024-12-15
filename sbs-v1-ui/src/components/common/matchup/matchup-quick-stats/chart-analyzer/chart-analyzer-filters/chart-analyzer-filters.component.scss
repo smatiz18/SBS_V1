@@ -1,0 +1,20 @@
+.chart-analyzer-filters-container {
+    .team-filters {
+        .comparator-filter {
+            .comparator-filter-header {
+                font-weight: 600;
+            }
+        }    
+    }
+
+    .filter-options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: .77rem;
+        margin-left: -.5rem;
+
+        .filter-option-wrapper {
+            padding: 0 .5rem 0 .5rem;
+        }
+    }
+}

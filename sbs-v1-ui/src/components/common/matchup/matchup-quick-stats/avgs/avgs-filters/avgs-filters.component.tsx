@@ -16,8 +16,8 @@ import { BetOptions } from "../../../../../../models/enums/bet-options";
 import { formLabelSx, radioLabelSx, radioIconSx, darkTheme, filterAccordianSx, accordianSummarySx } from "../../../../../../models/form-styles/styles";
 import { Matchup, TeamInfo } from "../../../../../../models/matchup";
 
-const AvgsFilters: React.FC<{betOption: BetOptions, matchup: Matchup, handleFilterChange: any}>
- = ({betOption, matchup, handleFilterChange}) => {
+const AvgsFilters: React.FC<{betOption: BetOptions, matchup: Matchup, handleFilterChange: any}> = 
+    ({betOption, matchup, handleFilterChange}) => {
     
     const [teamFilters, setTeamFilters] = useState({ 
         away: GameLocationsFilter.All,

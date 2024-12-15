@@ -130,7 +130,7 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
     
     return (
         <div className="chart-analyzer-container">
-            <ChartAnalyzerFilters/>
+            <ChartAnalyzerFilters betOption={betOption} matchup={matchup} handleFilterChange={() => {}}/>
             <div className="chart-wrapper">
                 {getLineChart()}
             </div>
