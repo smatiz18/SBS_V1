@@ -1,15 +1,17 @@
 import { createTheme } from "@mui/material/styles";
 
-// TODO set hex codes as const variables
+const dkDarkGray = '#242424';
+const fdGray = '#455058';
+const reactInputBorderColor = '#ccc'
 
 export const reactInputStyles = {
-  width: '100%', // Match width of the select component
-  height: '40px', // Same height as React Select
-  padding: '0 8px', // Same padding as the select input
-  borderRadius: '4px', // Same border radius
-  border: '1px solid #ccc', // Same border style and color
-  fontSize: '16px', // Same font size
-  boxSizing: 'border-box', // Ensures padding is included in the height/width
+  width: '100%', 
+  height: '40px',
+  padding: '0 8px',
+  borderRadius: '4px', 
+  border: `1px solid ${reactInputBorderColor}`,
+  fontSize: '16px',
+  boxSizing: 'border-box',
 }
 
 export const selectSx = {
@@ -28,10 +30,10 @@ export const filterAccordianSx = {
   fontFamily: 'IBM Plex Sans, sans-serif',
   margin: 0,
   padding: 0,
-  backgroundColor: '#242424',
+  backgroundColor: dkDarkGray,
   '&.MuiAccordion-root': {
     boxShadow: 'none',
-    border: '1px solid #455058',
+    border: `1px solid ${fdGray}`,
     borderRadius: '4px'
   },
   '& .MuiAccordionSummary-root': {
@@ -59,10 +61,10 @@ export const subFilterAccordianSx = {
   fontFamily: 'IBM Plex Sans, sans-serif',
   margin: 0,
   padding: 0,
-  backgroundColor: '#242424',
+  backgroundColor: dkDarkGray,
   '&.MuiAccordion-root': {
     boxShadow: 'none',
-    border: '1px solid #455058',
+    border: `1px solid ${fdGray}`,
     borderRadius: '4px'
   },
   '& .MuiAccordionSummary-root': {
@@ -112,7 +114,7 @@ export const paginationSx = {
 export const accordianSummarySx = {
   margin: 0, 
   padding: 0, 
-  backgroundColor: '#242424',
+  backgroundColor: dkDarkGray,
   borderRadius: '4px'
 };
 

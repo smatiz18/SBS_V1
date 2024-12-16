@@ -42,6 +42,8 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
 
     const [chartFilterAccordianDetails, setChartFilterAccordianDetails] = useState([] as any);
 
+    const [nextChartFilterAccordianDetailId, setNextChartFilterAccordianDetailId] = useState(-1);
+
     useEffect(() => {
         initChartFilterAccordians();
     }, []);
@@ -59,17 +61,29 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
         setChartFilterAccordianDetails(currAccordianDetails);
     }
 
+    const getNextAccordianDetailsId = () => {
+        const nextId = nextChartFilterAccordianDetailId + 1;
+        setNextChartFilterAccordianDetailId(nextId);
+        return nextId;
+    }
+
     const addNewChartDataSet = () => {
         setChartFilterAccordianDetails(
             chartFilterAccordianDetails.concat(
                 getTeamFilterOptions(
                     matchup.away, 
                     false, 
-                    (chartFilterAccordianDetails.length - 1).toString()
+                    getNextAccordianDetailsId()
                 )
             )
         );
     }
+
+    const onDelete = (id: any) => {
+        setChartFilterAccordianDetails((chartFilterAccordianDetails: any) => 
+            chartFilterAccordianDetails.filter((c: any) => (c.props.id !== id
+        )));
+    };
 
     const getTeamFilterOptionsHelper = (teamInfo: TeamInfo, isComparator: boolean) => {
         const numOfGamesSelectOptions = range(1, Object.values(teamInfo.teamStats).length).map((o) => (
@@ -80,6 +94,14 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
             return (
                 <MenuItem value={agg}>
                     {agg.toString()}
+                </MenuItem>
+            );
+        });
+
+        const gameStatsOption = Object.values(GameStatsOption).map((gso: GameStatsOption) => {
+            return (
+                <MenuItem value={gso}>
+                    {gso.toString()}
                 </MenuItem>
             );
         });
@@ -114,6 +136,24 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
                             <FormControlLabel sx={radioLabelSx} value={GameLocationsFilter.Home} control={<Radio sx={radioIconSx}/>} label={GameLocationsFilter.Home}/>
                         </RadioGroup>
                     </div> 
+                    <div className='filter-option-wrapper'>
+                        <FormLabel id="demo-row-radio-buttons-group-label" sx={formLabelSx}>Game Stat</FormLabel>
+                        <div className="select-wrapper">
+                            <ThemeProvider theme={darkTheme}>
+                                <FormControl variant="standard" sx={{ width: '100%'}}>
+                                    <Select
+                                        labelId="demo-simple-select-standard-label"
+                                        id="demo-simple-select-standard"
+                                        value={GameStatsOption.total}
+                                        onChange={(val: any) => {}}
+                                        sx={{...selectSx, fontSize: '.8rem'}}
+                                    >
+                                        {gameStatsOption}
+                                    </Select>
+                                </FormControl>
+                            </ThemeProvider>
+                        </div>
+                    </div>
                     <div className='filter-option-wrapper'>
                         <FormLabel id="demo-row-radio-buttons-group-label" sx={formLabelSx}>Aggregator</FormLabel>
                         <div className="select-wrapper">
@@ -162,8 +202,8 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
         );
     };
 
-    const getTeamFilterOptions = (teamInfo: TeamInfo, isComparator: boolean, id: string) => (
-        <Accordion sx={subFilterAccordianSx}>
+    const getTeamFilterOptions = (teamInfo: TeamInfo, isComparator: boolean, id: any) => (
+        <Accordion sx={subFilterAccordianSx} id={id}>
             <div className="accordian-summary-header">
                 <div className="summary-wrapper">
                     <AccordionSummary
@@ -175,9 +215,13 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
                         {isComparator ? 'Comparator' : id }
                     </AccordionSummary>
                 </div>
-                <div className="delete-icon-wrapper">
-                    <DeleteIcon sx={chartAnalyzerDeleteIconSx}/>
-                </div>
+                {
+                    !isComparator && (
+                        <div className="delete-icon-wrapper">
+                        <DeleteIcon sx={chartAnalyzerDeleteIconSx} onClick={() => onDelete(id)}/>
+                        </div>
+                    )
+                }
             </div>
             <AccordionDetails>
                 {getTeamFilterOptionsHelper(teamInfo, isComparator)}
