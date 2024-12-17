@@ -20,6 +20,8 @@
         grid-template-columns: repeat(2, 1fr);
         gap: .77rem;
         margin-left: -.5rem;
+        align-items: center;
+        vertical-align: middle;
 
         .filter-option-wrapper {
             padding: 0 .5rem 0 .5rem;

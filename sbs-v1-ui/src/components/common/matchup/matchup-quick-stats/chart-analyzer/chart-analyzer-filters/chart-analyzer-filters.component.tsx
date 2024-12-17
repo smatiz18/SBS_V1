@@ -4,62 +4,74 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Accordion from "@mui/material/Accordion";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { TeamOptionsFilter } from "../../../../../../models/enums/team-options-filter";
 import { GameLocationsFilter } from "../../../../../../models/enums/game-locations-filter";
 import { GameStatsOption } from "../../../../../../models/enums/game-stats-option";
 import { QuickStatsAggregation } from "../../../../../../models/enums/quick-stats-aggregation";
-import { GameStatsFilters, NbaTeamFilters } from "../../../../../../models/component/nba-team-filters";
-import { useEffect, useState } from "react";
+import { NbaTeamGameStatsFilters } from "../../../../../../models/component/nba-team-game-stats-filters";
+import React, { useEffect, useState } from "react";
 import { BetOptions } from "../../../../../../models/enums/bet-options";
-import { Matchup, TeamInfo } from "../../../../../../models/matchup";
-import FormControl from "@mui/material/FormControl";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormLabel from "@mui/material/FormLabel";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Radio from "@mui/material/Radio";
-import Select from "@mui/material/Select/Select";
-import Checkbox from "@mui/material/Checkbox";
+import { Matchup } from "../../../../../../models/matchup";
 import './chart-analyzer-filters.component.scss';
-import MenuItem from "@mui/material/MenuItem";
-import { range } from "../../../../../../utils/utils";
 import Button from "@mui/material/Button";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { SportsCategories } from "../../../../../../models/enums/sports-categories";
+import { TeamOptionsFilter } from "../../../../../../models/enums/team-options-filter";import { set } from "lodash";
+import NbaTeamFilterOptions from "./nba-team-filter-options/nba-team-filter-options.component";
 
 const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, handleFilterChange: any}> = 
     ({betOption, matchup, handleFilterChange}) => {
     
-    const [nbaTeamFilters, setNbaTeamFilters] = useState({ 
+    /* const ************************************************************************/
+    const [nbaTeamGameStatsFilters, setNbaTeamGameStatsFilters] = useState([] as NbaTeamGameStatsFilters[]);
+    const [chartFilterAccordianDetails, setChartFilterAccordianDetails] = useState([] as any);
+    const [nextChartFilterAccordianDetailId, setNextChartFilterAccordianDetailId] = useState(-1);
+    const initNbaTeamGameStatsComparatorFilter: NbaTeamGameStatsFilters = {
+        id: 'comparator',
         teamFilter: TeamOptionsFilter.Away,
         gameLocationFilter: GameLocationsFilter.All,
-        gameStatsLineComparator: {
-            gameStatsOption: GameStatsOption.total,
-            aggregation: QuickStatsAggregation.Actual,
-            lineOfBestFit: true
-        } as GameStatsFilters,
-        additionalGameStatsLines: [],
-    } as NbaTeamFilters);
+        gameStatsOption: GameStatsOption.total,
+        aggregation: QuickStatsAggregation.Actual,
+        lineOfBestFit: false,
+        isComparator: true,
+    };
+    const initNbaTeamGameStatsAdditionalStatsFilter: NbaTeamGameStatsFilters = {
+        ...initNbaTeamGameStatsComparatorFilter,
+        id: undefined,
+        isComparator: false
+    };
+    /********************************************************************************/
 
-    const [chartFilterAccordianDetails, setChartFilterAccordianDetails] = useState([] as any);
-
-    const [nextChartFilterAccordianDetailId, setNextChartFilterAccordianDetailId] = useState(-1);
-
+    /* effects **********************************************************************/ 
     useEffect(() => {
-        initChartFilterAccordians();
+        initNbaTeamGameStatsFilters();
     }, []);
 
-    const initChartFilterAccordians = () => {
-        let currAccordianDetails: any = [];
+    useEffect(() => {
+        setChartFilterAccordianDetails(getNbaTeamFilterOptionsComponent(nbaTeamGameStatsFilters));
+        handleFilterChange(nbaTeamGameStatsFilters);
+    }, [nbaTeamGameStatsFilters]);
+    /********************************************************************************/
+
+    const initNbaTeamGameStatsFilters = () => {
         if (betOption === BetOptions.Team) {
             switch (matchup.sportsCategory) {
                 case SportsCategories.NBA: {
-                    currAccordianDetails = [getTeamFilterOptions(matchup.away, true, 'comparator')];
+                    setNbaTeamGameStatsFilters([{...initNbaTeamGameStatsComparatorFilter}]);
                     break;
                 }
             }
         }
-        setChartFilterAccordianDetails(currAccordianDetails);
     }
+
+    /* utils ************************************************************************/ 
+    const updateObjInVecById = (vec: any[], id: any, objValuePath: string, value: any) => {
+        return vec.map((obj) => {
+            if (obj.id === id) {
+                set(obj, objValuePath, value);
+            }
+            return obj;
+        });
+    };
 
     const getNextAccordianDetailsId = () => {
         const nextId = nextChartFilterAccordianDetailId + 1;
@@ -67,168 +79,86 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
         return nextId;
     }
 
+    const getNbaTeamFilterAccordianSummaryLabel = (filter: NbaTeamGameStatsFilters) => {
+        const teamNickname = filter.teamFilter === TeamOptionsFilter.Away ? matchup.away.teamNickname : matchup.home.teamNickname;
+        const aggregationSlice = filter.aggregationSlice === undefined || filter.aggregationSlice as any === 'all' ? 
+            'all' : 
+            `last ${filter.aggregationSlice}`;
+        const gameLocation = `${filter.gameLocationFilter === GameLocationsFilter.All ? '' : filter.gameLocationFilter} games`;
+        const includeAggregation = filter.aggregation !== QuickStatsAggregation.Actual;
+        return`${teamNickname}: ${`${aggregationSlice} ${gameLocation} ${filter.gameStatsOption} ${includeAggregation ? filter.aggregation.replace(/([a-z])([A-Z])/g, "$1 $2") : ''} points`.toLowerCase()}`;
+    };
+    /********************************************************************************/
+
+    /* handlers *********************************************************************/ 
+    const handleNbaTeamGameStatsFiltersUpdate = (params: {
+        id: any,
+        valuePath: string,
+        value: any
+    }) => {
+        setNbaTeamGameStatsFilters((nbaTeamGameStatsFilters: NbaTeamGameStatsFilters[]) => {
+            const updatedFilters = updateObjInVecById(nbaTeamGameStatsFilters, params.id, params.valuePath, params.value);
+            return updatedFilters;
+        });
+    };
+
     const addNewChartDataSet = () => {
-        setChartFilterAccordianDetails(
-            chartFilterAccordianDetails.concat(
-                getTeamFilterOptions(
-                    matchup.away, 
-                    false, 
-                    getNextAccordianDetailsId()
-                )
-            )
-        );
+        const newId = getNextAccordianDetailsId();
+        setNbaTeamGameStatsFilters((nbaTeamGameStatsFilters: NbaTeamGameStatsFilters[]) => {
+            const newFilters = [
+                ...nbaTeamGameStatsFilters,   
+                {
+                    ...initNbaTeamGameStatsAdditionalStatsFilter,
+                    id: newId
+                }
+            ];
+            return newFilters;
+        });
     }
 
     const onDelete = (id: any) => {
-        setChartFilterAccordianDetails((chartFilterAccordianDetails: any) => 
-            chartFilterAccordianDetails.filter((c: any) => (c.props.id !== id
-        )));
-    };
-
-    const getTeamFilterOptionsHelper = (teamInfo: TeamInfo, isComparator: boolean) => {
-        const numOfGamesSelectOptions = range(1, Object.values(teamInfo.teamStats).length).map((o) => (
-            <MenuItem value={o}>{o}</MenuItem>
-        )).concat([<MenuItem value='all'>All</MenuItem>]);
-
-        const aggregationOptions = Object.values(QuickStatsAggregation).map((agg: QuickStatsAggregation) => {
-            return (
-                <MenuItem value={agg}>
-                    {agg.toString()}
-                </MenuItem>
-            );
+        setNbaTeamGameStatsFilters((nbaTeamGameStatsFilters: NbaTeamGameStatsFilters[]) => {
+            return nbaTeamGameStatsFilters.filter((x: any) => x.id !== id);
         });
-
-        const gameStatsOption = Object.values(GameStatsOption).map((gso: GameStatsOption) => {
-            return (
-                <MenuItem value={gso}>
-                    {gso.toString()}
-                </MenuItem>
-            );
-        });
-
-        return (
-            <FormControl>
-                <div className='filter-options'>
-                    <div className='filter-option-wrapper'>
-                        <FormLabel id="demo-row-radio-buttons-group-label" sx={formLabelSx}>Team</FormLabel>
-                        <RadioGroup
-                            row
-                            aria-labelledby="demo-row-radio-buttons-group-label"
-                            name="row-radio-buttons-group"
-                            value={teamInfo.teamNickname}
-                            onChange={() => {}}
-                        >
-                            <FormControlLabel sx={radioLabelSx} value={matchup.away.teamNickname} control={<Radio sx={radioIconSx}/>} label={matchup.away.teamNickname}/>
-                            <FormControlLabel sx={radioLabelSx} value={matchup.home.teamNickname} control={<Radio sx={radioIconSx}/>} label={matchup.home.teamNickname} /> 
-                        </RadioGroup>
-                    </div>
-                    <div className="filter-option-wrapper">
-                        <FormLabel id="demo-row-radio-buttons-group-label" sx={formLabelSx}>Game Location</FormLabel>
-                        <RadioGroup
-                            row
-                            aria-labelledby="demo-row-radio-buttons-group-label"
-                            name="row-radio-buttons-group"
-                            value={GameLocationsFilter.All}
-                            onChange={() => {}}
-                        >
-                            <FormControlLabel sx={radioLabelSx} value={GameLocationsFilter.All} control={<Radio sx={radioIconSx}/>} label={GameLocationsFilter.All} />
-                            <FormControlLabel sx={radioLabelSx} value={GameLocationsFilter.Away} control={<Radio sx={radioIconSx}/>} label={GameLocationsFilter.Away} />
-                            <FormControlLabel sx={radioLabelSx} value={GameLocationsFilter.Home} control={<Radio sx={radioIconSx}/>} label={GameLocationsFilter.Home}/>
-                        </RadioGroup>
-                    </div> 
-                    <div className='filter-option-wrapper'>
-                        <FormLabel id="demo-row-radio-buttons-group-label" sx={formLabelSx}>Game Stat</FormLabel>
-                        <div className="select-wrapper">
-                            <ThemeProvider theme={darkTheme}>
-                                <FormControl variant="standard" sx={{ width: '100%'}}>
-                                    <Select
-                                        labelId="demo-simple-select-standard-label"
-                                        id="demo-simple-select-standard"
-                                        value={GameStatsOption.total}
-                                        onChange={(val: any) => {}}
-                                        sx={{...selectSx, fontSize: '.8rem'}}
-                                    >
-                                        {gameStatsOption}
-                                    </Select>
-                                </FormControl>
-                            </ThemeProvider>
-                        </div>
-                    </div>
-                    <div className='filter-option-wrapper'>
-                        <FormLabel id="demo-row-radio-buttons-group-label" sx={formLabelSx}>Aggregator</FormLabel>
-                        <div className="select-wrapper">
-                            <ThemeProvider theme={darkTheme}>
-                                <FormControl variant="standard" sx={{ width: '100%'}}>
-                                    <Select
-                                        labelId="demo-simple-select-standard-label"
-                                        id="demo-simple-select-standard"
-                                        value={QuickStatsAggregation.Actual}
-                                        onChange={(val: any) => {}}
-                                        sx={{...selectSx, fontSize: '.8rem'}}
-                                    >
-                                        {aggregationOptions}
-                                    </Select>
-                                </FormControl>
-                            </ThemeProvider>
-                        </div>
-                    </div>
-                    <div className='filter-option-wrapper'>
-                        <FormLabel id="demo-row-radio-buttons-group-label" sx={formLabelSx}>Past # of games</FormLabel>
-                        <div className="select-wrapper">
-                            <ThemeProvider theme={darkTheme}>
-                                <FormControl variant="standard" sx={{ width: '100%'}}>
-                                    <Select
-                                        labelId="demo-simple-select-standard-label"
-                                        id="demo-simple-select-standard"
-                                        value={'all'}
-                                        onChange={(val: any) => {}}
-                                        sx={{...selectSx, fontSize: '.8rem'}}
-                                    >
-                                        {numOfGamesSelectOptions}
-                                    </Select>
-                                </FormControl>
-                            </ThemeProvider>
-                        </div>
-                    </div>
-                    <div className='filter-option-wrapper'>
-                        <FormControlLabel
-                            label="Line of best fit"
-                            sx={checkboxFormControlLabelSx}
-                            control={<Checkbox checked={false} onChange={() => {}} />}
-                        />
-                    </div>
-                </div>
-            </FormControl>
-        );
     };
+    /********************************************************************************/
 
-    const getTeamFilterOptions = (teamInfo: TeamInfo, isComparator: boolean, id: any) => (
-        <Accordion sx={subFilterAccordianSx} id={id}>
-            <div className="accordian-summary-header">
-                <div className="summary-wrapper">
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon/>}
-                        aria-controls="panel1-content"
-                        id="panel1-header"
-                        sx={accordianSummarySx}
-                    >
-                        {isComparator ? 'Comparator' : id }
-                    </AccordionSummary>
+    /* helpers **********************************************************************/
+    const getNbaTeamFilterOptionsComponent = (nbaTeamGameStatsFilters: NbaTeamGameStatsFilters[]) => (
+        nbaTeamGameStatsFilters.map((filter) => (
+            <Accordion sx={subFilterAccordianSx} id={filter.id}>
+                <div className="accordian-summary-header">
+                    <div className="summary-wrapper">
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon/>}
+                            aria-controls="panel1-content"
+                            id="panel1-header"
+                            sx={accordianSummarySx}
+                        >
+                            {filter.isComparator ? 'Comparator' : getNbaTeamFilterAccordianSummaryLabel(filter) }
+                        </AccordionSummary>
+                    </div>
+                    {
+                        !filter.isComparator && (
+                            <div className="delete-icon-wrapper">
+                            <DeleteIcon sx={chartAnalyzerDeleteIconSx} onClick={() => onDelete(filter.id)}/>
+                            </div>
+                        )
+                    }
                 </div>
-                {
-                    !isComparator && (
-                        <div className="delete-icon-wrapper">
-                        <DeleteIcon sx={chartAnalyzerDeleteIconSx} onClick={() => onDelete(id)}/>
-                        </div>
-                    )
-                }
-            </div>
-            <AccordionDetails>
-                {getTeamFilterOptionsHelper(teamInfo, isComparator)}
-            </AccordionDetails>
-        </Accordion>
+                <AccordionDetails>
+                    <NbaTeamFilterOptions 
+                        matchup={matchup} 
+                        id={filter.id} 
+                        nbaTeamGameStatsFiltersObj={filter}
+                        handleNbaTeamGameStatsFiltersUpdate={handleNbaTeamGameStatsFiltersUpdate}
+                    />
+                </AccordionDetails>
+            </Accordion>
+        ))
     );
-    
+    /********************************************************************************/
+
     return (
         <div className="chart-analyzer-filters-container">
             <ThemeProvider theme={darkTheme}>

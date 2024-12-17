@@ -5,52 +5,46 @@ import { Matchup } from "../../../../../models/matchup";
 import { ResponsiveContainer, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Line } from "recharts";
 import { quickStatsLineChartStyle } from "../../../../../models/form-styles/styles";
 import { SportsCategories } from "../../../../../models/enums/sports-categories";
-import { QuickStatsAggregation } from "../../../../../models/enums/quick-stats-aggregation";
-import { GameStatsOption } from "../../../../../models/enums/game-stats-option";
-import { TeamOptionsFilter } from "../../../../../models/enums/team-options-filter";
-import { calculateRollingAverages, sortGameStatsObjs } from "../../../../../utils/utils";
-import { GameStats } from "../../../../../models/nba-team-agg-game-stats-historical";
-import { GameStatsFilters, NbaTeamFilters } from "../../../../../models/component/nba-team-filters";
 import ChartAnalyzerFilters from "./chart-analyzer-filters/chart-analyzer-filters.component";
 import './chart-analyzer.component.scss';
+import { NbaTeamGameStatsFilters } from "../../../../../models/component/nba-team-game-stats-filters";
+import { GameStatsOption } from "../../../../../models/enums/game-stats-option";
+import { calculateRollingAverages, calculatgedExpandingAverages, sortGameStatsObjs } from "../../../../../utils/utils";
+import { TeamOptionsFilter } from "../../../../../models/enums/team-options-filter";
+import { GameStats } from "../../../../../models/nba-team-agg-game-stats-historical";
+import { QuickStatsAggregation } from "../../../../../models/enums/quick-stats-aggregation";
 
-// TODO APPLY FILTERS
 const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({matchup, betOption}) => {
     /* consts ***********************************************************************/
-    const [nbaTeamFilters, setNbaTeamFilters] = useState({ 
-        teamFilter: TeamOptionsFilter.Away,
-        gameLocationFilter: GameLocationsFilter.All,
-        gameStatsLineComparator: {
-            gameStatsOption: GameStatsOption.total,
-            aggregation: QuickStatsAggregation.Actual,
-            lineOfBestFit: true
-        } as GameStatsFilters,
-        additionalGameStatsLines: [],
-    } as NbaTeamFilters);
-
-    const [chartData, setChartData] = useState([]);
+    const [chartData, setChartData] = useState([] as any[]);
     /********************************************************************************/
-    
-    useEffect(() => {
-        getInitChartData();
-    }, []);
+
+    const handleFilterChange = (newFilters: NbaTeamGameStatsFilters[]) => {
+        if (betOption === BetOptions.Team) {
+            switch (matchup.sportsCategory) {
+                case SportsCategories.NBA: {
+                    setChartData(getNbaTeamGameStatsFiltersChartData(newFilters));
+                }
+            }
+        }
+    };
 
     /* chart data getters ***********************************************************/
-    const getNbaChartDataForTeamBetOptionHelper = (
-        gameStats: GameStats[], 
-        gameStatsFilter: GameStatsFilters
-    ) => {
-        const teamPointsChartData = sortGameStatsObjs(Object.values(gameStats))
-            .filter((gs: GameStats) => {
-                if (nbaTeamFilters.gameLocationFilter === GameLocationsFilter.Away) {
+    const getNbaTeamGameStatsFiltersChartData = (filters: NbaTeamGameStatsFilters[]) => {
+        const sortedAwayAggStats = sortGameStatsObjs(Object.values(matchup.away.teamAggGameStats.gameStats));
+        const sortedHomeAggStats = sortGameStatsObjs(Object.values(matchup.home.teamAggGameStats.gameStats));
+
+        const filteredStats = filters.map((filter: NbaTeamGameStatsFilters) => {
+            const gameStats = filter.teamFilter === TeamOptionsFilter.Away ? sortedAwayAggStats : sortedHomeAggStats;
+            const filteredStats = gameStats.filter((gs: GameStats) => {
+                if (filter.gameLocationFilter === GameLocationsFilter.Away) {
                     return !gs.isHome;
-                } else if (nbaTeamFilters.gameLocationFilter === GameLocationsFilter.Home) {
+                } else if (filter.gameLocationFilter === GameLocationsFilter.Home) {
                     return gs.isHome;
                 }
                 return true;
-            })
-            .map((gs: GameStats) => {
-                const gameStatsOption: GameStatsOption = nbaTeamFilters.gameStatsLineComparator.gameStatsOption;
+            }).map((gs: GameStats) => {
+                const gameStatsOption: GameStatsOption = filter.gameStatsOption;
                 if (gameStatsOption === GameStatsOption.q1) {
                     return { date: gs.dateStart, points: gs.linescore[0] };
                 } else if (gameStatsOption === GameStatsOption.q2) {
@@ -68,47 +62,31 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
                 }
             });
 
-        if (gameStatsFilter.aggregation === QuickStatsAggregation.Actual) {
-            return teamPointsChartData;
-        } else if (gameStatsFilter.aggregation === QuickStatsAggregation.RollingAverage) {
-            const teamPoints = teamPointsChartData.map(_ => _.points);
-            return calculateRollingAverages(teamPoints, gameStatsFilter.aggregationSlice!);
-        }
-        return [];
-    };
+            const points = filteredStats.map(_ => _.points);
 
-    const getNbaChartDataForTeamBetOption = () => {
-        // TODO implement for different season ehhh
-        let gameStats = nbaTeamFilters.teamFilter === TeamOptionsFilter.Home ? 
-            matchup.home.teamAggGameStats.gameStats : 
-            matchup.away.teamAggGameStats.gameStats;
+            let aggregatedPoints: any[] = [];
+            if (filter.aggregation === QuickStatsAggregation.Actual) {
+                return filteredStats;
+            } else if (filter.aggregation === QuickStatsAggregation.RollingAverage) {
+                aggregatedPoints =  calculateRollingAverages(points, 5);
+                console.log('points: ', points);
+                console.log('aggregatedPoints: ', aggregatedPoints);
+                
+            } else if (filter.aggregation === QuickStatsAggregation.ExpandingAverage) {
+                aggregatedPoints = calculatgedExpandingAverages(points);
+            }
+            return filteredStats.map((x, idx) => {
+                x.points = aggregatedPoints[idx] as number;
+                return x;
+            });
+        });
 
-        return getNbaChartDataForTeamBetOptionHelper(
-            Object.values(gameStats), 
-            nbaTeamFilters.gameStatsLineComparator
-        );
-    };
-
-    const getInitChartData = () => {
-        switch (matchup.sportsCategory) {
-            case SportsCategories.NBA:
-                if (betOption === BetOptions.Team) {
-                    setChartData(getNbaChartDataForTeamBetOption() as any);                  
-                }
-        }
+        return filteredStats;
     };
     /********************************************************************************/
-    
-    const handleFilterChange = (value: any) => {
-        // implement this after filters are implemented
-        // const filtersUpdate = {
-        //     ...teamFilters, 
-        //     ...value
-        // };
-        // setTeamFilters(filtersUpdate);
-    };
 
-    const getLineChart = () => {
+    const getLineChart = (chartData: any[]) => {
+        console.log('chart data: ', chartData);
         return (
             <ResponsiveContainer width="100%" height={300}>
                 <LineChart
@@ -130,9 +108,9 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
     
     return (
         <div className="chart-analyzer-container">
-            <ChartAnalyzerFilters betOption={betOption} matchup={matchup} handleFilterChange={() => {}}/>
+            <ChartAnalyzerFilters betOption={betOption} matchup={matchup} handleFilterChange={handleFilterChange}/>
             <div className="chart-wrapper">
-                {getLineChart()}
+                {getLineChart(chartData[0])}
             </div>
         </div>
     );
