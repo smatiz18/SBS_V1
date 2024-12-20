@@ -41,10 +41,18 @@ const NbaTeamFilterOptions: React.FC<{
         });
     };
 
-    const handlePastNumGamesSelectChange = (x: any, id: any) => {
+    const handleAggregatorSliceSelectChange = (x: any, id: any) => {
         handleNbaTeamGameStatsFiltersUpdate({
             id: id,
             valuePath: 'aggregationSlice',
+            value: x.target.value
+        });
+    };
+
+    const handlePastNumGamesSelectChange = (x: any, id: any) => {
+        handleNbaTeamGameStatsFiltersUpdate({
+            id: id,
+            valuePath: 'numberOfGames',
             value: x.target.value
         });
     };
@@ -67,7 +75,11 @@ const NbaTeamFilterOptions: React.FC<{
     /********************************************************************************/
     
     /* option ***********************************************************************/
-    const numOfGamesSelectOptions = range(1, Object.values(matchup.away.teamStats).length).map((o) => (
+    const numOfGames = nbaTeamGameStatsFiltersObj.teamFilter === TeamOptionsFilter.Away ?
+    Object.values(matchup.away.teamAggGameStats.gameStats).length :
+    Object.values(matchup.home.teamAggGameStats.gameStats).length;
+
+    const numOfGamesSelectOptions = range(1, numOfGames).map((o) => (
         <MenuItem value={o}>{o}</MenuItem>
     )).concat([<MenuItem value='all'>All</MenuItem>]);
 
@@ -78,6 +90,10 @@ const NbaTeamFilterOptions: React.FC<{
             </MenuItem>
         );
     });
+
+    const aggregationSliceOptions = range(1, numOfGames).map((o) => (
+        <MenuItem value={o}>{o}</MenuItem>
+    )).concat([<MenuItem value='all'>All</MenuItem>]);
 
     const gameStatsOption = Object.values(GameStatsOption).map((gso: GameStatsOption) => {
         return (
@@ -154,6 +170,28 @@ const NbaTeamFilterOptions: React.FC<{
                         </ThemeProvider>
                     </div>
                 </div>
+                {
+                    nbaTeamGameStatsFiltersObj.aggregation === QuickStatsAggregation.RollingAverage && (
+                        <div className='filter-option-wrapper'>
+                            <FormLabel id="demo-row-radio-buttons-group-label" sx={formLabelSx}>Aggregation Slice</FormLabel>
+                            <div className="select-wrapper">
+                                <ThemeProvider theme={darkTheme}>
+                                    <FormControl variant="standard" sx={{ width: '100%'}}>
+                                        <Select
+                                            labelId="demo-simple-select-standard-label"
+                                            id="demo-simple-select-standard"
+                                            value={nbaTeamGameStatsFiltersObj.aggregationSlice}
+                                            onChange={(x) => handleAggregatorSliceSelectChange(x, id)}
+                                            sx={{...selectSx, fontSize: '.8rem'}}
+                                        >
+                                            {aggregationSliceOptions}
+                                        </Select>
+                                    </FormControl>
+                                </ThemeProvider>
+                            </div>
+                        </div> 
+                    )
+                }
                 <div className='filter-option-wrapper'>
                     <FormLabel id="demo-row-radio-buttons-group-label" sx={formLabelSx}>Past # of games</FormLabel>
                     <div className="select-wrapper">
@@ -162,7 +200,7 @@ const NbaTeamFilterOptions: React.FC<{
                                 <Select
                                     labelId="demo-simple-select-standard-label"
                                     id="demo-simple-select-standard"
-                                    value={nbaTeamGameStatsFiltersObj.aggregationSlice === undefined ? 'all' : nbaTeamGameStatsFiltersObj.aggregationSlice }
+                                    value={nbaTeamGameStatsFiltersObj.numberOfGames === undefined ? 'all' : nbaTeamGameStatsFiltersObj.numberOfGames }
                                     onChange={(x) => handlePastNumGamesSelectChange(x, id)}
                                     sx={{...selectSx, fontSize: '.8rem'}}
                                 >

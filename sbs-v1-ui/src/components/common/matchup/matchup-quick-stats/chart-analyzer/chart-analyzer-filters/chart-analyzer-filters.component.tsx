@@ -31,6 +31,7 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
         gameLocationFilter: GameLocationsFilter.All,
         gameStatsOption: GameStatsOption.total,
         aggregation: QuickStatsAggregation.Actual,
+        aggregationSlice: 5,
         lineOfBestFit: false,
     };
     /********************************************************************************/
@@ -75,12 +76,13 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
 
     const getNbaTeamFilterAccordianSummaryLabel = (filter: NbaTeamGameStatsFilters) => {
         const teamNickname = filter.teamFilter === TeamOptionsFilter.Away ? matchup.away.teamNickname : matchup.home.teamNickname;
-        const aggregationSlice = filter.aggregationSlice === undefined || filter.aggregationSlice as any === 'all' ? 
+        const numOfGames = filter.numberOfGames === undefined || filter.numberOfGames as any === 'all' ? 
             'all' : 
-            `last ${filter.aggregationSlice}`;
+            `last ${filter.numberOfGames}`;
         const gameLocation = `${filter.gameLocationFilter === GameLocationsFilter.All ? '' : filter.gameLocationFilter} games`;
         const includeAggregation = filter.aggregation !== QuickStatsAggregation.Actual;
-        return`${teamNickname}: ${`${aggregationSlice} ${gameLocation} ${filter.gameStatsOption} ${includeAggregation ? filter.aggregation.replace(/([a-z])([A-Z])/g, "$1 $2") : ''} points`.toLowerCase()} (${filter.id})`;
+        const aggregation = `${filter.aggregation.replace(/([a-z])([A-Z])/g, "$1 $2")}${filter.aggregation === QuickStatsAggregation.RollingAverage ? `(${filter.aggregationSlice})` : ''}`;
+        return`${teamNickname}: ${`${numOfGames} ${gameLocation} ${filter.gameStatsOption} ${includeAggregation ?  aggregation: ''} points`.toLowerCase()} (${filter.id})`;
     };
     /********************************************************************************/
 

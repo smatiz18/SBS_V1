@@ -69,8 +69,7 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
         const sortedHomeAggStats = sortGameStatsObjs(Object.values(matchup.home.teamAggGameStats.gameStats));
 
         const maxNumOfGames = getMaxNumOfGamesWithFilters(filters, sortedAwayAggStats, sortedHomeAggStats);
-        const rawChartData = filters.flatMap((filter: NbaTeamGameStatsFilters) => {
-            
+        const rawChartData = filters.flatMap((filter: NbaTeamGameStatsFilters) => {    
             let applicableGames: any = applyGameLocationAndTeamFilter(
                 filter, 
                 sortedAwayAggStats, 
@@ -102,12 +101,19 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
                 return  { x: x, y: y };
             });
 
+            if (filter.numberOfGames !== undefined) {
+                applicableGames = applicableGames.slice(
+                    applicableGames.length - filter.numberOfGames, 
+                    applicableGames.length
+                );
+            }
+
             const points = applicableGames.map((_: any) => _.y);
             let aggregatedPoints: any[] = []; 
             if (filter.aggregation === QuickStatsAggregation.Actual) {
                 aggregatedPoints = points;
             } else if (filter.aggregation === QuickStatsAggregation.RollingAverage) {
-                aggregatedPoints =  calculateRollingAverages(points, 5);
+                aggregatedPoints =  calculateRollingAverages(points, filter.aggregationSlice);
             } else if (filter.aggregation === QuickStatsAggregation.ExpandingAverage) {
                 aggregatedPoints = calculatgedExpandingAverages(points);
             }

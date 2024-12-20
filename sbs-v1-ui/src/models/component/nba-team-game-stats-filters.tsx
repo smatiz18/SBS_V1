@@ -8,7 +8,8 @@ export interface NbaTeamGameStatsFilters {
     teamFilter: TeamOptionsFilter,
     gameLocationFilter: GameLocationsFilter,
     gameStatsOption: GameStatsOption,
-    aggregation: QuickStatsAggregation,
     lineOfBestFit: boolean
-    aggregationSlice?: number,
+    aggregation: QuickStatsAggregation,
+    aggregationSlice: number,
+    numberOfGames?: number,
 }
