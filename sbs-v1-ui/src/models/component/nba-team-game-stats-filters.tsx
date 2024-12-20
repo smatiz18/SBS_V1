@@ -11,5 +11,4 @@ export interface NbaTeamGameStatsFilters {
     aggregation: QuickStatsAggregation,
     lineOfBestFit: boolean
     aggregationSlice?: number,
-    isComparator: boolean,
 }

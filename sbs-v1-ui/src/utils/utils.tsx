@@ -65,7 +65,7 @@ export const calculateRollingAverages = (vec: number[], period: number) => {
     let idx = 0;
     while (idx < vec.length) {
         if (idx - period < 0) {
-            rollingAvgs.push(mean(vec.slice(0, idx)));
+            rollingAvgs.push(mean(vec.slice(0, idx === 0 ? undefined : idx)));
         } else {
             rollingAvgs.push(mean(vec.slice(idx - period, idx)));
         }
@@ -78,7 +78,7 @@ export const calculatgedExpandingAverages = (vec: number[]) => {
     let expandingAvgs = [];
     let idx = 0;
     while (idx < vec.length) {
-        expandingAvgs.push(mean(vec.slice(0, idx)));
+        expandingAvgs.push(mean(vec.slice(0, idx === 0 ? undefined : idx)));
         idx+=1;
     }
     return expandingAvgs;

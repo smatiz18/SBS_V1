@@ -59,9 +59,9 @@ const AvgsFilters: React.FC<{betOption: BetOptions, matchup: Matchup, handleFilt
                                 value={`${teamInfo.teamNickname}_${filter}`}
                                 onChange={onTeamFilterChange}
                             >
+                                <FormControlLabel sx={radioLabelSx} value={`${teamInfo.teamNickname}_All`} control={<Radio sx={radioIconSx}/>} label="All" />
                                 <FormControlLabel sx={radioLabelSx} value={`${teamInfo.teamNickname}_Away`} control={<Radio sx={radioIconSx}/>} label="Away" />
                                 <FormControlLabel sx={radioLabelSx} value={`${teamInfo.teamNickname}_Home`} control={<Radio sx={radioIconSx}/>} label="Home" />
-                                <FormControlLabel sx={radioLabelSx} value={`${teamInfo.teamNickname}_All`} control={<Radio sx={radioIconSx}/>} label="All" />
                             </RadioGroup>
                         </FormControl>
                     </div>

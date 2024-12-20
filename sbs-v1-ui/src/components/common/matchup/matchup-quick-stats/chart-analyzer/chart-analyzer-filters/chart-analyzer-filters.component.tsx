@@ -24,20 +24,14 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
     /* const ************************************************************************/
     const [nbaTeamGameStatsFilters, setNbaTeamGameStatsFilters] = useState([] as NbaTeamGameStatsFilters[]);
     const [chartFilterAccordianDetails, setChartFilterAccordianDetails] = useState([] as any);
-    const [nextChartFilterAccordianDetailId, setNextChartFilterAccordianDetailId] = useState(-1);
-    const initNbaTeamGameStatsComparatorFilter: NbaTeamGameStatsFilters = {
-        id: 'comparator',
+    const [nextChartFilterAccordianDetailId, setNextChartFilterAccordianDetailId] = useState(0);
+    const initNbaTeamGameStatsFilter: NbaTeamGameStatsFilters = {
+        id: 0,
         teamFilter: TeamOptionsFilter.Away,
         gameLocationFilter: GameLocationsFilter.All,
         gameStatsOption: GameStatsOption.total,
         aggregation: QuickStatsAggregation.Actual,
         lineOfBestFit: false,
-        isComparator: true,
-    };
-    const initNbaTeamGameStatsAdditionalStatsFilter: NbaTeamGameStatsFilters = {
-        ...initNbaTeamGameStatsComparatorFilter,
-        id: undefined,
-        isComparator: false
     };
     /********************************************************************************/
 
@@ -56,7 +50,7 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
         if (betOption === BetOptions.Team) {
             switch (matchup.sportsCategory) {
                 case SportsCategories.NBA: {
-                    setNbaTeamGameStatsFilters([{...initNbaTeamGameStatsComparatorFilter}]);
+                    setNbaTeamGameStatsFilters([{...initNbaTeamGameStatsFilter}]);
                     break;
                 }
             }
@@ -86,7 +80,7 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
             `last ${filter.aggregationSlice}`;
         const gameLocation = `${filter.gameLocationFilter === GameLocationsFilter.All ? '' : filter.gameLocationFilter} games`;
         const includeAggregation = filter.aggregation !== QuickStatsAggregation.Actual;
-        return`${teamNickname}: ${`${aggregationSlice} ${gameLocation} ${filter.gameStatsOption} ${includeAggregation ? filter.aggregation.replace(/([a-z])([A-Z])/g, "$1 $2") : ''} points`.toLowerCase()}`;
+        return`${teamNickname}: ${`${aggregationSlice} ${gameLocation} ${filter.gameStatsOption} ${includeAggregation ? filter.aggregation.replace(/([a-z])([A-Z])/g, "$1 $2") : ''} points`.toLowerCase()} (${filter.id})`;
     };
     /********************************************************************************/
 
@@ -108,7 +102,7 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
             const newFilters = [
                 ...nbaTeamGameStatsFilters,   
                 {
-                    ...initNbaTeamGameStatsAdditionalStatsFilter,
+                    ...initNbaTeamGameStatsFilter,
                     id: newId
                 }
             ];
@@ -125,8 +119,8 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
 
     /* helpers **********************************************************************/
     const getNbaTeamFilterOptionsComponent = (nbaTeamGameStatsFilters: NbaTeamGameStatsFilters[]) => (
-        nbaTeamGameStatsFilters.map((filter) => (
-            <Accordion sx={subFilterAccordianSx} id={filter.id}>
+        nbaTeamGameStatsFilters.map((filter, idx) => (
+            <Accordion sx={subFilterAccordianSx} id={filter.id} defaultExpanded={idx===0}>
                 <div className="accordian-summary-header">
                     <div className="summary-wrapper">
                         <AccordionSummary
@@ -135,11 +129,11 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
                             id="panel1-header"
                             sx={accordianSummarySx}
                         >
-                            {filter.isComparator ? 'Comparator' : getNbaTeamFilterAccordianSummaryLabel(filter) }
+                            {getNbaTeamFilterAccordianSummaryLabel(filter)}
                         </AccordionSummary>
                     </div>
                     {
-                        !filter.isComparator && (
+                        (
                             <div className="delete-icon-wrapper">
                             <DeleteIcon sx={chartAnalyzerDeleteIconSx} onClick={() => onDelete(filter.id)}/>
                             </div>
@@ -162,7 +156,7 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
     return (
         <div className="chart-analyzer-filters-container">
             <ThemeProvider theme={darkTheme}>
-                <Accordion sx={filterAccordianSx}>
+                <Accordion sx={filterAccordianSx} defaultExpanded={true}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon/>}
                         aria-controls="panel1-content"
@@ -171,14 +165,18 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
                     >
                         Filters
                     </AccordionSummary>
-                        <AccordionDetails>
-                            <div className="accordian-details-wrapper">
-                                {chartFilterAccordianDetails}
-                            </div>
-                        </AccordionDetails>
                     <AccordionDetails>
-                        <Button variant="outlined" size="small" onClick={addNewChartDataSet}>+</Button>
+                        <div className="accordian-details-wrapper">
+                            {chartFilterAccordianDetails}
+                        </div>
                     </AccordionDetails>
+                    {
+                        chartFilterAccordianDetails.length < 4 && (
+                            <AccordionDetails>
+                                <Button variant="outlined" size="small" onClick={addNewChartDataSet}>+</Button>
+                            </AccordionDetails>
+                        )
+                    }
                 </Accordion>
             </ThemeProvider>
         </div>
