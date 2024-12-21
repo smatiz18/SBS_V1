@@ -57,10 +57,11 @@ const NbaTeamFilterOptions: React.FC<{
         });
     };
     
-    const handleLineOfBestFitChange = (x: any, id: any) => {
+    // TODO implement this later
+    const handleShowLineOfBestFitChange = (x: any, id: any) => {
         handleNbaTeamGameStatsFiltersUpdate({
             id: id,
-            valuePath: 'lineOfBestFit',
+            valuePath: 'showLineOfBestFit',
             value: x.target.checked
         });
     };
@@ -70,6 +71,22 @@ const NbaTeamFilterOptions: React.FC<{
             id: id,
             valuePath: 'gameLocationFilter',
             value: x.target.value
+        });
+    };
+
+    const handleShowStdDeviationLinesChange = (x: any, id: any) => {
+        handleNbaTeamGameStatsFiltersUpdate({
+            id: id,
+            valuePath: 'showStdDeviationLines',
+            value: x.target.checked
+        });
+    }
+
+    const handleShowMinMaxLinesChange = (x: any, id: any) => {
+        handleNbaTeamGameStatsFiltersUpdate({
+            id: id,
+            valuePath: 'showMinMaxLines',
+            value: x.target.checked
         });
     };
     /********************************************************************************/
@@ -210,11 +227,25 @@ const NbaTeamFilterOptions: React.FC<{
                         </ThemeProvider>
                     </div>
                 </div>
-                <div className='filter-option-wrapper'>
+                {/* <div className='filter-option-wrapper'>
                     <FormControlLabel
                         label="Line of best fit"
                         sx={checkboxFormControlLabelSx}
-                        control={<Checkbox checked={nbaTeamGameStatsFiltersObj.lineOfBestFit} onChange={(x) => handleLineOfBestFitChange(x, id)} />}
+                        control={<Checkbox checked={nbaTeamGameStatsFiltersObj.showLineOfBestFit} onChange={(x) => handleShowLineOfBestFitChange(x, id)} />}
+                    />
+                </div> */}
+                <div className='filter-option-wrapper'>
+                    <FormControlLabel
+                        label="Std Dev"
+                        sx={checkboxFormControlLabelSx}
+                        control={<Checkbox checked={nbaTeamGameStatsFiltersObj.showStdDeviationLines} onChange={(x) => handleShowStdDeviationLinesChange(x, id)} />}
+                    />
+                </div>
+                <div className='filter-option-wrapper'>
+                    <FormControlLabel
+                        label="Min Max"
+                        sx={checkboxFormControlLabelSx}
+                        control={<Checkbox checked={nbaTeamGameStatsFiltersObj.showMinMaxLines} onChange={(x) => handleShowMinMaxLinesChange(x, id)} />}
                     />
                 </div>
             </div>

@@ -8,7 +8,9 @@ export interface NbaTeamGameStatsFilters {
     teamFilter: TeamOptionsFilter,
     gameLocationFilter: GameLocationsFilter,
     gameStatsOption: GameStatsOption,
-    lineOfBestFit: boolean
+    showLineOfBestFit: boolean,
+    showStdDeviationLines: boolean,
+    showMinMaxLines: boolean,
     aggregation: QuickStatsAggregation,
     aggregationSlice: number,
     numberOfGames?: number,

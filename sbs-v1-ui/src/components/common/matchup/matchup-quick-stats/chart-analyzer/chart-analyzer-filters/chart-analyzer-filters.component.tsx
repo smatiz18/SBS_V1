@@ -32,7 +32,9 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
         gameStatsOption: GameStatsOption.total,
         aggregation: QuickStatsAggregation.Actual,
         aggregationSlice: 5,
-        lineOfBestFit: false,
+        showLineOfBestFit: false,
+        showStdDeviationLines: false,
+        showMinMaxLines: false
     };
     /********************************************************************************/
 
@@ -134,13 +136,9 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
                             {getNbaTeamFilterAccordianSummaryLabel(filter)}
                         </AccordionSummary>
                     </div>
-                    {
-                        (
-                            <div className="delete-icon-wrapper">
-                            <DeleteIcon sx={chartAnalyzerDeleteIconSx} onClick={() => onDelete(filter.id)}/>
-                            </div>
-                        )
-                    }
+                    <div className="delete-icon-wrapper">
+                        <DeleteIcon sx={chartAnalyzerDeleteIconSx} onClick={() => onDelete(filter.id)}/>
+                    </div>
                 </div>
                 <AccordionDetails>
                     <NbaTeamFilterOptions 

@@ -96,7 +96,7 @@ const AvgsFilters: React.FC<{betOption: BetOptions, matchup: Matchup, handleFilt
                         id="panel1-header"
                         sx={accordianSummarySx}
                     >
-                        Filters
+                        {`Filters: (${matchup.away.teamNickname}: ${teamFilters.away} games, ${matchup.home.teamNickname}: ${teamFilters.home} games)`}
                     </AccordionSummary>
                     <AccordionDetails>
                         {getAccordianDetails()}

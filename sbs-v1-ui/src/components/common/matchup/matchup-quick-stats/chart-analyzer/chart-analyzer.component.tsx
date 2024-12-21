@@ -9,11 +9,11 @@ import ChartAnalyzerFilters from "./chart-analyzer-filters/chart-analyzer-filter
 import './chart-analyzer.component.scss';
 import { NbaTeamGameStatsFilters } from "../../../../../models/component/nba-team-game-stats-filters";
 import { GameStatsOption } from "../../../../../models/enums/game-stats-option";
-import { calculateRollingAverages, calculatgedExpandingAverages, sortGameStatsObjs } from "../../../../../utils/utils";
+import { calculateRollingAverages, calculatgedExpandingAverages, mean, sortGameStatsObjs, stdDeviation } from "../../../../../utils/utils";
 import { TeamOptionsFilter } from "../../../../../models/enums/team-options-filter";
 import { GameStats } from "../../../../../models/nba-team-agg-game-stats-historical";
 import { QuickStatsAggregation } from "../../../../../models/enums/quick-stats-aggregation";
-import { groupBy } from "lodash";
+import { get, groupBy, max, min, set } from "lodash";
 
 const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({matchup, betOption}) => {
     /* consts ***********************************************************************/
@@ -22,7 +22,9 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
     /********************************************************************************/
 
     useEffect(() => {
-        setChartData(getNbaTeamGameStatsFiltersChartData(filters));
+        const chartDataWithNoRefLines = getNbaTeamGameStatsFiltersChartData(filters);
+        const enrichedChartDataWithRefLines = enrichChartDataWithRefLines(chartDataWithNoRefLines, filters);
+        setChartData(enrichedChartDataWithRefLines);
     }, [filters]);
 
     const handleFilterChange = (newFilters: NbaTeamGameStatsFilters[]) => {
@@ -83,7 +85,6 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
                 const x = offset + idx;
                 let y;
                 if (gameStatsOption === GameStatsOption.q1) {
-                    // TODO make y axis key to be attached to id
                     y =  gs.linescore[0];
                 } else if (gameStatsOption === GameStatsOption.q2) {
                     y = gs.linescore[1];
@@ -138,6 +139,39 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
 
         return flattenedChartData;
     };
+
+    const enrichChartDataWithRefLines = (chartData: any[], filters: NbaTeamGameStatsFilters[]) => {
+        filters.forEach((filter: NbaTeamGameStatsFilters) => {
+            const data = chartData.filter((dataPoint: any) => get(dataPoint, `${filter.id}`) !== undefined)
+                .map((dataPoint: any) => get(dataPoint, `${filter.id}`));
+            
+            if (filter.showStdDeviationLines) {
+                const stdDev = stdDeviation(data);
+                const m = mean(data);
+
+                chartData.forEach((dp: any) => {
+                    set(dp, `${filter.id}_+_1_σ`, m + stdDev);
+                    set(dp, `${filter.id}_-_1_σ`, m - stdDev);
+                });
+            }
+
+            if (filter.showMinMaxLines) {
+                const maxPoint = max(data);
+                const minPoint = min(data);
+                chartData.forEach((dp: any) => {
+                    set(dp, `${filter.id}_max`, maxPoint);
+                    set(dp, `${filter.id}_min`, minPoint);
+                });
+            }
+
+            // TODO to be implemented
+            if (filter.showLineOfBestFit) {
+
+            }
+        });
+        console.log(chartData);
+        return chartData;
+    };
     /********************************************************************************/
 
     const getLineChart = (chartData: any[]) => {
@@ -163,15 +197,62 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
                     <Tooltip />
                     <Legend />
                     {
-                        filters.map((filter: any, idx: any) => (
-                            <Line 
-                                type="monotone" 
-                                dataKey={`${filter.id}`}
-                                stroke={chartLineColors[idx]} 
-                                dot={false} 
-                                activeDot={{ r: 1 }} 
-                            />
-                        ))
+                        filters.flatMap((filter: NbaTeamGameStatsFilters, idx: any) => {
+                            const lines = [
+                                (
+                                    <Line 
+                                        type="monotone" 
+                                        dataKey={`${filter.id}`}
+                                        stroke={chartLineColors[idx]} 
+                                        dot={false} 
+                                        activeDot={{ r: 1 }} 
+                                    />
+                                )
+                            ];
+
+                            if (filter.showStdDeviationLines) {
+                                lines.push(
+                                    <Line 
+                                        type="monotone" 
+                                        dataKey={`${filter.id}_+_1_σ`}
+                                        stroke={chartLineColors[idx]} 
+                                        strokeDasharray="5 5"
+                                        dot={false} 
+                                    />
+                                );
+                                lines.push(
+                                    <Line 
+                                        type="monotone" 
+                                        dataKey={`${filter.id}_-_1_σ`}
+                                        stroke={chartLineColors[idx]} 
+                                        strokeDasharray="5 5"
+                                        dot={false} 
+                                    />
+                                );
+                            }
+
+                            if (filter.showMinMaxLines) {
+                                lines.push(
+                                    <Line 
+                                        type="monotone" 
+                                        dataKey={`${filter.id}_max`}
+                                        stroke={chartLineColors[idx]} 
+                                        strokeDasharray="5 5"
+                                        dot={false} 
+                                    />
+                                );
+                                lines.push(
+                                    <Line 
+                                        type="monotone" 
+                                        dataKey={`${filter.id}_min`}
+                                        stroke={chartLineColors[idx]} 
+                                        strokeDasharray="5 5"
+                                        dot={false} 
+                                    />
+                                );
+                            }
+                            return lines;
+                        })
                     }
                 </LineChart>
           </ResponsiveContainer>
