@@ -1,0 +1,15 @@
+@use '../../../../../variables';
+
+.query-builder-container {
+    background-color: #333;
+    border-radius: 4px;
+    padding: 0 .5rem 0 .5rem;
+
+    .filter-option-wrapper {
+        padding: .33rem 0 .33rem 0; 
+    }
+
+    .query-builder-wrapper {
+        padding: .33rem 0 .5rem 0;
+    }
+}

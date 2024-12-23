@@ -10,11 +10,12 @@ import './matchup-quick-stats.component.scss';
 import { paginationSx } from "../../../../models/form-styles/styles";
 import PaginationItem from "@mui/material/PaginationItem";
 import ChartAnalyzer from "./chart-analyzer/chart-analyzer.component";
+import PastOccurrences from "./past-occurrences/past-occurrences.component";
 
 const MatchupQuickStats: React.FC<{matchup: MatchupLinesAndStats, betOption: BetOptions}> = ({matchup, betOption}) => {
     const avgsTable = <AvgsTable matchup={matchup} betOption={betOption}/>;
     const chartAnalyzer = <ChartAnalyzer matchup={matchup} betOption={betOption}/>
-    const pastOccurences = <div className="past-occurences"></div>;
+    const pastOccurences = <PastOccurrences/>;
     const pageToCompMap: Record<string, ReactElement> = {
         '1': avgsTable,
         '2': chartAnalyzer,
