@@ -99,12 +99,12 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
                 } else {
                     y = gs.points;
                 }
-                return  { x: x, y: y };
+                return  { x: x, y: parseFloat(y.toFixed(2)) };
             });
 
             if (filter.numberOfGames !== undefined) {
                 applicableGames = applicableGames.slice(
-                    applicableGames.length - filter.numberOfGames, 
+                    applicableGames.length - filter.numberOfGames < 0 ? 0 : applicableGames.length - filter.numberOfGames, 
                     applicableGames.length
                 );
             }
@@ -150,8 +150,8 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
                 const m = mean(data);
 
                 chartData.forEach((dp: any) => {
-                    set(dp, `${filter.id}_+_1_σ`, m + stdDev);
-                    set(dp, `${filter.id}_-_1_σ`, m - stdDev);
+                    set(dp, `${filter.id}_+_1_σ`, parseFloat((m + stdDev).toFixed(2)));
+                    set(dp, `${filter.id}_-_1_σ`, parseFloat((m - stdDev).toFixed(2)));
                 });
             }
 
@@ -159,8 +159,8 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
                 const maxPoint = max(data);
                 const minPoint = min(data);
                 chartData.forEach((dp: any) => {
-                    set(dp, `${filter.id}_max`, maxPoint);
-                    set(dp, `${filter.id}_min`, minPoint);
+                    set(dp, `${filter.id}_max`, parseFloat(maxPoint.toFixed(2)));
+                    set(dp, `${filter.id}_min`, parseFloat(minPoint.toFixed(2)));
                 });
             }
 
@@ -169,7 +169,6 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
 
             }
         });
-        console.log(chartData);
         return chartData;
     };
     /********************************************************************************/
