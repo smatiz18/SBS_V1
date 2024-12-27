@@ -135,3 +135,8 @@ export const checkboxFormControlLabelSx = {
 export const chartAnalyzerDeleteIconSx = {
   fontSize: '1rem',
 };
+
+export const buttonStyleSx = {
+  'fontSize': '.7rem',
+  'textTransform': 'none'
+};
