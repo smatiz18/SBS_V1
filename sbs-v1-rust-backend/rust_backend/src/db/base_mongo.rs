@@ -52,7 +52,7 @@ where
     Ok(results)
 }
 
-pub async fn _aggregate<T>(
+pub async fn aggregate<T>(
     collection: &Collection<T>,
     pipelines: Vec<Document>,
     options: Option<AggregateOptions>

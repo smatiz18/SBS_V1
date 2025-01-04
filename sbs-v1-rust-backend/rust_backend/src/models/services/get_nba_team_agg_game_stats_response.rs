@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use serde::Serialize;
 
 use crate::models::db::nba_team_agg_game_stats_historical::NbaTeamAggGameStatsHistorical;

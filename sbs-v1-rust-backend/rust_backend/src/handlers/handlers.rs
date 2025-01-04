@@ -1,12 +1,11 @@
 use actix_web::{ web, HttpResponse, Responder};
 use crate::aggregators::nba_feature_map_aggregators::get_nba_backtest_feature_map;
 use crate::aggregators::optimal_odds_aggregators::get_optimal_odds_by_event_map;
-use crate::models::db::nba_team_agg_game_stats_historical::NbaTeamAggGameStatsHistorical;
 use crate::models::enums::sports_categories::SportsCategories;
 use crate::models::odds::odds::Event;
+use crate::models::services::execute_mongo_query_request::ExecuteMongoQueryRequest;
 use crate::models::services::get_backtest_feature_map_request::BacktestFeatureMapRequest;
 use crate::models::services::get_nba_team_agg_game_stats_request::GetNbaTeamAggGameStatsRquest;
-use crate::models::services::get_nba_team_agg_game_stats_response::GetNbaTeamAggGameStatsResponse;
 use crate::models::services::get_nba_games_by_team_and_season_request::GetNbaGamesByTeamAndSeasonRequest;
 use crate::models::services::get_nba_odds_by_team_and_season_request::GetNbaOddsByTeamAndSeasonRequest;
 use crate::models::services::get_nba_players_by_team_and_season_request::GetNbaPlayersByTeamAndSeasonRequest;
@@ -153,6 +152,23 @@ pub async fn get_nba_team_stats(
             HttpResponse::InternalServerError().body("Failed to fetch data")
         }
     }
+}
+
+pub async fn execute_find_query(
+    app_state: web::Data<AppState>,
+    req: web::Query<ExecuteMongoQueryRequest>
+) -> impl Responder {
+    match req {
+        Ok(r) => {
+            app_state.get
+            aggregate()
+        },
+        Err(e) => {
+            error!("Failed to fetch data: {:?}", e);
+            HttpResponse::InternalServerError().body("Failed to fetch data")
+        }   
+    }
+    HttpResponse::Ok().json("resp_obj")
 }
 /********************************************************************************/
 
