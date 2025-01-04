@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@mui/material/styles';
-import QueryBuilder from 'react-querybuilder';
+import QueryBuilder, { formatQuery } from 'react-querybuilder';
 import { buttonStyleSx, darkTheme, formLabelSx, selectSx } from '../../../../../models/form-styles/styles';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
@@ -7,6 +7,8 @@ import { Button, FormLabel, MenuItem } from '@mui/material';
 import { GameStatsOption } from '../../../../../models/enums/game-stats-option';
 import { useEffect, useState } from 'react';
 import './query-builder.component.scss';
+import { cloneDeep } from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
 
 const SBSQueryBuilder: React.FC<{}> = () => {
     enum AvailableCollections {
@@ -152,40 +154,134 @@ const SBSQueryBuilder: React.FC<{}> = () => {
     };
 
     const onSearch = () => {
-        parseQuery(query);
+        const parsedQuery = parseQuery(query);
+        const mongoQuery = formatQuery(parsedQuery, 'mongodb');
+        console.log(mongoQuery);
     };
 
     const parseQuery = (query: any) => {
-        console.log(query);
         switch (currentCollection) {
             case AvailableCollections.NbaGamesHistorical: {
-
-            };
+                return parseNbaGamesHistoricalQuery(query)
+            }
+            default: return query;
         };
     };
 
-
     const parseNbaGamesHistoricalQuery = (query: any) => {
-        // field: 
-        // "total"
-        // id
-        // : 
-        // "91051d12-2d85-4712-905a-cb81ef6164ec"
-        // operator
-        // : 
-        // ">="
-        // value
-        // : 
-        // "135"
-        // valueSource
-        // : 
-        // "value"
-
-        const newRules = query.rules.map((rule: any) => {
-            if (rule.field === 'total') {
-
-            } 
+        const parsedRules = query.rules.map((rule: any) => {
+            const ruleClone = cloneDeep(rule);
+            switch (ruleClone.field) {
+                case GameStatsOption.q1: {
+                    return {
+                        combinator: 'or',
+                        not: false,
+                        id:  uuidv4(),
+                        rules: [
+                            {
+                                ...ruleClone,
+                                field: 'scoresVisitorsLinescore.0',
+                                id: uuidv4(),
+                            },
+                            {
+                                ...ruleClone,
+                                field: 'scoresHomeLinescore.0',
+                                id: uuidv4(),
+                            }
+                        ]
+                    };
+                }
+                case GameStatsOption.q2: {
+                    return {
+                        combinator: 'or',
+                        not: false,
+                        id:  uuidv4(),
+                        rules: [
+                            {
+                                ...ruleClone,
+                                field: 'scoresVisitorsLinescore.1',
+                                id: uuidv4(),
+                            },
+                            {
+                                ...ruleClone,
+                                field: 'scoresHomeLinescore.1',
+                                id: uuidv4(),
+                            }
+                        ]
+                    };
+                    break;
+                }
+                // TODO: implement later
+                // case GameStatsOption.h1: {
+                // }
+                case GameStatsOption.q3: {
+                    return {
+                        combinator: 'or',
+                        not: false,
+                        id:  uuidv4(),
+                        rules: [
+                            {
+                                ...ruleClone,
+                                field: 'scoresVisitorsLinescore.2',
+                                id: uuidv4(),
+                            },
+                            {
+                                ...ruleClone,
+                                field: 'scoresHomeLinescore.2',
+                                id: uuidv4(),
+                            }
+                        ]
+                    };
+                    break;
+                }
+                case GameStatsOption.q4: {
+                    return {
+                        combinator: 'or',
+                        not: false,
+                        id:  uuidv4(),
+                        rules: [
+                            {
+                                ...ruleClone,
+                                field: 'scoresVisitorsLinescore.3',
+                                id: uuidv4(),
+                            },
+                            {
+                                ...ruleClone,
+                                field: 'scoresHomeLinescore.3',
+                                id: uuidv4(),
+                            }
+                        ]
+                    };
+                }
+                // TODO: implement later
+                // case GameStatsOption.h2: {
+                // }
+                case GameStatsOption.total: {
+                    return {
+                        combinator: 'or',
+                        not: false,
+                        id:  uuidv4(),
+                        rules: [
+                            {
+                                ...ruleClone,
+                                field: 'scoresVisitorsPoints',
+                                id: uuidv4(),
+                            },
+                            {
+                                ...ruleClone,
+                                field: 'scoresHomePoints',
+                                id: uuidv4(),
+                            }
+                        ]
+                    };
+                }
+            }
+            return ruleClone;
         });
+        return {
+            ...query,
+            rules: parsedRules
+        };
     };
 
     return (
