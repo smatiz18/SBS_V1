@@ -1,6 +1,9 @@
 use actix_web::{ web, HttpResponse, Responder};
+use bson::Document;
+use serde_json::Value;
 use crate::aggregators::nba_feature_map_aggregators::get_nba_backtest_feature_map;
 use crate::aggregators::optimal_odds_aggregators::get_optimal_odds_by_event_map;
+use crate::db::base_mongo::{aggregate, get_collection};
 use crate::models::enums::sports_categories::SportsCategories;
 use crate::models::odds::odds::Event;
 use crate::models::services::execute_mongo_query_request::ExecuteMongoQueryRequest;
@@ -154,21 +157,46 @@ pub async fn get_nba_team_stats(
     }
 }
 
-pub async fn execute_find_query(
+pub async fn execute_aggregation_query(
     app_state: web::Data<AppState>,
-    req: web::Query<ExecuteMongoQueryRequest>
-) -> impl Responder {
-    match req {
-        Ok(r) => {
-            app_state.get
-            aggregate()
-        },
-        Err(e) => {
+    req: web::Json<ExecuteMongoQueryRequest>,
+) -> Result<HttpResponse, actix_web::Error> {
+    // Get the collection
+    let collection = app_state
+        .get_collection(&req.collection_name)
+        .ok_or_else(|| {
+            error!("Mongo collection does not exist");
+            actix_web::error::ErrorInternalServerError("Mongo collection does not exist")
+        })?;
+
+    // Convert the aggregation pipeline into BSON documents
+    let agg_pipeline_as_docs: Vec<Document> = req
+        .aggregation_pipeline
+        .to_owned()
+        .into_iter()
+        .map(|mongo_agg| {
+            let json_value: Value = serde_json::from_str(&mongo_agg)
+                .map_err(|e| actix_web::error::ErrorBadRequest(format!("Invalid JSON: {}", e)))?;
+            bson::from_bson(bson::to_bson(&json_value).map_err(|e| {
+                actix_web::error::ErrorBadRequest(format!("Failed to convert to BSON: {}", e))
+            })?)
+            .map_err(|e| {
+                actix_web::error::ErrorInternalServerError(format!("Failed to parse BSON: {}", e))
+            })
+        })
+        .collect::<Result<_, actix_web::Error>>()?; // Explicitly propagate errors
+
+    // Execute the aggregation query
+    let docs = aggregate(&collection, agg_pipeline_as_docs, None)
+        .await
+        .map_err(|e| {
             error!("Failed to fetch data: {:?}", e);
-            HttpResponse::InternalServerError().body("Failed to fetch data")
-        }   
-    }
-    HttpResponse::Ok().json("resp_obj")
+            actix_web::error::ErrorInternalServerError("Failed to fetch data")
+        })?;
+
+    // Log the result and return the response
+    info!("Returned {} docs from MongoDB", docs.len());
+    Ok(HttpResponse::Ok().json(docs))
 }
 /********************************************************************************/
 

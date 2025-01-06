@@ -11,9 +11,9 @@ pub struct AppState {
 }
 
 impl AppState {
-    pub fn get_collection(collection_str: &str) -> Option<Collection<Document>> {
+    pub fn get_collection(&self, collection_str: &str) -> Option<Collection<Document>> {
         match collection_str {
-            "nba_games_historical_collection" => Some(&self.nba_games_historical_collection),
+            "nba_games_historical_collection" => Some(self.nba_games_historical_collection),
             // "nba_odds_historical_collection" => ,
             // "nba_player_aggregated_game_stats_historical_collection" => ,
             // "nba_team_aggregated_game_stats_historical_collection" => , 
