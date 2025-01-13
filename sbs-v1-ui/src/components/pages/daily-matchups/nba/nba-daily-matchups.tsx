@@ -21,7 +21,7 @@ import { AxiosResponse } from "axios";
 import { NbaTeamStats } from "../../../../models/nba-team-stats";
 import { GetNbaTeamStatsRequest } from "../../../../models/services/get-nba-team-stats-request";
 import { SeasonType } from "../../../../models/enums/season-type";
-import { getCurrentNbaSeason } from "../../../../utils/utils";
+import { currentNbaSeason } from "../../../../utils/utils";
 import { GetNbaTeamAggGameStatsRequest } from "../../../../models/services/get-nba-team-agg-game-stats-request";
 import { NbaTeamAggGameStatsHistorical } from "../../../../models/nba-team-agg-game-stats-historical";
 
@@ -77,7 +77,7 @@ const NbaDailyMatchups = () => {
                   NbaTeamsMappedByNickname[matchup.home.teamNickname].nbaApiId
                 ])
               ),
-              season: getCurrentNbaSeason(),
+              season: currentNbaSeason,
               seasonType: SeasonType.All
             };
 

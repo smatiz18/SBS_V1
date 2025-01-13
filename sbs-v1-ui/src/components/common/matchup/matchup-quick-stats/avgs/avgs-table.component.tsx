@@ -362,7 +362,7 @@ const AvgsTable: React.FC<{
     /********************************************************************************/
 
     return (
-        <div className="quick-stats-table-container">
+        <div className="quick-stats-table-container" id={`${matchup.away.teamNickname}-${matchup.home.teamNickname}`}>
             <AvgsFilters handleFilterChange={handleFilterChange} betOption={betOption} matchup={matchup}/>
             <QuickStatsTable params={
                 {

@@ -9,11 +9,13 @@ import { useEffect, useState } from 'react';
 import './query-builder.component.scss';
 import { cloneDeep } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
+import { executeMongoQuery } from '../../../../../services/common/services';
+import { ExecuteMongoQueryRequest } from '../../../../../models/services/execute-mongo-query-request';
 
 const SBSQueryBuilder: React.FC<{}> = () => {
     enum AvailableCollections {
         NbaGamePlayerStatsHistorical = 'NbaGamePlayerStatsHistorical',
-        NbaGamesHistorical = 'NbaGamesHistorical',
+        NbaGamesHistorical = 'nba_games_historical',
         NbaPlayerAggregatedGameStatsHistorical = 'NbaPlayerAggregatedGameStatsHistorical',
         NbaTeamAggregatedGameStatsHistorical = 'NbaTeamAggregatedGameStatsHistorical',
         NbaTeamStats = 'NbaTeamStats'  
@@ -156,7 +158,18 @@ const SBSQueryBuilder: React.FC<{}> = () => {
     const onSearch = () => {
         const parsedQuery = parseQuery(query);
         const mongoQuery = formatQuery(parsedQuery, 'mongodb');
-        console.log(mongoQuery);
+        const asMatchAggPipeline = [JSON.stringify({
+            '$match': mongoQuery 
+        })];
+        
+        executeMongoQuery(
+            {
+                aggregationPipeline: asMatchAggPipeline,
+                collectionName: currentCollection
+            } as ExecuteMongoQueryRequest
+        ).then((resp) => {
+            console.log(resp.data);
+        });
     };
 
     const parseQuery = (query: any) => {

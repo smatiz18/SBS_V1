@@ -27,13 +27,6 @@ def get_rotowire_nba_lineups_response():
         is_error = True
         print('Failure to parse projected player lineups:' + e)
 
-    rotowire_sportsbook_lines = None
-    try:
-        rotowire_sportsbook_lines = get_sportsbook_lines(rotowire_response)
-    except Exception as e:
-        is_error = True
-        print('Failure to parse sportsbook lines:' + e)
-
     # response construction
     response = {}
     response['matchups'] = []
@@ -50,8 +43,6 @@ def get_rotowire_nba_lineups_response():
             },
         }
         response.get('matchups').append(matchup_obj)
-    if rotowire_sportsbook_lines != None:
-        response['rotowireSportsbookLines'] = rotowire_sportsbook_lines
     return response
 #########################################################
 
@@ -96,64 +87,4 @@ def get_projected_player_lineups_by_team(response):
                     if a_tag['title'] not in players_by_team.get(nickname):
                         players_by_team[nickname].append(a_tag['title'])
     return players_by_team
-#########################################################
-
-#########################################################
-def get_sportsbook_lines(response):  
-    soup = BeautifulSoup(response.text, 'html.parser')
-    
-    nickname_by_team_map = {}
-    button_divs = soup.find_all('button', class_='see-court-on-off')
-    for div in button_divs:
-        nickname_by_team_map[div['data-team']] = div['data-nickname']
-
-
-    all_grouped_odds = soup.find_all('div', class_='lineup__odds is-row')
-
-    odds_resp_obj = {}
-    for grouped_odds in all_grouped_odds:
-        odds_items = grouped_odds.find_all('div', class_='lineup__odds-item')
-        ou_fanduel_odds = '-'
-        ou_draftkings_odds = '-'
-        ou_betmgm_odds = '-'
-        team_nickname = '-'
-        for odds_item in odds_items:
-            odds_type = odds_item.find('b').get_text().strip() 
-            fanduel_odds_obj = odds_item.find('span', class_=lambda x: x and 'fanduel' in x).get_text().split(' ')
-            draftkings_odds_obj = odds_item.find('span', class_=lambda x: x and 'draftkings' in x).get_text().split(' ')
-            betmgm_odds_obj = odds_item.find('span', class_=lambda x: x and 'betmgm' in x).get_text().split(' ')
-
-            if odds_type == 'O/U':
-                ou_fanduel_odds = fanduel_odds_obj[0]
-                ou_draftkings_odds = draftkings_odds_obj[0]
-                ou_betmgm_odds = betmgm_odds_obj[0]
-            else:
-                fanduel_odds = '-' if len(fanduel_odds_obj) < 2 else fanduel_odds_obj[1]
-                draftkings_odds = '-' if len(draftkings_odds_obj) < 2 else draftkings_odds_obj[1]
-                betmgm_odds = '-' if len(betmgm_odds_obj) < 2 else betmgm_odds_obj[1]
-
-                if nickname_by_team_map.get(fanduel_odds_obj[0]) is not None: 
-                    team_nickname = nickname_by_team_map.get(fanduel_odds_obj[0])
-                elif nickname_by_team_map.get(draftkings_odds_obj[0]):
-                    team_nickname = nickname_by_team_map.get(draftkings_odds_obj[0])
-                else:
-                    team_nickname = nickname_by_team_map.get(betmgm_odds_obj[0])
-
-                if team_nickname is not None:
-                    if team_nickname not in odds_resp_obj:
-                        odds_resp_obj[team_nickname] = {}
-
-                    odds_resp_obj[team_nickname][str(odds_type)] = {
-                        'fanduel': fanduel_odds,
-                        'draftkings': draftkings_odds,
-                        'betmgm': betmgm_odds
-                    }
-        
-        odds_resp_obj[team_nickname]['OU'] = {
-            'fanduel': ou_fanduel_odds,
-            'draftkings': ou_draftkings_odds,
-            'betmgm': ou_betmgm_odds
-        }
-        team_nickname = '-'
-    return odds_resp_obj
 #########################################################

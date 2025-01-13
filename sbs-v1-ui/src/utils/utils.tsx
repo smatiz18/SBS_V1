@@ -15,16 +15,8 @@ export const getBetTypeLabel = (betType: TeamBetTypes | PlayerBetTypes) => {
     }
 }
 
-export const getCurrentNbaSeason = () => {
-    const currDate = new Date().toISOString().split('T')[0];
-    if ("2023" < currDate && currDate < "2024") {
-        return 2023;
-    }
-    if ("2024" < currDate && currDate < "2025") {
-        return 2024;
-    }
-    return parseInt(currDate.split("-")[0]);
-};
+// TODO ensure this gets updated every season
+export const currentNbaSeason = 2024;
 
     
 export const range = (start: number, end: number): number[] => {
