@@ -14,11 +14,11 @@ import { ExecuteMongoQueryRequest } from '../../../../../models/services/execute
 
 const SBSQueryBuilder: React.FC<{}> = () => {
     enum AvailableCollections {
-        NbaGamePlayerStatsHistorical = 'NbaGamePlayerStatsHistorical',
+        NbaGamePlayerStatsHistorical = 'nba_game_player_stats_historical',
         NbaGamesHistorical = 'nba_games_historical',
-        NbaPlayerAggregatedGameStatsHistorical = 'NbaPlayerAggregatedGameStatsHistorical',
-        NbaTeamAggregatedGameStatsHistorical = 'NbaTeamAggregatedGameStatsHistorical',
-        NbaTeamStats = 'NbaTeamStats'  
+        NbaPlayerAggregatedGameStatsHistorical = 'nba_player_aggregated_game_stats_historical',
+        NbaTeamAggregatedGameStatsHistorical = 'nba_team_aggregated_game_stats_historical',
+        NbaTeamStats = 'nba_steam_stats'  
     };
     const collectionToAvailableFieldsMap: any = {};
     collectionToAvailableFieldsMap[AvailableCollections.NbaGamePlayerStatsHistorical] = [
@@ -159,13 +159,13 @@ const SBSQueryBuilder: React.FC<{}> = () => {
         const parsedQuery = parseQuery(query);
         const mongoQuery = formatQuery(parsedQuery, 'mongodb');
         const asMatchAggPipeline = [JSON.stringify({
-            '$match': mongoQuery 
+            $match: JSON.parse(mongoQuery) 
         })];
         
         executeMongoQuery(
             {
                 aggregationPipeline: asMatchAggPipeline,
-                collectionName: currentCollection
+                collectionName: `${currentCollection}_collection`
             } as ExecuteMongoQueryRequest
         ).then((resp) => {
             console.log(resp.data);
@@ -182,9 +182,24 @@ const SBSQueryBuilder: React.FC<{}> = () => {
     };
 
     const parseNbaGamesHistoricalQuery = (query: any) => {
+        const isHomeFilter = !!query.rules.find((rule: any) => rule.field === 'isHome');
+
         const parsedRules = query.rules.map((rule: any) => {
             const ruleClone = cloneDeep(rule);
             switch (ruleClone.field) {
+                case 'season': {
+                    return {
+                        ...ruleClone,
+                        value: parseFloat(ruleClone.value)
+                    };
+                }
+                case 'teamName': {
+                    // TODO add isHome logic
+                    return {};
+                }
+                case 'teamNickname': {
+                    return {};
+                }
                 case GameStatsOption.q1: {
                     return {
                         combinator: 'or',
@@ -195,11 +210,13 @@ const SBSQueryBuilder: React.FC<{}> = () => {
                                 ...ruleClone,
                                 field: 'scoresVisitorsLinescore.0',
                                 id: uuidv4(),
+                                value: parseFloat(ruleClone.value)
                             },
                             {
                                 ...ruleClone,
                                 field: 'scoresHomeLinescore.0',
                                 id: uuidv4(),
+                                value: parseFloat(ruleClone.value)
                             }
                         ]
                     };
@@ -214,11 +231,13 @@ const SBSQueryBuilder: React.FC<{}> = () => {
                                 ...ruleClone,
                                 field: 'scoresVisitorsLinescore.1',
                                 id: uuidv4(),
+                                value: parseFloat(ruleClone.value)
                             },
                             {
                                 ...ruleClone,
                                 field: 'scoresHomeLinescore.1',
                                 id: uuidv4(),
+                                value: parseFloat(ruleClone.value)
                             }
                         ]
                     };
@@ -237,11 +256,13 @@ const SBSQueryBuilder: React.FC<{}> = () => {
                                 ...ruleClone,
                                 field: 'scoresVisitorsLinescore.2',
                                 id: uuidv4(),
+                                value: parseFloat(ruleClone.value)
                             },
                             {
                                 ...ruleClone,
                                 field: 'scoresHomeLinescore.2',
                                 id: uuidv4(),
+                                value: parseFloat(ruleClone.value)
                             }
                         ]
                     };
@@ -257,11 +278,13 @@ const SBSQueryBuilder: React.FC<{}> = () => {
                                 ...ruleClone,
                                 field: 'scoresVisitorsLinescore.3',
                                 id: uuidv4(),
+                                value: parseFloat(ruleClone.value)
                             },
                             {
                                 ...ruleClone,
                                 field: 'scoresHomeLinescore.3',
                                 id: uuidv4(),
+                                value: parseFloat(ruleClone.value)
                             }
                         ]
                     };
@@ -279,11 +302,13 @@ const SBSQueryBuilder: React.FC<{}> = () => {
                                 ...ruleClone,
                                 field: 'scoresVisitorsPoints',
                                 id: uuidv4(),
+                                value: parseFloat(ruleClone.value)
                             },
                             {
                                 ...ruleClone,
                                 field: 'scoresHomePoints',
                                 id: uuidv4(),
+                                value: parseFloat(ruleClone.value)
                             }
                         ]
                     };
