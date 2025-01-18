@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@mui/material/styles";
-import { accordianSummarySx, chartAnalyzerDeleteIconSx, darkTheme, filterAccordianSx, subFilterAccordianSx } from "../../../../../../models/form-styles/styles";
+import { accordianSummarySx, darkTheme, deleteIconSx, filterAccordianSx, subFilterAccordianSx } from "../../../../../../models/form-styles/styles";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Accordion from "@mui/material/Accordion";
@@ -137,7 +137,7 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
                         </AccordionSummary>
                     </div>
                     <div className="delete-icon-wrapper">
-                        <DeleteIcon sx={chartAnalyzerDeleteIconSx} onClick={() => onDelete(filter.id)}/>
+                        <DeleteIcon sx={deleteIconSx} onClick={() => onDelete(filter.id)}/>
                     </div>
                 </div>
                 <AccordionDetails>

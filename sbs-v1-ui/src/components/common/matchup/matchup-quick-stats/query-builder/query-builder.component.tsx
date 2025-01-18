@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@mui/material/styles';
 import QueryBuilder, { formatQuery } from 'react-querybuilder';
-import { buttonStyleSx, darkTheme, formLabelSx, selectSx } from '../../../../../models/form-styles/styles';
+import { buttonStyleSx, darkTheme, deleteIconSx, formLabelSx, selectSx } from '../../../../../models/form-styles/styles';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Button, FormLabel, MenuItem } from '@mui/material';
@@ -11,8 +11,9 @@ import { cloneDeep } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import { executeMongoQuery } from '../../../../../services/common/services';
 import { ExecuteMongoQueryRequest } from '../../../../../models/services/execute-mongo-query-request';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const SBSQueryBuilder: React.FC<{}> = () => {
+const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, deleteQueryBuilder}) => {
     enum AvailableCollections {
         NbaGamePlayerStatsHistorical = 'nba_game_player_stats_historical',
         NbaGamesHistorical = 'nba_games_historical',
@@ -142,6 +143,8 @@ const SBSQueryBuilder: React.FC<{}> = () => {
             rules: []
         }
     );
+    const [numOfOccurrences, setNumOfOccurrences] = useState(0);
+
     useEffect(() => {
         updateQueryBuilderOptions(currentCollection);
     }, [currentCollection]);       
@@ -158,17 +161,17 @@ const SBSQueryBuilder: React.FC<{}> = () => {
     const onSearch = () => {
         const parsedQuery = parseQuery(query);
         const mongoQuery = formatQuery(parsedQuery, 'mongodb');
-        const asMatchAggPipeline = [JSON.stringify({
+        const matchAggPipeline = [JSON.stringify({
             $match: JSON.parse(mongoQuery) 
         })];
         
         executeMongoQuery(
             {
-                aggregationPipeline: asMatchAggPipeline,
+                aggregationPipeline: matchAggPipeline,
                 collectionName: `${currentCollection}_collection`
             } as ExecuteMongoQueryRequest
         ).then((resp) => {
-            console.log(resp.data);
+            setNumOfOccurrences(resp.data?.length || 0);
         });
     };
 
@@ -251,8 +254,8 @@ const SBSQueryBuilder: React.FC<{}> = () => {
                         isHomeFilter,
                         'scoresVisitorsLinescore.0',
                         'scoresHomeLinescore.0',
-                        true,
-                        ruleClone
+                        ruleClone,
+                        true
                     );
                 }
                 case GameStatsOption.q2: {
@@ -260,8 +263,8 @@ const SBSQueryBuilder: React.FC<{}> = () => {
                         isHomeFilter,
                         'scoresVisitorsLinescore.1',
                         'scoresHomeLinescore.1',
-                        true,
-                        ruleClone
+                        ruleClone,
+                        true
                     );
                 }
                 // TODO: implement later
@@ -272,8 +275,8 @@ const SBSQueryBuilder: React.FC<{}> = () => {
                         isHomeFilter,
                         'scoresVisitorsLinescore.2',
                         'scoresHomeLinescore.2',
-                        true,
-                        ruleClone
+                        ruleClone,
+                        true
                     );
                 }
                 case GameStatsOption.q4: {
@@ -281,8 +284,8 @@ const SBSQueryBuilder: React.FC<{}> = () => {
                         isHomeFilter,
                         'scoresVisitorsLinescore.3',
                         'scoresHomeLinescore.3',
-                        true,
-                        ruleClone
+                        ruleClone,
+                        true
                     );
                 }
                 // TODO: implement later
@@ -293,8 +296,8 @@ const SBSQueryBuilder: React.FC<{}> = () => {
                         isHomeFilter,
                         'scoresVisitorsPoints',
                         'scoresHomePoints',
-                        true,
-                        ruleClone
+                        ruleClone,
+                        true
                     );
                 }
             }
@@ -306,12 +309,19 @@ const SBSQueryBuilder: React.FC<{}> = () => {
         };
     };
 
+    function onDelete(id: string): void {
+        deleteQueryBuilder(id);
+    }
+
     return (
-        <div className='query-builder-container'>
+        <div className='query-builder-container' id={id}>
             <div className='query-builder-options'>
                 <div className='filter-option-wrapper'>
                      <ThemeProvider theme={darkTheme}>
-                        <FormLabel id='demo-row-radio-buttons-group-label' sx={formLabelSx}>Data Source</FormLabel>
+                        <div className='header-wrapper'>
+                            <FormLabel id='demo-row-radio-buttons-group-label' sx={formLabelSx}>Data Source</FormLabel>
+                            <DeleteIcon sx={{ ...deleteIconSx, color: 'white' }} onClick={() => onDelete(id)}/>
+                        </div>
                         <div className='select-wrapper'>
                             <FormControl variant='standard' sx={{ width: '100%'}}>
                                 <Select
@@ -335,6 +345,11 @@ const SBSQueryBuilder: React.FC<{}> = () => {
                 <ThemeProvider theme={darkTheme}>
                     <Button sx={buttonStyleSx} variant="outlined" size="small" onClick={onSearch}>Search</Button>
                 </ThemeProvider>
+            </div>
+            <div className='result'>
+                <div className='result-header'>
+                    Occurrences: {<span className='bold-num'>{numOfOccurrences}</span>}
+                </div>
             </div>
         </div>
     )

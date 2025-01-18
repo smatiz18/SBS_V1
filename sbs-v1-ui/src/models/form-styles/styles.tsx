@@ -132,7 +132,7 @@ export const checkboxFormControlLabelSx = {
   },
 };
 
-export const chartAnalyzerDeleteIconSx = {
+export const deleteIconSx = {
   fontSize: '1rem',
 };
 

@@ -1,0 +1,6 @@
+@use '../../../../../variables';
+
+.past-occurrences-container {
+    background-color: variables.$mui-dark-background-color;
+    border-radius: 4px;
+}
