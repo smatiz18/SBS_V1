@@ -181,9 +181,46 @@ const SBSQueryBuilder: React.FC<{}> = () => {
         };
     };
 
+
+    const getVisitorsAndHomeOrQuery = (
+        isHome: boolean, 
+        visitorsFieldName: string, 
+        homeFieldName: string, 
+        rule: any,
+        isNum?: boolean, 
+        not?: boolean
+    ) => {
+        if (isHome) {
+            return {
+                ...rule,
+                field: homeFieldName,
+                value: isNum ? parseFloat(rule.value) : rule.value
+            };
+        }
+        return {
+            combinator: 'or',
+            not: !!not,
+            id:  uuidv4(),
+            rules: [
+                {
+                    ...rule,
+                    field: visitorsFieldName,
+                    id: uuidv4(),
+                    value: isNum ? parseFloat(rule.value) : rule.value
+                },
+                {
+                    ...rule,
+                    field: homeFieldName,
+                    id: uuidv4(),
+                    value: isNum ? parseFloat(rule.value) : rule.value
+                }
+            ]
+        };
+    }
+
     const parseNbaGamesHistoricalQuery = (query: any) => {
         const isHomeFilter = !!query.rules.find((rule: any) => rule.field === 'isHome');
-
+        
         const parsedRules = query.rules.map((rule: any) => {
             const ruleClone = cloneDeep(rule);
             switch (ruleClone.field) {
@@ -194,124 +231,71 @@ const SBSQueryBuilder: React.FC<{}> = () => {
                     };
                 }
                 case 'teamName': {
-                    // TODO add isHome logic
-                    return {};
+                    return getVisitorsAndHomeOrQuery(
+                        isHomeFilter,
+                        'teamsVisitorsName',
+                        'teamsHomeName',
+                        ruleClone
+                    );
                 }
                 case 'teamNickname': {
-                    return {};
+                    return getVisitorsAndHomeOrQuery(
+                        isHomeFilter,
+                        'teamsVisitorsNickname',
+                        'teamsHomeNickname',
+                        ruleClone
+                    );
                 }
                 case GameStatsOption.q1: {
-                    return {
-                        combinator: 'or',
-                        not: false,
-                        id:  uuidv4(),
-                        rules: [
-                            {
-                                ...ruleClone,
-                                field: 'scoresVisitorsLinescore.0',
-                                id: uuidv4(),
-                                value: parseFloat(ruleClone.value)
-                            },
-                            {
-                                ...ruleClone,
-                                field: 'scoresHomeLinescore.0',
-                                id: uuidv4(),
-                                value: parseFloat(ruleClone.value)
-                            }
-                        ]
-                    };
+                    return getVisitorsAndHomeOrQuery(
+                        isHomeFilter,
+                        'scoresVisitorsLinescore.0',
+                        'scoresHomeLinescore.0',
+                        true,
+                        ruleClone
+                    );
                 }
                 case GameStatsOption.q2: {
-                    return {
-                        combinator: 'or',
-                        not: false,
-                        id:  uuidv4(),
-                        rules: [
-                            {
-                                ...ruleClone,
-                                field: 'scoresVisitorsLinescore.1',
-                                id: uuidv4(),
-                                value: parseFloat(ruleClone.value)
-                            },
-                            {
-                                ...ruleClone,
-                                field: 'scoresHomeLinescore.1',
-                                id: uuidv4(),
-                                value: parseFloat(ruleClone.value)
-                            }
-                        ]
-                    };
-                    break;
+                    return getVisitorsAndHomeOrQuery(
+                        isHomeFilter,
+                        'scoresVisitorsLinescore.1',
+                        'scoresHomeLinescore.1',
+                        true,
+                        ruleClone
+                    );
                 }
                 // TODO: implement later
                 // case GameStatsOption.h1: {
                 // }
                 case GameStatsOption.q3: {
-                    return {
-                        combinator: 'or',
-                        not: false,
-                        id:  uuidv4(),
-                        rules: [
-                            {
-                                ...ruleClone,
-                                field: 'scoresVisitorsLinescore.2',
-                                id: uuidv4(),
-                                value: parseFloat(ruleClone.value)
-                            },
-                            {
-                                ...ruleClone,
-                                field: 'scoresHomeLinescore.2',
-                                id: uuidv4(),
-                                value: parseFloat(ruleClone.value)
-                            }
-                        ]
-                    };
-                    break;
+                    return getVisitorsAndHomeOrQuery(
+                        isHomeFilter,
+                        'scoresVisitorsLinescore.2',
+                        'scoresHomeLinescore.2',
+                        true,
+                        ruleClone
+                    );
                 }
                 case GameStatsOption.q4: {
-                    return {
-                        combinator: 'or',
-                        not: false,
-                        id:  uuidv4(),
-                        rules: [
-                            {
-                                ...ruleClone,
-                                field: 'scoresVisitorsLinescore.3',
-                                id: uuidv4(),
-                                value: parseFloat(ruleClone.value)
-                            },
-                            {
-                                ...ruleClone,
-                                field: 'scoresHomeLinescore.3',
-                                id: uuidv4(),
-                                value: parseFloat(ruleClone.value)
-                            }
-                        ]
-                    };
+                    return getVisitorsAndHomeOrQuery(
+                        isHomeFilter,
+                        'scoresVisitorsLinescore.3',
+                        'scoresHomeLinescore.3',
+                        true,
+                        ruleClone
+                    );
                 }
                 // TODO: implement later
                 // case GameStatsOption.h2: {
                 // }
                 case GameStatsOption.total: {
-                    return {
-                        combinator: 'or',
-                        not: false,
-                        id:  uuidv4(),
-                        rules: [
-                            {
-                                ...ruleClone,
-                                field: 'scoresVisitorsPoints',
-                                id: uuidv4(),
-                                value: parseFloat(ruleClone.value)
-                            },
-                            {
-                                ...ruleClone,
-                                field: 'scoresHomePoints',
-                                id: uuidv4(),
-                                value: parseFloat(ruleClone.value)
-                            }
-                        ]
-                    };
+                    return getVisitorsAndHomeOrQuery(
+                        isHomeFilter,
+                        'scoresVisitorsPoints',
+                        'scoresHomePoints',
+                        true,
+                        ruleClone
+                    );
                 }
             }
             return ruleClone;
