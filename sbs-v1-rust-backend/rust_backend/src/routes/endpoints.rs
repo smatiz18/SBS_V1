@@ -4,6 +4,7 @@ pub const SERVER_URL: &str = "127.0.0.1:8080";
 
 pub const DB_QUERY_API_ROOT: &str = "db-query-api";
 pub const ODDS_API_ROOT: &str = "odds-api";
+pub const CREDENTIALS_API_ROOT: &str = "credentials-api";
 pub const BACKTEST_API_ROOT: &str = "backtest-api";
 pub const NBA_API_ROOT: &str = "nba-api";
 
@@ -16,6 +17,7 @@ pub const GET_NBA_TEAM_STATS: &str = "/team-stats/get";
 pub const GET_BACKTEST_FEATURE_MAP: &str = "/backtest-feature-map/get";
 pub const GET_ODDS: &str = "/odds/get";
 pub const EXECUTE_MONGO_QUERY: &str = "/query/get"; 
+pub const GET_LOGIN_CREDENTIALS: &str = "/login/get";
 
 /* WEB API ROUTES */
 pub const NBA_RAPID_API_HOST: &str = "api-nba-v1.p.rapidapi.com";

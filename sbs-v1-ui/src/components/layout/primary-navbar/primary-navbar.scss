@@ -12,9 +12,20 @@
   height: 4rem;
 
   .logo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
     img {
       height: 4.75rem;
       width: 4.75rem;
+    }
+
+    .sbs-beta {
+      border: 1px solid adjust-color(lighten(variables.$color-1, 20%), $saturation: 70%);
+      border-radius: 4px;
+      padding: .15rem .5rem .15rem .5rem;
+      color: adjust-color(lighten(variables.$color-1, 20%), $saturation: 70%);
     }
   }
 

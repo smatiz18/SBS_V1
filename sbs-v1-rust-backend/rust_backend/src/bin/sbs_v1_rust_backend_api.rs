@@ -1,5 +1,5 @@
 use log::info;
-use rust_backend::{handlers::{self, handlers::{execute_aggregation_query, get_nba_team_stats}}, initializers::initialize_app_state, proxy, routes::{self, endpoints::{DB_QUERY_API_ROOT, EXECUTE_MONGO_QUERY, GET_NBA_TEAM_STATS}}};
+use rust_backend::{handlers::{self, handlers::{execute_aggregation_query, get_nba_team_stats, get_ui_login_credentials}}, initializers::initialize_app_state, proxy, routes::{self, endpoints::{CREDENTIALS_API_ROOT, DB_QUERY_API_ROOT, EXECUTE_MONGO_QUERY, GET_LOGIN_CREDENTIALS, GET_NBA_TEAM_STATS}}};
 use actix_web::{web, App, HttpServer };
 use handlers::handlers::{
    get_feature_map_for_backtest, get_nba_games_by_team_and_season, get_nba_odds_by_team_and_season, get_nba_player_stats_by_id_and_season, get_nba_players_by_team_and_season, get_nba_team_agg_game_stats, get_odds, test
@@ -30,6 +30,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                .max_age(3600),
          )
         .app_data(web::Data::new(app_state.clone())) // Share the collection with the app state
+        .service(
+            web::scope(CREDENTIALS_API_ROOT)
+               .route(GET_LOGIN_CREDENTIALS, web::get().to(get_ui_login_credentials))
+        )
         .service(
             web::scope(BACKTEST_API_ROOT)
                .route(GET_BACKTEST_FEATURE_MAP, web::post().to(get_feature_map_for_backtest))

@@ -1,6 +1,28 @@
 @use '../../../../../variables';
 
 .past-occurrences-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     background-color: variables.$mui-dark-background-color;
     border-radius: 4px;
+    padding: .75rem .75rem 0 .75rem;
+
+    .sbs-query-builders-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+
+        .sbs-query-builder-wrapper {
+            padding: .25rem;
+            border: 1px solid variables.$fd-gray;
+            border-radius: 4px;
+        }
+    }
+
+    .button-wrapper {
+        display: flex;
+        justify-content: center;
+        padding: .75rem;
+    }
 }

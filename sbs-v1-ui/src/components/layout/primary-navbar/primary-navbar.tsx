@@ -3,17 +3,18 @@ import './primary-navbar.scss';
 import { Routes } from '../../../routes';
 import sbs_logo from '../../../assets/images/basketball-sandbox-mask.png'
 
-const PrimaryNavbar = () => {
+const PrimaryNavbar: React.FC<{isLoggedIn: boolean }> = ({isLoggedIn}) => {
     const [isDropdownOpen, setDropdownOpen] = useState(false);
 
     const toggleDropdown = () => {
       setDropdownOpen(!isDropdownOpen);
     };
-    
+
     return (
         <nav className="primary-navbar">
             <div className="logo">
               <img src={sbs_logo} alt="Sports Betting Sandbox"/>
+              <div className='sbs-beta'>Beta</div>
             </div>
             <ul className="nav-links">
                 <li className="nav-link" onMouseEnter={toggleDropdown}
@@ -29,7 +30,8 @@ const PrimaryNavbar = () => {
                         </ul>
                     )}
                 </li>
-                <li className="nav-link">
+                
+                {/* <li className="nav-link">
                     <a href={`${Routes.root}${Routes.backtest}`}>
                         Backtest
                     </a>
@@ -38,12 +40,19 @@ const PrimaryNavbar = () => {
                     <a href={`${Routes.root}${Routes.analytics}`}>
                         Analytics
                     </a>
-                </li>
+                </li> */}
                 <li className="nav-link">
                     <a href={`${Routes.root}${Routes.about}`}>
                         About
                     </a>
                 </li>
+                { isLoggedIn && 
+                    <li className="nav-link">
+                        <a href={`${Routes.root}${Routes.login}`}>
+                            Login
+                        </a>
+                    </li>
+                }
             </ul>
         </nav>
     );

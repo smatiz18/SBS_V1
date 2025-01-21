@@ -10,7 +10,7 @@ function App() {
     <div className='main-container'>
       <BrowserRouter>
         <div className='nav-bar-container'>
-          <PrimaryNavbar/>
+          <PrimaryNavbar isLoggedIn={true}/>
         </div>
         <div className='pages-container'>
           {/* define new routes in Routes.tsx */}
@@ -23,6 +23,8 @@ function App() {
               element={<Container path={`${PageRoutes.dailyMatchups}${PageRoutes.nba}`}/>}/>
             <Route path={`${PageRoutes.root}${PageRoutes.backtest}`} 
               element={<Container path={`${PageRoutes.backtest}`}/>}/>
+            <Route path={`${PageRoutes.root}${PageRoutes.login}`} 
+              element={<Container path={`${PageRoutes.login}`}/>}/>
           </Routes>
         </div>
       </BrowserRouter>

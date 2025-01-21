@@ -3,6 +3,7 @@ import { createTheme } from "@mui/material/styles";
 const dkDarkGray = '#242424';
 const fdGray = '#455058';
 const reactInputBorderColor = '#ccc'
+const headerTextColor = '#333';
 
 export const reactInputStyles = {
   width: '100%', 
@@ -139,4 +140,17 @@ export const deleteIconSx = {
 export const buttonStyleSx = {
   'fontSize': '.7rem',
   'textTransform': 'none'
+};
+
+export const loginButtonStyleSx = {
+  'fontFamily': 'IBM Plex Sans, sans-serif',
+  '&:hover': {
+    'transform': 'translateY(-2px)',
+  },
+  'color': headerTextColor,
+  'textTransform': 'none',
+  'borderRadius': '4px', 
+  'border': `1px solid ${reactInputBorderColor}`,
+  'backgroundColor': "white",
+  'width': '60%'
 };

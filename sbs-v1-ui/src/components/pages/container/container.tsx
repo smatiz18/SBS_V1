@@ -3,6 +3,7 @@ import About from "../about/about";
 import Analytics from "../analytics/analytics";
 import BacktestPage from "../backtest/backtest";
 import NbaDailyMatchups from "../daily-matchups/nba/nba-daily-matchups";
+import Login from "../login/login";
 import "./container.scss";
 
 const Container = (props: { path: string }) => {
@@ -16,6 +17,8 @@ const Container = (props: { path: string }) => {
                 return <NbaDailyMatchups/>;
             case `${Routes.backtest}`:
                 return <BacktestPage/>;
+            case `${Routes.login}`:
+                return <Login/>;
             default: 
                 return <div className="default"></div>;
         }

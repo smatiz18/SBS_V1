@@ -1,0 +1,53 @@
+@use "../../../variables";
+
+.login-page-container {
+    display: flex;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    .login-content-container {
+        color: variables.$header-text-color;
+        margin: 20px;
+        padding: 20px;
+        border: 1px solid variables.$gray-border;
+        border-radius: 10px;
+        background-color: variables.$offwhite-background;
+        width: 450px;
+        padding: 1rem 1rem 3rem 1rem;
+
+        .login-content-header {
+            display: flex;
+            justify-content: center;
+            padding: .75rem 0rem 1rem 0rem;
+
+            .header-wrapper {
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+        }
+
+
+        .login-options {
+            display: flex;
+            flex-direction: column;
+            gap: .75rem;
+            padding-top: .5rem;
+            padding-bottom: .5rem;
+
+            .login-wrapper {
+                display: flex;
+                justify-content: center;
+            }
+
+            .logo-img {
+                width: 1.5rem;
+                height: 1.5rem;
+            } 
+        }
+    }
+}

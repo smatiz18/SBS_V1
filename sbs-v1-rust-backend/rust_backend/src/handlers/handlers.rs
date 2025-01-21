@@ -1,9 +1,10 @@
 use actix_web::{ web, HttpResponse, Responder};
 use bson::Document;
+use serde::Serialize;
 use serde_json::Value;
 use crate::aggregators::nba_feature_map_aggregators::get_nba_backtest_feature_map;
 use crate::aggregators::optimal_odds_aggregators::get_optimal_odds_by_event_map;
-use crate::db::base_mongo::{aggregate, get_collection};
+use crate::db::base_mongo::aggregate;
 use crate::models::enums::sports_categories::SportsCategories;
 use crate::models::odds::odds::Event;
 use crate::models::services::execute_mongo_query_request::ExecuteMongoQueryRequest;
@@ -308,6 +309,32 @@ pub async fn get_odds(
                 HttpResponse::InternalServerError().body(format!("{:?}", e))
             }
         }
+}
+/********************************************************************************/
+
+/** env var handlers ************************************************************/
+/********************************************************************************/
+pub async fn get_ui_login_credentials() -> impl Responder {
+    let google_client_id = env::var("SBS_GOOGLE_LOGIN_CLIENT_ID")
+        .expect("You must set the SBS_GOOGLE_LOGIN_CLIENT_ID environment var!");
+    let github_client_id = env::var("SBS_GITHUB_LOGIN_CLIENT_ID")
+        .expect("You must set the SBS_GITHUB_LOGIN_CLIENT_ID environment var!");
+    let github_client_secret = env::var("SBS_GITHUB_LOGIN_CLIENT_SECRET")
+        .expect("You must set the SBS_GITHUB_LOGIN_CLIENT_SECRET environment var!");
+
+    #[derive(Serialize, Debug, Clone)]
+    #[serde(rename_all = "camelCase")]
+    struct UiLoginCredentials {
+        google_client_id: String,
+        github_client_id: String,
+        github_client_secret: String 
+    };
+
+    HttpResponse::Ok().json(UiLoginCredentials {
+        google_client_id: google_client_id,
+        github_client_id: github_client_id,
+        github_client_secret: github_client_secret
+    })
 }
 /********************************************************************************/
 
