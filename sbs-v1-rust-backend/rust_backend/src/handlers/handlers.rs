@@ -1,7 +1,8 @@
 use actix_web::{ web, HttpResponse, Responder};
 use bson::Document;
 use serde::Serialize;
-use serde_json::Value;
+use serde_json::{json, Value};
+use urlencoding::encode;
 use crate::aggregators::nba_feature_map_aggregators::get_nba_backtest_feature_map;
 use crate::aggregators::optimal_odds_aggregators::get_optimal_odds_by_event_map;
 use crate::db::base_mongo::aggregate;
@@ -18,6 +19,7 @@ use crate::models::services::get_nba_player_stats_by_id_and_season_request::GetN
 use crate::models::services::get_nba_team_stats_request::GetNbaTeamStatsRequest;
 use crate::models::services::get_odds_request::GetOddsRequest;
 use crate::models::services::get_odds_response::GetOddsResponse;
+use crate::models::services::login_auth_request::LoginAuthRequest;
 use crate::routes::endpoints::{NBA_RAPID_API_HOST, NBA_RAPID_API_ROOT, THE_ODDS_API_ROOT};
 use reqwest::header::{HeaderMap, HeaderValue};
 use std::env;
@@ -319,22 +321,60 @@ pub async fn get_ui_login_credentials() -> impl Responder {
         .expect("You must set the SBS_GOOGLE_LOGIN_CLIENT_ID environment var!");
     let github_client_id = env::var("SBS_GITHUB_LOGIN_CLIENT_ID")
         .expect("You must set the SBS_GITHUB_LOGIN_CLIENT_ID environment var!");
-    let github_client_secret = env::var("SBS_GITHUB_LOGIN_CLIENT_SECRET")
-        .expect("You must set the SBS_GITHUB_LOGIN_CLIENT_SECRET environment var!");
-
+   
     #[derive(Serialize, Debug, Clone)]
     #[serde(rename_all = "camelCase")]
     struct UiLoginCredentials {
         google_client_id: String,
         github_client_id: String,
-        github_client_secret: String 
-    };
+    }
 
     HttpResponse::Ok().json(UiLoginCredentials {
         google_client_id: google_client_id,
         github_client_id: github_client_id,
-        github_client_secret: github_client_secret
     })
+}
+
+pub async fn get_google_auth(
+    _app_state: web::Data<AppState>,
+    req: web::Json<LoginAuthRequest>
+) -> impl Responder {
+    let client = reqwest::Client::new();
+    let url = "https://oauth2.googleapis.com/token";
+    let google_client_id = env::var("SBS_GOOGLE_LOGIN_CLIENT_ID")
+        .expect("You must set the SBS_GOOGLE_LOGIN_CLIENT_ID environment var!");
+    let google_client_secret = env::var("SBS_GOOGLE_LOGIN_CLIENT_SECRET")
+        .expect("You must set the SBS_GOOGLE_LOGIN_CLIENT_SECRET environment var!");
+    let redirect_uri_local = encode("http://localhost:3000/sbs-v1/about").into_owned();
+
+    let body = json!({
+        "client_id": google_client_id,
+        "client_secret": google_client_secret,
+        "code": req.code,
+        "grant_type": "authorization_code",
+        "redirect_uri": redirect_uri_local
+    });
+
+    match client
+        .post(url)
+        .json(&body)
+        .send()
+        .await {
+            Ok(res) => {
+                match res.json::<Value>().await {
+                    Ok(r) => HttpResponse::Ok().json(r),
+                    Err(e) => {
+                        error!("Failed to fetch data: {:?}", e);
+                        HttpResponse::InternalServerError().body(format!("{:?}", e))
+                    }
+                }
+            },
+            Err(e) => {
+                error!("Failed to fetch data: {:?}", e);
+                HttpResponse::InternalServerError().body(format!("{:?}", e))
+            }
+
+        }
 }
 /********************************************************************************/
 
