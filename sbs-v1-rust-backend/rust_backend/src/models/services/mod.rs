@@ -12,3 +12,5 @@ pub mod get_nba_team_agg_game_stats_response;
 pub mod get_nba_team_stats_request;
 pub mod execute_mongo_query_request;
 pub mod login_auth_request;
+pub mod google_api_auth_request;
+pub mod github_api_auth_request;

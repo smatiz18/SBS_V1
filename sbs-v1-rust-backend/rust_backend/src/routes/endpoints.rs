@@ -19,6 +19,7 @@ pub const GET_ODDS: &str = "/odds/get";
 pub const EXECUTE_MONGO_QUERY: &str = "/query/get"; 
 pub const GET_LOGIN_CREDENTIALS: &str = "/login/get";
 pub const GET_GOOGLE_AUTH: &str = "/google-auth/get";
+pub const GET_GITHUB_AUTH: &str = "/github-auth/get";
 
 /* WEB API ROUTES */
 pub const NBA_RAPID_API_HOST: &str = "api-nba-v1.p.rapidapi.com";

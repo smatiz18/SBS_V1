@@ -5,3 +5,4 @@ pub mod enums;
 pub mod odds;
 pub mod backtest_features;
 pub mod aggregators;
+pub mod web_api;

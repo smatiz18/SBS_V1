@@ -2,7 +2,6 @@ use actix_web::{ web, HttpResponse, Responder};
 use bson::Document;
 use serde::Serialize;
 use serde_json::{json, Value};
-use urlencoding::encode;
 use crate::aggregators::nba_feature_map_aggregators::get_nba_backtest_feature_map;
 use crate::aggregators::optimal_odds_aggregators::get_optimal_odds_by_event_map;
 use crate::db::base_mongo::aggregate;
@@ -19,14 +18,20 @@ use crate::models::services::get_nba_player_stats_by_id_and_season_request::GetN
 use crate::models::services::get_nba_team_stats_request::GetNbaTeamStatsRequest;
 use crate::models::services::get_odds_request::GetOddsRequest;
 use crate::models::services::get_odds_response::GetOddsResponse;
+use crate::models::services::github_api_auth_request::GitHubApiAuthRequest;
+use crate::models::services::google_api_auth_request::GoogleApiAuthRequest;
 use crate::models::services::login_auth_request::LoginAuthRequest;
 use crate::routes::endpoints::{NBA_RAPID_API_HOST, NBA_RAPID_API_ROOT, THE_ODDS_API_ROOT};
-use reqwest::header::{HeaderMap, HeaderValue};
+use crate::web_api::web_api::get_github_user_info;
+use reqwest::header::{ HeaderMap, HeaderValue};
 use std::env;
 use log::{info, error};
 
 use crate::models::app_state::AppState;
 use crate::db::{nba_games_historical_mongo_dao, nba_odds_historical_mongo_dao, nba_player_aggregated_game_stats_historical_mongo_dao, nba_team_aggregated_game_stats_historical_mongo_dao, nba_team_stats_mongo_dao};
+
+
+// TODO MOVE ALL WEB API CALLS TO WEB API MODULE
 
 /** mongo handlers **************************************************************/
 /********************************************************************************/
@@ -314,7 +319,7 @@ pub async fn get_odds(
 }
 /********************************************************************************/
 
-/** env var handlers ************************************************************/
+/** credentials handlers ************************************************************/
 /********************************************************************************/
 pub async fn get_ui_login_credentials() -> impl Responder {
     let google_client_id = env::var("SBS_GOOGLE_LOGIN_CLIENT_ID")
@@ -339,25 +344,25 @@ pub async fn get_google_auth(
     _app_state: web::Data<AppState>,
     req: web::Json<LoginAuthRequest>
 ) -> impl Responder {
-    let client = reqwest::Client::new();
     let url = "https://oauth2.googleapis.com/token";
     let google_client_id = env::var("SBS_GOOGLE_LOGIN_CLIENT_ID")
         .expect("You must set the SBS_GOOGLE_LOGIN_CLIENT_ID environment var!");
     let google_client_secret = env::var("SBS_GOOGLE_LOGIN_CLIENT_SECRET")
         .expect("You must set the SBS_GOOGLE_LOGIN_CLIENT_SECRET environment var!");
-    let redirect_uri_local = encode("http://localhost:3000/sbs-v1/about").into_owned();
+    let redirect_uri_local = "http://localhost:3000/sbs-v1/about".to_string();
 
-    let body = json!({
-        "client_id": google_client_id,
-        "client_secret": google_client_secret,
-        "code": req.code,
-        "grant_type": "authorization_code",
-        "redirect_uri": redirect_uri_local
-    });
+    let body = GoogleApiAuthRequest {
+        client_id: google_client_id,
+        client_secret: google_client_secret,
+        code: req.code.to_string(),
+        grant_type: "authorization_code".to_string(),
+        redirect_uri: redirect_uri_local
+    };
 
+    let client = reqwest::Client::new();
     match client
         .post(url)
-        .json(&body)
+        .form(&body)
         .send()
         .await {
             Ok(res) => {
@@ -375,6 +380,72 @@ pub async fn get_google_auth(
             }
 
         }
+}
+
+pub async fn get_github_auth(
+    _app_state: web::Data<AppState>,
+    req: web::Json<LoginAuthRequest>
+) -> impl Responder {
+    let url = "https://github.com/login/oauth/access_token";
+    let github_client_id = env::var("SBS_GITHUB_LOGIN_CLIENT_ID")
+        .expect("You must set the SBS_GITHUB_LOGIN_CLIENT_ID environment var!");
+    let github_client_secret = env::var("SBS_GITHUB_LOGIN_CLIENT_SECRET")
+        .expect("You must set the SBS_GITHUB_LOGIN_CLIENT_SECRET environment var!");
+    let redirect_uri_local = "http://localhost:3000/sbs-v1/login".to_string();
+
+    let body = GitHubApiAuthRequest {
+        client_id: github_client_id,
+        client_secret: github_client_secret,
+        code: req.code.to_string(),
+        redirect_uri: redirect_uri_local.to_string()
+    };
+
+    let client = reqwest::Client::new();
+    let api_response = match client
+        .post(url)
+        .json(&body)
+        .send()
+        .await {
+            Ok(res) => {
+                match res.text().await {
+                    Ok(r) => serde_json::to_value::<Value>(
+                        serde_urlencoded::from_str(&r).unwrap()
+                    ).unwrap(),
+                    Err(e) => {
+                        error!("Failed to fetch data: {:?}", e);
+                        json!({ 
+                            "error": true,
+                            "message": e.to_string() 
+                        })
+                    }
+                }
+            },
+            Err(e) => {
+                error!("Failed to fetch data: {:?}", e);
+                json!({ 
+                    "error": true,
+                    "message": e.to_string() 
+                })            
+            }
+        };
+
+        if api_response.get("error").is_some() {
+            return  HttpResponse::InternalServerError().body(format!("{:?}", api_response.get("message").unwrap()));
+        } 
+
+        info!("api_response: {:?}", api_response);
+        let access_token = api_response.get("access_token");
+        info!("access_token: {:?}", access_token);
+        let user_info = get_github_user_info(
+            access_token.unwrap().to_string()
+        ).await;
+        let user_email = get_github_user_info(
+            access_token.unwrap().to_string()
+        ).await;
+
+        info!("User info: {:?}", user_info.data);
+        info!("User email: {:?}", user_email.data);
+        HttpResponse::Ok().body("Test!")
 }
 /********************************************************************************/
 
