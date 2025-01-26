@@ -14,7 +14,6 @@ const Login: React.FC<{}> = ({}) => {
     const [gitHubCreds, setGitHubCreds] = useState('');
     const [googleCreds, setGoogleCreds] = useState('');
     const githubRedirectUrlLocal = 'http://localhost:3000/sbs-v1/login';
-    const googleRedirectUrlLocal = 'http://localhost:3000/sbs-v1/about';
     const scopes = ["user","user:email"]
 
     useEffect(() => {

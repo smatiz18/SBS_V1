@@ -21,9 +21,10 @@ use crate::models::services::get_odds_response::GetOddsResponse;
 use crate::models::services::github_api_auth_request::GitHubApiAuthRequest;
 use crate::models::services::google_api_auth_request::GoogleApiAuthRequest;
 use crate::models::services::login_auth_request::LoginAuthRequest;
+use crate::models::web_api::web_api_res::WebApiRes;
 use crate::routes::endpoints::{NBA_RAPID_API_HOST, NBA_RAPID_API_ROOT, THE_ODDS_API_ROOT};
-use crate::web_api::web_api::get_github_user_info;
-use reqwest::header::{ HeaderMap, HeaderValue};
+use crate::web_api::web_api::{get_github_user_email_info, get_github_user_info, get_google_user_info};
+use reqwest::header::{ HeaderMap, HeaderValue, CONTENT_TYPE};
 use std::env;
 use log::{info, error};
 
@@ -349,37 +350,55 @@ pub async fn get_google_auth(
         .expect("You must set the SBS_GOOGLE_LOGIN_CLIENT_ID environment var!");
     let google_client_secret = env::var("SBS_GOOGLE_LOGIN_CLIENT_SECRET")
         .expect("You must set the SBS_GOOGLE_LOGIN_CLIENT_SECRET environment var!");
-    let redirect_uri_local = "http://localhost:3000/sbs-v1/about".to_string();
+    let redirect_uri_local = "http://localhost:3000".to_string();
 
     let body = GoogleApiAuthRequest {
         client_id: google_client_id,
         client_secret: google_client_secret,
-        code: req.code.to_string(),
+        code: req.code.clone(),
         grant_type: "authorization_code".to_string(),
         redirect_uri: redirect_uri_local
     };
 
     let client = reqwest::Client::new();
-    match client
+    let api_response = match client
         .post(url)
         .form(&body)
+        .header(CONTENT_TYPE, "application/x-www-form-urlencoded")
         .send()
         .await {
             Ok(res) => {
                 match res.json::<Value>().await {
-                    Ok(r) => HttpResponse::Ok().json(r),
+                    Ok(r) => r,
                     Err(e) => {
                         error!("Failed to fetch data: {:?}", e);
-                        HttpResponse::InternalServerError().body(format!("{:?}", e))
+                        json!({ 
+                            "error": true,
+                            "message": e.to_string() 
+                        })
                     }
                 }
             },
             Err(e) => {
                 error!("Failed to fetch data: {:?}", e);
-                HttpResponse::InternalServerError().body(format!("{:?}", e))
+                json!({ 
+                    "error": true,
+                    "message": e.to_string() 
+                })
             }
+        };
 
-        }
+        if api_response.get("error").is_some() {
+            return  HttpResponse::InternalServerError().body(format!("{:?}", api_response.get("message").unwrap()));
+        } 
+
+        let access_token = api_response.get("access_token").expect("access_token");
+        
+        let user_info = get_google_user_info(
+            access_token.as_str().expect("access_token").to_string()
+        ).await;
+
+        HttpResponse::Ok().json(user_info)
 }
 
 pub async fn get_github_auth(
@@ -433,19 +452,28 @@ pub async fn get_github_auth(
             return  HttpResponse::InternalServerError().body(format!("{:?}", api_response.get("message").unwrap()));
         } 
 
-        info!("api_response: {:?}", api_response);
-        let access_token = api_response.get("access_token");
-        info!("access_token: {:?}", access_token);
+        let access_token = api_response.get("access_token").expect("access_token");
+
         let user_info = get_github_user_info(
-            access_token.unwrap().to_string()
-        ).await;
-        let user_email = get_github_user_info(
-            access_token.unwrap().to_string()
+            access_token.as_str().expect("access_token").to_string()
         ).await;
 
-        info!("User info: {:?}", user_info.data);
-        info!("User email: {:?}", user_email.data);
-        HttpResponse::Ok().body("Test!")
+        let user_email = get_github_user_email_info(
+            access_token.as_str().expect("access_token").to_string()
+        ).await;
+
+        HttpResponse::Ok().json({
+            WebApiRes {
+                is_error: Some(false),
+                data: Some(
+                    json!({
+                        "userInfo": user_info,
+                        "userEmail": user_email
+                    })
+                ),
+                error_message: None,
+            }   
+        })
 }
 /********************************************************************************/
 
