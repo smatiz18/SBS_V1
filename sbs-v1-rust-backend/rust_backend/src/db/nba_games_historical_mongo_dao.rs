@@ -27,7 +27,7 @@ pub async fn find(
    options: Option<FindOptions>
 ) -> Result<Vec<NbaGamesHistorical>> {
    let results = base_find(&collection, match_query, options).await?;
-    Ok(parse_doc_to_obj(results))
+   Ok(parse_doc_to_obj(results))
 }
 
 fn parse_doc_to_obj(

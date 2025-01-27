@@ -5,3 +5,4 @@ pub mod nba_player_aggregated_game_stats_historical_mongo_dao;
 pub mod constants;
 pub mod nba_team_aggregated_game_stats_historical_mongo_dao;
 pub mod nba_team_stats_mongo_dao;
+pub mod user_info_mongo_dao;

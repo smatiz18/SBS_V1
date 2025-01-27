@@ -4,3 +4,4 @@ pub mod nba_player_agg_game_stats_historical;
 pub mod nba_game_team_stats_historical;
 pub mod nba_team_agg_game_stats_historical;
 pub mod nba_team_stats;
+pub mod user_info;

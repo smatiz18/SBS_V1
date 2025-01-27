@@ -1,10 +1,12 @@
 use actix_web::{ web, HttpResponse, Responder};
 use bson::Document;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use crate::aggregators::nba_feature_map_aggregators::get_nba_backtest_feature_map;
 use crate::aggregators::optimal_odds_aggregators::get_optimal_odds_by_event_map;
 use crate::db::base_mongo::aggregate;
+use crate::db::user_info_mongo_dao::handle_user_login;
+use crate::models::db::user_info::UserInfo;
 use crate::models::enums::sports_categories::SportsCategories;
 use crate::models::odds::odds::Event;
 use crate::models::services::execute_mongo_query_request::ExecuteMongoQueryRequest;
@@ -320,7 +322,7 @@ pub async fn get_odds(
 }
 /********************************************************************************/
 
-/** credentials handlers ************************************************************/
+/** credentials handlers ********************************************************/
 /********************************************************************************/
 pub async fn get_ui_login_credentials() -> impl Responder {
     let google_client_id = env::var("SBS_GOOGLE_LOGIN_CLIENT_ID")
@@ -342,7 +344,7 @@ pub async fn get_ui_login_credentials() -> impl Responder {
 }
 
 pub async fn get_google_auth(
-    _app_state: web::Data<AppState>,
+    app_state: web::Data<AppState>,
     req: web::Json<LoginAuthRequest>
 ) -> impl Responder {
     let url = "https://oauth2.googleapis.com/token";
@@ -394,11 +396,48 @@ pub async fn get_google_auth(
 
         let access_token = api_response.get("access_token").expect("access_token");
         
-        let user_info = get_google_user_info(
+        let web_api_res = get_google_user_info(
             access_token.as_str().expect("access_token").to_string()
         ).await;
 
-        HttpResponse::Ok().json(user_info)
+        #[derive(Serialize, Deserialize, Clone, Debug)]
+        struct GoogleUserInfo {
+            email: String,
+            family_name: String,
+            given_name: String,
+            id: String,
+            name: String,
+            picture: String,
+            verified_email: bool
+        }
+
+        if web_api_res.data.is_some() {
+            let google_user_info: GoogleUserInfo = serde_json::from_value(
+                web_api_res.data.clone().unwrap()
+            ).unwrap();
+
+            let user_info_obj = UserInfo {
+                _id: google_user_info.email.clone(),
+                email: google_user_info.email,
+                username: None,
+                firstname: Some(google_user_info.given_name),
+                lastname: Some(google_user_info.family_name),
+                is_premium_user: None,
+                member_since: None,
+                last_login: None,
+                number_of_logins: None
+            };
+            return match handle_user_login(&app_state.user_info_collection, user_info_obj).await {
+                Ok(res) => {
+                    HttpResponse::Ok().json(res)
+                },
+                Err(e) => {
+                    error!("unable to login user!");
+                    HttpResponse::InternalServerError().body(format!("{:?}", e))
+                }
+            };
+        }
+        HttpResponse::InternalServerError().body("Unable login user!")
 }
 
 pub async fn get_github_auth(

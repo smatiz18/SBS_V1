@@ -14,3 +14,4 @@ pub mod execute_mongo_query_request;
 pub mod login_auth_request;
 pub mod google_api_auth_request;
 pub mod github_api_auth_request;
+pub mod login_result;

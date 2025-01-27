@@ -40,7 +40,7 @@ const Login: React.FC<{}> = ({}) => {
     }, []);
 
 
-    /* GitHub */ 
+    /* GitHub ***************************************/ 
     const loginWithGithub = () => {
         window.location.href = `https://github.com/login/oauth/authorize?client_id=${gitHubCreds}&redirect_uri=${githubRedirectUrlLocal}&scope=${scopes.join(',')}`;
     };
@@ -56,8 +56,9 @@ const Login: React.FC<{}> = ({}) => {
             </Button>   
         );
     }; 
+    /************************************************/ 
 
-    /* Google */
+    /* Google ****************************************/ 
     const loginWithGoogle = useGoogleLogin({
         onSuccess: (response: CodeResponse) => {
             getGoogleAuth({ code: response.code })
@@ -79,6 +80,7 @@ const Login: React.FC<{}> = ({}) => {
             </Button>
         );
     };
+    /************************************************/ 
 
     return (
         <div className='login-page-container'>
