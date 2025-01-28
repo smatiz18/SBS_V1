@@ -1,5 +1,6 @@
 use bson::{doc, from_document, to_document, Document};
-use chrono::Utc;
+use chrono::{SecondsFormat, Utc};
+use log::info;
 use mongodb::options::FindOptions;
 use mongodb::Collection;
 use crate::db::base_mongo::find as base_find;
@@ -28,14 +29,28 @@ pub async fn handle_user_login(
             member_since: Some(Utc::now()),
             last_login: Some(Utc::now()),
             number_of_logins: Some(1),
+            login_source: user_info.login_source
         };
         let _ = collection.insert_one(to_document(&new_user_info).unwrap(), None).await?;
+    } else if users[0].login_source.to_string() != user_info.login_source.to_string() {
+        return Ok(
+            LoginResult {
+                is_error: true,
+                error_message: Some(
+                    format!(
+                        "Account already exists with {:?}", 
+                        users[0].login_source.to_string()
+                    )
+                ),
+                user_info: None
+            }
+        );
     } else {
         let _ = collection.update_one(
             match_query.clone(), 
             doc! {
                 "$set": doc! {
-                    "last_login": Utc::now().timestamp(),
+                    "last_login": Utc::now().to_rfc3339_opts(SecondsFormat::AutoSi, true),
                     "number_of_logins": users[0].number_of_logins.unwrap_or(0) + 1
                 }
             }, 

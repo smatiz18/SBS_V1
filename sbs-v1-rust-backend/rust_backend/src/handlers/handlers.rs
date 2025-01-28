@@ -6,7 +6,7 @@ use crate::aggregators::nba_feature_map_aggregators::get_nba_backtest_feature_ma
 use crate::aggregators::optimal_odds_aggregators::get_optimal_odds_by_event_map;
 use crate::db::base_mongo::aggregate;
 use crate::db::user_info_mongo_dao::handle_user_login;
-use crate::models::db::user_info::UserInfo;
+use crate::models::db::user_info::{LoginSource, UserInfo};
 use crate::models::enums::sports_categories::SportsCategories;
 use crate::models::odds::odds::Event;
 use crate::models::services::execute_mongo_query_request::ExecuteMongoQueryRequest;
@@ -23,7 +23,6 @@ use crate::models::services::get_odds_response::GetOddsResponse;
 use crate::models::services::github_api_auth_request::GitHubApiAuthRequest;
 use crate::models::services::google_api_auth_request::GoogleApiAuthRequest;
 use crate::models::services::login_auth_request::LoginAuthRequest;
-use crate::models::web_api::web_api_res::WebApiRes;
 use crate::routes::endpoints::{NBA_RAPID_API_HOST, NBA_RAPID_API_ROOT, THE_ODDS_API_ROOT};
 use crate::web_api::web_api::{get_github_user_email_info, get_github_user_info, get_google_user_info};
 use reqwest::header::{ HeaderMap, HeaderValue, CONTENT_TYPE};
@@ -425,7 +424,8 @@ pub async fn get_google_auth(
                 is_premium_user: None,
                 member_since: None,
                 last_login: None,
-                number_of_logins: None
+                number_of_logins: None,
+                login_source: LoginSource::Gmail
             };
             return match handle_user_login(&app_state.user_info_collection, user_info_obj).await {
                 Ok(res) => {
@@ -441,7 +441,7 @@ pub async fn get_google_auth(
 }
 
 pub async fn get_github_auth(
-    _app_state: web::Data<AppState>,
+    app_state: web::Data<AppState>,
     req: web::Json<LoginAuthRequest>
 ) -> impl Responder {
     let url = "https://github.com/login/oauth/access_token";
@@ -488,31 +488,80 @@ pub async fn get_github_auth(
         };
 
         if api_response.get("error").is_some() {
-            return  HttpResponse::InternalServerError().body(format!("{:?}", api_response.get("message").unwrap()));
+            return  HttpResponse::InternalServerError().body(format!("{:?}", api_response.get("message")));
         } 
 
         let access_token = api_response.get("access_token").expect("access_token");
-
+        
+        #[derive(Serialize, Deserialize, Clone, Debug)]
+        struct GitHubUserInfo {
+            bio: Option<String>,
+            name: Option<String>,
+            login: Option<String>    
+        }
         let user_info = get_github_user_info(
             access_token.as_str().expect("access_token").to_string()
         ).await;
 
+        #[derive(Serialize, Deserialize, Clone, Debug)]
+        struct GitHubEmailInfo {
+            email: String,
+            primary: bool,
+            verified: bool
+        }
         let user_email = get_github_user_email_info(
             access_token.as_str().expect("access_token").to_string()
         ).await;
 
-        HttpResponse::Ok().json({
-            WebApiRes {
-                is_error: Some(false),
-                data: Some(
-                    json!({
-                        "userInfo": user_info,
-                        "userEmail": user_email
-                    })
-                ),
-                error_message: None,
-            }   
-        })
+        match (user_info.data, user_email.data) {
+            (Some(u_i), Some(u_e)) => {
+                let u_i_obj_res = serde_json::from_value::<GitHubUserInfo>(u_i);
+                let u_e_obj_res = serde_json::from_value::<Vec<GitHubEmailInfo>>(u_e);
+
+                match (u_i_obj_res, u_e_obj_res) {
+                    (Ok(u_i_obj), Ok(u_e_obj)) => {
+                        let main_email_info_vec = u_e_obj.into_iter()
+                            .filter(|x| x.primary)
+                            .collect::<Vec<GitHubEmailInfo>>();
+
+                        if main_email_info_vec.get(0).is_none() {
+                            error!("unable to login user!");
+                            return HttpResponse::InternalServerError().body("email unavailable!");
+                        }
+                        
+                        let user_info = UserInfo {
+                            _id: main_email_info_vec.get(0).unwrap().email.clone(),
+                            email: main_email_info_vec.get(0).unwrap().clone().email,
+                            username: None,
+                            firstname: u_i_obj.name,
+                            lastname: None,
+                            is_premium_user: None,
+                            member_since: None,
+                            last_login: None,
+                            number_of_logins: None,
+                            login_source: LoginSource::GitHub
+                        };
+                        return match handle_user_login(&app_state.user_info_collection, user_info).await {
+                            Ok(res) => {
+                                HttpResponse::Ok().json(res)
+                            },
+                            Err(e) => {
+                                error!("unable to login user!");
+                                HttpResponse::InternalServerError().body(format!("{:?}", e))
+                            }
+                        };
+                    },
+                    (_, _) => {
+                        error!("unable to login user!");    
+                        return HttpResponse::InternalServerError().body("unable to login user!")
+                    }
+                }
+            },
+            (_, _) => {
+                error!("unable to login user!");    
+                return HttpResponse::InternalServerError().body("unable to login user!")
+            } 
+        }
 }
 /********************************************************************************/
 

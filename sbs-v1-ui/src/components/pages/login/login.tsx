@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { getGitHubAuth, getGoogleAuth, getLoginCredentials } from '../../../services/common/services';
 import { GetLoginCredentialsResponse } from '../../../models/services/get-login-credentials-response';
 import { AxiosResponse } from 'axios';
+import { Routes } from '../../../routes';
 
 const Login: React.FC<{}> = ({}) => {
 
@@ -30,8 +31,10 @@ const Login: React.FC<{}> = ({}) => {
         const code = urlParams.get('code');
         if (code) {
             getGitHubAuth({ code: code })
-                .then((response: any) => {
-                    console.log(response);
+                .then((resp: AxiosResponse) => {
+                    if (!resp.data.isError) {
+                        window.location.href = `${Routes.root}${Routes.about}`;
+                    }
                 })
                 .catch((e: any) => {
                     console.log('Unable to retrieve credentials! ', e);
@@ -63,7 +66,9 @@ const Login: React.FC<{}> = ({}) => {
         onSuccess: (response: CodeResponse) => {
             getGoogleAuth({ code: response.code })
                 .then((resp: AxiosResponse) => {
-                    console.log(resp);
+                    if (!resp.data.isError) {
+                        window.location.href = `${Routes.root}${Routes.about}`;
+                    }
                 });
         },
         flow: 'auth-code'
