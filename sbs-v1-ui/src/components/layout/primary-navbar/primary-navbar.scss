@@ -49,7 +49,7 @@
         transition: color 0.3s ease;
 
         &:hover {
-          color: variables.$blue-highlight;
+          color: adjust-color(lighten(variables.$color-1, 20%), $saturation: 70%);
         }
       }
     }

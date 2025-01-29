@@ -346,6 +346,7 @@ pub async fn get_google_auth(
     app_state: web::Data<AppState>,
     req: web::Json<LoginAuthRequest>
 ) -> impl Responder {
+    info!("Recieved req for google user login!");
     let url = "https://oauth2.googleapis.com/token";
     let google_client_id = env::var("SBS_GOOGLE_LOGIN_CLIENT_ID")
         .expect("You must set the SBS_GOOGLE_LOGIN_CLIENT_ID environment var!");
@@ -444,6 +445,7 @@ pub async fn get_github_auth(
     app_state: web::Data<AppState>,
     req: web::Json<LoginAuthRequest>
 ) -> impl Responder {
+    info!("Recieved req for github user login!");
     let url = "https://github.com/login/oauth/access_token";
     let github_client_id = env::var("SBS_GITHUB_LOGIN_CLIENT_ID")
         .expect("You must set the SBS_GITHUB_LOGIN_CLIENT_ID environment var!");

@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './primary-navbar.scss';
 import { Routes } from '../../../routes';
 import sbs_logo from '../../../assets/images/basketball-sandbox-mask.png'
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../store/store';
+import { UserInfo } from '../../../models/user-info';
+import { clearUserInfo } from '../../../store/slices/user-info-slice';
 
-const PrimaryNavbar: React.FC<{isLoggedIn: boolean }> = ({isLoggedIn}) => {
+const PrimaryNavbar: React.FC<{}> = () => {
+    
+    /* Store ****************************************/
+    const userInfo: UserInfo = useSelector((state: RootState) => state.userInfo);
+    const dispatch = useDispatch<AppDispatch>();
+    /************************************************/
     const [isDropdownOpen, setDropdownOpen] = useState(false);
 
     const toggleDropdown = () => {
@@ -22,7 +31,7 @@ const PrimaryNavbar: React.FC<{isLoggedIn: boolean }> = ({isLoggedIn}) => {
                     <a href={`${Routes.root}${Routes.dailyMatchups}`}>
                         Daily Matchups
                     </a>
-                    {isDropdownOpen && (
+                    {isDropdownOpen && userInfo.email && (
                         <ul className="nav-links-dropdown">
                             <li className="nav-link-dropdown">
                                 <a href={`${Routes.root}${Routes.dailyMatchups}${Routes.nba}`}>NBA</a>
@@ -46,10 +55,17 @@ const PrimaryNavbar: React.FC<{isLoggedIn: boolean }> = ({isLoggedIn}) => {
                         About
                     </a>
                 </li>
-                { isLoggedIn && 
+                { !userInfo.email && 
                     <li className="nav-link">
                         <a href={`${Routes.root}${Routes.login}`}>
                             Login
+                        </a>
+                    </li>
+                }
+                { userInfo.email && 
+                    <li className="nav-link">
+                        <a href={`${Routes.root}${Routes.login}`} onClick={() => dispatch(clearUserInfo())}>
+                            Logout
                         </a>
                     </li>
                 }

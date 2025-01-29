@@ -10,7 +10,7 @@ function App() {
     <div className='main-container'>
       <BrowserRouter>
         <div className='nav-bar-container'>
-          <PrimaryNavbar isLoggedIn={true}/>
+          <PrimaryNavbar/>
         </div>
         <div className='pages-container'>
           {/* define new routes in Routes.tsx */}

@@ -8,6 +8,10 @@ import { useEffect, useState } from 'react';
 import { getGitHubAuth, getGoogleAuth, getLoginCredentials } from '../../../services/common/services';
 import { GetLoginCredentialsResponse } from '../../../models/services/get-login-credentials-response';
 import { AxiosResponse } from 'axios';
+import { setUserInfo } from '../../../store/slices/user-info-slice';
+import { LoginResult } from '../../../models/services/login-result';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../store/store';
 import { Routes } from '../../../routes';
 
 const Login: React.FC<{}> = ({}) => {
@@ -16,6 +20,10 @@ const Login: React.FC<{}> = ({}) => {
     const [googleCreds, setGoogleCreds] = useState('');
     const githubRedirectUrlLocal = 'http://localhost:3000/sbs-v1/login';
     const scopes = ["user","user:email"]
+
+    /* Store ****************************************/
+    const dispatch = useDispatch<AppDispatch>();
+    /************************************************/
 
     useEffect(() => {
         getLoginCredentials()
@@ -31,9 +39,12 @@ const Login: React.FC<{}> = ({}) => {
         const code = urlParams.get('code');
         if (code) {
             getGitHubAuth({ code: code })
-                .then((resp: AxiosResponse) => {
-                    if (!resp.data.isError) {
+                .then((resp: AxiosResponse<LoginResult>) => {
+                    if (!resp.data.isError && resp.data.userInfo) {
+                        dispatch(setUserInfo(resp.data.userInfo));
                         window.location.href = `${Routes.root}${Routes.about}`;
+                    } else {
+                        /* error msg... */
                     }
                 })
                 .catch((e: any) => {
@@ -41,7 +52,6 @@ const Login: React.FC<{}> = ({}) => {
                 });
         }
     }, []);
-
 
     /* GitHub ***************************************/ 
     const loginWithGithub = () => {
@@ -65,9 +75,12 @@ const Login: React.FC<{}> = ({}) => {
     const loginWithGoogle = useGoogleLogin({
         onSuccess: (response: CodeResponse) => {
             getGoogleAuth({ code: response.code })
-                .then((resp: AxiosResponse) => {
-                    if (!resp.data.isError) {
+                .then((resp: AxiosResponse<LoginResult>) => {
+                    if (!resp.data.isError && resp.data.userInfo) {
+                        dispatch(setUserInfo(resp.data.userInfo));
                         window.location.href = `${Routes.root}${Routes.about}`;
+                    } else {
+                        /* error msg... */
                     }
                 });
         },
