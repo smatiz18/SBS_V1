@@ -1,0 +1,123 @@
+@use "../../../variables";
+
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    .about-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px;
+        color: #333;
+
+        section {
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        .line-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+
+            .line {
+                height: 1px; // Adjust thickness
+                background-color: variables.$gray-border; // Adjust color as needed
+                flex-grow: 1;
+            }
+        }
+
+
+        h1,
+        h2 {
+            // text-align: center;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        p {
+            text-align: center;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .features {
+            .feature-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 20px;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .feature {
+                padding: 20px;
+                background-color: white;
+                border-radius: 12px;
+                transition: 0.3s;
+
+                img {
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: 8px;
+                    margin-bottom: 15px;
+                }
+
+                h3 {
+                    margin: 10px 0;
+                    font-size: 1.3rem;
+                }
+
+                p {
+                    font-size: 1rem;
+                    opacity: 0.8;
+                }
+
+                &:hover {
+                    background: #e9e9e9;
+                }
+            }
+        }
+
+        .timeline {
+            .timeline-container {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                margin-top: 20px;
+            }
+
+            .timeline-item {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                background: white;
+                padding: 15px;
+                border-radius: 8px;
+                transition: 0.3s;
+
+                &:hover {
+                    background: #e9e9e9;
+                }
+
+                .date {
+                    font-weight: bold;
+                    font-size: 1.1rem;
+                    background: #6a5acd;
+                    color: #fff;
+                    padding: 8px 12px;
+                    border-radius: 6px;
+                }
+
+                .event {
+                    font-size: 1rem;
+                    opacity: 0.9;
+                }
+            }
+        }
+    }
+}
