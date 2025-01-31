@@ -26,19 +26,22 @@ const PrimaryNavbar: React.FC<{}> = () => {
               <div className='sbs-beta'>Beta</div>
             </div>
             <ul className="nav-links">
-                <li className="nav-link" onMouseEnter={toggleDropdown}
-                    onMouseLeave={toggleDropdown}>
-                    <a href={`${Routes.root}${Routes.dailyMatchups}`}>
-                        Daily Matchups
-                    </a>
-                    {isDropdownOpen && userInfo.email && (
-                        <ul className="nav-links-dropdown">
-                            <li className="nav-link-dropdown">
-                                <a href={`${Routes.root}${Routes.dailyMatchups}${Routes.nba}`}>NBA</a>
-                            </li>
-                        </ul>
-                    )}
-                </li>
+                { 
+                    userInfo.email &&
+                    <li className="nav-link" onMouseEnter={toggleDropdown}
+                        onMouseLeave={toggleDropdown}>
+                        <a href={`${Routes.root}${Routes.dailyMatchups}${Routes.nba}`}>
+                            Daily Matchups
+                        </a>
+                        {isDropdownOpen && (
+                            <ul className="nav-links-dropdown">
+                                <li className="nav-link-dropdown">
+                                    <a href={`${Routes.root}${Routes.dailyMatchups}${Routes.nba}`}>NBA</a>
+                                </li>
+                            </ul>
+                        )}
+                    </li>
+                }
                 
                 {/* <li className="nav-link">
                     <a href={`${Routes.root}${Routes.backtest}`}>
@@ -55,14 +58,16 @@ const PrimaryNavbar: React.FC<{}> = () => {
                         About
                     </a>
                 </li>
-                { !userInfo.email && 
+                { 
+                    !userInfo.email && 
                     <li className="nav-link">
                         <a href={`${Routes.root}${Routes.login}`}>
                             Login
                         </a>
                     </li>
                 }
-                { userInfo.email && 
+                { 
+                    userInfo.email && 
                     <li className="nav-link">
                         <a href={`${Routes.root}${Routes.login}`} onClick={() => dispatch(clearUserInfo())}>
                             Logout

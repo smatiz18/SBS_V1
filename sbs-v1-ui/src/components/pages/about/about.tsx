@@ -1,15 +1,21 @@
 import './about.scss';
+import optimalOdds from "../../../assets/images/optimal-odds.png";
+import chartAnalyzer from "../../../assets/images/chart-analyzer.png";
+import nbaMatchups from "../../../assets/images/nba-matchups.png";
 const About = () => {
     return (
         <div className='about-container'>
             <div className="about-content">
                 <section className="motivation">
-                    <h1>Motivation</h1>
+                    <h1>Welcome!</h1>
                     <p>
-                        Our mission is to provide sports enthusiasts, bettors, and analysts with
-                        real-time data, analytics, and insights to make informed decisions.
-                        Whether you're backtesting strategies, tracking odds, or analyzing trends,
-                        our platform is built to optimize your experience.
+                        Have you ever wondered how many times the 
+                        Knicks have gone on to score +130 points, 
+                        given that they have already scored 36 points in the first quarter? 
+                        Could you not sleep at night because you were wondering how the Mavericks are 
+                        trending in the first half in home games vs away games? Were you pulling teeth because 
+                        you had to rotate between FanDuel, DraftKings, and BetMGM trying to find the best odds? 
+                        If so, we got you covered.
                     </p>
                 </section>
                 <div className='line-wrapper'>
@@ -19,19 +25,19 @@ const About = () => {
                     <h2>Features</h2>
                     <div className="feature-grid">
                         <div className="feature">
-                            <img src="/assets/odds-tracking.png" alt="Odds Tracking" />
+                            <img src={nbaMatchups} alt="Daily Matchups" />
+                            <h3>Daily Matchups</h3>
+                            <p>See how teams stack up in our daily matchups dashboard.</p>
+                        </div>
+                        <div className="feature">
+                            <img src={optimalOdds} alt="Odds Tracking" />
                             <h3>Odds Tracking</h3>
                             <p>Compare real-time odds from multiple sportsbooks and get the best value.</p>
                         </div>
                         <div className="feature">
-                            <img src="/assets/backtesting.png" alt="Backtesting Strategies" />
-                            <h3>Backtesting Strategies</h3>
-                            <p>Test betting strategies using historical data to optimize decision-making.</p>
-                        </div>
-                        <div className="feature">
-                            <img src="/assets/analytics.png" alt="Advanced Analytics" />
+                            <img src={chartAnalyzer} alt="Advanced Analytics" />
                             <h3>Advanced Analytics</h3>
-                            <p>Utilize in-depth metrics, trends, and AI-driven insights.</p>
+                            <p>Utilize in-depth metrics, trends, and historical insights.</p>
                         </div>
                     </div>
                 </section>
@@ -43,21 +49,28 @@ const About = () => {
                     <div className="timeline-container">
                         <div className="timeline-item">
                             <div className="date">Q1 2025</div>
-                            <div className="event">🔄 Live Bet Tracking Release</div>
+                            <div className="event">🚀 Include Player Props and Stats 🚀</div>
                         </div>
                         <div className="timeline-item">
                             <div className="date">Q2 2025</div>
-                            <div className="event">📊 AI-Driven Analysis Enhancement</div>
+                            <div className="event">🚀 Expanded Sport Coverage 🚀</div>
                         </div>
                         <div className="timeline-item">
                             <div className="date">Q3 2025</div>
-                            <div className="event">📅 Expanded Sport Coverage</div>
+                            <div className="event">🚀 Betting Strategy Backtesting 🚀</div>
                         </div>
+                    </div>
+                </section>
+                <div className='line-wrapper'>
+                    <div className="line"></div>
+                </div>
+                <section className="contact">
+                    <div className="contact-container">
+                        <p>Contact us @ sportsbettingsandbox.inquiries@gmail.com</p>
                     </div>
                 </section>
             </div>
         </div>
-
     );
 }
 
