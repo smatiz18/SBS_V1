@@ -9,13 +9,11 @@ const About = () => {
                 <section className="motivation">
                     <h1>Welcome!</h1>
                     <p>
-                        Have you ever wondered how many times the 
-                        Knicks have gone on to score +130 points, 
+                        Have you ever wondered how many times the Knicks have gone on to score +130 points, 
                         given that they have already scored 36 points in the first quarter? 
-                        Could you not sleep at night because you were wondering how the Mavericks are 
-                        trending in the first half in home games vs away games? Were you pulling teeth because 
-                        you had to rotate between FanDuel, DraftKings, and BetMGM trying to find the best odds? 
-                        If so, we got you covered.
+                        Could you not sleep at night because you were wondering how the Mavericks are trending in the first half 
+                        in home games vs away games? Were you pulling teeth because you had to rotate between 
+                        FanDuel, DraftKings, and BetMGM trying to find the best odds? If so, we've got you covered.
                     </p>
                 </section>
                 <div className='line-wrapper'>
