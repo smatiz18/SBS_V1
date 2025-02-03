@@ -5,6 +5,11 @@ from bs4 import BeautifulSoup
 url = 'https://www.rotowire.com/basketball/nba-lineups.php' 
 
 #########################################################
+def get_nba_matchups_rust_wrapper():
+    return json.dumps(get_rotowire_nba_lineups_response())
+#########################################################
+
+#########################################################
 def get_rotowire_nba_lineups_response():
     rotowire_response = None
     is_error = False

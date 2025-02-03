@@ -14,6 +14,7 @@ pub const GET_PLAYERS_BY_TEAM_AND_SEASON: &str = "/players-by-team-and-season/ge
 pub const GET_PLAYER_STATS_BY_ID_AND_SEASON: &str = "/player-stats-by-id-and-season/get";
 pub const GET_NBA_TEAM_AGG_GAME_STATS: &str = "/team-agg-game-stats/get";
 pub const GET_NBA_TEAM_STATS: &str = "/team-stats/get";
+pub const GET_NBA_DAILY_MATCHUPS: &str = "/daily-matchups/get";
 pub const GET_BACKTEST_FEATURE_MAP: &str = "/backtest-feature-map/get";
 pub const GET_ODDS: &str = "/odds/get";
 pub const EXECUTE_MONGO_QUERY: &str = "/query/get"; 

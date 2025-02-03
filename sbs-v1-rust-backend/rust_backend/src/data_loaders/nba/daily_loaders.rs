@@ -3,11 +3,15 @@
 use std::fs;
 use log::{error, info};
 use pyo3::{types::PyModule, Py, PyAny, PyResult, Python};
-use crate::{aggregators::nba_team_stats_aggregators::map_nba_team_aggregated_game_stats_to_nba_team_stats, constants::{dates::{get_season_types, NBA_SEASON_DATE_MAP}, python_script_paths::{get_nba_mongo_loader_path, NBA_GAME_DATA_LOADER_RUNNER_FUNCTION, NBA_MONGO_LOADER_FILE, NBA_PLAYER_DATA_LOADER_RUNNER_FUNCTION, SBS_V1_PYTHON_BACKEND_MODULE}}, db::{nba_team_aggregated_game_stats_historical_mongo_dao, nba_team_stats_mongo_dao}, models::{app_state::AppState, db::{nba_team_agg_game_stats_historical::NbaTeamAggGameStatsHistorical, nba_team_stats::NbaTeamStats}}};
+use crate::{aggregators::nba_team_stats_aggregators::map_nba_team_aggregated_game_stats_to_nba_team_stats, constants::{dates::{get_season_types, NBA_SEASON_DATE_MAP}, python_script_paths::{NBA_GAME_DATA_LOADER_RUNNER_FUNCTION, NBA_MONGO_LOADER_FILE, NBA_PLAYER_DATA_LOADER_RUNNER_FUNCTION, SBS_V1_PYTHON_BACKEND_MODULE}}, db::{nba_team_aggregated_game_stats_historical_mongo_dao, nba_team_stats_mongo_dao}, models::{app_state::AppState, db::{nba_team_agg_game_stats_historical::NbaTeamAggGameStatsHistorical, nba_team_stats::NbaTeamStats}}};
 
 /** Old loader logic that is already written in python will stay that way. In the future 
  * we should migrate this over to rust but for the sake of prototyping let's keep it in python
  */
+
+fn get_nba_mongo_loader_path() -> String {
+    format!("../../{}/app/scripts/{}", SBS_V1_PYTHON_BACKEND_MODULE, NBA_MONGO_LOADER_FILE)
+}
 
 // remember to set env variables
 pub fn daily_nba_game_data_loader() -> PyResult<()> {

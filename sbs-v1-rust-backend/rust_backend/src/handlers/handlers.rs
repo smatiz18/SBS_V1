@@ -19,6 +19,7 @@ use crate::models::services::get_nba_player_stats_by_id_and_season_request::GetN
 use crate::models::services::get_nba_team_stats_request::GetNbaTeamStatsRequest;
 use crate::models::services::get_odds_request::GetOddsRequest;
 use crate::models::services::login_auth_request::LoginAuthRequest;
+use crate::python::python::get_nba_daily_matchups_from_python;
 use crate::web_api::web_api::{authenticate_github_token, authenticate_google_token, get_github_user_email_info, get_github_user_info, get_google_user_info, get_nba_players_by_team_and_season_rapid_api, get_odds_odds_api};
 use std::env;
 use log::{info, error};
@@ -428,6 +429,16 @@ pub async fn get_github_auth(
             format!("{:?}", web_api_res.error_message.unwrap_or("error".to_string()))
         )
     }
+}
+/********************************************************************************/
+
+/** python handlers *************************************************************/
+/********************************************************************************/
+pub async fn get_nba_daily_matchups(
+    _app_state: web::Data<AppState>    
+) -> impl Responder {
+    let res = get_nba_daily_matchups_from_python();
+    HttpResponse::Ok().json(res)
 }
 /********************************************************************************/
 
