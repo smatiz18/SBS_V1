@@ -196,7 +196,7 @@ pub async fn get_github_user_info(access_token: String) -> WebApiRes {
     );
     headers.insert(
         USER_AGENT,
-            HeaderValue::from_static("reqwest")
+        HeaderValue::from_static("reqwest")
     );
     
     get(url, headers).await
@@ -213,7 +213,7 @@ pub async fn get_github_user_email_info(access_token: String) -> WebApiRes {
     );
     headers.insert(
         USER_AGENT,
-            HeaderValue::from_static("reqwest")
+        HeaderValue::from_static("reqwest")
     );
 
     get(url, headers).await
