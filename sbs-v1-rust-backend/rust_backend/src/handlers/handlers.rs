@@ -1,9 +1,8 @@
 use actix_web::{ web, HttpResponse, Responder};
 use bson::Document;
 use serde::{Deserialize, Serialize};
-use serde_json::{json, Value};
+use serde_json::Value;
 use crate::aggregators::nba_feature_map_aggregators::get_nba_backtest_feature_map;
-use crate::aggregators::optimal_odds_aggregators::get_optimal_odds_by_event_map;
 use crate::db::base_mongo::aggregate;
 use crate::db::user_info_mongo_dao::handle_user_login;
 use crate::models::db::user_info::{LoginSource, UserInfo};
@@ -19,21 +18,13 @@ use crate::models::services::get_nba_players_by_team_and_season_response::GetNba
 use crate::models::services::get_nba_player_stats_by_id_and_season_request::GetNbaPlayerStatsByIdAndSeasonRequest;
 use crate::models::services::get_nba_team_stats_request::GetNbaTeamStatsRequest;
 use crate::models::services::get_odds_request::GetOddsRequest;
-use crate::models::services::get_odds_response::GetOddsResponse;
-use crate::models::services::github_api_auth_request::GitHubApiAuthRequest;
-use crate::models::services::google_api_auth_request::GoogleApiAuthRequest;
 use crate::models::services::login_auth_request::LoginAuthRequest;
-use crate::routes::endpoints::{NBA_RAPID_API_HOST, NBA_RAPID_API_ROOT, THE_ODDS_API_ROOT};
-use crate::web_api::web_api::{get_github_user_email_info, get_github_user_info, get_google_user_info};
-use reqwest::header::{ HeaderMap, HeaderValue, CONTENT_TYPE};
+use crate::web_api::web_api::{authenticate_github_token, authenticate_google_token, get_github_user_email_info, get_github_user_info, get_google_user_info, get_nba_players_by_team_and_season_rapid_api, get_odds_odds_api};
 use std::env;
 use log::{info, error};
 
 use crate::models::app_state::AppState;
 use crate::db::{nba_games_historical_mongo_dao, nba_odds_historical_mongo_dao, nba_player_aggregated_game_stats_historical_mongo_dao, nba_team_aggregated_game_stats_historical_mongo_dao, nba_team_stats_mongo_dao};
-
-
-// TODO MOVE ALL WEB API CALLS TO WEB API MODULE
 
 /** mongo handlers **************************************************************/
 /********************************************************************************/
@@ -221,103 +212,48 @@ pub async fn get_nba_players_by_team_and_season(
     req: web::Query<GetNbaPlayersByTeamAndSeasonRequest> 
 ) -> impl Responder {
     info!("Recieved req for get_nba_players_by_team_and_season, teamId {}, season: {}", req.team_id, req.season);
-    let client = reqwest::Client::new();
-    let url = format!("{}/players?team={}&season={}", NBA_RAPID_API_ROOT, &req.team_id, &req.season); 
-    let rapid_api_key = env::var("RAPID_API_KEY").expect("You must set RAPID_API_KEY environment var!");
-    let mut headers = HeaderMap::new();
-    headers.insert(
-        "x-rapidapi-host", 
-        HeaderValue::from_static(NBA_RAPID_API_HOST)
-    );
-    headers.insert(
-        "x-rapidapi-key",
-        HeaderValue::from_str(&rapid_api_key).expect("You must set RAPID_API_KEY environment var!")
-    );
-
-    match client
-        .get(url.to_owned())
-        .headers(headers)
-        .send()
-        .await {
-            Ok(response) => {
-                match response.json::<GetNbaPlayersByTeamAndSeasonResponse>().await {
-                    Ok(resp_obj) => {
-                        info!("Returned resp from {}", url.clone());
-                        HttpResponse::Ok().json(resp_obj)
-                    },
-                    Err(e) => {
-                        error!("Failed to parse response: {:?}", e);
-                        HttpResponse::InternalServerError().body(format!("{:?}", e))
-                    },
-                }
+    let web_api_res = get_nba_players_by_team_and_season_rapid_api(req.into_inner()).await;
+    if web_api_res.data.is_some() {
+        match serde_json::from_value::<GetNbaPlayersByTeamAndSeasonResponse>(web_api_res.data.unwrap()) {
+            Ok(resp_obj) => {
+                info!("Returned players by team and season from rapid api");
+                HttpResponse::Ok().json(resp_obj)
             },
             Err(e) => {
-                error!("Failed to fetch data: {:?}", e);
-                HttpResponse::InternalServerError().body("Failed to fetch data")
+                error!("Failed to parse response: {:?}", e);
+                HttpResponse::InternalServerError().body(format!("{:?}", e))
             },
         }
+    } else {
+        HttpResponse::InternalServerError().body(
+            format!("Failed to fetch data {:?}", web_api_res.error_message.unwrap_or("error".to_string()))
+        )
+    }
 }
 
 /** Odds API */
-// TODO build caching system where it does not re-call the odds api if last recent call was under 15 minutes
 pub async fn get_odds(
     _app_state: web::Data<AppState>,
     req: web::Json<GetOddsRequest>
 ) -> impl Responder {
-    info!("Recieved req for get_odds() req: {:?}", req);
-    let client = reqwest::Client::new();
-    
-    let odds_api_key = env::var("ODDS_API_KEY").expect("You must set ODDS_API_KEY environment var!");
-
-    let markets: String = req.markets
-        .to_owned()
-        .into_iter()
-        .map(|market| market.clone().to_string())
-        .collect::<Vec<String>>()
-        .join(",");
-    
-    let bookmakers = req.bookmakers
-        .to_owned()
-        .into_iter()
-        .map(|bookmaker | bookmaker.to_string())
-        .collect::<Vec<String>>()
-        .join(",");
-
-    let url = format!(
-        "{}sports/{}/odds/?apiKey={}&regions={}&markets={}&oddsFormat={}&bookmakers={}", 
-        THE_ODDS_API_ROOT, 
-        req.sports.to_string(), 
-        odds_api_key, 
-        req.regions.to_string(), 
-        markets, 
-        req.odds_format,
-        bookmakers
-    );
-
-    match client.get(url.to_owned())
-        .send()
-        .await {
-            Ok(response) =>
-                match response.json::<Vec<Event>>().await { 
-                    Ok(events) => {
-                        info!("Returned resp from {}", url.clone());
-
-                        let resp_obj = GetOddsResponse {
-                            events: events.clone(),
-                            optimal_odds_map: get_optimal_odds_by_event_map(events.clone()),
-                        };
-                        HttpResponse::Ok().json(resp_obj)
-                    },
-                    Err(e) => {
-                        error!("Failed to parse response: {:?}", e);
-                        HttpResponse::InternalServerError().body(format!("{:?}", e))
-                    },
-                },
-            Err(e) =>  {
-                error!("Failed to fetch data: {:?}", e);
+    info!("Recieved req for get_odds, bookmakers: {:?}, sports: {:?}", req.bookmakers, req.sports);
+    let web_api_res = get_odds_odds_api(req.into_inner()).await;
+    if web_api_res.data.is_some() {
+        match serde_json::from_value::<Event>(web_api_res.data.unwrap()) {
+            Ok(resp_obj) => {
+                info!("Returned odds from odds api");
+                HttpResponse::Ok().json(resp_obj)
+            },
+            Err(e) => {
+                error!("Failed to parse response: {:?}", e);
                 HttpResponse::InternalServerError().body(format!("{:?}", e))
             }
         }
+    } else {
+        HttpResponse::InternalServerError().body(
+            format!("Failed to fetch data {:?}", web_api_res.error_message.unwrap_or("error".to_string()))
+        )
+    }
 }
 /********************************************************************************/
 
@@ -347,59 +283,16 @@ pub async fn get_google_auth(
     req: web::Json<LoginAuthRequest>
 ) -> impl Responder {
     info!("Recieved req for google user login!");
-    let url = "https://oauth2.googleapis.com/token";
-    let google_client_id = env::var("SBS_GOOGLE_LOGIN_CLIENT_ID")
-        .expect("You must set the SBS_GOOGLE_LOGIN_CLIENT_ID environment var!");
-    let google_client_secret = env::var("SBS_GOOGLE_LOGIN_CLIENT_SECRET")
-        .expect("You must set the SBS_GOOGLE_LOGIN_CLIENT_SECRET environment var!");
-    let redirect_uri_local = "http://localhost:3000".to_string();
+    
+    let authentication_res = authenticate_google_token(req.into_inner()).await;
 
-    let body = GoogleApiAuthRequest {
-        client_id: google_client_id,
-        client_secret: google_client_secret,
-        code: req.code.clone(),
-        grant_type: "authorization_code".to_string(),
-        redirect_uri: redirect_uri_local
-    };
-
-    let client = reqwest::Client::new();
-    let api_response = match client
-        .post(url)
-        .form(&body)
-        .header(CONTENT_TYPE, "application/x-www-form-urlencoded")
-        .send()
-        .await {
-            Ok(res) => {
-                match res.json::<Value>().await {
-                    Ok(r) => r,
-                    Err(e) => {
-                        error!("Failed to fetch data: {:?}", e);
-                        json!({ 
-                            "error": true,
-                            "message": e.to_string() 
-                        })
-                    }
-                }
-            },
-            Err(e) => {
-                error!("Failed to fetch data: {:?}", e);
-                json!({ 
-                    "error": true,
-                    "message": e.to_string() 
-                })
-            }
-        };
-
-        if api_response.get("error").is_some() {
-            return  HttpResponse::InternalServerError().body(format!("{:?}", api_response.get("message").unwrap()));
-        } 
-
-        let access_token = api_response.get("access_token").expect("access_token");
-        
+    if authentication_res.data.is_some() {
+        let auth_data = authentication_res.data.unwrap();
+        let access_token = auth_data.get("access_token").expect("access_token");
         let web_api_res = get_google_user_info(
             access_token.as_str().expect("access_token").to_string()
         ).await;
-
+    
         #[derive(Serialize, Deserialize, Clone, Debug)]
         struct GoogleUserInfo {
             email: String,
@@ -410,12 +303,12 @@ pub async fn get_google_auth(
             picture: String,
             verified_email: bool
         }
-
+    
         if web_api_res.data.is_some() {
             let google_user_info: GoogleUserInfo = serde_json::from_value(
                 web_api_res.data.clone().unwrap()
             ).unwrap();
-
+    
             let user_info_obj = UserInfo {
                 _id: google_user_info.email.clone(),
                 email: google_user_info.email,
@@ -437,8 +330,15 @@ pub async fn get_google_auth(
                     HttpResponse::InternalServerError().body(format!("{:?}", e))
                 }
             };
+        } else {
+            error!("unable to authenticate user!");
+            return HttpResponse::InternalServerError().body(
+                format!("{:?}", authentication_res.error_message.unwrap_or("error".to_string()))
+            );
         }
+    } else {
         HttpResponse::InternalServerError().body("Unable login user!")
+    }
 }
 
 pub async fn get_github_auth(
@@ -446,55 +346,14 @@ pub async fn get_github_auth(
     req: web::Json<LoginAuthRequest>
 ) -> impl Responder {
     info!("Recieved req for github user login!");
-    let url = "https://github.com/login/oauth/access_token";
-    let github_client_id = env::var("SBS_GITHUB_LOGIN_CLIENT_ID")
-        .expect("You must set the SBS_GITHUB_LOGIN_CLIENT_ID environment var!");
-    let github_client_secret = env::var("SBS_GITHUB_LOGIN_CLIENT_SECRET")
-        .expect("You must set the SBS_GITHUB_LOGIN_CLIENT_SECRET environment var!");
-    let redirect_uri_local = "http://localhost:3000/sbs-v1/login".to_string();
-
-    let body = GitHubApiAuthRequest {
-        client_id: github_client_id,
-        client_secret: github_client_secret,
-        code: req.code.to_string(),
-        redirect_uri: redirect_uri_local.to_string()
-    };
-
-    let client = reqwest::Client::new();
-    let api_response = match client
-        .post(url)
-        .json(&body)
-        .send()
-        .await {
-            Ok(res) => {
-                match res.text().await {
-                    Ok(r) => serde_json::to_value::<Value>(
-                        serde_urlencoded::from_str(&r).unwrap()
-                    ).unwrap(),
-                    Err(e) => {
-                        error!("Failed to fetch data: {:?}", e);
-                        json!({ 
-                            "error": true,
-                            "message": e.to_string() 
-                        })
-                    }
-                }
-            },
-            Err(e) => {
-                error!("Failed to fetch data: {:?}", e);
-                json!({ 
-                    "error": true,
-                    "message": e.to_string() 
-                })            
-            }
-        };
-
-        if api_response.get("error").is_some() {
-            return  HttpResponse::InternalServerError().body(format!("{:?}", api_response.get("message")));
-        } 
-
-        let access_token = api_response.get("access_token").expect("access_token");
-        
+    
+    let web_api_res = authenticate_github_token(req.into_inner()).await;
+    
+    if web_api_res.data.is_some() {
+        let data = web_api_res.data.unwrap();
+        let access_token = data.get("access_token")
+            .expect("access_token");
+    
         #[derive(Serialize, Deserialize, Clone, Debug)]
         struct GitHubUserInfo {
             bio: Option<String>,
@@ -564,6 +423,11 @@ pub async fn get_github_auth(
                 return HttpResponse::InternalServerError().body("unable to login user!")
             } 
         }
+    } else {
+        HttpResponse::InternalServerError().body(
+            format!("{:?}", web_api_res.error_message.unwrap_or("error".to_string()))
+        )
+    }
 }
 /********************************************************************************/
 

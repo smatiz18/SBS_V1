@@ -1,8 +1,119 @@
+use std::env;
+
 use awc::error::HeaderValue;
-use reqwest::header::{HeaderMap, AUTHORIZATION, USER_AGENT};
+use log::error;
+use reqwest::header::{HeaderMap, AUTHORIZATION, CONTENT_TYPE, USER_AGENT};
 use serde_json::{json, Value};
 
-use crate::models::web_api::web_api_res::WebApiRes;
+use crate::{models::{services::{get_nba_players_by_team_and_season_request::GetNbaPlayersByTeamAndSeasonRequest, get_odds_request::GetOddsRequest, github_api_auth_request::GitHubApiAuthRequest, google_api_auth_request::GoogleApiAuthRequest, login_auth_request::LoginAuthRequest}, web_api::web_api_res::WebApiRes}, routes::endpoints::{NBA_RAPID_API_HOST, NBA_RAPID_API_ROOT, THE_ODDS_API_ROOT}};
+
+/** rapid api *******************************************************************/
+/********************************************************************************/
+pub async fn get_nba_players_by_team_and_season_rapid_api(req: GetNbaPlayersByTeamAndSeasonRequest) -> WebApiRes {
+    let url = format!("{}/players?team={}&season={}", NBA_RAPID_API_ROOT, &req.team_id, &req.season); 
+    let rapid_api_key = env::var("RAPID_API_KEY").expect("You must set RAPID_API_KEY environment var!");
+    let mut headers = HeaderMap::new();
+    headers.insert(
+        "x-rapidapi-host", 
+        HeaderValue::from_static(NBA_RAPID_API_HOST)
+    );
+    headers.insert(
+        "x-rapidapi-key",
+        HeaderValue::from_str(&rapid_api_key).expect("You must set RAPID_API_KEY environment var!")
+    );
+
+    get(&url, headers).await
+}
+/********************************************************************************/
+
+/** odds api ********************************************************************/
+/********************************************************************************/
+pub async fn get_odds_odds_api(req: GetOddsRequest) -> WebApiRes {
+    let odds_api_key = env::var("ODDS_API_KEY").expect("You must set ODDS_API_KEY environment var!");
+
+    let markets: String = req.markets
+        .to_owned()
+        .into_iter()
+        .map(|market| market.clone().to_string())
+        .collect::<Vec<String>>()
+        .join(",");
+    
+    let bookmakers = req.bookmakers
+        .to_owned()
+        .into_iter()
+        .map(|bookmaker | bookmaker.to_string())
+        .collect::<Vec<String>>()
+        .join(",");
+
+    let url = format!(
+        "{}sports/{}/odds/?apiKey={}&regions={}&markets={}&oddsFormat={}&bookmakers={}", 
+        THE_ODDS_API_ROOT, 
+        req.sports.to_string(), 
+        odds_api_key, 
+        req.regions.to_string(), 
+        markets, 
+        req.odds_format,
+        bookmakers
+    );
+
+    get(&url, HeaderMap::new()).await
+}
+/********************************************************************************/
+
+/** google api ******************************************************************/
+/********************************************************************************/
+pub async fn authenticate_google_token(req: LoginAuthRequest) -> WebApiRes {
+    let url = "https://oauth2.googleapis.com/token";
+    let google_client_id = env::var("SBS_GOOGLE_LOGIN_CLIENT_ID")
+        .expect("You must set the SBS_GOOGLE_LOGIN_CLIENT_ID environment var!");
+    let google_client_secret = env::var("SBS_GOOGLE_LOGIN_CLIENT_SECRET")
+        .expect("You must set the SBS_GOOGLE_LOGIN_CLIENT_SECRET environment var!");
+    let redirect_uri_local = "http://localhost:3000".to_string();
+
+    let body = GoogleApiAuthRequest {
+        client_id: google_client_id,
+        client_secret: google_client_secret,
+        code: req.code.clone(),
+        grant_type: "authorization_code".to_string(),
+        redirect_uri: redirect_uri_local
+    };
+
+    let client = reqwest::Client::new();
+    match client
+        .post(url)
+        .form(&body)
+        .header(CONTENT_TYPE, "application/x-www-form-urlencoded")
+        .send()
+        .await {
+            Ok(res) => {
+                match res.json::<Value>().await {
+                    Ok(r) => {
+                        WebApiRes {
+                            is_error: Some(false),
+                            error_message: None,
+                            data: Some(r)
+                        }
+                    },
+                    Err(e) => {
+                        error!("Failed to parse response: {:?}", e);
+                        WebApiRes {
+                            is_error: Some(true),
+                            error_message: Some(e.to_string()),
+                            data: None
+                        }
+                    }
+                }
+            },
+            Err(e) => {
+                error!("Failed to authenticate code: {:?}", e);
+                WebApiRes {
+                    is_error: Some(true),
+                    error_message: Some(e.to_string()),
+                    data: None
+                }
+            }
+        }
+}
 
 pub async fn get_google_user_info(access_token: String) -> WebApiRes {
     let url = "https://www.googleapis.com/oauth2/v2/userinfo";
@@ -15,6 +126,63 @@ pub async fn get_google_user_info(access_token: String) -> WebApiRes {
     );
     
     get(url, headers).await
+}
+/********************************************************************************/
+
+/** github api ******************************************************************/
+/********************************************************************************/
+pub async fn authenticate_github_token(req: LoginAuthRequest) -> WebApiRes {
+    let url = "https://github.com/login/oauth/access_token";
+    let github_client_id = env::var("SBS_GITHUB_LOGIN_CLIENT_ID")
+        .expect("You must set the SBS_GITHUB_LOGIN_CLIENT_ID environment var!");
+    let github_client_secret = env::var("SBS_GITHUB_LOGIN_CLIENT_SECRET")
+        .expect("You must set the SBS_GITHUB_LOGIN_CLIENT_SECRET environment var!");
+    let redirect_uri_local = "http://localhost:3000/sbs-v1/login".to_string();
+
+    let body = GitHubApiAuthRequest {
+        client_id: github_client_id,
+        client_secret: github_client_secret,
+        code: req.code.to_string(),
+        redirect_uri: redirect_uri_local.to_string()
+    };
+
+    let client = reqwest::Client::new();
+    match client
+        .post(url)
+        .json(&body)
+        .send()
+        .await {
+            Ok(res) => {
+                match res.text().await {
+                    Ok(r) => {
+                        let data = serde_json::to_value::<Value>(
+                            serde_urlencoded::from_str(&r).unwrap()
+                        ).unwrap();
+                        WebApiRes {
+                            is_error: Some(false),
+                            error_message: None,
+                            data: Some(data)
+                        }
+                    },
+                    Err(e) => {
+                        error!("Failed to parse response: {:?}", e);
+                        WebApiRes {
+                            is_error: Some(true),
+                            error_message: Some(e.to_string()),
+                            data: None
+                        } 
+                    }
+                }
+            },
+            Err(e) => {
+                error!("Failed to authenticate code: {:?}", e);
+                WebApiRes {
+                    is_error: Some(true),
+                    error_message: Some(e.to_string()),
+                    data: None
+                }           
+            }
+        }
 }
 
 pub async fn get_github_user_info(access_token: String) -> WebApiRes {
@@ -51,6 +219,10 @@ pub async fn get_github_user_email_info(access_token: String) -> WebApiRes {
     get(url, headers).await
 }
 
+/********************************************************************************/
+
+/** util ************************************************************************/
+/********************************************************************************/
 async fn get(url: &str, headers: HeaderMap) -> WebApiRes {
     let client: reqwest::Client = reqwest::Client::new();
  
@@ -65,11 +237,14 @@ async fn get(url: &str, headers: HeaderMap) -> WebApiRes {
                     data: Some(r.json::<Value>().await.unwrap_or(json!({ "err": "err" })))
                 }
             },
-            Err(e) => 
+            Err(e) => {
+                error!("Failed to fetch data: {:?}", e); 
                 WebApiRes {
                     is_error: Some(true),
                     error_message: Some(e.to_string()),
                     data: None
-                }, 
+                }
+            }
         }
 }
+/********************************************************************************/

@@ -1,6 +1,5 @@
 use bson::{doc, from_document, to_document, Document};
 use chrono::{SecondsFormat, Utc};
-use log::info;
 use mongodb::options::FindOptions;
 use mongodb::Collection;
 use crate::db::base_mongo::find as base_find;
@@ -58,8 +57,7 @@ pub async fn handle_user_login(
         ).await;
     }
 
-    let updated_user_info_mongo_res = find(collection, match_query, None)
-        .await;
+    let updated_user_info_mongo_res = find(collection, match_query, None).await;
 
     let updated_user_info = updated_user_info_mongo_res.unwrap_or(vec!());
 
