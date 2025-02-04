@@ -8,15 +8,16 @@ import { GetNbaGamesByTeamAndSeasonRequest } from "../../models/services/get-nba
 import { GetNbaOddsByTeamAndSeasonRequest } from "../../models/services/get-nba-odds-by-team-and-season-request";
 import { GetNbaPlayerStatsByIdAndSeasonRequest } from "../../models/services/get-nba-player-stats-by-id-and-season-request";
 import { NbaPlayerGameStatsAvgsHistorical } from "../../models/nba-player-game-stats-avgs-historical";
-import { PYTHON_SERVER, RUST_SERVER } from "../config";
+import { RUST_SERVER } from "../config";
 import { GetNbaTeamAggGameStatsRequest } from "../../models/services/get-nba-team-agg-game-stats-request";
 import { GetNbaTeamStatsRequest } from "../../models/services/get-nba-team-stats-request";
 import { NbaTeamStats } from "../../models/nba-team-stats";
 import { NbaTeamAggGameStatsHistorical } from "../../models/nba-team-agg-game-stats-historical";
+import { WebApiRes } from "../../models/services/web-api-res";
 
 export const NBA_API_ROOT = '/nba-api';
 
-export const GET_NBA_LINEUPS = `${NBA_API_ROOT}/get-matchups`;
+export const GET_NBA_LINEUPS = `${NBA_API_ROOT}/daily-matchups/get`;
 export const GET_NBA_GAMES_BY_TEAM_AND_SEASON = `${NBA_API_ROOT}/historical-games/get`;
 export const GET_NBA_ODDS_BY_TEAM_AND_SEASON = `${NBA_API_ROOT}/historical-odds/get`;
 export const GET_NBA_PLAYERS_BY_TEAM_AND_SEASON = `${NBA_API_ROOT}/players-by-team-and-season/get`;
@@ -24,8 +25,8 @@ export const GET_NBA_PLAYER_STATS_BY_ID_AND_SEASON = `${NBA_API_ROOT}/player-sta
 export const GET_NBA_TEAM_AGG_GAME_STATS = `${NBA_API_ROOT}/team-agg-game-stats/get`;
 export const GET_NBA_TEAM_STATS = `${NBA_API_ROOT}/team-stats/get`;
 
-export function getNbaMatchups(): Promise<AxiosResponse<GetNbaMatchupsResponse>> {
-  return axios.get<GetNbaMatchupsResponse>(`${PYTHON_SERVER}${GET_NBA_LINEUPS}`);
+export function getNbaMatchups(): Promise<AxiosResponse<WebApiRes>> {
+  return axios.get<WebApiRes>(`${RUST_SERVER}${GET_NBA_LINEUPS}`);
 }
 
 export function getNbaGamesByTeamAndSeason(req: GetNbaGamesByTeamAndSeasonRequest): Promise<AxiosResponse<NbaGameHistorical[]>> {

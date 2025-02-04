@@ -24,6 +24,7 @@ import { SeasonType } from "../../../../models/enums/season-type";
 import { currentNbaSeason } from "../../../../utils/utils";
 import { GetNbaTeamAggGameStatsRequest } from "../../../../models/services/get-nba-team-agg-game-stats-request";
 import { NbaTeamAggGameStatsHistorical } from "../../../../models/nba-team-agg-game-stats-historical";
+import { WebApiRes } from "../../../../models/services/web-api-res";
 
 const NbaDailyMatchups = () => {
     const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
@@ -57,7 +58,12 @@ const NbaDailyMatchups = () => {
             let matchupsResp;
             if (useMock) {
               initOddsResponse = { data: GetNbaOddsMockResponse } as any;
-              matchupsResp = { data: GetNbaMatchupsMockResonse } as any;
+              matchupsResp = { 
+                data: {
+                  isError: false, 
+                  data: GetNbaMatchupsMockResonse 
+                } 
+              } as AxiosResponse<WebApiRes>;
             } else {
               const getOddsReq: GetOddsRequest = {
                 sports: OddsApiSports.BasketballNba,
@@ -71,7 +77,7 @@ const NbaDailyMatchups = () => {
             }
 
             const nbaTeamStatsReq: GetNbaTeamStatsRequest = {
-              teamIds: matchupsResp.data.matchups.flatMap((matchup: Matchup) => (
+              teamIds: (matchupsResp.data?.data?.matchups || []).flatMap((matchup: Matchup) => (
                 [
                   NbaTeamsMappedByNickname[matchup.away.teamNickname].nbaApiId,
                   NbaTeamsMappedByNickname[matchup.home.teamNickname].nbaApiId
@@ -96,7 +102,7 @@ const NbaDailyMatchups = () => {
               }, {});
 
             const oddsEventMappedByHomeTeam = parseOddsData(initOddsResponse.data);
-            const enrichedMatchups = matchupsResp.data.matchups.map((matchup: Matchup) => { 
+            const enrichedMatchups = (matchupsResp.data?.data?.matchups || []).map((matchup: Matchup) => { 
               matchup.sportsCategory = SportsCategories.NBA;
               
               matchup.away.teamLogo = NbaLogoMapper.get(matchup.away.teamNickname)!;

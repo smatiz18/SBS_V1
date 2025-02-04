@@ -9,4 +9,3 @@ pub mod routes;
 pub mod utils;
 pub mod initializers;
 pub mod web_api;
-pub mod python;

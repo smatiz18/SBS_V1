@@ -11,5 +11,5 @@ pub struct CachedWebApiResponse {
     pub request: Option<Value>,
     pub cached_date_time: DateTime<Utc>,
     pub response: WebApiRes,
-    pub wait_refresh: u32
+    pub wait_refresh: u32 // in milli
 }

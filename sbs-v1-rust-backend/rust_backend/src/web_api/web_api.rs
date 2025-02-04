@@ -1,11 +1,42 @@
-use std::env;
-
+use std::{env, fs};
 use awc::error::HeaderValue;
-use log::error;
+use log::{error, info};
+use pyo3::{types::PyModule, Py, PyAny, Python};
 use reqwest::header::{HeaderMap, AUTHORIZATION, CONTENT_TYPE, USER_AGENT};
 use serde_json::{json, Value};
+use crate::{
+    constants::python_script_paths::{
+        GET_NBA_MATCHUPS_FILE, 
+        GET_NBA_MATCHUPS_FUNCTION, 
+        SBS_V1_PYTHON_BACKEND_MODULE
+    }, 
+    models::{
+        services::{
+            get_nba_players_by_team_and_season_request::GetNbaPlayersByTeamAndSeasonRequest, 
+            get_odds_request::GetOddsRequest, 
+            github_api_auth_request::GitHubApiAuthRequest, 
+            google_api_auth_request::GoogleApiAuthRequest, 
+            login_auth_request::LoginAuthRequest
+        }, 
+        web_api::web_api_res::WebApiRes
+    }, 
+    routes::endpoints::{
+        NBA_RAPID_API_HOST, 
+        NBA_RAPID_API_ROOT, 
+        THE_ODDS_API_ROOT
+    }
+};
 
-use crate::{models::{services::{get_nba_players_by_team_and_season_request::GetNbaPlayersByTeamAndSeasonRequest, get_odds_request::GetOddsRequest, github_api_auth_request::GitHubApiAuthRequest, google_api_auth_request::GoogleApiAuthRequest, login_auth_request::LoginAuthRequest}, web_api::web_api_res::WebApiRes}, routes::endpoints::{NBA_RAPID_API_HOST, NBA_RAPID_API_ROOT, THE_ODDS_API_ROOT}};
+/**
+ * In order to limit api requests that will ultimate reduce costs at scale... 
+ * Each response from a web api will be cached. And you will be able to how long a 
+ * response can be cached before it must be refreshed.
+ */
+
+pub struct CachedRequest {
+    _id: String,
+    wait_refresh: u32
+}
 
 /** rapid api *******************************************************************/
 /********************************************************************************/
@@ -89,7 +120,7 @@ pub async fn authenticate_google_token(req: LoginAuthRequest) -> WebApiRes {
                 match res.json::<Value>().await {
                     Ok(r) => {
                         WebApiRes {
-                            is_error: Some(false),
+                            is_error: false,
                             error_message: None,
                             data: Some(r)
                         }
@@ -97,7 +128,7 @@ pub async fn authenticate_google_token(req: LoginAuthRequest) -> WebApiRes {
                     Err(e) => {
                         error!("Failed to parse response: {:?}", e);
                         WebApiRes {
-                            is_error: Some(true),
+                            is_error: true,
                             error_message: Some(e.to_string()),
                             data: None
                         }
@@ -107,7 +138,7 @@ pub async fn authenticate_google_token(req: LoginAuthRequest) -> WebApiRes {
             Err(e) => {
                 error!("Failed to authenticate code: {:?}", e);
                 WebApiRes {
-                    is_error: Some(true),
+                    is_error: true,
                     error_message: Some(e.to_string()),
                     data: None
                 }
@@ -159,7 +190,7 @@ pub async fn authenticate_github_token(req: LoginAuthRequest) -> WebApiRes {
                             serde_urlencoded::from_str(&r).unwrap()
                         ).unwrap();
                         WebApiRes {
-                            is_error: Some(false),
+                            is_error: false,
                             error_message: None,
                             data: Some(data)
                         }
@@ -167,7 +198,7 @@ pub async fn authenticate_github_token(req: LoginAuthRequest) -> WebApiRes {
                     Err(e) => {
                         error!("Failed to parse response: {:?}", e);
                         WebApiRes {
-                            is_error: Some(true),
+                            is_error: true,
                             error_message: Some(e.to_string()),
                             data: None
                         } 
@@ -177,7 +208,7 @@ pub async fn authenticate_github_token(req: LoginAuthRequest) -> WebApiRes {
             Err(e) => {
                 error!("Failed to authenticate code: {:?}", e);
                 WebApiRes {
-                    is_error: Some(true),
+                    is_error: true,
                     error_message: Some(e.to_string()),
                     data: None
                 }           
@@ -221,6 +252,88 @@ pub async fn get_github_user_email_info(access_token: String) -> WebApiRes {
 
 /********************************************************************************/
 
+/** rotowire ********************************************************************/
+/********************************************************************************/
+pub fn get_nba_daily_matchups_from_rotowire() -> WebApiRes {
+    let source_code = match fs::read_to_string(&get_nba_daily_matchups_path()) {
+        Ok(code) => {
+            info!("---------------- loaded source code! ----------------");
+            code
+        },
+        Err(e) => { 
+            error!("---------------- failed to open filed at path ----------------: {:?}", e);
+            return WebApiRes {
+                is_error: true,
+                error_message: Some(e.to_string()),
+                data: None
+            };
+        }
+    };
+
+
+    let res = Python::with_gil(|py| {
+        let loader_source_code: Py<PyAny> = match PyModule::from_code_bound(
+            py,
+            &source_code,
+            GET_NBA_MATCHUPS_FILE,
+            SBS_V1_PYTHON_BACKEND_MODULE
+        ) {
+            Ok(resp) => resp.into(),
+            Err(e) => {
+                error!("---------------- unable to load PyModule ----------------: {:?}", e);
+                return Err(e);
+            }
+        };
+
+        match loader_source_code.call_method0(py, GET_NBA_MATCHUPS_FUNCTION)  {
+            Ok(res) => {
+
+                let contents: String = res.extract(py)?;
+
+                match serde_json::to_value(contents) {
+                    Ok(v) => Ok(
+                        WebApiRes {
+                            is_error: false,
+                            error_message: None,
+                            data: Some(v)
+                        }
+                    ),
+                    Err(e) => {
+                        error!("unable to parse result! {:?}", e);
+                        Ok(
+                            WebApiRes {
+                                is_error: true,
+                                error_message: Some(e.to_string()),
+                                data: None 
+                            }
+                        )
+                    }
+                }
+            },
+            Err(e) => {
+                error!("unable to call method {:?}", GET_NBA_MATCHUPS_FUNCTION);
+                Ok(
+                    WebApiRes {
+                        is_error: true,
+                        error_message: Some(e.to_string()),
+                        data: None 
+                    }
+                )
+            },
+        }
+    });
+
+    match res {
+        Ok(web_api_res) => web_api_res,
+        Err(e) => WebApiRes {
+            is_error: true,
+            error_message: Some(e.to_string()),
+            data: None
+        }
+    }
+}
+/********************************************************************************/
+
 /** util ************************************************************************/
 /********************************************************************************/
 async fn get(url: &str, headers: HeaderMap) -> WebApiRes {
@@ -232,7 +345,7 @@ async fn get(url: &str, headers: HeaderMap) -> WebApiRes {
         .await {
             Ok(r) => {
                 WebApiRes {
-                    is_error: Some(false),
+                    is_error: false,
                     error_message: None,
                     data: Some(r.json::<Value>().await.unwrap_or(json!({ "err": "err" })))
                 }
@@ -240,11 +353,15 @@ async fn get(url: &str, headers: HeaderMap) -> WebApiRes {
             Err(e) => {
                 error!("Failed to fetch data: {:?}", e); 
                 WebApiRes {
-                    is_error: Some(true),
+                    is_error: true,
                     error_message: Some(e.to_string()),
                     data: None
                 }
             }
         }
+}
+
+fn get_nba_daily_matchups_path() -> String {
+    format!("../../{}/app/services/rotowire/{}", SBS_V1_PYTHON_BACKEND_MODULE, GET_NBA_MATCHUPS_FILE)
 }
 /********************************************************************************/
