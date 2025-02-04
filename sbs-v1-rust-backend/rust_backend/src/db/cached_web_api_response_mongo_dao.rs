@@ -1,21 +1,23 @@
 use bson::{doc, from_document, to_document, Document};
 use log::error;
-use mongodb::{options::{FindOneAndReplaceOptions, FindOptions}, Collection};
+use mongodb::{options::{FindOneAndReplaceOptions, FindOptions, ReturnDocument}, Collection};
 
-use super::{base_mongo::find as base_find, cached_web_api_response::CachedWebApiResponse};
+use crate::models::db::cached_web_api_response::CachedWebApiResponse;
+
+use super::base_mongo::find as base_find;
 use mongodb::error::Result;
 
 pub async fn get_response(
     collection: &Collection<Document>, 
     id: String
-) -> Vec<CachedWebApiResponse> {
+) -> Option<CachedWebApiResponse> {
     let match_query = doc! {
         "_id": id
     };
 
     match find(collection, match_query.clone(), None).await {
         Ok(objs) => {
-            objs
+            objs.into_iter().next()
         },
         Err(e) => {
             error!(
@@ -23,7 +25,7 @@ pub async fn get_response(
                 match_query.to_string(), 
                 e.to_string()
             );
-            vec!()
+            None
         }
     }
 }
@@ -34,6 +36,7 @@ pub async fn cache_response(
 ) -> Option<CachedWebApiResponse> {
     let replace_options = FindOneAndReplaceOptions::builder()
         .upsert(true)
+        .return_document(ReturnDocument::After)
         .build();
 
     let match_query = doc! {

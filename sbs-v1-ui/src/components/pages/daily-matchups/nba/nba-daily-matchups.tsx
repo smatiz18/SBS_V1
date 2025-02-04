@@ -30,14 +30,14 @@ const NbaDailyMatchups = () => {
     const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
 
     useEffect(() => {
-        fetchInitData(true /* use mock data */);
+        fetchInitData(false /* use mock data */);
       }, []);
 
     const getDateEst = () => {
       const timeZone = 'America/New_York';
       const date = new Date();
       const zonedDate = toZonedTime(date, timeZone);
-      return format(zonedDate, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
+      return format(zonedDate, "MM/dd/yyyy,  hh:mm a 'EST'", { timeZone: timeZone });
     }
 
     function parseOddsData(getOddsResponse: GetOddsResponse) {
@@ -139,7 +139,7 @@ const NbaDailyMatchups = () => {
         <div className="page-container">
             <div className="header">
                 <h1 className="header-title">NBA Matchups</h1>
-                <text className="date-time">{`@${getDateEst()} EST`}</text>
+                <text className="date-time">{`@${getDateEst()}`}</text>
             </div>
             <div className="content">
                 <div className="main-content">

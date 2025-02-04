@@ -27,17 +27,6 @@ use crate::{
     }
 };
 
-/**
- * In order to limit api requests that will ultimate reduce costs at scale... 
- * Each response from a web api will be cached. And you will be able to how long a 
- * response can be cached before it must be refreshed.
- */
-
-pub struct CachedRequest {
-    _id: String,
-    wait_refresh: u32
-}
-
 /** rapid api *******************************************************************/
 /********************************************************************************/
 pub async fn get_nba_players_by_team_and_season_rapid_api(req: GetNbaPlayersByTeamAndSeasonRequest) -> WebApiRes {

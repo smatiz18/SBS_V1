@@ -1,5 +1,5 @@
 use std::env;
-use crate::{db::{base_mongo::get_collection, constants::{NBA_GAMES_HISTORICAL_COLLECTION_NAME, NBA_ODDS_HISTORICAL_COLLECTION_NAME, NBA_PLAYER_AGGREGATED_GAME_STATS_HISTORICAL, NBA_TEAM_AGGREGATED_GAME_STATS_HISTORICAL, NBA_TEAM_STATS, SBS_V1_DB_NAME, USER_INFO}}, models::app_state::AppState};
+use crate::{db::{base_mongo::get_collection, constants::{CACHED_WEB_API_RESPONSE, NBA_GAMES_HISTORICAL_COLLECTION_NAME, NBA_ODDS_HISTORICAL_COLLECTION_NAME, NBA_PLAYER_AGGREGATED_GAME_STATS_HISTORICAL, NBA_TEAM_AGGREGATED_GAME_STATS_HISTORICAL, NBA_TEAM_STATS, SBS_V1_DB_NAME, USER_INFO}}, models::app_state::AppState};
 
 pub async fn initialize_app_state() -> Result<AppState, Box<dyn std::error::Error>> {
     // Load the MongoDB connection string from an environment variable:
@@ -36,6 +36,11 @@ pub async fn initialize_app_state() -> Result<AppState, Box<dyn std::error::Erro
         SBS_V1_DB_NAME,
         USER_INFO
     ).await?;
+    let cached_web_api_response_collection = get_collection(
+        &client_uri,
+        SBS_V1_DB_NAME,
+        CACHED_WEB_API_RESPONSE
+    ).await?;
 
     // Wrap collections in AppState
     Ok(
@@ -46,6 +51,7 @@ pub async fn initialize_app_state() -> Result<AppState, Box<dyn std::error::Erro
             nba_team_aggregated_game_stats_historical_collection: nba_team_aggregated_game_stats_historical_collection.clone(),
             nba_team_stats_collection: nba_team_stats_collection.clone(),
             user_info_collection: user_info_collection.clone(),
+            cached_web_api_response_collection: cached_web_api_response_collection.clone()
         }
     )
 }

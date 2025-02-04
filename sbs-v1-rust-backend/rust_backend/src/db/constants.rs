@@ -5,3 +5,4 @@ pub const NBA_PLAYER_AGGREGATED_GAME_STATS_HISTORICAL: &str = "nba_player_aggreg
 pub const NBA_TEAM_AGGREGATED_GAME_STATS_HISTORICAL: &str = "nba_team_aggregated_game_stats_historical";
 pub const NBA_TEAM_STATS: &str = "nba_team_stats";
 pub const USER_INFO: &str = "user_info";
+pub const CACHED_WEB_API_RESPONSE: &str = "cached_web_api_response";

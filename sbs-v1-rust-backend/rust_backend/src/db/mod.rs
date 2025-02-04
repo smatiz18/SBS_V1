@@ -6,5 +6,4 @@ pub mod constants;
 pub mod nba_team_aggregated_game_stats_historical_mongo_dao;
 pub mod nba_team_stats_mongo_dao;
 pub mod user_info_mongo_dao;
-pub mod cached_web_api_response;
 pub mod cached_web_api_response_mongo_dao;

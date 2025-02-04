@@ -8,7 +8,8 @@ pub struct AppState {
     pub nba_player_aggregated_game_stats_historical_collection: Collection<Document>,
     pub nba_team_aggregated_game_stats_historical_collection: Collection<Document>,
     pub nba_team_stats_collection: Collection<Document>,
-    pub user_info_collection: Collection<Document>
+    pub user_info_collection: Collection<Document>,
+    pub cached_web_api_response_collection: Collection<Document>
 }
 
 impl AppState {

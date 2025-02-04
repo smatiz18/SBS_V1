@@ -1,10 +1,12 @@
 use actix_web::{ web, HttpResponse, Responder};
 use bson::Document;
+use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use crate::aggregators::nba_feature_map_aggregators::get_nba_backtest_feature_map;
 use crate::db::base_mongo::aggregate;
 use crate::db::user_info_mongo_dao::handle_user_login;
+use crate::models::db::cached_web_api_response::CachedWebApiResponse;
 use crate::models::db::user_info::{LoginSource, UserInfo};
 use crate::models::enums::sports_categories::SportsCategories;
 use crate::models::odds::odds::Event;
@@ -19,12 +21,13 @@ use crate::models::services::get_nba_player_stats_by_id_and_season_request::GetN
 use crate::models::services::get_nba_team_stats_request::GetNbaTeamStatsRequest;
 use crate::models::services::get_odds_request::GetOddsRequest;
 use crate::models::services::login_auth_request::LoginAuthRequest;
+use crate::models::web_api::web_api_res::WebApiRes;
 use crate::web_api::web_api::{authenticate_github_token, authenticate_google_token, get_github_user_email_info, get_github_user_info, get_google_user_info, get_nba_daily_matchups_from_rotowire, get_nba_players_by_team_and_season_rapid_api, get_odds_odds_api};
 use std::env;
 use log::{info, error};
 
 use crate::models::app_state::AppState;
-use crate::db::{nba_games_historical_mongo_dao, nba_odds_historical_mongo_dao, nba_player_aggregated_game_stats_historical_mongo_dao, nba_team_aggregated_game_stats_historical_mongo_dao, nba_team_stats_mongo_dao};
+use crate::db::{cached_web_api_response_mongo_dao, nba_games_historical_mongo_dao, nba_odds_historical_mongo_dao, nba_player_aggregated_game_stats_historical_mongo_dao, nba_team_aggregated_game_stats_historical_mongo_dao, nba_team_stats_mongo_dao};
 
 /** mongo handlers **************************************************************/
 /********************************************************************************/
@@ -205,18 +208,72 @@ pub async fn execute_aggregation_query(
 
 /** web api handlers ************************************************************/
 /********************************************************************************/
-
+/**
+ * In order to limit api requests that will ultimately reduce costs at scale... 
+ * Each response from a web api will be cached. And you will be able to set how long a 
+ * response can be cached before it must be refreshed.
+ */
 /** Rapid API */
 pub async fn get_nba_players_by_team_and_season(
-    _app_state: web::Data<AppState>,
+    app_state: web::Data<AppState>,
     req: web::Query<GetNbaPlayersByTeamAndSeasonRequest> 
 ) -> impl Responder {
+    
     info!("Recieved req for get_nba_players_by_team_and_season, teamId {}, season: {}", req.team_id, req.season);
+    
+    let cached_resp_id = format!(
+        "get_nba_players_by_team_and_season_{}_{}", 
+        req.team_id.to_string(), 
+        req.season.to_string()
+    );
+
+    let cached_response_opt = cached_web_api_response_mongo_dao::get_response(
+        &app_state.cached_web_api_response_collection, 
+        cached_resp_id.clone()
+    ).await;
+
+    if cached_response_opt.clone().is_some_and(|cached_resp| {
+        Utc::now().timestamp_millis() - cached_resp.cached_date_time.timestamp_millis() < cached_resp.wait_refresh
+    }) {
+        return HttpResponse::Ok().json(cached_response_opt.unwrap().response);
+    }
+    
     let web_api_res = get_nba_players_by_team_and_season_rapid_api(req.into_inner()).await;
     if web_api_res.data.is_some() {
         match serde_json::from_value::<GetNbaPlayersByTeamAndSeasonResponse>(web_api_res.data.unwrap()) {
             Ok(resp_obj) => {
                 info!("Returned players by team and season from rapid api");
+                info!("Caching response!");
+                
+                let wait_refresh = 12 /* hours */ * 
+                    60 /* minutes */ * 
+                    60 /* seconds */ * 
+                    1000 /* millseconds */;
+                
+                let resp_obj_as_web_api_res = WebApiRes {
+                    is_error: false,
+                    error_message: None,
+                    data: Some(serde_json::to_value(resp_obj.clone()).unwrap())
+                };
+
+                let cached_resp_obj = CachedWebApiResponse {
+                    _id: cached_resp_id,
+                    cached_date_time: Utc::now(),
+                    response: resp_obj_as_web_api_res,
+                    wait_refresh,
+                };
+                
+                let caching_res = cached_web_api_response_mongo_dao::cache_response(
+                    &app_state.cached_web_api_response_collection, 
+                    cached_resp_obj
+                ).await;
+
+                if caching_res.is_some() {
+                    info!("Response cached!");
+                } else {
+                    error!("Unable to cache response");
+                }
+
                 HttpResponse::Ok().json(resp_obj)
             },
             Err(e) => {
@@ -233,15 +290,64 @@ pub async fn get_nba_players_by_team_and_season(
 
 /** Odds API */
 pub async fn get_odds(
-    _app_state: web::Data<AppState>,
+    app_state: web::Data<AppState>,
     req: web::Json<GetOddsRequest>
 ) -> impl Responder {
+    
     info!("Recieved req for get_odds, bookmakers: {:?}, sports: {:?}", req.bookmakers, req.sports);
+    
+    let cached_resp_id = format!(
+        "get_odds_{:?}_{:?}", 
+        req.bookmakers, 
+        req.sports
+    );
+
+    let cached_response_opt = cached_web_api_response_mongo_dao::get_response(
+        &app_state.cached_web_api_response_collection, 
+        cached_resp_id.clone()
+    ).await;
+
+    if cached_response_opt.clone().is_some_and(|cached_resp| {
+        Utc::now().timestamp_millis() - cached_resp.cached_date_time.timestamp_millis() < cached_resp.wait_refresh
+    }) {
+        return HttpResponse::Ok().json(cached_response_opt.unwrap().response);
+    }
+
     let web_api_res = get_odds_odds_api(req.into_inner()).await;
     if web_api_res.data.is_some() {
-        match serde_json::from_value::<Event>(web_api_res.data.unwrap()) {
+        match serde_json::from_value::<Vec<Event>>(web_api_res.data.unwrap()) {
             Ok(resp_obj) => {
                 info!("Returned odds from odds api");
+                info!("Caching response!");
+                
+                let wait_refresh = 2 /* minutes */ * 
+                    60 /* seconds */ * 
+                    1000 /* millseconds */;
+                
+                let resp_obj_as_web_api_res = WebApiRes {
+                    is_error: false,
+                    error_message: None,
+                    data: Some(serde_json::to_value(resp_obj.clone()).unwrap())
+                };
+
+                let cached_resp_obj = CachedWebApiResponse {
+                    _id: cached_resp_id,
+                    cached_date_time: Utc::now(),
+                    response: resp_obj_as_web_api_res,
+                    wait_refresh,
+                };
+                
+                let caching_res = cached_web_api_response_mongo_dao::cache_response(
+                    &app_state.cached_web_api_response_collection, 
+                    cached_resp_obj
+                ).await;
+
+                if caching_res.is_some() {
+                    info!("Response cached!");
+                } else {
+                    error!("Unable to cache response");
+                }
+
                 HttpResponse::Ok().json(resp_obj)
             },
             Err(e) => {
@@ -258,10 +364,57 @@ pub async fn get_odds(
 
 /** Rotowire */
 pub async fn get_nba_daily_matchups(
-    _app_state: web::Data<AppState>    
+    app_state: web::Data<AppState>    
 ) -> impl Responder {
+
     info!("Recieved req for nba daily matchups!");
+
+    let cached_resp_id = "rotowire_nba_daily_matchups".to_string();
+
+    let cached_response_opt = cached_web_api_response_mongo_dao::get_response(
+        &app_state.cached_web_api_response_collection, 
+        cached_resp_id.clone()
+    ).await;
+
+    if cached_response_opt.clone().is_some_and(|cached_resp| {
+        Utc::now().timestamp_millis() - cached_resp.cached_date_time.timestamp_millis() < cached_resp.wait_refresh
+    }) {
+        return HttpResponse::Ok().json(cached_response_opt.unwrap().response);
+    }
+
     let res = get_nba_daily_matchups_from_rotowire();
+    info!("Returned nba daily matchups!");
+    info!("Caching response!");
+                
+    let wait_refresh = 1 /* hours */ * 
+        60 /* minutes */ * 
+        60 /* seconds */ * 
+        1000 /* millseconds */;
+    
+    let resp_obj_as_web_api_res = WebApiRes {
+        is_error: false,
+        error_message: None,
+        data: Some(serde_json::to_value(res.clone()).unwrap())
+    };
+
+    let cached_resp_obj = CachedWebApiResponse {
+        _id: cached_resp_id,
+        cached_date_time: Utc::now(),
+        response: resp_obj_as_web_api_res,
+        wait_refresh,
+    };
+    
+    let caching_res = cached_web_api_response_mongo_dao::cache_response(
+        &app_state.cached_web_api_response_collection, 
+        cached_resp_obj
+    ).await;
+
+    if caching_res.is_some() {
+        info!("Response cached!");
+    } else {
+        error!("Unable to cache response");
+    }
+
     HttpResponse::Ok().json(res)
 }
 /********************************************************************************/
@@ -282,8 +435,8 @@ pub async fn get_ui_login_credentials() -> impl Responder {
     }
 
     HttpResponse::Ok().json(UiLoginCredentials {
-        google_client_id: google_client_id,
-        github_client_id: github_client_id,
+        google_client_id,
+        github_client_id,
     })
 }
 
