@@ -2,12 +2,16 @@ import './about.scss';
 import optimalOdds from "../../../assets/images/optimal-odds.png";
 import chartAnalyzer from "../../../assets/images/chart-analyzer.png";
 import nbaMatchups from "../../../assets/images/nba-matchups.png";
+import sbs_logo from '../../../assets/sbs-branding/sandbox_v3_1.png';
 const About = () => {
     return (
         <div className='about-container'>
             <div className="about-content">
+                <div className='logo-wrapper'>
+                    <img src={sbs_logo} alt="Sports Betting Sandbox"/>
+                </div>
                 <section className="motivation">
-                    <h1>Welcome!</h1>
+                    <h1>Welcome</h1>
                     <p>
                         Have you ever wondered how many times the Knicks have gone on to score +130 points, 
                         given that they have already scored 36 points in the first quarter? 

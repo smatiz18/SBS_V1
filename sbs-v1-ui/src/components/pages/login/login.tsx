@@ -13,6 +13,7 @@ import { LoginResult } from '../../../models/services/login-result';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../store/store';
 import { Routes } from '../../../routes';
+import sbs_logo from '../../../assets/sbs-branding/sandbox_v3_1.png';
 
 const Login: React.FC<{}> = ({}) => {
 
@@ -104,8 +105,8 @@ const Login: React.FC<{}> = ({}) => {
         <div className='login-page-container'>
             <div className='login-content-container'>
                 <div className='login-content-header'>
-                    <div className='header-wrapper'>
-                        Login
+                    <div className='logo-wrapper'>
+                        <img src={sbs_logo} alt="Sports Betting Sandbox"/>
                     </div>
                 </div>
                 <div className='login-options'>

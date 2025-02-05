@@ -18,10 +18,10 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
     /********************************************************************************/
     enum AvailableCollections {
         // NbaGamePlayerStatsHistorical = 'nba_game_player_stats_historical',
-        NbaGamesHistorical = 'nba_games_historical',
-        NbaPlayerAggregatedGameStatsHistorical = 'nba_player_aggregated_game_stats_historical',
+        NbaGamesHistorical = 'Team Historical Stats',
+        NbaPlayerAggregatedGameStatsHistorical = 'Player Historical Stats',
         // NbaTeamAggregatedGameStatsHistorical = 'nba_team_aggregated_game_stats_historical',
-        NbaTeamStats = 'nba_steam_stats'  
+        NbaTeamStats = 'Team Streak Current Stats'  
     };
     const collectionToAvailableFieldsMap: any = {};
     // collectionToAvailableFieldsMap[AvailableCollections.NbaGamePlayerStatsHistorical] = [
@@ -66,6 +66,8 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
     ];    
     collectionToAvailableFieldsMap[AvailableCollections.NbaPlayerAggregatedGameStatsHistorical] = [
         'seasonType',
+        'teamName',
+        'teamNickname',
         'firstname',
         'lastname',
         'birthday',
@@ -318,7 +320,48 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
     };
 
     const parseNbaPlayerAggregatedGameStatsHistorical = (query: any) => {
+        let playerStatsFields = new Set(
+            [
+                'min',
+                'fgm',
+                'fga',
+                'fgp',
+                'ftm',
+                'fta',
+                'ftp',
+                'tpm',
+                'tpa',
+                'tpp',
+                'offReb',
+                'defReb',
+                'totReb',
+                'assists',
+                'pFouls',
+                'steals',
+                'turnovers',
+                'blocks',
+                'plusMinus',
+                'dateStart',
+                'win',
+                'isHome'
+            ]
+        );
 
+        const playerStatsProjection = {
+            "playerStats": {
+                "$map": {
+                    "input": { "$objectToArray": "$playerStats" },
+                        "as": "player",
+                    "in": "$$player.v"
+                }
+            } 
+        };
+
+
+        const playerStatsRules = query.rules.filter((rule: any) => playerStatsFields.has(rule.field));
+        const nonPlayerStatsRules = query.rules.filter((rule: any) => !playerStatsFields.has(rule.field));
+
+        // if (player_stats_rules.)
     };
     /********************************************************************************/
 

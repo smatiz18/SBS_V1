@@ -1,3 +1,6 @@
+
+@use "../../../../variables";
+
 /* Container styles */
 .page-container {
     max-width: 1200px;
@@ -14,6 +17,10 @@
         justify-content: space-between;
         align-items: left;
 
+        h1 {
+            color: variables.$white-background-header-title-color;
+        }
+        
         .date-time {
             margin-top: -.25rem;
             font-size: .85em;
