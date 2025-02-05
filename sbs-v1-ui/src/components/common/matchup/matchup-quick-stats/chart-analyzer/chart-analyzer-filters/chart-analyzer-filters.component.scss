@@ -5,7 +5,6 @@
         align-items: center;
         justify-content: space-between;
 
-
         .summary-wrapper {
             width: 100%;
         }
@@ -26,5 +25,11 @@
         .filter-option-wrapper {
             padding: 0 .5rem 0 .5rem;
         }
+    }
+
+    .button-wrapper {
+        display: flex;
+        justify-content: center;
+        padding: .25rem 0rem .5rem 0rem;
     }
 }

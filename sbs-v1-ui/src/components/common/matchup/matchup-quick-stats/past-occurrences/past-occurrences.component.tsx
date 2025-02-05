@@ -3,7 +3,11 @@ import SBSQueryBuilder from "../query-builder/query-builder.component"
 import Button from "@mui/material/Button";
 import './past-occurrences.component.scss';
 import { ThemeProvider } from "@emotion/react";
-import { darkTheme } from "../../../../../models/form-styles/styles";
+import { accordianSummarySx, darkTheme, filterAccordianSx } from "../../../../../models/form-styles/styles";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AccordionDetails from "@mui/material/AccordionDetails";
 
 const PastOccurrences: React.FC<{}> = ({}) => {
     const [queryBuilders, setQueryBuilders] = useState([] as any[]);
@@ -40,17 +44,33 @@ const PastOccurrences: React.FC<{}> = ({}) => {
 
     return (
         <div className='past-occurrences-container'>
-            <div className="sbs-query-builders-wrapper">
-                {queryBuilders}
-            </div>
-            
-                <div className="button-wrapper">
-                    { queryBuilders.length < 4 && 
-                        <ThemeProvider theme={darkTheme}>
-                            <Button variant="outlined" size="small" onClick={addNewQueryBuilder}>+</Button>
-                        </ThemeProvider>
-                    }
-                </div>
+            <ThemeProvider theme={darkTheme}>
+                <Accordion sx={filterAccordianSx} defaultExpanded={true}>
+                    <AccordionSummary
+                            expandIcon={<ExpandMoreIcon/>}
+                            aria-controls="panel1-content"
+                            id="panel1-header"
+                            sx={accordianSummarySx}
+                        >
+                            Past Occurrences
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <div className="sbs-query-builders-wrapper">
+                                {queryBuilders}
+                            </div>
+                        </AccordionDetails>
+                        <AccordionDetails>
+                            { 
+                                queryBuilders.length < 4 &&  
+                                    (
+                                        <div className="button-wrapper">
+                                            <Button variant="outlined" size="small" onClick={addNewQueryBuilder}>+</Button>
+                                        </div>
+                                    )
+                            }
+                        </AccordionDetails>
+                </Accordion>
+            </ThemeProvider>
         </div>
     )
 }

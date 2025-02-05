@@ -170,13 +170,15 @@ const ChartAnalyzerFilters: React.FC<{betOption: BetOptions, matchup: Matchup, h
                             {chartFilterAccordianDetails}
                         </div>
                     </AccordionDetails>
-                    {
-                        chartFilterAccordianDetails.length < 4 && (
-                            <AccordionDetails>
-                                <Button variant="outlined" size="small" onClick={addNewChartDataSet}>+</Button>
-                            </AccordionDetails>
-                        )
-                    }
+                            {
+                                chartFilterAccordianDetails.length < 4 && (
+                                    <div className="button-wrapper">
+                                        <AccordionDetails>
+                                            <Button variant="outlined" size="small" onClick={addNewChartDataSet}>+</Button>
+                                        </AccordionDetails>
+                                    </div>
+                                )
+                            }
                 </Accordion>
             </ThemeProvider>
         </div>

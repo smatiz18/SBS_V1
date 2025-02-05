@@ -57,7 +57,7 @@ const AvgsTable: React.FC<{
     const avgSelect = (idx: number, isComparator?: boolean) => {
         let selectOptions = range(1,20).map((o) => (
             <MenuItem value={o}>
-                {`${isComparator ? 'Comp' : ''} ${o} Avg`}</MenuItem>
+                {`${o} game avg`}</MenuItem>
         ));
         if (isComparator) {
             const comparatorSelectOption =  <MenuItem value='all'>All Avg</MenuItem>;

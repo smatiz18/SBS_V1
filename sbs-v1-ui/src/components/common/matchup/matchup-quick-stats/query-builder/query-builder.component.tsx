@@ -14,44 +14,46 @@ import { ExecuteMongoQueryRequest } from '../../../../../models/services/execute
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, deleteQueryBuilder}) => {
+    /** consts **********************************************************************/
+    /********************************************************************************/
     enum AvailableCollections {
-        NbaGamePlayerStatsHistorical = 'nba_game_player_stats_historical',
+        // NbaGamePlayerStatsHistorical = 'nba_game_player_stats_historical',
         NbaGamesHistorical = 'nba_games_historical',
         NbaPlayerAggregatedGameStatsHistorical = 'nba_player_aggregated_game_stats_historical',
-        NbaTeamAggregatedGameStatsHistorical = 'nba_team_aggregated_game_stats_historical',
+        // NbaTeamAggregatedGameStatsHistorical = 'nba_team_aggregated_game_stats_historical',
         NbaTeamStats = 'nba_steam_stats'  
     };
     const collectionToAvailableFieldsMap: any = {};
-    collectionToAvailableFieldsMap[AvailableCollections.NbaGamePlayerStatsHistorical] = [
-        'season',
-        'dateStart',
-        'isHome',
-        'firstname',
-        'lastname',
-        'points',
-        'min',
-        'fgm',
-        'fga',
-        'fgp',
-        'ftm',
-        'fta',
-        'ftp',
-        'tpm',
-        'tpa',
-        'tpp',
-        'offReb',
-        'defReb',
-        'totReb',
-        'assists',
-        'pFouls',
-        'steals',
-        'turnovers',
-        'blocks',
-        'plusMinus',
-        'dateStart',
-        'win',
-        'isHome'
-    ];
+    // collectionToAvailableFieldsMap[AvailableCollections.NbaGamePlayerStatsHistorical] = [
+    //     'season',
+    //     'dateStart',
+    //     'isHome',
+    //     'firstname',
+    //     'lastname',
+    //     'points',
+    //     'min',
+    //     'fgm',
+    //     'fga',
+    //     'fgp',
+    //     'ftm',
+    //     'fta',
+    //     'ftp',
+    //     'tpm',
+    //     'tpa',
+    //     'tpp',
+    //     'offReb',
+    //     'defReb',
+    //     'totReb',
+    //     'assists',
+    //     'pFouls',
+    //     'steals',
+    //     'turnovers',
+    //     'blocks',
+    //     'plusMinus',
+    //     'dateStart',
+    //     'win',
+    //     'isHome'
+    // ];
     collectionToAvailableFieldsMap[AvailableCollections.NbaGamesHistorical] = [
         'season',
         'dateStart',
@@ -63,8 +65,6 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
         )),
     ];    
     collectionToAvailableFieldsMap[AvailableCollections.NbaPlayerAggregatedGameStatsHistorical] = [
-        'playerId',
-        'teamId',
         'seasonType',
         'firstname',
         'lastname',
@@ -94,18 +94,18 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
         'win',
         'isHome'
     ];
-    collectionToAvailableFieldsMap[AvailableCollections.NbaTeamAggregatedGameStatsHistorical] = [
-        'season',
-        'seasonType',
-        'teamName',
-        'teamNickname',
-        'isHome',
-        ...Object.values(GameStatsOption).map((gso: any) => (
-            gso.toString()
-        )),
-        'win',
-        'dateStart'
-    ];
+    // collectionToAvailableFieldsMap[AvailableCollections.NbaTeamAggregatedGameStatsHistorical] = [
+    //     'season',
+    //     'seasonType',
+    //     'teamName',
+    //     'teamNickname',
+    //     'isHome',
+    //     ...Object.values(GameStatsOption).map((gso: any) => (
+    //         gso.toString()
+    //     )),
+    //     'win',
+    //     'dateStart'
+    // ];
     collectionToAvailableFieldsMap[AvailableCollections.NbaTeamStats] = [
         'awayLosses',
         'awayStreak',
@@ -144,7 +144,10 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
         }
     );
     const [numOfOccurrences, setNumOfOccurrences] = useState(0);
+    /********************************************************************************/
 
+    /** action funcs ****************************************************************/
+    /********************************************************************************/
     useEffect(() => {
         updateQueryBuilderOptions(currentCollection);
     }, [currentCollection]);       
@@ -174,16 +177,21 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
             setNumOfOccurrences(resp.data?.length || 0);
         });
     };
+    /********************************************************************************/
 
+    /** query parsers ***************************************************************/
+    /********************************************************************************/
     const parseQuery = (query: any) => {
         switch (currentCollection) {
             case AvailableCollections.NbaGamesHistorical: {
-                return parseNbaGamesHistoricalQuery(query)
+                return parseNbaGamesHistoricalQuery(query);
+            }
+            case AvailableCollections.NbaPlayerAggregatedGameStatsHistorical: {
+                return parseNbaPlayerAggregatedGameStatsHistorical(query);
             }
             default: return query;
         };
     };
-
 
     const getVisitorsAndHomeOrQuery = (
         isHome: boolean, 
@@ -309,6 +317,11 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
         };
     };
 
+    const parseNbaPlayerAggregatedGameStatsHistorical = (query: any) => {
+
+    };
+    /********************************************************************************/
+
     function onDelete(id: string): void {
         deleteQueryBuilder(id);
     }
@@ -339,7 +352,12 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
                 </div>
             </div>
             <div className='query-builder-wrapper'>
-                <QueryBuilder fields={queryBuilderFields} query={query as any} onQueryChange={setQuery as any}/>
+                <QueryBuilder 
+                    fields={queryBuilderFields} 
+                    query={query as any} 
+                    onQueryChange={setQuery as any}
+                    controlClassnames={{ queryBuilder: 'queryBuilder-branches' }}
+                />
             </div>
             <div className='apply-button-wrapper'>
                 <ThemeProvider theme={darkTheme}>
