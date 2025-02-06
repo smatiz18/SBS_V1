@@ -348,20 +348,40 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
         );
 
         const playerStatsProjection = {
-            "playerStats": {
-                "$map": {
-                    "input": { "$objectToArray": "$playerStats" },
-                        "as": "player",
-                    "in": "$$player.v"
-                }
-            } 
+            "$project": {
+                "playerStats": {
+                    "$map": {
+                        "input": { "$objectToArray": "$playerStats" },
+                            "as": "player",
+                        "in": "$$player.v"
+                    }
+                } 
+            }
         };
 
+        const playerStatsFilteringProjection =   {
+            "$project": {
+                "playerStats": {
+                    "$filter": {
+                        "input": "$playerStats",
+                        "as": "player",
+                        "cond": { // TODO come up with parsing logic for how query builder generates query and how filter expects queries
+                            "$or": [
+                                { "$gt": ["$$player.points", 5] },
+                                { "$gt": ["$$player.assists", 8] }
+                            ]
+                        }
+                    }
+                }
+            }
+        }; 
 
-        const playerStatsRules = query.rules.filter((rule: any) => playerStatsFields.has(rule.field));
-        const nonPlayerStatsRules = query.rules.filter((rule: any) => !playerStatsFields.has(rule.field));
+        const playerStatsRules: any[] = query.rules.filter((rule: any) => playerStatsFields.has(rule.field));
+        const nonPlayerStatsRules: any[] = query.rules.filter((rule: any) => !playerStatsFields.has(rule.field));
 
-        // if (player_stats_rules.)
+        if (playerStatsRules.length > 0) {
+
+        }
     };
     /********************************************************************************/
 
