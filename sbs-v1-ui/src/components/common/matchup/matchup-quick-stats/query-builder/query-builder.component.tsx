@@ -23,6 +23,13 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
         // NbaTeamAggregatedGameStatsHistorical = 'nba_team_aggregated_game_stats_historical',
         NbaTeamStats = 'Team Streak Current Stats'  
     };
+
+    const enumToCollectionMap = new Map([
+        [AvailableCollections.NbaGamesHistorical, 'nba_game_historical'],
+        [AvailableCollections.NbaPlayerAggregatedGameStatsHistorical, 'nba_player_aggregated_game_stats_historical'],
+        [AvailableCollections.NbaTeamStats, 'nba_team_stats']
+    ]);
+
     const collectionToAvailableFieldsMap: any = {};
     // collectionToAvailableFieldsMap[AvailableCollections.NbaGamePlayerStatsHistorical] = [
     //     'season',
@@ -65,6 +72,7 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
         )),
     ];    
     collectionToAvailableFieldsMap[AvailableCollections.NbaPlayerAggregatedGameStatsHistorical] = [
+        'season',
         'seasonType',
         'teamName',
         'teamNickname',
@@ -130,6 +138,31 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
         'teamName',
         'teamNickname'
     ];
+
+    const playerStatsAggPipeline = [  
+        {
+            $project: {
+                playerStats: { $objectToArray: "$playerStats" },
+                otherFields: "$$ROOT"
+            }
+        },
+        { $unwind: "$playerStats" },
+        {
+            $replaceRoot: {
+                newRoot: {
+                    $mergeObjects: [
+                        "$otherFields",
+                        "$playerStats.v"
+                    ]
+                }
+            }
+        },
+        {
+            $project: {
+                playerStats: 0,
+            }
+        }
+    ];
    
     const collectionSelectOptions = Object.values(AvailableCollections).map((co) => (
         <MenuItem value={co}>
@@ -166,14 +199,24 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
     const onSearch = () => {
         const parsedQuery = parseQuery(query);
         const mongoQuery = formatQuery(parsedQuery, 'mongodb');
-        const matchAggPipeline = [JSON.stringify({
-            $match: JSON.parse(mongoQuery) 
-        })];
+        
+        let prevPipelineStages: any[] = [];
+        switch (currentCollection) {
+            case AvailableCollections.NbaPlayerAggregatedGameStatsHistorical: {
+                prevPipelineStages = playerStatsAggPipeline;
+                break;
+            }
+            default: break;
+        };
+
+        const aggPipeline = prevPipelineStages.concat([ { $match: JSON.parse(mongoQuery) }]);
+
+        const stringifiedPipeline = aggPipeline.map((step) => JSON.stringify(step));
         
         executeMongoQuery(
             {
-                aggregationPipeline: matchAggPipeline,
-                collectionName: `${currentCollection}_collection`
+                aggregationPipeline: stringifiedPipeline,
+                collectionName: `${enumToCollectionMap.get(currentCollection)}_collection`
             } as ExecuteMongoQueryRequest
         ).then((resp) => {
             setNumOfOccurrences(resp.data?.length || 0);
@@ -320,8 +363,10 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
     };
 
     const parseNbaPlayerAggregatedGameStatsHistorical = (query: any) => {
-        let playerStatsFields = new Set(
+        let numericalStats = new Set(
             [
+                'points',
+                'season',
                 'min',
                 'fgm',
                 'fga',
@@ -340,48 +385,22 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
                 'steals',
                 'turnovers',
                 'blocks',
-                'plusMinus',
-                'dateStart',
-                'win',
-                'isHome'
+                'plusMinus'
             ]
         );
 
-        const playerStatsProjection = {
-            "$project": {
-                "playerStats": {
-                    "$map": {
-                        "input": { "$objectToArray": "$playerStats" },
-                            "as": "player",
-                        "in": "$$player.v"
-                    }
-                } 
+        const newRules = query.rules.map((rule: any) => {
+            const ruleClone = cloneDeep(rule);
+            if (numericalStats.has(rule.field)) {
+                ruleClone.value = parseFloat(ruleClone.value);
             }
+            return ruleClone;
+        });
+
+        return { 
+            ...query, 
+            rules: newRules 
         };
-
-        const playerStatsFilteringProjection =   {
-            "$project": {
-                "playerStats": {
-                    "$filter": {
-                        "input": "$playerStats",
-                        "as": "player",
-                        "cond": { // TODO come up with parsing logic for how query builder generates query and how filter expects queries
-                            "$or": [
-                                { "$gt": ["$$player.points", 5] },
-                                { "$gt": ["$$player.assists", 8] }
-                            ]
-                        }
-                    }
-                }
-            }
-        }; 
-
-        const playerStatsRules: any[] = query.rules.filter((rule: any) => playerStatsFields.has(rule.field));
-        const nonPlayerStatsRules: any[] = query.rules.filter((rule: any) => !playerStatsFields.has(rule.field));
-
-        if (playerStatsRules.length > 0) {
-
-        }
     };
     /********************************************************************************/
 
@@ -403,7 +422,7 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
                                 <Select
                                     labelId='demo-simple-select-standard-label'
                                     id='demo-simple-select-standard'
-                                    value={AvailableCollections.NbaGamesHistorical}
+                                    value={currentCollection}
                                     onChange={(x) => handleCollectionChange(x)}
                                     sx={{...selectSx, fontSize: '.8rem'}}
                                 >

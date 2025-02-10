@@ -16,8 +16,9 @@ impl AppState {
     pub fn get_collection(&self, collection_str: &str) -> Option<Collection<Document>> {
         match collection_str {
             "nba_games_historical_collection" => Some(self.nba_games_historical_collection.clone()),
+
             // "nba_odds_historical_collection" => ,
-            // "nba_player_aggregated_game_stats_historical_collection" => ,
+            "nba_player_aggregated_game_stats_historical_collection" => Some(self.nba_player_aggregated_game_stats_historical_collection.clone()),
             // "nba_team_aggregated_game_stats_historical_collection" => , 
             // "nba_team_stats_collection" => 
             _ => None
