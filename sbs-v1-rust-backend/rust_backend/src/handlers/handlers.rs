@@ -2,8 +2,9 @@ use actix_web::{ web, HttpResponse, Responder};
 use bson::Document;
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
+use serde_json::{json, Value};
 use crate::aggregators::nba_feature_map_aggregators::get_nba_backtest_feature_map;
+use crate::aggregators::optimal_odds_aggregators::get_optimal_odds_by_event_map;
 use crate::db::base_mongo::aggregate;
 use crate::db::user_info_mongo_dao::handle_user_login;
 use crate::models::db::cached_web_api_response::CachedWebApiResponse;
@@ -20,6 +21,7 @@ use crate::models::services::get_nba_players_by_team_and_season_response::GetNba
 use crate::models::services::get_nba_player_stats_by_id_and_season_request::GetNbaPlayerStatsByIdAndSeasonRequest;
 use crate::models::services::get_nba_team_stats_request::GetNbaTeamStatsRequest;
 use crate::models::services::get_odds_request::GetOddsRequest;
+use crate::models::services::get_odds_response::GetOddsResponse;
 use crate::models::services::login_auth_request::LoginAuthRequest;
 use crate::models::web_api::web_api_res::WebApiRes;
 use crate::web_api::web_api::{authenticate_github_token, authenticate_google_token, get_github_user_email_info, get_github_user_info, get_google_user_info, get_nba_daily_matchups_from_rotowire, get_nba_players_by_team_and_season_rapid_api, get_odds_odds_api};
@@ -327,7 +329,12 @@ pub async fn get_odds(
                 let resp_obj_as_web_api_res = WebApiRes {
                     is_error: false,
                     error_message: None,
-                    data: Some(serde_json::to_value(resp_obj.clone()).unwrap())
+                    data: Some (
+                        serde_json::to_value(GetOddsResponse {
+                            events: resp_obj.clone(),
+                            optimal_odds_map: get_optimal_odds_by_event_map(resp_obj.clone()),
+                        }).expect("failed to parse GetOddsResponse")
+                    )
                 };
 
                 let cached_resp_obj = CachedWebApiResponse {

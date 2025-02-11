@@ -25,12 +25,13 @@ import { currentNbaSeason } from "../../../../utils/utils";
 import { GetNbaTeamAggGameStatsRequest } from "../../../../models/services/get-nba-team-agg-game-stats-request";
 import { NbaTeamAggGameStatsHistorical } from "../../../../models/nba-team-agg-game-stats-historical";
 import { WebApiRes } from "../../../../models/services/web-api-res";
+import _ from "lodash";
 
 const NbaDailyMatchups = () => {
     const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
 
     useEffect(() => {
-        fetchInitData(true /* use mock data */);
+        fetchInitData(false /* use mock data */);
       }, []);
 
     const getDateEst = () => {
@@ -54,7 +55,7 @@ const NbaDailyMatchups = () => {
 
     const fetchInitData = async (useMock: boolean) => {
         try {  
-            let initOddsResponse: AxiosResponse<GetOddsResponse, any>;
+            let initOddsResponse: AxiosResponse<WebApiRes, any>;
             let matchupsResp;
             if (useMock) {
               initOddsResponse = { data: GetNbaOddsMockResponse } as any;
@@ -74,10 +75,11 @@ const NbaDailyMatchups = () => {
               };
               initOddsResponse = await getOdds(getOddsReq);
               matchupsResp = await getNbaMatchups();
+              _.set(matchupsResp, "data.data.data", JSON.parse(matchupsResp.data?.data?.data || ''));
             }
 
             const nbaTeamStatsReq: GetNbaTeamStatsRequest = {
-              teamIds: (matchupsResp.data?.data?.matchups || []).flatMap((matchup: Matchup) => (
+              teamIds: (matchupsResp.data?.data?.data.matchups || []).flatMap((matchup: Matchup) => (
                 [
                   NbaTeamsMappedByNickname[matchup.away.teamNickname].nbaApiId,
                   NbaTeamsMappedByNickname[matchup.home.teamNickname].nbaApiId
@@ -101,8 +103,8 @@ const NbaDailyMatchups = () => {
                 return agg;
               }, {});
 
-            const oddsEventMappedByHomeTeam = parseOddsData(initOddsResponse.data);
-            const enrichedMatchups = (matchupsResp.data?.data?.matchups || []).map((matchup: Matchup) => { 
+            const oddsEventMappedByHomeTeam = parseOddsData(initOddsResponse.data?.data as GetOddsResponse);
+            const enrichedMatchups = (matchupsResp.data?.data?.data.matchups || []).map((matchup: Matchup) => { 
               matchup.sportsCategory = SportsCategories.NBA;
               
               matchup.away.teamLogo = NbaLogoMapper.get(matchup.away.teamNickname)!;
@@ -118,7 +120,7 @@ const NbaDailyMatchups = () => {
                 matchup.away.teamName = odds.awayTeam;
                 matchup.home.teamName = odds.homeTeam;
                 matchup.odds = odds;
-                matchup.optimalOdds = (initOddsResponse.data.optimalOddsMap || {})[odds.id];
+                matchup.optimalOdds = (initOddsResponse.data?.data?.optimalOddsMap || {})[odds.id];
                 matchup.dateStart = odds.commenceTime;
               }
               
