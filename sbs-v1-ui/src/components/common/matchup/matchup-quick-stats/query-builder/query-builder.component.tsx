@@ -17,50 +17,17 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
     /** consts **********************************************************************/
     /********************************************************************************/
     enum AvailableCollections {
-        // NbaGamePlayerStatsHistorical = 'nba_game_player_stats_historical',
         NbaGamesHistorical = 'Team Historical Stats',
         NbaPlayerAggregatedGameStatsHistorical = 'Player Historical Stats',
-        // NbaTeamAggregatedGameStatsHistorical = 'nba_team_aggregated_game_stats_historical',
-        NbaTeamStats = 'Team Streak Current Stats'  
     };
 
     const enumToCollectionMap = new Map([
         [AvailableCollections.NbaGamesHistorical, 'nba_game_historical'],
-        [AvailableCollections.NbaPlayerAggregatedGameStatsHistorical, 'nba_player_aggregated_game_stats_historical'],
-        [AvailableCollections.NbaTeamStats, 'nba_team_stats']
+        [AvailableCollections.NbaPlayerAggregatedGameStatsHistorical, 'nba_player_aggregated_game_stats_historical']
     ]);
 
     const collectionToAvailableFieldsMap: any = {};
-    // collectionToAvailableFieldsMap[AvailableCollections.NbaGamePlayerStatsHistorical] = [
-    //     'season',
-    //     'dateStart',
-    //     'isHome',
-    //     'firstname',
-    //     'lastname',
-    //     'points',
-    //     'min',
-    //     'fgm',
-    //     'fga',
-    //     'fgp',
-    //     'ftm',
-    //     'fta',
-    //     'ftp',
-    //     'tpm',
-    //     'tpa',
-    //     'tpp',
-    //     'offReb',
-    //     'defReb',
-    //     'totReb',
-    //     'assists',
-    //     'pFouls',
-    //     'steals',
-    //     'turnovers',
-    //     'blocks',
-    //     'plusMinus',
-    //     'dateStart',
-    //     'win',
-    //     'isHome'
-    // ];
+
     collectionToAvailableFieldsMap[AvailableCollections.NbaGamesHistorical] = [
         'season',
         'dateStart',
@@ -103,40 +70,6 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
         'dateStart',
         'win',
         'isHome'
-    ];
-    // collectionToAvailableFieldsMap[AvailableCollections.NbaTeamAggregatedGameStatsHistorical] = [
-    //     'season',
-    //     'seasonType',
-    //     'teamName',
-    //     'teamNickname',
-    //     'isHome',
-    //     ...Object.values(GameStatsOption).map((gso: any) => (
-    //         gso.toString()
-    //     )),
-    //     'win',
-    //     'dateStart'
-    // ];
-    collectionToAvailableFieldsMap[AvailableCollections.NbaTeamStats] = [
-        'awayLosses',
-        'awayStreak',
-        'awayWins',
-        'homeLosses',
-        'homeStreak',
-        'homeWins',
-        'lastGameId',
-        'lastTenAwayLosses',
-        'lastTenAwayWins',
-        'lastTenHomeLosses',
-        'lastTenHomeWins',
-        'lastTenTotalLosses',
-        'lastTenTotalWins',
-        'season',
-        'seasonType',
-        'totalLosses',
-        'totalStreak',
-        'totalWins',
-        'teamName',
-        'teamNickname'
     ];
 
     const playerStatsAggPipeline = [  

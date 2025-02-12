@@ -20,6 +20,12 @@ export const selectSx = {
   width: '100%'
 };
 
+export const smallFontSelectSx = {
+  fontFamily: 'IBM Plex Sans, sans-serif',
+  width: '100%',
+  fontSize: '.8rem'
+};
+
 export const darkTheme = createTheme({
   palette: {
     mode: 'dark',

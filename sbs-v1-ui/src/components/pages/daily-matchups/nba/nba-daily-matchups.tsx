@@ -69,7 +69,8 @@ const NbaDailyMatchups = () => {
               const getOddsReq: GetOddsRequest = {
                 sports: OddsApiSports.BasketballNba,
                 regions: OddsApiRegions.US,
-                markets: Object.values(TeamBetTypes),
+                markets: Object.values(TeamBetTypes)
+                  .map(bt => bt.toString()),
                 oddsFormat: OddsFormat.American,
                 bookmakers: Object.values(Bookmakers)
               };

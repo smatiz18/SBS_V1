@@ -296,12 +296,13 @@ pub async fn get_odds(
     req: web::Json<GetOddsRequest>
 ) -> impl Responder {
     
-    info!("Recieved req for get_odds, bookmakers: {:?}, sports: {:?}", req.bookmakers, req.sports);
+    info!("Recieved req for get_odds, bookmakers: {:?}, sports: {:?}, markets: {:?}", req.bookmakers, req.sports, req.markets);
     
     let cached_resp_id = format!(
-        "get_odds_{:?}_{:?}", 
+        "get_odds_{:?}_{:?}_{:?}", 
         req.bookmakers, 
-        req.sports
+        req.sports,
+        req.markets
     );
 
     let cached_response_opt = cached_web_api_response_mongo_dao::get_response(

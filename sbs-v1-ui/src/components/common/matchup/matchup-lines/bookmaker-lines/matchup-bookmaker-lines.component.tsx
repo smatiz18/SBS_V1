@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './matchup-bookmaker-lines.component.scss';
 import { Bookmakers } from "../../../../../models/enums/bookmakers";
 import { MatchupLinesAndStats } from "../../../../../models/matchup-lines-and-stats";
@@ -13,23 +13,50 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
-import { selectSx } from "../../../../../models/form-styles/styles";
+import { smallFontSelectSx } from "../../../../../models/form-styles/styles";
 import { getBetTypeLabel } from "../../../../../utils/utils";
+import { ListSubheader } from "@mui/material";
 
 const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
     const [bookmaker, setBookmaker] = useState(Bookmakers.DraftKings);
     const [betOption, setBetOption] = useState(BetOptions.Team);
-    const [currentLine, setCurrentLine] = useState('TeamLines');
-    const lineOptions = [{ label: 'Team Lines', value: 'TeamLines'}];
+    
+    enum LineOptions {
+        TeamLines = 'Team Lines',
+        PlayerLines = 'Player Lines'
+    };
+    const [currentLine, setCurrentLine] = useState(LineOptions.TeamLines);
+    const [selectedPlayer, setSelectedPlayer] = useState(matchup.away.projectedPlayers[0] || '');
+
+    const lineOptions = Object.values(LineOptions).map((opt: LineOptions) => (
+        { label: opt, value: opt }
+    ));
+
+    const awayPlayerOptions = matchup.away.projectedPlayers;
+    const homePlayerOptions = matchup.home.projectedPlayers;
+
+    useEffect(() => {
+        // handle api call to get selected player odds
+        // const oddsResponse = getPlayerOdds();
+    }, [selectedPlayer]);
     
     const handleBookmakerChange = (event: SelectChangeEvent) => {
       setBookmaker(event.target.value as Bookmakers);
     };
 
     const handleLineOptionsChange = (event: SelectChangeEvent) => {
-        setCurrentLine(event.target.value as string);
+        setCurrentLine(event.target.value as LineOptions);
+        if (event.target.value === LineOptions.TeamLines) {
+            setBetOption(BetOptions.Team);
+        } else {
+            setBetOption(BetOptions.Player);
+        }
     };
-    
+
+    const handleSelectedPlayerChange = (event: SelectChangeEvent) => {
+        setSelectedPlayer(event.target.value);
+    }
+
     function getBettingOddsTableRowOrdering() {
         switch (betOption) {
             case BetOptions.Team:
@@ -119,49 +146,6 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
         }
     }
 
-    // TODO move styles to different file
-    const dkToggle = {
-        textTransform: 'none',
-        border: `1px solid #ddd;`,
-        fontFamily: 'IBM Plex Sans, sans-serif',
-        fontSize: '0.8rem',  
-        transition: 'background-color 0.3s, color 0.3s',
-        backgroundColor: '#f9f9f9',
-        color: '#a9a9a9',
-        '&.Mui-selected': {
-            backgroundColor: '#242424', 
-            color: '#53d337',
-        },
-    };
-
-    const fdToggle = {
-        textTransform: 'none',
-        border: `1px solid #ddd;`,
-        fontFamily: 'IBM Plex Sans, sans-serif',
-        fontSize: '0.8rem', 
-        transition: 'background-color 0.3s, color 0.3s',
-        backgroundColor: '#f9f9f9',
-        color: '#a9a9a9',
-        '&.Mui-selected': {
-            backgroundColor: '#455058', 
-            color: '#1493FF',
-        },
-    };
-
-    const betMGMToggle = {
-        textTransform: 'none',
-        border: `1px solid #ddd;`,
-        fontFamily: 'IBM Plex Sans, sans-serif',
-        fontSize: '0.8rem', 
-        transition: 'background-color 0.3s, color 0.3s',
-        backgroundColor: '#f9f9f9',
-        color: '#a9a9a9',
-        '&.Mui-selected': {
-            backgroundColor: '#000', 
-            color: '#d4b962',
-        },
-    };
-
     return (
         <div className="matchup-bookmaker-lines-component-container">
             <div className="sportsbook-lines-container">
@@ -174,7 +158,7 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
                                     id="demo-simple-select-standard"
                                     value={currentLine}
                                     onChange={handleLineOptionsChange}
-                                    sx={selectSx}
+                                    sx={smallFontSelectSx}
                                 >
                                     {
                                         lineOptions.map((o) => (
@@ -184,6 +168,33 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
                                 </Select>
                             </FormControl>
                         </div>
+                        {
+                            betOption === BetOptions.Player && 
+                            <div className="select-wrapper">
+                                <FormControl variant="standard" sx={{ width: '100%' }}>
+                                    <Select
+                                        labelId="demo-simple-select-standard-label"
+                                        id="demo-simple-select-standard"
+                                        value={selectedPlayer}
+                                        onChange={handleSelectedPlayerChange}
+                                        sx={smallFontSelectSx}
+                                    >
+                                        <ListSubheader>Away</ListSubheader>
+                                        {
+                                            awayPlayerOptions.map((o) => (
+                                                <MenuItem value={o}>{o}</MenuItem>
+                                            ))
+                                        }
+                                        <ListSubheader>Home</ListSubheader>
+                                        {
+                                            homePlayerOptions.map((o) => (
+                                                <MenuItem value={o}>{o}</MenuItem>
+                                            ))
+                                        }
+                                    </Select>
+                                </FormControl>
+                            </div>
+                        }
                         <div className="select-wrapper">
                             <FormControl variant="standard" sx={{ width: '100%' }}>
                                 <Select
@@ -191,7 +202,7 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
                                     id="demo-simple-select-standard"
                                     value={bookmaker}
                                     onChange={handleBookmakerChange}
-                                    sx={selectSx}
+                                    sx={smallFontSelectSx}
                                 >
                                     {
                                         Object.values(Bookmakers).map((o) => (
@@ -204,7 +215,9 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
                     </div>
                     <div className="table-wrapper">
                         {
-                            matchup.odds?.bookmakers !== undefined && (<BettingOddsTable params={getBettingOddsTableParams()}/>)
+                            matchup.odds?.bookmakers !== undefined && 
+                            betOption === BetOptions.Team && 
+                            <BettingOddsTable params={getBettingOddsTableParams()}/>
                         }
 
                     </div>
