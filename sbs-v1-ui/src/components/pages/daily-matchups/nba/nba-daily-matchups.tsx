@@ -29,6 +29,13 @@ import _ from "lodash";
 
 const NbaDailyMatchups = () => {
     const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
+    const getInitOddsRequest = {
+      sports: OddsApiSports.BasketballNba,
+      regions: OddsApiRegions.US,
+      markets: [ TeamBetTypes.H2H.toString() ],
+      oddsFormat: OddsFormat.American,
+      bookmakers: Object.values(Bookmakers)
+    };
 
     useEffect(() => {
         fetchInitData(false /* use mock data */);
@@ -66,15 +73,8 @@ const NbaDailyMatchups = () => {
                 } 
               } as AxiosResponse<WebApiRes>;
             } else {
-              const getOddsReq: GetOddsRequest = {
-                sports: OddsApiSports.BasketballNba,
-                regions: OddsApiRegions.US,
-                markets: Object.values(TeamBetTypes)
-                  .map(bt => bt.toString()),
-                oddsFormat: OddsFormat.American,
-                bookmakers: Object.values(Bookmakers)
-              };
-              initOddsResponse = await getOdds(getOddsReq);
+              
+              initOddsResponse = await getOdds(getInitOddsRequest);
               matchupsResp = await getNbaMatchups();
               _.set(matchupsResp, "data.data.data", JSON.parse(matchupsResp.data?.data?.data || ''));
             }

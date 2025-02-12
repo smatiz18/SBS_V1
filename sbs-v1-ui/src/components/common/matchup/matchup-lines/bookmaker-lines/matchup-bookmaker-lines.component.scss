@@ -10,23 +10,27 @@
         flex-direction: column;
 
         .sportsbook-lines-table-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             
             .table-actions {
-                display: flex;
-                flex-direction: column;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
                 align-items: center;
+                justify-items: center;
                 gap: .75rem;
-                
+
+                .bet-options-toggle-wrapper,
                 .select-wrapper {
-                    width: 9.25rem;
+                    width: 12rem;
                 }
             }
 
             .table-wrapper {
-                padding-right: 25px;
+                display: flex;
+                justify-content: center;
+                padding: 1.25rem 1.5rem 0 0;
             }
         }
     }

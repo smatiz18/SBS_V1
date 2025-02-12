@@ -34,7 +34,7 @@ impl Serialize for Event {
 pub struct Bookmaker {
     pub key: String,
     pub title: String,
-    pub last_update: DateTime<Utc>,
+    pub last_update: Option<DateTime<Utc>>,
     pub markets: Vec<Market>,
 }
 

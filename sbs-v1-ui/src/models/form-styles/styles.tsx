@@ -4,6 +4,11 @@ const dkDarkGray = '#242424';
 const fdGray = '#455058';
 const reactInputBorderColor = '#ccc'
 const headerTextColor = '#333';
+const toggleBackgroundColor = 'rgba(0, 0, 0, 0.05)';
+const toggleBackgroundColorHover = 'rgba(0, 0, 0, 0.1)';
+const sbsPurpleBlueMain = '#0342FF'; 
+const darkenSbsPurpleBlueMain = `#0342DE`;
+const sbsFont = 'IBM Plex Sans, sans-serif';
 
 export const reactInputStyles = {
   width: '100%', 
@@ -16,12 +21,12 @@ export const reactInputStyles = {
 }
 
 export const selectSx = {
-  fontFamily: 'IBM Plex Sans, sans-serif',
+  fontFamily: sbsFont,
   width: '100%'
 };
 
 export const smallFontSelectSx = {
-  fontFamily: 'IBM Plex Sans, sans-serif',
+  fontFamily: sbsFont,
   width: '100%',
   fontSize: '.8rem'
 };
@@ -34,7 +39,7 @@ export const darkTheme = createTheme({
 
 export const filterAccordianSx = {
   fontSize: '.85rem',
-  fontFamily: 'IBM Plex Sans, sans-serif',
+  fontFamily: sbsFont,
   margin: 0,
   padding: 0,
   backgroundColor: dkDarkGray,
@@ -65,7 +70,7 @@ export const filterAccordianSx = {
 
 export const subFilterAccordianSx = {
   fontSize: '.85rem',
-  fontFamily: 'IBM Plex Sans, sans-serif',
+  fontFamily: sbsFont,
   margin: 0,
   padding: 0,
   backgroundColor: dkDarkGray,
@@ -102,20 +107,20 @@ export const radioIconSx = {
 export const radioLabelSx = {
   '& .MuiTypography-root': {
     fontSize: '.8rem',
-    fontFamily: 'IBM Plex Sans, sans-serif' 
+    fontFamily: sbsFont 
   }
 };
 
 export const formLabelSx = {
   fontSize: '.8rem',
-  fontFamily: 'IBM Plex Sans, sans-serif' 
+  fontFamily: sbsFont 
 };
 
 export const paginationSx = {
   display: 'flex',
   justifyContent: 'center', 
   fontSize: '.8rem',
-  fontFamily: 'IBM Plex Sans, sans-serif' 
+  fontFamily: sbsFont 
 };
 
 export const accordianSummarySx = {
@@ -127,7 +132,7 @@ export const accordianSummarySx = {
 
 export const quickStatsLineChartStyle = {
   fontSize: '.8rem',
-  fontFamily: 'IBM Plex Sans, sans-serif' 
+  fontFamily: sbsFont 
 };
 
 export const checkboxFormControlLabelSx = {
@@ -149,7 +154,7 @@ export const buttonStyleSx = {
 };
 
 export const loginButtonStyleSx = {
-  'fontFamily': 'IBM Plex Sans, sans-serif',
+  'fontFamily': sbsFont,
   '&:hover': {
     'transform': 'translateY(-2px)',
   },
@@ -159,4 +164,35 @@ export const loginButtonStyleSx = {
   'border': `1px solid ${reactInputBorderColor}`,
   'backgroundColor': "white",
   'width': '60%'
+};
+
+export const toggleGroupSx = {
+  borderRadius: 2,
+  overflow: 'hidden',
+  backgroundColor: toggleBackgroundColor,
+  fontFamily: sbsFont,
+  backdropFilter: 'blur(6px)',
+  '& .MuiToggleButton-root': {
+    fontSize: '0.75rem',
+    padding: '4px 12px',
+    minWidth: 'auto', 
+    borderRadius: 1.5,
+    border: 'none',
+    transition: 'all 0.2s ease-in-out',
+    '&:hover': {
+      backgroundColor: toggleBackgroundColorHover,
+    },
+    '&.Mui-selected': {
+      backgroundColor: sbsPurpleBlueMain,
+      color: 'white',
+      fontWeight: '600',
+      '&:hover': {
+        backgroundColor: darkenSbsPurpleBlueMain,
+      },
+    },
+  },
+};
+
+export const toggleButtonSx = {
+  textTransform: 'none'
 };

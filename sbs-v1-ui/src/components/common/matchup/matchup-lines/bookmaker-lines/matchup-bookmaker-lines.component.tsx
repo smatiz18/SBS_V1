@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import './matchup-bookmaker-lines.component.scss';
 import { Bookmakers } from "../../../../../models/enums/bookmakers";
 import { MatchupLinesAndStats } from "../../../../../models/matchup-lines-and-stats";
 import { BetOptions } from "../../../../../models/enums/bet-options";
 import { Bookmaker, Market, Outcome } from "../../../../../models/odds/odds";
-import { TeamBetTypes } from "../../../../../models/enums/team-bet-types";
+import { supportedTeamMarketsBySport, TeamBetTypes } from "../../../../../models/enums/team-bet-types";
 import BettingOddsTable from "../betting-odds-table/betting-odds-table.component";
 import { BettingOddsCell, BettingOddsTableParams } from "../../../../../models/component/betting-odds-table-params";
 import { SportsCategories } from "../../../../../models/enums/sports-categories";
@@ -13,44 +12,59 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
-import { smallFontSelectSx } from "../../../../../models/form-styles/styles";
+import { smallFontSelectSx, toggleButtonSx, toggleGroupSx } from "../../../../../models/form-styles/styles";
 import { getBetTypeLabel } from "../../../../../utils/utils";
-import { ListSubheader } from "@mui/material";
+import { ListSubheader, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { GetEventOddsRequest } from "../../../../../models/services/get-event-odds-request";
+import { OddsApiSports, sportsKeyToOddsApiSports } from "../../../../../models/enums/odds-api-sports";
+import { OddsApiRegions } from "../../../../../models/enums/odds-api-regions";
+import { OddsFormat } from "../../../../../models/enums/odds-format";
+import { supportedPlayerMarketsBySport } from "../../../../../models/enums/player-bet-types";
+import { getEventOdds } from "../../../../../services/odds/services";
+import './matchup-bookmaker-lines.component.scss';
 
 const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
     const [bookmaker, setBookmaker] = useState(Bookmakers.DraftKings);
     const [betOption, setBetOption] = useState(BetOptions.Team);
-    
-    enum LineOptions {
-        TeamLines = 'Team Lines',
-        PlayerLines = 'Player Lines'
-    };
-    const [currentLine, setCurrentLine] = useState(LineOptions.TeamLines);
     const [selectedPlayer, setSelectedPlayer] = useState(matchup.away.projectedPlayers[0] || '');
 
-    const lineOptions = Object.values(LineOptions).map((opt: LineOptions) => (
-        { label: opt, value: opt }
-    ));
+    const getEventOddsRequest = () => {
+        const oddsApiSport = sportsKeyToOddsApiSports.get(matchup.odds?.sportKey || '') as OddsApiSports || null;
+        const markets = betOption === BetOptions.Team ? 
+            supportedTeamMarketsBySport.get(oddsApiSport) : 
+            supportedPlayerMarketsBySport.get(oddsApiSport);
+        const req: GetEventOddsRequest = {
+            eventId: matchup.odds?.id || '',
+            sports: oddsApiSport,
+            regions: OddsApiRegions.US,
+            markets: markets || [],
+            oddsFormat: OddsFormat.American,
+            bookmakers: Object.values(Bookmakers)
+        };
+        return req;
+    };
+   
 
     const awayPlayerOptions = matchup.away.projectedPlayers;
     const homePlayerOptions = matchup.home.projectedPlayers;
 
     useEffect(() => {
-        // handle api call to get selected player odds
-        // const oddsResponse = getPlayerOdds();
-    }, [selectedPlayer]);
+        const req = getEventOddsRequest();
+        getEventOdds(req)
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((e) => {
+                console.error(e);
+            });
+    }, [betOption]);
     
     const handleBookmakerChange = (event: SelectChangeEvent) => {
       setBookmaker(event.target.value as Bookmakers);
     };
 
-    const handleLineOptionsChange = (event: SelectChangeEvent) => {
-        setCurrentLine(event.target.value as LineOptions);
-        if (event.target.value === LineOptions.TeamLines) {
-            setBetOption(BetOptions.Team);
-        } else {
-            setBetOption(BetOptions.Player);
-        }
+    const handleBetOptionsToggleChange = (event: any) => {
+        setBetOption(event?.target.value);
     };
 
     const handleSelectedPlayerChange = (event: SelectChangeEvent) => {
@@ -151,18 +165,34 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
             <div className="sportsbook-lines-container">
                 <div className="sportsbook-lines-table-container">
                     <div className="table-actions">
+                        <div className="bet-options-toggle-wrapper">
+                            <ToggleButtonGroup
+                                value={betOption}
+                                exclusive
+                                onChange={handleBetOptionsToggleChange}
+                                aria-label="text alignment"
+                                sx={toggleGroupSx}
+                            >
+                                <ToggleButton sx={toggleButtonSx} value={BetOptions.Team}>
+                                    Team Lines
+                                </ToggleButton>
+                                <ToggleButton sx={toggleButtonSx} value={BetOptions.Player}>
+                                    Player Lines
+                                </ToggleButton>
+                            </ToggleButtonGroup>
+                        </div>
                         <div className="select-wrapper">
                             <FormControl variant="standard" sx={{ width: '100%' }}>
                                 <Select
                                     labelId="demo-simple-select-standard-label"
                                     id="demo-simple-select-standard"
-                                    value={currentLine}
-                                    onChange={handleLineOptionsChange}
+                                    value={bookmaker}
+                                    onChange={handleBookmakerChange}
                                     sx={smallFontSelectSx}
                                 >
                                     {
-                                        lineOptions.map((o) => (
-                                            <MenuItem value={o.value}>{o.label}</MenuItem>
+                                        Object.values(Bookmakers).map((o) => (
+                                            <MenuItem value={o}>{o}</MenuItem>
                                         ))
                                     }
                                 </Select>
@@ -195,23 +225,6 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
                                 </FormControl>
                             </div>
                         }
-                        <div className="select-wrapper">
-                            <FormControl variant="standard" sx={{ width: '100%' }}>
-                                <Select
-                                    labelId="demo-simple-select-standard-label"
-                                    id="demo-simple-select-standard"
-                                    value={bookmaker}
-                                    onChange={handleBookmakerChange}
-                                    sx={smallFontSelectSx}
-                                >
-                                    {
-                                        Object.values(Bookmakers).map((o) => (
-                                            <MenuItem value={o}>{o}</MenuItem>
-                                        ))
-                                    }
-                                </Select>
-                            </FormControl>
-                        </div>
                     </div>
                     <div className="table-wrapper">
                         {

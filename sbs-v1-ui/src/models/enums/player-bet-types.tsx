@@ -1,3 +1,5 @@
+import { OddsApiSports } from "./odds-api-sports";
+
 export enum PlayerBetTypes {
     PlayerPoints = 'player_points',
     PlayerRebounds = 'player_rebounds',
@@ -15,3 +17,18 @@ export enum PlayerBetTypes {
     PlayerDoubleDouble = 'player_double_double',
     PlayerTripleDouble = 'player_triple_double'
 }
+
+export const supportedPlayerMarketsBySport: Map<OddsApiSports, PlayerBetTypes[]> = new Map([
+    [
+        OddsApiSports.BasketballNba, 
+        [
+            PlayerBetTypes.PlayerPoints,
+            PlayerBetTypes.PlayerAssists,
+            PlayerBetTypes.PlayerRebounds,
+            PlayerBetTypes.PlayerPointsReboundsAssists,
+            PlayerBetTypes.PlayerPointsRebounds,
+            PlayerBetTypes.PlayerPointsAssists,
+            PlayerBetTypes.PlayerThrees,
+        ]
+    ]
+]);
