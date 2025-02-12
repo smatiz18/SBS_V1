@@ -12,7 +12,7 @@ use crate::{
     }, 
     models::{
         services::{
-            get_event_odds_request::GetEventOddsRequest, get_nba_players_by_team_and_season_request::GetNbaPlayersByTeamAndSeasonRequest, get_odds_request::GetOddsRequest, github_api_auth_request::GitHubApiAuthRequest, google_api_auth_request::GoogleApiAuthRequest, login_auth_request::LoginAuthRequest
+            get_event_odds_request::GetEventOddsRequest, get_events_request::GetEventsRequest, get_nba_players_by_team_and_season_request::GetNbaPlayersByTeamAndSeasonRequest, get_odds_request::GetOddsRequest, github_api_auth_request::GitHubApiAuthRequest, google_api_auth_request::GoogleApiAuthRequest, login_auth_request::LoginAuthRequest
         }, 
         web_api::web_api_res::WebApiRes
     }, 
@@ -44,6 +44,19 @@ pub async fn get_nba_players_by_team_and_season_rapid_api(req: GetNbaPlayersByTe
 
 /** odds api ********************************************************************/
 /********************************************************************************/
+pub async fn get_events_odds_api(req: GetEventsRequest) -> WebApiRes {
+    let odds_api_key = env::var("ODDS_API_KEY").expect("You must set ODDS_API_KEY environment var!");
+
+    let url = format!(
+        "{}sports/{}/events?apiKey={}",
+        THE_ODDS_API_ROOT, 
+        req.sports.to_string(), 
+        odds_api_key
+    );
+
+    get(&url, HeaderMap::new()).await
+}
+
 pub async fn get_odds_odds_api(req: GetOddsRequest) -> WebApiRes {
     let odds_api_key = env::var("ODDS_API_KEY").expect("You must set ODDS_API_KEY environment var!");
 

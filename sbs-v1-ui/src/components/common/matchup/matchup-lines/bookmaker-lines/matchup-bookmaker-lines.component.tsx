@@ -4,7 +4,6 @@ import { MatchupLinesAndStats } from "../../../../../models/matchup-lines-and-st
 import { BetOptions } from "../../../../../models/enums/bet-options";
 import { Bookmaker, Market, Outcome } from "../../../../../models/odds/odds";
 import { supportedTeamMarketsBySport, TeamBetTypes } from "../../../../../models/enums/team-bet-types";
-import BettingOddsTable from "../betting-odds-table/betting-odds-table.component";
 import { BettingOddsCell, BettingOddsTableParams } from "../../../../../models/component/betting-odds-table-params";
 import { SportsCategories } from "../../../../../models/enums/sports-categories";
 import { NbaTeamsMappedByName } from "../../../../../constants/nba";
@@ -22,19 +21,21 @@ import { OddsFormat } from "../../../../../models/enums/odds-format";
 import { supportedPlayerMarketsBySport } from "../../../../../models/enums/player-bet-types";
 import { getEventOdds } from "../../../../../services/odds/services";
 import './matchup-bookmaker-lines.component.scss';
+import { GetOddsResponse } from "../../../../../models/services/get-odds-response";
 
 const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
     const [bookmaker, setBookmaker] = useState(Bookmakers.DraftKings);
     const [betOption, setBetOption] = useState(BetOptions.Team);
     const [selectedPlayer, setSelectedPlayer] = useState(matchup.away.projectedPlayers[0] || '');
+    const [currentEventOdds, setCurrentEventOdds] = useState({} as GetOddsResponse);
 
     const getEventOddsRequest = () => {
-        const oddsApiSport = sportsKeyToOddsApiSports.get(matchup.odds?.sportKey || '') as OddsApiSports || null;
+        const oddsApiSport = sportsKeyToOddsApiSports.get(matchup.oddsEvent?.sportKey || '') as OddsApiSports || null;
         const markets = betOption === BetOptions.Team ? 
             supportedTeamMarketsBySport.get(oddsApiSport) : 
             supportedPlayerMarketsBySport.get(oddsApiSport);
         const req: GetEventOddsRequest = {
-            eventId: matchup.odds?.id || '',
+            eventId: matchup.oddsEvent?.id || '',
             sports: oddsApiSport,
             regions: OddsApiRegions.US,
             markets: markets || [],
@@ -49,16 +50,24 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
     const homePlayerOptions = matchup.home.projectedPlayers;
 
     useEffect(() => {
+        getEventOddsForBetOption();
+    }, []);
+
+    useEffect(() => {
+        getEventOddsForBetOption();
+    }, [betOption]);
+    
+    const getEventOddsForBetOption = () => {
         const req = getEventOddsRequest();
         getEventOdds(req)
             .then((res) => {
-                console.log(res.data);
+                setCurrentEventOdds(res.data?.data);
             })
             .catch((e) => {
                 console.error(e);
             });
-    }, [betOption]);
-    
+    }
+
     const handleBookmakerChange = (event: SelectChangeEvent) => {
       setBookmaker(event.target.value as Bookmakers);
     };
@@ -103,7 +112,7 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
 
     function getBettingOddsCells() {
         let oddsCells: BettingOddsCell[] = [];
-        const sportsbook = matchup.odds?.bookmakers.find((sportsbook: Bookmaker) => {
+        const sportsbook = matchup.oddsEvent?.bookmakers.find((sportsbook: Bookmaker) => {
             return sportsbook.title === bookmaker.toString()
         })!;
         
@@ -227,12 +236,11 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
                         }
                     </div>
                     <div className="table-wrapper">
-                        {
-                            matchup.odds?.bookmakers !== undefined && 
+                        {/* {
+                            matchup.oddsEvent?.bookmakers !== undefined && 
                             betOption === BetOptions.Team && 
                             <BettingOddsTable params={getBettingOddsTableParams()}/>
-                        }
-
+                        } */}
                     </div>
                 </div>
             </div>

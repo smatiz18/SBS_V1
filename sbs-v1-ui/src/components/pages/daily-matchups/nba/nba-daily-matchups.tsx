@@ -4,19 +4,13 @@ import "./nba-daily-matchups.scss";
 import { getNbaMatchups, getNbaTeamAggGameStats, getNbaTeamStats } from "../../../../services/nba/services";
 import { NbaLogoMapper } from "../../../../assets/images/nba-logo-mapper";
 import { Matchup } from "../../../../models/matchup";
-import { getOdds } from "../../../../services/odds/services";
-import { GetOddsRequest } from "../../../../models/services/get-odds-request";
+import { getEvents } from "../../../../services/odds/services";
 import { OddsApiSports } from "../../../../models/enums/odds-api-sports";
-import { OddsApiRegions } from "../../../../models/enums/odds-api-regions";
-import { TeamBetTypes } from "../../../../models/enums/team-bet-types";
-import { OddsFormat } from "../../../../models/enums/odds-format";
-import { Bookmakers } from "../../../../models/enums/bookmakers";
 import { Event } from "../../../../models/odds/odds";
 import { NbaTeamsMappedByName, NbaTeamsMappedByNickname } from "../../../../constants/nba";
 import { format, toZonedTime } from 'date-fns-tz';
 import { SportsCategories } from "../../../../models/enums/sports-categories";
 import { GetNbaMatchupsMockResonse, GetNbaOddsMockResponse } from "../../../../test/nba-matchups-mocks";
-import { GetOddsResponse } from "../../../../models/services/get-odds-response";
 import { AxiosResponse } from "axios";
 import { NbaTeamStats } from "../../../../models/nba-team-stats";
 import { GetNbaTeamStatsRequest } from "../../../../models/services/get-nba-team-stats-request";
@@ -29,13 +23,6 @@ import _ from "lodash";
 
 const NbaDailyMatchups = () => {
     const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
-    const getInitOddsRequest = {
-      sports: OddsApiSports.BasketballNba,
-      regions: OddsApiRegions.US,
-      markets: [ TeamBetTypes.H2H.toString() ],
-      oddsFormat: OddsFormat.American,
-      bookmakers: Object.values(Bookmakers)
-    };
 
     useEffect(() => {
         fetchInitData(false /* use mock data */);
@@ -48,8 +35,8 @@ const NbaDailyMatchups = () => {
       return format(zonedDate, "MM/dd/yyyy,  hh:mm a 'EST'", { timeZone: timeZone });
     }
 
-    function parseOddsData(getOddsResponse: GetOddsResponse) {
-      return getOddsResponse.events.reduce((map: any, event: Event) => {
+    function parseOddsData(events: Event[]) {
+      return events.reduce((map: any, event: Event) => {
         const teamNickname = NbaTeamsMappedByName[event.homeTeam]?.teamNickname;
         if (!map[teamNickname]) {
           map[teamNickname] = event;
@@ -73,8 +60,7 @@ const NbaDailyMatchups = () => {
                 } 
               } as AxiosResponse<WebApiRes>;
             } else {
-              
-              initOddsResponse = await getOdds(getInitOddsRequest);
+              initOddsResponse = await getEvents({ sports: OddsApiSports.BasketballNba });
               matchupsResp = await getNbaMatchups();
               _.set(matchupsResp, "data.data.data", JSON.parse(matchupsResp.data?.data?.data || ''));
             }
@@ -104,7 +90,7 @@ const NbaDailyMatchups = () => {
                 return agg;
               }, {});
 
-            const oddsEventMappedByHomeTeam = parseOddsData(initOddsResponse.data?.data as GetOddsResponse);
+            const eventMappedByHomeTeam = parseOddsData(initOddsResponse.data.data as Event[]);
             const enrichedMatchups = (matchupsResp.data?.data?.data.matchups || []).map((matchup: Matchup) => { 
               matchup.sportsCategory = SportsCategories.NBA;
               
@@ -116,13 +102,12 @@ const NbaDailyMatchups = () => {
               matchup.home.teamStats = nbaTeamStatsMappedByTeamNickname[matchup.home.teamNickname];
               matchup.home.teamAggGameStats = nbaTeamAggGameStatsMappedByTeamNickname[matchup.home.teamNickname];
 
-              const odds = oddsEventMappedByHomeTeam[matchup.home.teamNickname];              
-              if (odds && matchup.away.teamNickname === NbaTeamsMappedByName[odds.awayTeam]?.teamNickname) {
-                matchup.away.teamName = odds.awayTeam;
-                matchup.home.teamName = odds.homeTeam;
-                matchup.odds = odds;
-                matchup.optimalOdds = (initOddsResponse.data?.data?.optimalOddsMap || {})[odds.id];
-                matchup.dateStart = odds.commenceTime;
+              const oddsEvent = eventMappedByHomeTeam[matchup.home.teamNickname];              
+              if (oddsEvent && matchup.away.teamNickname === NbaTeamsMappedByName[oddsEvent.awayTeam]?.teamNickname) {
+                matchup.away.teamName = oddsEvent.awayTeam;
+                matchup.home.teamName = oddsEvent.homeTeam;
+                matchup.oddsEvent = oddsEvent;
+                matchup.dateStart = oddsEvent.commenceTime;
               }
               
               return matchup;

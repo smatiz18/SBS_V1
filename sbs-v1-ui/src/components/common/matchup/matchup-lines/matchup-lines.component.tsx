@@ -7,9 +7,7 @@ import { paginationSx } from "../../../../models/form-styles/styles";
 import { ChangeEvent, ReactElement, useState } from "react";
 import './matchup-lines.component.scss';
 
-const MatchupLines: React.FC<{
-    matchup: MatchupLinesAndStats
-}> = ({matchup}) => {
+const MatchupLines: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
 
     const pageLabels = ['Bookmaker Lines', 'Optimal Odds'];
     const bookmakerLinesComp = <MatchupBookmakerLines matchup={{...matchup}}/>;

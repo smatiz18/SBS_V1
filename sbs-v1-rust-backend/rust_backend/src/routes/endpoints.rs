@@ -18,6 +18,7 @@ pub const GET_NBA_DAILY_MATCHUPS: &str = "/daily-matchups/get";
 pub const GET_BACKTEST_FEATURE_MAP: &str = "/backtest-feature-map/get";
 pub const GET_ODDS: &str = "/odds/get";
 pub const GET_EVENT_ODDS: &str = "/event-odds/get";
+pub const GET_EVENTS: &str = "/events/get";
 pub const EXECUTE_MONGO_QUERY: &str = "/query/get"; 
 pub const GET_LOGIN_CREDENTIALS: &str = "/login/get";
 pub const GET_GOOGLE_AUTH: &str = "/google-auth/get";

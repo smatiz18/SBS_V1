@@ -14,6 +14,7 @@ use crate::models::odds::odds::Event;
 use crate::models::services::execute_mongo_query_request::ExecuteMongoQueryRequest;
 use crate::models::services::get_backtest_feature_map_request::BacktestFeatureMapRequest;
 use crate::models::services::get_event_odds_request::GetEventOddsRequest;
+use crate::models::services::get_events_request::GetEventsRequest;
 use crate::models::services::get_nba_team_agg_game_stats_request::GetNbaTeamAggGameStatsRquest;
 use crate::models::services::get_nba_games_by_team_and_season_request::GetNbaGamesByTeamAndSeasonRequest;
 use crate::models::services::get_nba_odds_by_team_and_season_request::GetNbaOddsByTeamAndSeasonRequest;
@@ -25,7 +26,7 @@ use crate::models::services::get_odds_request::GetOddsRequest;
 use crate::models::services::get_odds_response::GetOddsResponse;
 use crate::models::services::login_auth_request::LoginAuthRequest;
 use crate::models::web_api::web_api_res::WebApiRes;
-use crate::web_api::web_api::{authenticate_github_token, authenticate_google_token, get_event_odds_odds_api, get_github_user_email_info, get_github_user_info, get_google_user_info, get_nba_daily_matchups_from_rotowire, get_nba_players_by_team_and_season_rapid_api, get_odds_odds_api};
+use crate::web_api::web_api::{authenticate_github_token, authenticate_google_token, get_event_odds_odds_api, get_events_odds_api, get_github_user_email_info, get_github_user_info, get_google_user_info, get_nba_daily_matchups_from_rotowire, get_nba_players_by_team_and_season_rapid_api, get_odds_odds_api};
 use std::env;
 use log::{info, error};
 
@@ -305,6 +306,80 @@ pub fn transform_odds_api_odds_resp_to_web_api_resp(events: Vec<Event>) -> WebAp
         )
     };
     resp_obj_as_web_api_res
+}
+
+pub async fn get_events(
+    app_state: web::Data<AppState>,
+    req: web::Json<GetEventsRequest>
+) -> impl Responder {
+    
+    info!("Recieved req for get_events, sports: {:?}", req.sports);
+    
+    let cached_resp_id = format!(
+        "get_events_{:?}", 
+        req.sports
+    );
+
+    let cached_response_opt = cached_web_api_response_mongo_dao::get_response(
+        &app_state.cached_web_api_response_collection, 
+        cached_resp_id.clone()
+    ).await;
+
+    if cached_response_opt.clone().is_some_and(|cached_resp| {
+        Utc::now().timestamp_millis() - cached_resp.cached_date_time.timestamp_millis() < cached_resp.wait_refresh
+    }) {
+        return HttpResponse::Ok().json(cached_response_opt.unwrap().response);
+    }
+
+    let web_api_res = get_events_odds_api(req.into_inner()).await;
+    if web_api_res.data.is_some() {
+        match serde_json::from_value::<Vec<Event>>(web_api_res.data.unwrap()) {
+            Ok(resp_obj) => {
+                info!("Returned events from odds api");
+                info!("Caching response!");
+                
+                let wait_refresh = 15 /* minutes */ * 
+                    60 /* seconds */ * 
+                    1000 /* millseconds */;
+                
+                let resp_obj_as_web_api_res = WebApiRes {
+                    is_error: false,
+                    error_message: None,
+                    data: Some(
+                        serde_json::to_value(resp_obj.clone()).expect("failed to parse events!")
+                    )
+                };
+
+                let cached_resp_obj = CachedWebApiResponse {
+                    _id: cached_resp_id,
+                    cached_date_time: Utc::now(),
+                    response: resp_obj_as_web_api_res.clone(),
+                    wait_refresh,
+                };
+                
+                let caching_res = cached_web_api_response_mongo_dao::cache_response(
+                    &app_state.cached_web_api_response_collection, 
+                    cached_resp_obj
+                ).await;
+
+                if caching_res.is_some() {
+                    info!("Response cached!");
+                } else {
+                    error!("Unable to cache response");
+                }
+
+                HttpResponse::Ok().json(resp_obj_as_web_api_res)
+            },
+            Err(e) => {
+                error!("Failed to parse response: {:?}", e);
+                HttpResponse::InternalServerError().body(format!("{:?}", e))
+            }
+        }
+    } else {
+        HttpResponse::InternalServerError().body(
+            format!("Failed to fetch data {:?}", web_api_res.error_message.unwrap_or("error".to_string()))
+        )
+    }
 }
 
 pub async fn get_odds(

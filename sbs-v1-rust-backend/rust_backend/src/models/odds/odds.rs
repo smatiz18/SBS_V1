@@ -9,7 +9,7 @@ pub struct Event {
     pub commence_time: DateTime<Utc>,
     pub home_team: String,
     pub away_team: String,
-    pub bookmakers: Vec<Bookmaker>,
+    pub bookmakers: Option<Vec<Bookmaker>>,
 }
 
 impl Serialize for Event {

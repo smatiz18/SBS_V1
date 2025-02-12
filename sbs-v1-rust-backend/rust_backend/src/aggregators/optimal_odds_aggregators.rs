@@ -4,7 +4,7 @@ use crate::models::{aggregators::optimal_odds::OptimalOdds, enums::bookmakers::B
 
 pub fn get_optimal_odds_by_event_map(events: Vec<Event>) -> HashMap<String, Vec<OptimalOdds>> {
     events.into_iter()
-        .map(|event| (event.id, get_optimal_odds(event.bookmakers)))
+        .map(|event| (event.id, get_optimal_odds(event.bookmakers.unwrap_or(vec!()))))
         .collect()
 } 
 

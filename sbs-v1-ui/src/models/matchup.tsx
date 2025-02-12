@@ -8,7 +8,7 @@ export interface Matchup {
     away: TeamInfo,
     home: TeamInfo,
     sportsCategory: SportsCategories,
-    odds?: Event,
+    oddsEvent?: Event,
     optimalOdds?: OptimalOdds[],
     dateStart?: any;
 }

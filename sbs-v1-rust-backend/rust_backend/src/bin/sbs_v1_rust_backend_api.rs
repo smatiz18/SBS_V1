@@ -1,5 +1,5 @@
 use log::info;
-use rust_backend::{handlers::{self, handlers::{execute_aggregation_query, get_event_odds, get_github_auth, get_google_auth, get_nba_daily_matchups, get_nba_team_stats, get_ui_login_credentials}}, initializers::initialize_app_state, models::services::get_event_odds_request, proxy, routes::{self, endpoints::{CREDENTIALS_API_ROOT, DB_QUERY_API_ROOT, EXECUTE_MONGO_QUERY, GET_EVENT_ODDS, GET_GITHUB_AUTH, GET_GOOGLE_AUTH, GET_LOGIN_CREDENTIALS, GET_NBA_DAILY_MATCHUPS, GET_NBA_TEAM_STATS}}};
+use rust_backend::{handlers::{self, handlers::{execute_aggregation_query, get_event_odds, get_events, get_github_auth, get_google_auth, get_nba_daily_matchups, get_nba_team_stats, get_ui_login_credentials}}, initializers::initialize_app_state, models::services::get_event_odds_request, proxy, routes::{self, endpoints::{CREDENTIALS_API_ROOT, DB_QUERY_API_ROOT, EXECUTE_MONGO_QUERY, GET_EVENTS, GET_EVENT_ODDS, GET_GITHUB_AUTH, GET_GOOGLE_AUTH, GET_LOGIN_CREDENTIALS, GET_NBA_DAILY_MATCHUPS, GET_NBA_TEAM_STATS}}};
 use actix_web::{web, App, HttpServer };
 use handlers::handlers::{
    get_feature_map_for_backtest, get_nba_games_by_team_and_season, get_nba_odds_by_team_and_season, get_nba_player_stats_by_id_and_season, get_nba_players_by_team_and_season, get_nba_team_agg_game_stats, get_odds, test
@@ -44,6 +44,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             web::scope(ODDS_API_ROOT)
                .route(GET_ODDS, web::post().to(get_odds))
                .route(GET_EVENT_ODDS, web::post().to(get_event_odds))
+               .route(GET_EVENTS, web::post().to(get_events))
          )
          .service(
             web::scope(DB_QUERY_API_ROOT)
