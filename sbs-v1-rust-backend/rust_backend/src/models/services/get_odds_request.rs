@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::models::enums::{bookmakers::Bookmakers, odds_api_regions::OddsApiRegions, odds_api_sports::OddsApiSports, odds_format::OddsFormat, team_bet_types::TeamBetTypes};
+use crate::models::enums::{bookmakers::Bookmakers, odds_api_regions::OddsApiRegions, odds_api_sports::OddsApiSports, odds_format::OddsFormat};
 
 #[derive(Debug, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]

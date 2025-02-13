@@ -22,8 +22,10 @@ import { supportedPlayerMarketsBySport } from "../../../../../models/enums/playe
 import { getEventOdds } from "../../../../../services/odds/services";
 import './matchup-bookmaker-lines.component.scss';
 import { GetOddsResponse } from "../../../../../models/services/get-odds-response";
+import { pelicansKingsPlayerOdds, rocketsWarriorsPlayersOdds } from "../../../../../test/nba-matchups-mocks";
 
 const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
+    const USE_MOCKS = true;
     const [bookmaker, setBookmaker] = useState(Bookmakers.DraftKings);
     const [betOption, setBetOption] = useState(BetOptions.Team);
     const [selectedPlayer, setSelectedPlayer] = useState(matchup.away.projectedPlayers[0] || '');
@@ -50,22 +52,28 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
     const homePlayerOptions = matchup.home.projectedPlayers;
 
     useEffect(() => {
-        getEventOddsForBetOption();
+        getEventOddsForBetOption(USE_MOCKS);
     }, []);
 
     useEffect(() => {
-        getEventOddsForBetOption();
+        getEventOddsForBetOption(USE_MOCKS);
     }, [betOption]);
     
-    const getEventOddsForBetOption = () => {
+    const getEventOddsForBetOption = (useMocks: boolean) => {
         const req = getEventOddsRequest();
-        getEventOdds(req)
-            .then((res) => {
-                setCurrentEventOdds(res.data?.data);
-            })
-            .catch((e) => {
-                console.error(e);
-            });
+        if (useMocks) {
+            const oddsForEvent = [rocketsWarriorsPlayersOdds, pelicansKingsPlayerOdds]
+                .find((respObj: any) => respObj.data.events[0].eventId === matchup.oddsEvent?.id)!;
+            setCurrentEventOdds((oddsForEvent.data || {}) as any);
+        } else {
+            getEventOdds(req)
+                .then((res) => {
+                    setCurrentEventOdds(res.data?.data);
+                })
+                .catch((e) => {
+                    console.error(e);
+                });
+        }
     }
 
     const handleBookmakerChange = (event: SelectChangeEvent) => {

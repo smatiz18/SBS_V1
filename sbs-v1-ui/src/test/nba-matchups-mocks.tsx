@@ -1,4621 +1,5601 @@
-export const GetNbaOddsMockResponse = {
-    "events": [
-        {
-            "id": "d8a4500a8cc85a77dcea342ae4099316",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-07T00:10:00Z",
-            "homeTeam": "Charlotte Hornets",
-            "awayTeam": "Detroit Pistons",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Charlotte Hornets",
-                                    "price": -105.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Detroit Pistons",
-                                    "price": -115.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Charlotte Hornets",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 1.0
-                                },
-                                {
-                                    "name": "Detroit Pistons",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -1.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 223.0
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 223.0
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "fanduel",
-                    "title": "FanDuel",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Charlotte Hornets",
-                                    "price": 102.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Detroit Pistons",
-                                    "price": -120.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Charlotte Hornets",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 1.0
-                                },
-                                {
-                                    "name": "Detroit Pistons",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": -1.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 223.0
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 223.0
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "betmgm",
-                    "title": "BetMGM",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Charlotte Hornets",
-                                    "price": -105.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Detroit Pistons",
-                                    "price": -115.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Charlotte Hornets",
-                                    "price": -115.0,
-                                    "description": null,
-                                    "point": 1.5
-                                },
-                                {
-                                    "name": "Detroit Pistons",
-                                    "price": -105.0,
-                                    "description": null,
-                                    "point": -1.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 223.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 223.5
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "bc5e0e6e79a5d82ad2b20e991492db8c",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-07T00:10:00Z",
-            "homeTeam": "Indiana Pacers",
-            "awayTeam": "Orlando Magic",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Indiana Pacers",
-                                    "price": -218.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Orlando Magic",
-                                    "price": 180.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Indiana Pacers",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -5.5
-                                },
-                                {
-                                    "name": "Orlando Magic",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 5.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 226.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 226.5
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "fanduel",
-                    "title": "FanDuel",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Indiana Pacers",
-                                    "price": -225.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Orlando Magic",
-                                    "price": 188.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Indiana Pacers",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": -5.5
-                                },
-                                {
-                                    "name": "Orlando Magic",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 5.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 226.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 226.5
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "betmgm",
-                    "title": "BetMGM",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Indiana Pacers",
-                                    "price": -225.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Orlando Magic",
-                                    "price": 180.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Indiana Pacers",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -5.5
-                                },
-                                {
-                                    "name": "Orlando Magic",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 5.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -115.0,
-                                    "description": null,
-                                    "point": 226.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -105.0,
-                                    "description": null,
-                                    "point": 226.5
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "55e42ff38d847dc50703546e7493cce2",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-07T00:40:00Z",
-            "homeTeam": "Atlanta Hawks",
-            "awayTeam": "New York Knicks",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Atlanta Hawks",
-                                    "price": 230.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "New York Knicks",
-                                    "price": -285.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Atlanta Hawks",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 7.0
-                                },
-                                {
-                                    "name": "New York Knicks",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": -7.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 226.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 226.5
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "fanduel",
-                    "title": "FanDuel",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Atlanta Hawks",
-                                    "price": 220.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "New York Knicks",
-                                    "price": -270.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Atlanta Hawks",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 7.0
-                                },
-                                {
-                                    "name": "New York Knicks",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -7.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 227.0
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 227.0
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "betmgm",
-                    "title": "BetMGM",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Atlanta Hawks",
-                                    "price": 220.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "New York Knicks",
-                                    "price": -275.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Atlanta Hawks",
-                                    "price": -105.0,
-                                    "description": null,
-                                    "point": 6.5
-                                },
-                                {
-                                    "name": "New York Knicks",
-                                    "price": -115.0,
-                                    "description": null,
-                                    "point": -6.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 226.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 226.5
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "6dc1349cbc1293f743feb18946ff2f4c",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-07T00:40:00Z",
-            "homeTeam": "Boston Celtics",
-            "awayTeam": "Golden State Warriors",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Boston Celtics",
-                                    "price": -265.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Golden State Warriors",
-                                    "price": 215.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Boston Celtics",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": -6.5
-                                },
-                                {
-                                    "name": "Golden State Warriors",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 6.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 228.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 228.5
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "fanduel",
-                    "title": "FanDuel",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Boston Celtics",
-                                    "price": -275.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Golden State Warriors",
-                                    "price": 225.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Boston Celtics",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": -6.5
-                                },
-                                {
-                                    "name": "Golden State Warriors",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 6.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 229.0
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 229.0
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "betmgm",
-                    "title": "BetMGM",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Boston Celtics",
-                                    "price": -250.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Golden State Warriors",
-                                    "price": 200.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Boston Celtics",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -6.5
-                                },
-                                {
-                                    "name": "Golden State Warriors",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 6.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -105.0,
-                                    "description": null,
-                                    "point": 229.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -115.0,
-                                    "description": null,
-                                    "point": 229.5
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "2aca7da4384db5d91c0bf5e7ef8bad3e",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-07T01:10:00Z",
-            "homeTeam": "New Orleans Pelicans",
-            "awayTeam": "Cleveland Cavaliers",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Cleveland Cavaliers",
-                                    "price": -270.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "New Orleans Pelicans",
-                                    "price": 220.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Cleveland Cavaliers",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": -7.0
-                                },
-                                {
-                                    "name": "New Orleans Pelicans",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 7.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 224.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 224.5
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "fanduel",
-                    "title": "FanDuel",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Cleveland Cavaliers",
-                                    "price": -280.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "New Orleans Pelicans",
-                                    "price": 230.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Cleveland Cavaliers",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -7.0
-                                },
-                                {
-                                    "name": "New Orleans Pelicans",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 7.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 224.0
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 224.0
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "betmgm",
-                    "title": "BetMGM",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Cleveland Cavaliers",
-                                    "price": -275.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "New Orleans Pelicans",
-                                    "price": 225.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Cleveland Cavaliers",
-                                    "price": -115.0,
-                                    "description": null,
-                                    "point": -6.5
-                                },
-                                {
-                                    "name": "New Orleans Pelicans",
-                                    "price": -105.0,
-                                    "description": null,
-                                    "point": 6.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 224.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 224.5
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "e11aab280c73770d02d2a81c162debeb",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-07T01:10:00Z",
-            "homeTeam": "Houston Rockets",
-            "awayTeam": "San Antonio Spurs",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Houston Rockets",
-                                    "price": -270.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "San Antonio Spurs",
-                                    "price": 220.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Houston Rockets",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": -6.5
-                                },
-                                {
-                                    "name": "San Antonio Spurs",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 6.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 215.0
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 215.0
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "fanduel",
-                    "title": "FanDuel",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Houston Rockets",
-                                    "price": -280.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "San Antonio Spurs",
-                                    "price": 230.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Houston Rockets",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": -6.5
-                                },
-                                {
-                                    "name": "San Antonio Spurs",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 6.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 215.0
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 215.0
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "betmgm",
-                    "title": "BetMGM",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Houston Rockets",
-                                    "price": -275.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "San Antonio Spurs",
-                                    "price": 220.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Houston Rockets",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -6.5
-                                },
-                                {
-                                    "name": "San Antonio Spurs",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 6.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -105.0,
-                                    "description": null,
-                                    "point": 215.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -115.0,
-                                    "description": null,
-                                    "point": 215.5
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "8a6e6ad9eff01832c4dcc8085227f319",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-07T01:10:00Z",
-            "homeTeam": "Memphis Grizzlies",
-            "awayTeam": "Los Angeles Lakers",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Los Angeles Lakers",
-                                    "price": 150.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Memphis Grizzlies",
-                                    "price": -180.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Los Angeles Lakers",
-                                    "price": -115.0,
-                                    "description": null,
-                                    "point": 4.5
-                                },
-                                {
-                                    "name": "Memphis Grizzlies",
-                                    "price": -105.0,
-                                    "description": null,
-                                    "point": -4.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 232.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 232.5
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "fanduel",
-                    "title": "FanDuel",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Los Angeles Lakers",
-                                    "price": 146.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Memphis Grizzlies",
-                                    "price": -174.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Los Angeles Lakers",
-                                    "price": -106.0,
-                                    "description": null,
-                                    "point": 4.0
-                                },
-                                {
-                                    "name": "Memphis Grizzlies",
-                                    "price": -114.0,
-                                    "description": null,
-                                    "point": -4.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 232.0
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 232.0
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "betmgm",
-                    "title": "BetMGM",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Los Angeles Lakers",
-                                    "price": 150.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Memphis Grizzlies",
-                                    "price": -185.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Los Angeles Lakers",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 4.5
-                                },
-                                {
-                                    "name": "Memphis Grizzlies",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -4.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -115.0,
-                                    "description": null,
-                                    "point": 232.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -105.0,
-                                    "description": null,
-                                    "point": 232.5
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "c109fa8f6b5af24ef9718aed21811c35",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-07T01:40:00Z",
-            "homeTeam": "Dallas Mavericks",
-            "awayTeam": "Chicago Bulls",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Chicago Bulls",
-                                    "price": 340.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Dallas Mavericks",
-                                    "price": -440.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Chicago Bulls",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 9.5
-                                },
-                                {
-                                    "name": "Dallas Mavericks",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -9.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 237.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 237.5
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "fanduel",
-                    "title": "FanDuel",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Chicago Bulls",
-                                    "price": 330.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Dallas Mavericks",
-                                    "price": -420.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Chicago Bulls",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 9.5
-                                },
-                                {
-                                    "name": "Dallas Mavericks",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -9.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 237.0
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 237.0
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "betmgm",
-                    "title": "BetMGM",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Chicago Bulls",
-                                    "price": 340.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Dallas Mavericks",
-                                    "price": -450.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Chicago Bulls",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 9.5
-                                },
-                                {
-                                    "name": "Dallas Mavericks",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -9.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 237.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 237.5
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "9e3ad3534d3b3a6702d2ee41b756ec3d",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-07T02:10:00Z",
-            "homeTeam": "Denver Nuggets",
-            "awayTeam": "Oklahoma City Thunder",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Denver Nuggets",
-                                    "price": 225.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Oklahoma City Thunder",
-                                    "price": -278.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Denver Nuggets",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 7.0
-                                },
-                                {
-                                    "name": "Oklahoma City Thunder",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": -7.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 224.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 224.5
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "fanduel",
-                    "title": "FanDuel",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Denver Nuggets",
-                                    "price": 220.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Oklahoma City Thunder",
-                                    "price": -270.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Denver Nuggets",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 7.0
-                                },
-                                {
-                                    "name": "Oklahoma City Thunder",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -7.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 224.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 224.5
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "betmgm",
-                    "title": "BetMGM",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Denver Nuggets",
-                                    "price": 225.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Oklahoma City Thunder",
-                                    "price": -275.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Denver Nuggets",
-                                    "price": -115.0,
-                                    "description": null,
-                                    "point": 7.5
-                                },
-                                {
-                                    "name": "Oklahoma City Thunder",
-                                    "price": -105.0,
-                                    "description": null,
-                                    "point": -7.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 224.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 224.5
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "6b8b7ee373af6d1ae89c0f2940635b00",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-07T02:10:00Z",
-            "homeTeam": "Phoenix Suns",
-            "awayTeam": "Miami Heat",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Miami Heat",
-                                    "price": 164.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Phoenix Suns",
-                                    "price": -198.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Miami Heat",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 5.0
-                                },
-                                {
-                                    "name": "Phoenix Suns",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -5.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 222.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 222.5
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "fanduel",
-                    "title": "FanDuel",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Miami Heat",
-                                    "price": 158.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Phoenix Suns",
-                                    "price": -188.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Miami Heat",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 5.0
-                                },
-                                {
-                                    "name": "Phoenix Suns",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -5.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 222.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 222.5
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "betmgm",
-                    "title": "BetMGM",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Miami Heat",
-                                    "price": 165.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Phoenix Suns",
-                                    "price": -200.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Miami Heat",
-                                    "price": -115.0,
-                                    "description": null,
-                                    "point": 5.5
-                                },
-                                {
-                                    "name": "Phoenix Suns",
-                                    "price": -105.0,
-                                    "description": null,
-                                    "point": -5.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 222.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 222.5
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "b66e2dcd5f73800d50d9e6cedb0f5816",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-07T03:10:00Z",
-            "homeTeam": "Los Angeles Clippers",
-            "awayTeam": "Philadelphia 76ers",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Los Angeles Clippers",
-                                    "price": -125.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Philadelphia 76ers",
-                                    "price": 105.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Los Angeles Clippers",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": -1.5
-                                },
-                                {
-                                    "name": "Philadelphia 76ers",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 1.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 214.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 214.5
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "fanduel",
-                    "title": "FanDuel",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Los Angeles Clippers",
-                                    "price": -122.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Philadelphia 76ers",
-                                    "price": 104.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Los Angeles Clippers",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -1.5
-                                },
-                                {
-                                    "name": "Philadelphia 76ers",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 1.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 215.0
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 215.0
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "betmgm",
-                    "title": "BetMGM",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Los Angeles Clippers",
-                                    "price": -125.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Philadelphia 76ers",
-                                    "price": 105.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Los Angeles Clippers",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -1.5
-                                },
-                                {
-                                    "name": "Philadelphia 76ers",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 1.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 214.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 214.5
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "cb8bf9aed92604c1334706f5c0c82c57",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-07T03:10:00Z",
-            "homeTeam": "Sacramento Kings",
-            "awayTeam": "Toronto Raptors",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Sacramento Kings",
-                                    "price": -625.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Toronto Raptors",
-                                    "price": 455.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Sacramento Kings",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": -11.0
-                                },
-                                {
-                                    "name": "Toronto Raptors",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 11.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 237.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 237.5
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "fanduel",
-                    "title": "FanDuel",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Sacramento Kings",
-                                    "price": -600.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Toronto Raptors",
-                                    "price": 450.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Sacramento Kings",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": -11.0
-                                },
-                                {
-                                    "name": "Toronto Raptors",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 11.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 237.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 237.5
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "betmgm",
-                    "title": "BetMGM",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Sacramento Kings",
-                                    "price": -650.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Toronto Raptors",
-                                    "price": 450.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Sacramento Kings",
-                                    "price": -105.0,
-                                    "description": null,
-                                    "point": -11.5
-                                },
-                                {
-                                    "name": "Toronto Raptors",
-                                    "price": -115.0,
-                                    "description": null,
-                                    "point": 11.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -105.0,
-                                    "description": null,
-                                    "point": 238.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -115.0,
-                                    "description": null,
-                                    "point": 238.5
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "84d6b1ca05b2ad858b5b9ac52ea4b0ee",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-08T01:10:00Z",
-            "homeTeam": "Chicago Bulls",
-            "awayTeam": "Minnesota Timberwolves",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Chicago Bulls",
-                                    "price": 235.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Minnesota Timberwolves",
-                                    "price": -290.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Chicago Bulls",
-                                    "price": -105.0,
-                                    "description": null,
-                                    "point": 6.5
-                                },
-                                {
-                                    "name": "Minnesota Timberwolves",
-                                    "price": -115.0,
-                                    "description": null,
-                                    "point": -6.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 225.0
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 225.0
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "fanduel",
-                    "title": "FanDuel",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Chicago Bulls",
-                                    "price": 245.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Minnesota Timberwolves",
-                                    "price": -300.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Chicago Bulls",
-                                    "price": -106.0,
-                                    "description": null,
-                                    "point": 7.0
-                                },
-                                {
-                                    "name": "Minnesota Timberwolves",
-                                    "price": -114.0,
-                                    "description": null,
-                                    "point": -7.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 226.0
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 226.0
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "1e6137994854a6163d6f9fea8dc6e83e",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-08T01:10:00Z",
-            "homeTeam": "Milwaukee Bucks",
-            "awayTeam": "Utah Jazz",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Milwaukee Bucks",
-                                    "price": -395.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Utah Jazz",
-                                    "price": 310.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Milwaukee Bucks",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": -9.0
-                                },
-                                {
-                                    "name": "Utah Jazz",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 9.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 229.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 229.5
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "fanduel",
-                    "title": "FanDuel",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Milwaukee Bucks",
-                                    "price": -370.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Utah Jazz",
-                                    "price": 295.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Milwaukee Bucks",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": -9.0
-                                },
-                                {
-                                    "name": "Utah Jazz",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 9.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 229.0
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 229.0
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "betmgm",
-                    "title": "BetMGM",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Milwaukee Bucks",
-                                    "price": -400.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Utah Jazz",
-                                    "price": 310.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Milwaukee Bucks",
-                                    "price": -105.0,
-                                    "description": null,
-                                    "point": -9.5
-                                },
-                                {
-                                    "name": "Utah Jazz",
-                                    "price": -115.0,
-                                    "description": null,
-                                    "point": 9.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 229.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 229.5
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "808cd638f31e1657b3c5cd3841a76b4a",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-08T01:10:00Z",
-            "homeTeam": "San Antonio Spurs",
-            "awayTeam": "Portland Trail Blazers",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Portland Trail Blazers",
-                                    "price": 160.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "San Antonio Spurs",
-                                    "price": -192.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Portland Trail Blazers",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 4.0
-                                },
-                                {
-                                    "name": "San Antonio Spurs",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": -4.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -112.0,
-                                    "description": null,
-                                    "point": 216.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -108.0,
-                                    "description": null,
-                                    "point": 216.5
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "fanduel",
-                    "title": "FanDuel",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Portland Trail Blazers",
-                                    "price": 152.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "San Antonio Spurs",
-                                    "price": -180.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Portland Trail Blazers",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 4.0
-                                },
-                                {
-                                    "name": "San Antonio Spurs",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -4.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 217.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 217.5
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "key": "betmgm",
-                    "title": "BetMGM",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Portland Trail Blazers",
-                                    "price": 145.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "San Antonio Spurs",
-                                    "price": -175.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Portland Trail Blazers",
-                                    "price": -105.0,
-                                    "description": null,
-                                    "point": 3.5
-                                },
-                                {
-                                    "name": "San Antonio Spurs",
-                                    "price": -115.0,
-                                    "description": null,
-                                    "point": -3.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:50Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 216.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 216.5
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "74058cb479045efa21ebd5c57050e23e",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-13T00:00:00Z",
-            "homeTeam": "Boston Celtics",
-            "awayTeam": "Atlanta Hawks",
-            "bookmakers": []
-        },
-        {
-            "id": "e80e0c514aa69872360f58b079796a8b",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-13T00:00:00Z",
-            "homeTeam": "Detroit Pistons",
-            "awayTeam": "Miami Heat",
-            "bookmakers": []
-        },
-        {
-            "id": "2d650fff73dcc627c1c0de3a4694e9fc",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-13T00:30:00Z",
-            "homeTeam": "Philadelphia 76ers",
-            "awayTeam": "New York Knicks",
-            "bookmakers": []
-        },
-        {
-            "id": "30e4d7fc5396e7b0b8be16b278c123fe",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-13T01:00:00Z",
-            "homeTeam": "Milwaukee Bucks",
-            "awayTeam": "Toronto Raptors",
-            "bookmakers": []
-        },
-        {
-            "id": "6050b0be3ce7b57b77ef6695b9cecaa1",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-13T02:00:00Z",
-            "homeTeam": "Utah Jazz",
-            "awayTeam": "Phoenix Suns",
-            "bookmakers": []
-        },
-        {
-            "id": "f0bfcb563a5de00b392bda6960db1796",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-13T03:00:00Z",
-            "homeTeam": "Golden State Warriors",
-            "awayTeam": "Dallas Mavericks",
-            "bookmakers": []
-        },
-        {
-            "id": "4a86e15d2c8c52972524be69d15941cc",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-11-13T03:00:00Z",
-            "homeTeam": "Portland Trail Blazers",
-            "awayTeam": "Minnesota Timberwolves",
-            "bookmakers": []
-        },
-        {
-            "id": "973a6ea86af7d9e2bf4c52509822f5bf",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-12-25T17:00:00Z",
-            "homeTeam": "New York Knicks",
-            "awayTeam": "San Antonio Spurs",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "New York Knicks",
-                                    "price": -425.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "San Antonio Spurs",
-                                    "price": 330.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "New York Knicks",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -9.5
-                                },
-                                {
-                                    "name": "San Antonio Spurs",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 9.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 226.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 226.5
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "07a07eaa8f786d68cb371107f36f5b33",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-12-25T19:30:00Z",
-            "homeTeam": "Dallas Mavericks",
-            "awayTeam": "Minnesota Timberwolves",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Dallas Mavericks",
-                                    "price": -155.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Minnesota Timberwolves",
-                                    "price": 130.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Dallas Mavericks",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -3.0
-                                },
-                                {
-                                    "name": "Minnesota Timberwolves",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 3.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 228.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 228.5
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "6f66bc2154fb45b2047e1c1c5afcdc38",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-12-25T22:00:00Z",
-            "homeTeam": "Boston Celtics",
-            "awayTeam": "Philadelphia 76ers",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Boston Celtics",
-                                    "price": -230.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Philadelphia 76ers",
-                                    "price": 190.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Boston Celtics",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -6.0
-                                },
-                                {
-                                    "name": "Philadelphia 76ers",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 6.0
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 226.0
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 226.0
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "bc6f994bad539db5054c8b750c437fb8",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-12-26T01:00:00Z",
-            "homeTeam": "Golden State Warriors",
-            "awayTeam": "Los Angeles Lakers",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Golden State Warriors",
-                                    "price": -162.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Los Angeles Lakers",
-                                    "price": 136.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Golden State Warriors",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -3.5
-                                },
-                                {
-                                    "name": "Los Angeles Lakers",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 3.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 233.5
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 233.5
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "22a9b650e64ca15cb0c83dc0148a571e",
-            "sportKey": "basketball_nba",
-            "sportTitle": "NBA",
-            "commenceTime": "2024-12-26T03:30:00Z",
-            "homeTeam": "Phoenix Suns",
-            "awayTeam": "Denver Nuggets",
-            "bookmakers": [
-                {
-                    "key": "draftkings",
-                    "title": "DraftKings",
-                    "lastUpdate": "2024-11-06T23:56:51Z",
-                    "markets": [
-                        {
-                            "key": "h2h",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Denver Nuggets",
-                                    "price": 120.0,
-                                    "description": null,
-                                    "point": null
-                                },
-                                {
-                                    "name": "Phoenix Suns",
-                                    "price": -142.0,
-                                    "description": null,
-                                    "point": null
-                                }
-                            ]
-                        },
-                        {
-                            "key": "spreads",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Denver Nuggets",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 2.5
-                                },
-                                {
-                                    "name": "Phoenix Suns",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": -2.5
-                                }
-                            ]
-                        },
-                        {
-                            "key": "totals",
-                            "lastUpdate": "2024-11-06T23:56:51Z",
-                            "outcomes": [
-                                {
-                                    "name": "Over",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 227.0
-                                },
-                                {
-                                    "name": "Under",
-                                    "price": -110.0,
-                                    "description": null,
-                                    "point": 227.0
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-    ],
-    "optimalOddsMap": {
-        "74058cb479045efa21ebd5c57050e23e": [],
-        "84d6b1ca05b2ad858b5b9ac52ea4b0ee": [
-            {
-                "bookmaker": "FanDuel",
-                "name": "Over",
-                "price": -110.0,
-                "point": 226.0,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Under",
-                "price": -108.0,
-                "point": 225.0,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Chicago Bulls",
-                "price": 245.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Chicago Bulls",
-                "price": -105.0,
-                "point": 6.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Minnesota Timberwolves",
-                "price": -114.0,
-                "point": -7.0,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Minnesota Timberwolves",
-                "price": -290.0,
-                "point": null,
-                "betType": "h2h"
-            }
-        ],
-        "6f66bc2154fb45b2047e1c1c5afcdc38": [
-            {
-                "bookmaker": "DraftKings",
-                "name": "Over",
-                "price": -110.0,
-                "point": 226.0,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Boston Celtics",
-                "price": -110.0,
-                "point": -6.0,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Under",
-                "price": -110.0,
-                "point": 226.0,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Philadelphia 76ers",
-                "price": 190.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Boston Celtics",
-                "price": -230.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Philadelphia 76ers",
-                "price": -110.0,
-                "point": 6.0,
-                "betType": "spreads"
-            }
-        ],
-        "bc6f994bad539db5054c8b750c437fb8": [
-            {
-                "bookmaker": "DraftKings",
-                "name": "Los Angeles Lakers",
-                "price": 136.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Golden State Warriors",
-                "price": -162.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Los Angeles Lakers",
-                "price": -110.0,
-                "point": 3.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Over",
-                "price": -110.0,
-                "point": 233.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Under",
-                "price": -110.0,
-                "point": 233.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Golden State Warriors",
-                "price": -110.0,
-                "point": -3.5,
-                "betType": "spreads"
-            }
-        ],
-        "f0bfcb563a5de00b392bda6960db1796": [],
-        "9e3ad3534d3b3a6702d2ee41b756ec3d": [
-            {
-                "bookmaker": "DraftKings",
-                "name": "Denver Nuggets",
-                "price": 225.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Denver Nuggets",
-                "price": -108.0,
-                "point": 7.0,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Over",
-                "price": -108.0,
-                "point": 224.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "BetMGM",
-                "name": "Oklahoma City Thunder",
-                "price": -105.0,
-                "point": -7.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Oklahoma City Thunder",
-                "price": -270.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Under",
-                "price": -110.0,
-                "point": 224.5,
-                "betType": "totals"
-            }
-        ],
-        "2d650fff73dcc627c1c0de3a4694e9fc": [],
-        "973a6ea86af7d9e2bf4c52509822f5bf": [
-            {
-                "bookmaker": "DraftKings",
-                "name": "Over",
-                "price": -110.0,
-                "point": 226.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "New York Knicks",
-                "price": -110.0,
-                "point": -9.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "San Antonio Spurs",
-                "price": -110.0,
-                "point": 9.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "New York Knicks",
-                "price": -425.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "San Antonio Spurs",
-                "price": 330.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Under",
-                "price": -110.0,
-                "point": 226.5,
-                "betType": "totals"
-            }
-        ],
-        "07a07eaa8f786d68cb371107f36f5b33": [
-            {
-                "bookmaker": "DraftKings",
-                "name": "Minnesota Timberwolves",
-                "price": -110.0,
-                "point": 3.0,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Minnesota Timberwolves",
-                "price": 130.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Over",
-                "price": -110.0,
-                "point": 228.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Under",
-                "price": -110.0,
-                "point": 228.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Dallas Mavericks",
-                "price": -155.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Dallas Mavericks",
-                "price": -110.0,
-                "point": -3.0,
-                "betType": "spreads"
-            }
-        ],
-        "d8a4500a8cc85a77dcea342ae4099316": [
-            {
-                "bookmaker": "FanDuel",
-                "name": "Charlotte Hornets",
-                "price": -108.0,
-                "point": 1.0,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Over",
-                "price": -108.0,
-                "point": 223.0,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Charlotte Hornets",
-                "price": 102.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Under",
-                "price": -108.0,
-                "point": 223.0,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Detroit Pistons",
-                "price": -115.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "BetMGM",
-                "name": "Detroit Pistons",
-                "price": -105.0,
-                "point": -1.5,
-                "betType": "spreads"
-            }
-        ],
-        "e11aab280c73770d02d2a81c162debeb": [
-            {
-                "bookmaker": "DraftKings",
-                "name": "San Antonio Spurs",
-                "price": -108.0,
-                "point": 6.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "San Antonio Spurs",
-                "price": 230.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Houston Rockets",
-                "price": -270.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "BetMGM",
-                "name": "Over",
-                "price": -105.0,
-                "point": 215.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Under",
-                "price": -110.0,
-                "point": 215.0,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "BetMGM",
-                "name": "Houston Rockets",
-                "price": -110.0,
-                "point": -6.5,
-                "betType": "spreads"
-            }
-        ],
-        "22a9b650e64ca15cb0c83dc0148a571e": [
-            {
-                "bookmaker": "DraftKings",
-                "name": "Over",
-                "price": -110.0,
-                "point": 227.0,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Denver Nuggets",
-                "price": 120.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Phoenix Suns",
-                "price": -142.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Denver Nuggets",
-                "price": -110.0,
-                "point": 2.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Under",
-                "price": -110.0,
-                "point": 227.0,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Phoenix Suns",
-                "price": -110.0,
-                "point": -2.5,
-                "betType": "spreads"
-            }
-        ],
-        "55e42ff38d847dc50703546e7493cce2": [
-            {
-                "bookmaker": "FanDuel",
-                "name": "Under",
-                "price": -110.0,
-                "point": 227.0,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Over",
-                "price": -108.0,
-                "point": 226.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "BetMGM",
-                "name": "Atlanta Hawks",
-                "price": -105.0,
-                "point": 6.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Atlanta Hawks",
-                "price": 230.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "New York Knicks",
-                "price": -270.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "New York Knicks",
-                "price": -108.0,
-                "point": -7.0,
-                "betType": "spreads"
-            }
-        ],
-        "b66e2dcd5f73800d50d9e6cedb0f5816": [
-            {
-                "bookmaker": "BetMGM",
-                "name": "Over",
-                "price": -110.0,
-                "point": 214.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Philadelphia 76ers",
-                "price": 105.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Under",
-                "price": -108.0,
-                "point": 214.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Los Angeles Clippers",
-                "price": -110.0,
-                "point": -1.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Los Angeles Clippers",
-                "price": -122.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Philadelphia 76ers",
-                "price": -108.0,
-                "point": 1.5,
-                "betType": "spreads"
-            }
-        ],
-        "e80e0c514aa69872360f58b079796a8b": [],
-        "4a86e15d2c8c52972524be69d15941cc": [],
-        "1e6137994854a6163d6f9fea8dc6e83e": [
-            {
-                "bookmaker": "BetMGM",
-                "name": "Milwaukee Bucks",
-                "price": -105.0,
-                "point": -9.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Utah Jazz",
-                "price": -108.0,
-                "point": 9.0,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Over",
-                "price": -110.0,
-                "point": 229.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Under",
-                "price": -110.0,
-                "point": 229.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Utah Jazz",
-                "price": 310.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Milwaukee Bucks",
-                "price": -370.0,
-                "point": null,
-                "betType": "h2h"
-            }
-        ],
-        "6b8b7ee373af6d1ae89c0f2940635b00": [
-            {
-                "bookmaker": "BetMGM",
-                "name": "Miami Heat",
-                "price": 165.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Miami Heat",
-                "price": -110.0,
-                "point": 5.0,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Phoenix Suns",
-                "price": -188.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "BetMGM",
-                "name": "Phoenix Suns",
-                "price": -105.0,
-                "point": -5.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Over",
-                "price": -110.0,
-                "point": 222.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Under",
-                "price": -108.0,
-                "point": 222.5,
-                "betType": "totals"
-            }
-        ],
-        "30e4d7fc5396e7b0b8be16b278c123fe": [],
-        "bc5e0e6e79a5d82ad2b20e991492db8c": [
-            {
-                "bookmaker": "BetMGM",
-                "name": "Under",
-                "price": -105.0,
-                "point": 226.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Over",
-                "price": -110.0,
-                "point": 226.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Indiana Pacers",
-                "price": -108.0,
-                "point": -5.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Indiana Pacers",
-                "price": -218.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Orlando Magic",
-                "price": 188.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Orlando Magic",
-                "price": -110.0,
-                "point": 5.5,
-                "betType": "spreads"
-            }
-        ],
-        "6050b0be3ce7b57b77ef6695b9cecaa1": [],
-        "cb8bf9aed92604c1334706f5c0c82c57": [
-            {
-                "bookmaker": "DraftKings",
-                "name": "Under",
-                "price": -108.0,
-                "point": 237.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "BetMGM",
-                "name": "Sacramento Kings",
-                "price": -105.0,
-                "point": -11.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Sacramento Kings",
-                "price": -600.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Toronto Raptors",
-                "price": -108.0,
-                "point": 11.0,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Toronto Raptors",
-                "price": 455.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "BetMGM",
-                "name": "Over",
-                "price": -105.0,
-                "point": 238.5,
-                "betType": "totals"
-            }
-        ],
-        "c109fa8f6b5af24ef9718aed21811c35": [
-            {
-                "bookmaker": "FanDuel",
-                "name": "Under",
-                "price": -108.0,
-                "point": 237.0,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Dallas Mavericks",
-                "price": -420.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Chicago Bulls",
-                "price": 340.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Over",
-                "price": -110.0,
-                "point": 237.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Chicago Bulls",
-                "price": -110.0,
-                "point": 9.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Dallas Mavericks",
-                "price": -110.0,
-                "point": -9.5,
-                "betType": "spreads"
-            }
-        ],
-        "8a6e6ad9eff01832c4dcc8085227f319": [
-            {
-                "bookmaker": "DraftKings",
-                "name": "Memphis Grizzlies",
-                "price": -105.0,
-                "point": -4.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Over",
-                "price": -110.0,
-                "point": 232.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Los Angeles Lakers",
-                "price": 150.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Los Angeles Lakers",
-                "price": -106.0,
-                "point": 4.0,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "BetMGM",
-                "name": "Under",
-                "price": -105.0,
-                "point": 232.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Memphis Grizzlies",
-                "price": -174.0,
-                "point": null,
-                "betType": "h2h"
-            }
-        ],
-        "6dc1349cbc1293f743feb18946ff2f4c": [
-            {
-                "bookmaker": "BetMGM",
-                "name": "Boston Celtics",
-                "price": -250.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Golden State Warriors",
-                "price": 225.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "BetMGM",
-                "name": "Boston Celtics",
-                "price": -110.0,
-                "point": -6.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Golden State Warriors",
-                "price": -108.0,
-                "point": 6.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "BetMGM",
-                "name": "Over",
-                "price": -105.0,
-                "point": 229.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Under",
-                "price": -110.0,
-                "point": 228.5,
-                "betType": "totals"
-            }
-        ],
-        "2aca7da4384db5d91c0bf5e7ef8bad3e": [
-            {
-                "bookmaker": "DraftKings",
-                "name": "Under",
-                "price": -110.0,
-                "point": 224.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "New Orleans Pelicans",
-                "price": 230.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "BetMGM",
-                "name": "New Orleans Pelicans",
-                "price": -105.0,
-                "point": 6.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Cleveland Cavaliers",
-                "price": -270.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Cleveland Cavaliers",
-                "price": -108.0,
-                "point": -7.0,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Over",
-                "price": -110.0,
-                "point": 224.5,
-                "betType": "totals"
-            }
-        ],
-        "808cd638f31e1657b3c5cd3841a76b4a": [
-            {
-                "bookmaker": "BetMGM",
-                "name": "Portland Trail Blazers",
-                "price": -105.0,
-                "point": 3.5,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Portland Trail Blazers",
-                "price": 160.0,
-                "point": null,
-                "betType": "h2h"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "San Antonio Spurs",
-                "price": -108.0,
-                "point": -4.0,
-                "betType": "spreads"
-            },
-            {
-                "bookmaker": "FanDuel",
-                "name": "Over",
-                "price": -110.0,
-                "point": 217.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "DraftKings",
-                "name": "Under",
-                "price": -108.0,
-                "point": 216.5,
-                "betType": "totals"
-            },
-            {
-                "bookmaker": "BetMGM",
-                "name": "San Antonio Spurs",
-                "price": -175.0,
-                "point": null,
-                "betType": "h2h"
-            }
-        ]
+export const rotoWireDailyMatchupsMockResp = {
+    "isError": false,
+    "errorMessage": null,
+    "data": {
+        "isError": false,
+        "errorMessage": null,
+        "data": "{\"matchups\": [{\"away\": {\"teamNickname\": \"Kings\", \"projectedPlayers\": [\"Malik Monk\", \"Zach LaVine\", \"DeMar DeRozan\", \"Keegan Murray\", \"Domantas Sabonis\"]}, \"home\": {\"teamNickname\": \"Pelicans\", \"projectedPlayers\": [\"Jose Alvarado\", \"CJ McCollum\", \"Trey Murphy\", \"Karlo Matkovic\", \"Yves Missi\"]}}, {\"away\": {\"teamNickname\": \"Warriors\", \"projectedPlayers\": [\"Stephen Curry\", \"Buddy Hield\", \"Jimmy Butler\", \"Draymond Green\", \"Quinten Post\"]}, \"home\": {\"teamNickname\": \"Rockets\", \"projectedPlayers\": [\"Jalen Green\", \"Amen Thompson\", \"Dillon Brooks\", \"Jae'Sean Tate\", \"Alperen Sengun\"]}}, {\"away\": {\"teamNickname\": \"Heat\", \"projectedPlayers\": [\"Tyler Herro\", \"Duncan Robinson\", \"Andrew Wiggins\", \"Bam Adebayo\", \"Kel'el Ware\"]}, \"home\": {\"teamNickname\": \"Mavericks\", \"projectedPlayers\": [\"Kyrie Irving\", \"Max Christie\", \"Klay Thompson\", \"Kessler Edwards\", \"Olivier-Maxence Prosper\"]}}, {\"away\": {\"teamNickname\": \"Thunder\", \"projectedPlayers\": [\"Shai Gilgeous-Alexander\", \"Luguentz Dort\", \"Jalen Williams\", \"Chet Holmgren\", \"Isaiah Hartenstein\"]}, \"home\": {\"teamNickname\": \"Timberwolves\", \"projectedPlayers\": [\"Mike Conley\", \"Anthony Edwards\", \"Jaden McDaniels\", \"Naz Reid\", \"Rudy Gobert\"]}}, {\"away\": {\"teamNickname\": \"Clippers\", \"projectedPlayers\": [\"James Harden\", \"Norman Powell\", \"Amir Coffey\", \"Derrick Jones\", \"Ivica Zubac\"]}, \"home\": {\"teamNickname\": \"Jazz\", \"projectedPlayers\": [\"Isaiah Collier\", \"Collin Sexton\", \"Lauri Markkanen\", \"John Collins\", \"Walker Kessler\"]}}], \"isError\": false}"
     }
 };
 
-export const GetNbaMatchupsMockResonse = {
+export const oddsEventsMockResp = {
     "isError": false,
-    "matchups": [
+    "errorMessage": null,
+    "data": [
         {
-            "away": {
-                "projectedPlayers": [
-                    "Jalen Suggs",
-                    "Kentavious Caldwell-Pope",
-                    "Tristan da Silva",
-                    "Franz Wagner",
-                    "Goga Bitadze"
-                ],
-                "teamNickname": "Magic"
-            },
-            "home": {
-                "projectedPlayers": [
-                    "Tyrese Haliburton",
-                    "Andrew Nembhard",
-                    "Bennedict Mathurin",
-                    "Pascal Siakam",
-                    "Myles Turner"
-                ],
-                "teamNickname": "Pacers"
-            }
+            "id": "480e200e199564b43806ed98e8051a31",
+            "sportKey": "basketball_nba",
+            "sportTitle": "NBA",
+            "commenceTime": "2025-02-14T01:00:00Z",
+            "homeTeam": "New Orleans Pelicans",
+            "awayTeam": "Sacramento Kings",
+            "bookmakers": null
         },
         {
-            "away": {
-                "projectedPlayers": [
-                    "Cade Cunningham",
-                    "Jaden Ivey",
-                    "Tim Hardaway",
-                    "Tobias Harris",
-                    "Jalen Duren"
-                ],
-                "teamNickname": "Pistons"
-            },
-            "home": {
-                "projectedPlayers": [
-                    "LaMelo Ball",
-                    "Brandon Miller",
-                    "Josh Green",
-                    "Miles Bridges",
-                    "Taj Gibson"
-                ],
-                "teamNickname": "Hornets"
-            }
+            "id": "3c6e47253e4108bf01641d455b2329e7",
+            "sportKey": "basketball_nba",
+            "sportTitle": "NBA",
+            "commenceTime": "2025-02-14T01:10:00Z",
+            "homeTeam": "Houston Rockets",
+            "awayTeam": "Golden State Warriors",
+            "bookmakers": null
         },
         {
-            "away": {
-                "projectedPlayers": [
-                    "Jalen Brunson",
-                    "Mikal Bridges",
-                    "Josh Hart",
-                    "OG Anunoby",
-                    "Karl-Anthony Towns"
-                ],
-                "teamNickname": "Knicks"
-            },
-            "home": {
-                "projectedPlayers": [
-                    "Trae Young",
-                    "Dyson Daniels",
-                    "Zaccharie Risacher",
-                    "Jalen Johnson",
-                    "Clint Capela"
-                ],
-                "teamNickname": "Hawks"
-            }
+            "id": "b6d76f4779b5315551f72f5cd478a46d",
+            "sportKey": "basketball_nba",
+            "sportTitle": "NBA",
+            "commenceTime": "2025-02-14T01:40:00Z",
+            "homeTeam": "Dallas Mavericks",
+            "awayTeam": "Miami Heat",
+            "bookmakers": null
         },
         {
-            "away": {
-                "projectedPlayers": [
-                    "Stephen Curry",
-                    "Gary Payton",
-                    "Andrew Wiggins",
-                    "Draymond Green",
-                    "Trayce Jackson-Davis"
-                ],
-                "teamNickname": "Warriors"
-            },
-            "home": {
-                "projectedPlayers": [
-                    "Jrue Holiday",
-                    "Derrick White",
-                    "Jayson Tatum",
-                    "Al Horford",
-                    "Luke Kornet"
-                ],
-                "teamNickname": "Celtics"
-            }
+            "id": "8718345dafcfcd6c965fb4b2737586a8",
+            "sportKey": "basketball_nba",
+            "sportTitle": "NBA",
+            "commenceTime": "2025-02-14T01:40:00Z",
+            "homeTeam": "Minnesota Timberwolves",
+            "awayTeam": "Oklahoma City Thunder",
+            "bookmakers": null
         },
         {
-            "away": {
-                "projectedPlayers": [
-                    "Darius Garland",
-                    "Donovan Mitchell",
-                    "Isaac Okoro",
-                    "Evan Mobley",
-                    "Jarrett Allen"
-                ],
-                "teamNickname": "Cavaliers"
-            },
-            "home": {
-                "projectedPlayers": [
-                    "Jose Alvarado",
-                    "Jordan Hawkins",
-                    "Brandon Ingram",
-                    "Zion Williamson",
-                    "Yves Missi"
-                ],
-                "teamNickname": "Pelicans"
-            }
+            "id": "59018cf2adc33bd07509cc282e25a0a5",
+            "sportKey": "basketball_nba",
+            "sportTitle": "NBA",
+            "commenceTime": "2025-02-14T02:10:00Z",
+            "homeTeam": "Utah Jazz",
+            "awayTeam": "Los Angeles Clippers",
+            "bookmakers": null
         },
         {
-            "away": {
-                "projectedPlayers": [
-                    "Chris Paul",
-                    "Stephon Castle",
-                    "Julian Champagnie",
-                    "Harrison Barnes",
-                    "Victor Wembanyama"
-                ],
-                "teamNickname": "Spurs"
-            },
-            "home": {
-                "projectedPlayers": [
-                    "Fred VanVleet",
-                    "Jalen Green",
-                    "Dillon Brooks",
-                    "Jabari Smith",
-                    "Alperen Sengun"
-                ],
-                "teamNickname": "Rockets"
-            }
+            "id": "8c5dfc09221b32ad1835ce0e5c426454",
+            "sportKey": "basketball_nba",
+            "sportTitle": "NBA",
+            "commenceTime": "2025-02-26T03:00:00Z",
+            "homeTeam": "Los Angeles Lakers",
+            "awayTeam": "Dallas Mavericks",
+            "bookmakers": null
         },
         {
-            "away": {
-                "projectedPlayers": [
-                    "D'Angelo Russell",
-                    "Austin Reaves",
-                    "Dalton Knecht",
-                    "LeBron James",
-                    "Jaxson Hayes"
-                ],
-                "teamNickname": "Lakers"
-            },
-            "home": {
-                "projectedPlayers": [
-                    "Ja Morant",
-                    "Jaylen Wells",
-                    "Santi Aldama",
-                    "Jaren Jackson",
-                    "Zach Edey"
-                ],
-                "teamNickname": "Grizzlies"
-            }
-        },
-        {
-            "away": {
-                "projectedPlayers": [
-                    "Josh Giddey",
-                    "Coby White",
-                    "Zach LaVine",
-                    "Patrick Williams",
-                    "Nikola Vucevic"
-                ],
-                "teamNickname": "Bulls"
-            },
-            "home": {
-                "projectedPlayers": [
-                    "Luka Doncic",
-                    "Kyrie Irving",
-                    "Klay Thompson",
-                    "Naji Marshall",
-                    "Daniel Gafford"
-                ],
-                "teamNickname": "Mavericks"
-            }
-        },
-        {
-            "away": {
-                "projectedPlayers": [
-                    "Shai Gilgeous-Alexander",
-                    "Cason Wallace",
-                    "Luguentz Dort",
-                    "Jalen Williams",
-                    "Chet Holmgren"
-                ],
-                "teamNickname": "Thunder"
-            },
-            "home": {
-                "projectedPlayers": [
-                    "Russell Westbrook",
-                    "Christian Braun",
-                    "Michael Porter",
-                    "Peyton Watson",
-                    "Nikola Jokic"
-                ],
-                "teamNickname": "Nuggets"
-            }
-        },
-        {
-            "away": {
-                "projectedPlayers": [
-                    "Terry Rozier",
-                    "Tyler Herro",
-                    "Jimmy Butler",
-                    "Nikola Jovic",
-                    "Bam Adebayo"
-                ],
-                "teamNickname": "Heat"
-            },
-            "home": {
-                "projectedPlayers": [
-                    "Tyus Jones",
-                    "Devin Booker",
-                    "Bradley Beal",
-                    "Kevin Durant",
-                    "Jusuf Nurkic"
-                ],
-                "teamNickname": "Suns"
-            }
-        },
-        {
-            "away": {
-                "projectedPlayers": [
-                    "Tyrese Maxey",
-                    "Kelly Oubre",
-                    "Caleb Martin",
-                    "Paul George",
-                    "Andre Drummond"
-                ],
-                "teamNickname": "76ers"
-            },
-            "home": {
-                "projectedPlayers": [
-                    "James Harden",
-                    "Norman Powell",
-                    "Terance Mann",
-                    "Derrick Jones",
-                    "Ivica Zubac"
-                ],
-                "teamNickname": "Clippers"
-            }
-        },
-        {
-            "away": {
-                "projectedPlayers": [
-                    "Davion Mitchell",
-                    "Gradey Dick",
-                    "Ochai Agbaji",
-                    "RJ Barrett",
-                    "Jakob Poeltl"
-                ],
-                "teamNickname": "Raptors"
-            },
-            "home": {
-                "projectedPlayers": [
-                    "De'Aaron Fox",
-                    "Kevin Huerter",
-                    "DeMar DeRozan",
-                    "Keegan Murray",
-                    "Domantas Sabonis"
-                ],
-                "teamNickname": "Kings"
-            }
+            "id": "f880e059bbee7b5b9e4af4d17bcee511",
+            "sportKey": "basketball_nba",
+            "sportTitle": "NBA",
+            "commenceTime": "2025-03-08T03:10:00Z",
+            "homeTeam": "Sacramento Kings",
+            "awayTeam": "San Antonio Spurs",
+            "bookmakers": null
         }
-    ],
-    "rotowireSportsbookLines": {
-        "Cavaliers": {
-            "LINE": {
-                "betmgm": "-275",
-                "draftkings": "-270",
-                "fanduel": "-280"
-            },
-            "OU": {
-                "betmgm": "224.5",
-                "draftkings": "224.5",
-                "fanduel": "224.0"
-            },
-            "SPREAD": {
-                "betmgm": "-6.5",
-                "draftkings": "-7.0",
-                "fanduel": "-7.0"
+    ]
+};
+
+export const rocketsWarriorsPlayersOdds = {
+    "isError": false,
+    "errorMessage": null,
+    "data": {
+        "events": [
+            {
+                "id": "3c6e47253e4108bf01641d455b2329e7",
+                "sportKey": "basketball_nba",
+                "sportTitle": "NBA",
+                "commenceTime": "2025-02-14T01:10:00Z",
+                "homeTeam": "Houston Rockets",
+                "awayTeam": "Golden State Warriors",
+                "bookmakers": [
+                    {
+                        "key": "fanduel",
+                        "title": "FanDuel",
+                        "lastUpdate": null,
+                        "markets": [
+                            {
+                                "key": "player_assists",
+                                "lastUpdate": "2025-02-13T19:56:01Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -156,
+                                        "description": "Jimmy Butler",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 122,
+                                        "description": "Jimmy Butler",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 126,
+                                        "description": "Jalen Green",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -162,
+                                        "description": "Jalen Green",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -142,
+                                        "description": "Alperen Sengun",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 112,
+                                        "description": "Alperen Sengun",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -136,
+                                        "description": "Amen Thompson",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 106,
+                                        "description": "Amen Thompson",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 106,
+                                        "description": "Stephen Curry",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -136,
+                                        "description": "Stephen Curry",
+                                        "point": 5.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points",
+                                "lastUpdate": "2025-02-13T19:56:01Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -128,
+                                        "description": "Amen Thompson",
+                                        "point": 16.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 100,
+                                        "description": "Amen Thompson",
+                                        "point": 16.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -113,
+                                        "description": "Dillon Brooks",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -113,
+                                        "description": "Dillon Brooks",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -104,
+                                        "description": "Alperen Sengun",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -122,
+                                        "description": "Alperen Sengun",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -106,
+                                        "description": "Jalen Green",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Jalen Green",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -106,
+                                        "description": "Stephen Curry",
+                                        "point": 25.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Stephen Curry",
+                                        "point": 25.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 100,
+                                        "description": "Jimmy Butler",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -128,
+                                        "description": "Jimmy Butler",
+                                        "point": 19.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_assists",
+                                "lastUpdate": "2025-02-13T19:56:01Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -122,
+                                        "description": "Stephen Curry",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -104,
+                                        "description": "Stephen Curry",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -108,
+                                        "description": "Jimmy Butler",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -118,
+                                        "description": "Jimmy Butler",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -113,
+                                        "description": "Jalen Green",
+                                        "point": 27.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -113,
+                                        "description": "Jalen Green",
+                                        "point": 27.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 100,
+                                        "description": "Amen Thompson",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -128,
+                                        "description": "Amen Thompson",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -106,
+                                        "description": "Alperen Sengun",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Alperen Sengun",
+                                        "point": 24.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_rebounds",
+                                "lastUpdate": "2025-02-13T19:56:01Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Jimmy Butler",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -111,
+                                        "description": "Jimmy Butler",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -104,
+                                        "description": "Jalen Green",
+                                        "point": 28.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -122,
+                                        "description": "Jalen Green",
+                                        "point": 28.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -104,
+                                        "description": "Alperen Sengun",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -122,
+                                        "description": "Alperen Sengun",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -106,
+                                        "description": "Amen Thompson",
+                                        "point": 26.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Amen Thompson",
+                                        "point": 26.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -111,
+                                        "description": "Stephen Curry",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Stephen Curry",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -113,
+                                        "description": "Dillon Brooks",
+                                        "point": 17.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -113,
+                                        "description": "Dillon Brooks",
+                                        "point": 17.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_rebounds_assists",
+                                "lastUpdate": "2025-02-13T19:56:01Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -104,
+                                        "description": "Alperen Sengun",
+                                        "point": 35.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -122,
+                                        "description": "Alperen Sengun",
+                                        "point": 35.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -111,
+                                        "description": "Amen Thompson",
+                                        "point": 32.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Amen Thompson",
+                                        "point": 32.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -113,
+                                        "description": "Jalen Green",
+                                        "point": 32.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -113,
+                                        "description": "Jalen Green",
+                                        "point": 32.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -102,
+                                        "description": "Stephen Curry",
+                                        "point": 35.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Stephen Curry",
+                                        "point": 35.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -122,
+                                        "description": "Jimmy Butler",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -104,
+                                        "description": "Jimmy Butler",
+                                        "point": 29.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_rebounds",
+                                "lastUpdate": "2025-02-13T19:56:01Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -154,
+                                        "description": "Stephen Curry",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 120,
+                                        "description": "Stephen Curry",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -128,
+                                        "description": "Alperen Sengun",
+                                        "point": 10.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 100,
+                                        "description": "Alperen Sengun",
+                                        "point": 10.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -102,
+                                        "description": "Amen Thompson",
+                                        "point": 9.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Amen Thompson",
+                                        "point": 9.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Jalen Green",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 102,
+                                        "description": "Jalen Green",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -140,
+                                        "description": "Dillon Brooks",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 110,
+                                        "description": "Dillon Brooks",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 102,
+                                        "description": "Jimmy Butler",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -130,
+                                        "description": "Jimmy Butler",
+                                        "point": 5.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_threes",
+                                "lastUpdate": "2025-02-13T19:56:01Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": 120,
+                                        "description": "Stephen Curry",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -154,
+                                        "description": "Stephen Curry",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -174,
+                                        "description": "Jalen Green",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 136,
+                                        "description": "Jalen Green",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 104,
+                                        "description": "Dillon Brooks",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -132,
+                                        "description": "Dillon Brooks",
+                                        "point": 2.5
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "key": "draftkings",
+                        "title": "DraftKings",
+                        "lastUpdate": null,
+                        "markets": [
+                            {
+                                "key": "player_assists",
+                                "lastUpdate": "2025-02-13T19:54:13Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Under",
+                                        "price": 105,
+                                        "description": "Amen Thompson",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -135,
+                                        "description": "Amen Thompson",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -135,
+                                        "description": "Stephen Curry",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 105,
+                                        "description": "Stephen Curry",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 114,
+                                        "description": "Jimmy Butler",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -145,
+                                        "description": "Jimmy Butler",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 110,
+                                        "description": "Alperen Sengun",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -140,
+                                        "description": "Alperen Sengun",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Draymond Green",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 100,
+                                        "description": "Draymond Green",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -160,
+                                        "description": "Jalen Green",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 124,
+                                        "description": "Jalen Green",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 105,
+                                        "description": "Buddy Hield",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -135,
+                                        "description": "Buddy Hield",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Dillon Brooks",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Dillon Brooks",
+                                        "point": 1.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points",
+                                "lastUpdate": "2025-02-13T19:54:13Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Stephen Curry",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Stephen Curry",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Jalen Green",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Jalen Green",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Jimmy Butler",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Jimmy Butler",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 100,
+                                        "description": "Alperen Sengun",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -130,
+                                        "description": "Alperen Sengun",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Amen Thompson",
+                                        "point": 16.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Amen Thompson",
+                                        "point": 16.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 100,
+                                        "description": "Dillon Brooks",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Dillon Brooks",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Buddy Hield",
+                                        "point": 12.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Buddy Hield",
+                                        "point": 12.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Cam Whitmore",
+                                        "point": 12.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Cam Whitmore",
+                                        "point": 12.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Draymond Green",
+                                        "point": 7.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Draymond Green",
+                                        "point": 7.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_assists",
+                                "lastUpdate": "2025-02-13T19:54:13Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Stephen Curry",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Stephen Curry",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Jalen Green",
+                                        "point": 27.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Jalen Green",
+                                        "point": 27.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Alperen Sengun",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Alperen Sengun",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Jimmy Butler",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Jimmy Butler",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Amen Thompson",
+                                        "point": 22.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Amen Thompson",
+                                        "point": 22.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Dillon Brooks",
+                                        "point": 15.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Dillon Brooks",
+                                        "point": 15.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Buddy Hield",
+                                        "point": 14.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Buddy Hield",
+                                        "point": 14.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Draymond Green",
+                                        "point": 12.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Draymond Green",
+                                        "point": 12.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_rebounds",
+                                "lastUpdate": "2025-02-13T19:54:13Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Alperen Sengun",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Alperen Sengun",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Stephen Curry",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Stephen Curry",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Jalen Green",
+                                        "point": 28.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Jalen Green",
+                                        "point": 28.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Amen Thompson",
+                                        "point": 26.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Amen Thompson",
+                                        "point": 26.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Jimmy Butler",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Jimmy Butler",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Dillon Brooks",
+                                        "point": 17.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Dillon Brooks",
+                                        "point": 17.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Buddy Hield",
+                                        "point": 16.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Buddy Hield",
+                                        "point": 16.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Cam Whitmore",
+                                        "point": 16.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Cam Whitmore",
+                                        "point": 16.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Draymond Green",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Draymond Green",
+                                        "point": 13.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_rebounds_assists",
+                                "lastUpdate": "2025-02-13T19:54:13Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Alperen Sengun",
+                                        "point": 34.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Alperen Sengun",
+                                        "point": 34.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Stephen Curry",
+                                        "point": 34.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Stephen Curry",
+                                        "point": 34.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Jalen Green",
+                                        "point": 32.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Jalen Green",
+                                        "point": 32.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Amen Thompson",
+                                        "point": 32.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Amen Thompson",
+                                        "point": 32.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Jimmy Butler",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Jimmy Butler",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Dillon Brooks",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Dillon Brooks",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Buddy Hield",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Buddy Hield",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Draymond Green",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Draymond Green",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Cam Whitmore",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Cam Whitmore",
+                                        "point": 18.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_rebounds",
+                                "lastUpdate": "2025-02-13T19:54:11Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Alperen Sengun",
+                                        "point": 10.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Alperen Sengun",
+                                        "point": 10.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Amen Thompson",
+                                        "point": 9.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Amen Thompson",
+                                        "point": 9.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -140,
+                                        "description": "Draymond Green",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 110,
+                                        "description": "Draymond Green",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Jimmy Butler",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Jimmy Butler",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Jalen Green",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Jalen Green",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -145,
+                                        "description": "Stephen Curry",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 114,
+                                        "description": "Stephen Curry",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 120,
+                                        "description": "Cam Whitmore",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -154,
+                                        "description": "Cam Whitmore",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -135,
+                                        "description": "Buddy Hield",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 105,
+                                        "description": "Buddy Hield",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Dillon Brooks",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 100,
+                                        "description": "Dillon Brooks",
+                                        "point": 3.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_threes",
+                                "lastUpdate": "2025-02-13T19:54:13Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Under",
+                                        "price": -166,
+                                        "description": "Stephen Curry",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 130,
+                                        "description": "Stephen Curry",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 120,
+                                        "description": "Jalen Green",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -154,
+                                        "description": "Jalen Green",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Buddy Hield",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Buddy Hield",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Dillon Brooks",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Dillon Brooks",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -145,
+                                        "description": "Cam Whitmore",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 114,
+                                        "description": "Cam Whitmore",
+                                        "point": 1.5
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "key": "betmgm",
+                        "title": "BetMGM",
+                        "lastUpdate": null,
+                        "markets": [
+                            {
+                                "key": "player_assists",
+                                "lastUpdate": "2025-02-13T19:52:34Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Amen Thompson",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Amen Thompson",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 105,
+                                        "description": "Stephen Curry",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -140,
+                                        "description": "Stephen Curry",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -135,
+                                        "description": "Alperen Sengun",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 100,
+                                        "description": "Alperen Sengun",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Dillon Brooks",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Dillon Brooks",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 175,
+                                        "description": "Cam Whitmore",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -235,
+                                        "description": "Cam Whitmore",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -155,
+                                        "description": "Jimmy Butler",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 115,
+                                        "description": "Jimmy Butler",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -160,
+                                        "description": "Jalen Green",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 120,
+                                        "description": "Jalen Green",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Draymond Green",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -118,
+                                        "description": "Draymond Green",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Buddy Hield",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Buddy Hield",
+                                        "point": 1.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points",
+                                "lastUpdate": "2025-02-13T19:52:34Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Amen Thompson",
+                                        "point": 17.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -118,
+                                        "description": "Amen Thompson",
+                                        "point": 17.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Alperen Sengun",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Alperen Sengun",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Jalen Green",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Jalen Green",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Dillon Brooks",
+                                        "point": 14.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -130,
+                                        "description": "Dillon Brooks",
+                                        "point": 14.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Cam Whitmore",
+                                        "point": 12.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Cam Whitmore",
+                                        "point": 12.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Jimmy Butler",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Jimmy Butler",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Stephen Curry",
+                                        "point": 25.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Stephen Curry",
+                                        "point": 25.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -140,
+                                        "description": "Draymond Green",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 105,
+                                        "description": "Draymond Green",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Buddy Hield",
+                                        "point": 12.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Buddy Hield",
+                                        "point": 12.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_assists",
+                                "lastUpdate": "2025-02-13T19:52:34Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Amen Thompson",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Amen Thompson",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Alperen Sengun",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Alperen Sengun",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Jalen Green",
+                                        "point": 27.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Jalen Green",
+                                        "point": 27.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Dillon Brooks",
+                                        "point": 15.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Dillon Brooks",
+                                        "point": 15.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Stephen Curry",
+                                        "point": 31.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Stephen Curry",
+                                        "point": 31.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Cam Whitmore",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -118,
+                                        "description": "Cam Whitmore",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Jimmy Butler",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Jimmy Butler",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Draymond Green",
+                                        "point": 11.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Draymond Green",
+                                        "point": 11.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Buddy Hield",
+                                        "point": 14.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -130,
+                                        "description": "Buddy Hield",
+                                        "point": 14.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_rebounds",
+                                "lastUpdate": "2025-02-13T19:52:34Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Alperen Sengun",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Alperen Sengun",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Cam Whitmore",
+                                        "point": 16.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Cam Whitmore",
+                                        "point": 16.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Jimmy Butler",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Jimmy Butler",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Amen Thompson",
+                                        "point": 26.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Amen Thompson",
+                                        "point": 26.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Stephen Curry",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Stephen Curry",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Dillon Brooks",
+                                        "point": 17.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Dillon Brooks",
+                                        "point": 17.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Draymond Green",
+                                        "point": 12.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Draymond Green",
+                                        "point": 12.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Buddy Hield",
+                                        "point": 16.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Buddy Hield",
+                                        "point": 16.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Jalen Green",
+                                        "point": 27.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Jalen Green",
+                                        "point": 27.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_rebounds_assists",
+                                "lastUpdate": "2025-02-13T19:52:34Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Alperen Sengun",
+                                        "point": 35.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Alperen Sengun",
+                                        "point": 35.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Jalen Green",
+                                        "point": 32.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Jalen Green",
+                                        "point": 32.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Dillon Brooks",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -118,
+                                        "description": "Dillon Brooks",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Stephen Curry",
+                                        "point": 35.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Stephen Curry",
+                                        "point": 35.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Jimmy Butler",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Jimmy Butler",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Amen Thompson",
+                                        "point": 32.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Amen Thompson",
+                                        "point": 32.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Cam Whitmore",
+                                        "point": 17.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Cam Whitmore",
+                                        "point": 17.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Draymond Green",
+                                        "point": 17.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -118,
+                                        "description": "Draymond Green",
+                                        "point": 17.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Buddy Hield",
+                                        "point": 17.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Buddy Hield",
+                                        "point": 17.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_rebounds",
+                                "lastUpdate": "2025-02-13T19:52:34Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Jimmy Butler",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Jimmy Butler",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -140,
+                                        "description": "Stephen Curry",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 105,
+                                        "description": "Stephen Curry",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Alperen Sengun",
+                                        "point": 10.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Alperen Sengun",
+                                        "point": 10.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Jalen Green",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Jalen Green",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -160,
+                                        "description": "Dillon Brooks",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 120,
+                                        "description": "Dillon Brooks",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -135,
+                                        "description": "Cam Whitmore",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 100,
+                                        "description": "Cam Whitmore",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Amen Thompson",
+                                        "point": 8.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Amen Thompson",
+                                        "point": 8.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Draymond Green",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Draymond Green",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Buddy Hield",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Buddy Hield",
+                                        "point": 3.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_threes",
+                                "lastUpdate": "2025-02-13T19:52:34Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": 200,
+                                        "description": "Amen Thompson",
+                                        "point": 0.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -285,
+                                        "description": "Amen Thompson",
+                                        "point": 0.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 155,
+                                        "description": "Jimmy Butler",
+                                        "point": 0.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -210,
+                                        "description": "Jimmy Butler",
+                                        "point": 0.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 100,
+                                        "description": "Stephen Curry",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -135,
+                                        "description": "Stephen Curry",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 155,
+                                        "description": "Alperen Sengun",
+                                        "point": 0.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -210,
+                                        "description": "Alperen Sengun",
+                                        "point": 0.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 100,
+                                        "description": "Dillon Brooks",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -135,
+                                        "description": "Dillon Brooks",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -175,
+                                        "description": "Jalen Green",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 130,
+                                        "description": "Jalen Green",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Cam Whitmore",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Cam Whitmore",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -155,
+                                        "description": "Draymond Green",
+                                        "point": 0.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 120,
+                                        "description": "Draymond Green",
+                                        "point": 0.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Buddy Hield",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Buddy Hield",
+                                        "point": 2.5
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             }
-        },
-        "Celtics": {
-            "LINE": {
-                "betmgm": "-250",
-                "draftkings": "-238",
-                "fanduel": "-280"
-            },
-            "OU": {
-                "betmgm": "229.5",
-                "draftkings": "229.0",
-                "fanduel": "229.0"
-            },
-            "SPREAD": {
-                "betmgm": "-6.5",
-                "draftkings": "-6.0",
-                "fanduel": "-6.5"
+        ],
+        "optimalOddsMap": {
+            "3c6e47253e4108bf01641d455b2329e7": [
+                {
+                    "bookmaker": "DraftKings",
+                    "name": "Over",
+                    "price": 120,
+                    "point": 4.5,
+                    "betType": "player_rebounds"
+                },
+                {
+                    "bookmaker": "BetMGM",
+                    "name": "Over",
+                    "price": 200,
+                    "point": 0.5,
+                    "betType": "player_threes"
+                },
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "Over",
+                    "price": -102,
+                    "point": 35.5,
+                    "betType": "player_points_rebounds_assists"
+                },
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "Over",
+                    "price": 100,
+                    "point": 23.5,
+                    "betType": "player_points_assists"
+                },
+                {
+                    "bookmaker": "DraftKings",
+                    "name": "Under",
+                    "price": -105,
+                    "point": 29.5,
+                    "betType": "player_points_rebounds"
+                },
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "Under",
+                    "price": -104,
+                    "point": 29.5,
+                    "betType": "player_points_rebounds_assists"
+                },
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "Under",
+                    "price": 120,
+                    "point": 3.5,
+                    "betType": "player_rebounds"
+                },
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "Under",
+                    "price": -104,
+                    "point": 30.5,
+                    "betType": "player_points_assists"
+                },
+                {
+                    "bookmaker": "BetMGM",
+                    "name": "Over",
+                    "price": 175,
+                    "point": 1.5,
+                    "betType": "player_assists"
+                },
+                {
+                    "bookmaker": "BetMGM",
+                    "name": "Under",
+                    "price": 105,
+                    "point": 6.5,
+                    "betType": "player_points"
+                },
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "Under",
+                    "price": 122,
+                    "point": 4.5,
+                    "betType": "player_assists"
+                },
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "Under",
+                    "price": 136,
+                    "point": 2.5,
+                    "betType": "player_threes"
+                },
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "Over",
+                    "price": -104,
+                    "point": 28.5,
+                    "betType": "player_points_rebounds"
+                },
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "Over",
+                    "price": 100,
+                    "point": 19.5,
+                    "betType": "player_points"
+                }
+            ]
+        }
+    }
+};
+
+export const rocketsWarriorsTeamOdds = {
+    "isError": false,
+    "errorMessage": null,
+    "data": {
+        "events": [
+            {
+                "id": "3c6e47253e4108bf01641d455b2329e7",
+                "sportKey": "basketball_nba",
+                "sportTitle": "NBA",
+                "commenceTime": "2025-02-14T01:10:00Z",
+                "homeTeam": "Houston Rockets",
+                "awayTeam": "Golden State Warriors",
+                "bookmakers": [
+                    {
+                        "key": "fanduel",
+                        "title": "FanDuel",
+                        "lastUpdate": null,
+                        "markets": [
+                            {
+                                "key": "h2h",
+                                "lastUpdate": "2025-02-13T19:58:55Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Golden State Warriors",
+                                        "price": 108,
+                                        "description": null,
+                                        "point": null
+                                    },
+                                    {
+                                        "name": "Houston Rockets",
+                                        "price": -126,
+                                        "description": null,
+                                        "point": null
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "spreads",
+                                "lastUpdate": "2025-02-13T19:58:55Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Golden State Warriors",
+                                        "price": -108,
+                                        "description": null,
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Houston Rockets",
+                                        "price": -112,
+                                        "description": null,
+                                        "point": -1.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "totals",
+                                "lastUpdate": "2025-02-13T19:58:55Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -112,
+                                        "description": null,
+                                        "point": 222
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -108,
+                                        "description": null,
+                                        "point": 222
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "key": "draftkings",
+                        "title": "DraftKings",
+                        "lastUpdate": null,
+                        "markets": [
+                            {
+                                "key": "h2h",
+                                "lastUpdate": "2025-02-13T19:58:54Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Golden State Warriors",
+                                        "price": 105,
+                                        "description": null,
+                                        "point": null
+                                    },
+                                    {
+                                        "name": "Houston Rockets",
+                                        "price": -125,
+                                        "description": null,
+                                        "point": null
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "spreads",
+                                "lastUpdate": "2025-02-13T19:58:54Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Golden State Warriors",
+                                        "price": -108,
+                                        "description": null,
+                                        "point": 2
+                                    },
+                                    {
+                                        "name": "Houston Rockets",
+                                        "price": -112,
+                                        "description": null,
+                                        "point": -2
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "totals",
+                                "lastUpdate": "2025-02-13T19:58:54Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -108,
+                                        "description": null,
+                                        "point": 222
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -112,
+                                        "description": null,
+                                        "point": 222
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "key": "betmgm",
+                        "title": "BetMGM",
+                        "lastUpdate": null,
+                        "markets": [
+                            {
+                                "key": "h2h",
+                                "lastUpdate": "2025-02-13T19:58:54Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Golden State Warriors",
+                                        "price": 105,
+                                        "description": null,
+                                        "point": null
+                                    },
+                                    {
+                                        "name": "Houston Rockets",
+                                        "price": -130,
+                                        "description": null,
+                                        "point": null
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "spreads",
+                                "lastUpdate": "2025-02-13T19:58:54Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Golden State Warriors",
+                                        "price": -110,
+                                        "description": null,
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Houston Rockets",
+                                        "price": -110,
+                                        "description": null,
+                                        "point": -1.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "totals",
+                                "lastUpdate": "2025-02-13T19:58:54Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": null,
+                                        "point": 221.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": null,
+                                        "point": 221.5
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             }
-        },
-        "Clippers": {
-            "LINE": {
-                "betmgm": "-125",
-                "draftkings": "-125",
-                "fanduel": "-122"
-            },
-            "OU": {
-                "betmgm": "214.5",
-                "draftkings": "214.5",
-                "fanduel": "215.0"
-            },
-            "SPREAD": {
-                "betmgm": "-1.5",
-                "draftkings": "-1.5",
-                "fanduel": "-1.5"
+        ],
+        "optimalOddsMap": {
+            "3c6e47253e4108bf01641d455b2329e7": [
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "Golden State Warriors",
+                    "price": 108,
+                    "point": null,
+                    "betType": "h2h"
+                },
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "Golden State Warriors",
+                    "price": -108,
+                    "point": 1.5,
+                    "betType": "spreads"
+                },
+                {
+                    "bookmaker": "BetMGM",
+                    "name": "Houston Rockets",
+                    "price": -110,
+                    "point": -1.5,
+                    "betType": "spreads"
+                },
+                {
+                    "bookmaker": "DraftKings",
+                    "name": "Over",
+                    "price": -108,
+                    "point": 222,
+                    "betType": "totals"
+                },
+                {
+                    "bookmaker": "DraftKings",
+                    "name": "Houston Rockets",
+                    "price": -125,
+                    "point": null,
+                    "betType": "h2h"
+                },
+                {
+                    "bookmaker": "BetMGM",
+                    "name": "Under",
+                    "price": -105,
+                    "point": 221.5,
+                    "betType": "totals"
+                }
+            ]
+        }
+    }
+};
+
+export const pelicansKingsTeamOdds = {
+    "isError": false,
+    "errorMessage": null,
+    "data": {
+        "events": [
+            {
+                "id": "480e200e199564b43806ed98e8051a31",
+                "sportKey": "basketball_nba",
+                "sportTitle": "NBA",
+                "commenceTime": "2025-02-14T01:00:00Z",
+                "homeTeam": "New Orleans Pelicans",
+                "awayTeam": "Sacramento Kings",
+                "bookmakers": [
+                    {
+                        "key": "fanduel",
+                        "title": "FanDuel",
+                        "lastUpdate": null,
+                        "markets": [
+                            {
+                                "key": "h2h",
+                                "lastUpdate": "2025-02-13T19:56:10Z",
+                                "outcomes": [
+                                    {
+                                        "name": "New Orleans Pelicans",
+                                        "price": 300,
+                                        "description": null,
+                                        "point": null
+                                    },
+                                    {
+                                        "name": "Sacramento Kings",
+                                        "price": -375,
+                                        "description": null,
+                                        "point": null
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "spreads",
+                                "lastUpdate": "2025-02-13T19:56:10Z",
+                                "outcomes": [
+                                    {
+                                        "name": "New Orleans Pelicans",
+                                        "price": -108,
+                                        "description": null,
+                                        "point": 8.5
+                                    },
+                                    {
+                                        "name": "Sacramento Kings",
+                                        "price": -112,
+                                        "description": null,
+                                        "point": -8.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "totals",
+                                "lastUpdate": "2025-02-13T19:56:10Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": null,
+                                        "point": 233.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": null,
+                                        "point": 233.5
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "key": "draftkings",
+                        "title": "DraftKings",
+                        "lastUpdate": null,
+                        "markets": [
+                            {
+                                "key": "h2h",
+                                "lastUpdate": "2025-02-13T19:56:09Z",
+                                "outcomes": [
+                                    {
+                                        "name": "New Orleans Pelicans",
+                                        "price": 280,
+                                        "description": null,
+                                        "point": null
+                                    },
+                                    {
+                                        "name": "Sacramento Kings",
+                                        "price": -355,
+                                        "description": null,
+                                        "point": null
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "spreads",
+                                "lastUpdate": "2025-02-13T19:56:09Z",
+                                "outcomes": [
+                                    {
+                                        "name": "New Orleans Pelicans",
+                                        "price": -110,
+                                        "description": null,
+                                        "point": 8.5
+                                    },
+                                    {
+                                        "name": "Sacramento Kings",
+                                        "price": -110,
+                                        "description": null,
+                                        "point": -8.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "totals",
+                                "lastUpdate": "2025-02-13T19:56:09Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -112,
+                                        "description": null,
+                                        "point": 233.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -108,
+                                        "description": null,
+                                        "point": 233.5
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "key": "betmgm",
+                        "title": "BetMGM",
+                        "lastUpdate": null,
+                        "markets": [
+                            {
+                                "key": "h2h",
+                                "lastUpdate": "2025-02-13T19:54:46Z",
+                                "outcomes": [
+                                    {
+                                        "name": "New Orleans Pelicans",
+                                        "price": 290,
+                                        "description": null,
+                                        "point": null
+                                    },
+                                    {
+                                        "name": "Sacramento Kings",
+                                        "price": -375,
+                                        "description": null,
+                                        "point": null
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "spreads",
+                                "lastUpdate": "2025-02-13T19:54:46Z",
+                                "outcomes": [
+                                    {
+                                        "name": "New Orleans Pelicans",
+                                        "price": -110,
+                                        "description": null,
+                                        "point": 8.5
+                                    },
+                                    {
+                                        "name": "Sacramento Kings",
+                                        "price": -110,
+                                        "description": null,
+                                        "point": -8.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "totals",
+                                "lastUpdate": "2025-02-13T19:54:46Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": null,
+                                        "point": 233.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": null,
+                                        "point": 233.5
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             }
-        },
-        "Hornets": {
-            "LINE": {
-                "betmgm": "-120",
-                "draftkings": "-118",
-                "fanduel": "-118"
-            },
-            "OU": {
-                "betmgm": "223.5",
-                "draftkings": "223.0",
-                "fanduel": "222.5"
-            },
-            "SPREAD": {
-                "betmgm": "-1.5",
-                "draftkings": "-1.0",
-                "fanduel": "-1.5"
+        ],
+        "optimalOddsMap": {
+            "480e200e199564b43806ed98e8051a31": [
+                {
+                    "bookmaker": "DraftKings",
+                    "name": "Sacramento Kings",
+                    "price": -355,
+                    "point": null,
+                    "betType": "h2h"
+                },
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "Over",
+                    "price": -110,
+                    "point": 233.5,
+                    "betType": "totals"
+                },
+                {
+                    "bookmaker": "DraftKings",
+                    "name": "Under",
+                    "price": -108,
+                    "point": 233.5,
+                    "betType": "totals"
+                },
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "New Orleans Pelicans",
+                    "price": -108,
+                    "point": 8.5,
+                    "betType": "spreads"
+                },
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "New Orleans Pelicans",
+                    "price": 300,
+                    "point": null,
+                    "betType": "h2h"
+                },
+                {
+                    "bookmaker": "DraftKings",
+                    "name": "Sacramento Kings",
+                    "price": -110,
+                    "point": -8.5,
+                    "betType": "spreads"
+                }
+            ]
+        }
+    }
+};
+
+
+
+export const pelicansKingsPlayerOdds = {
+    "isError": false,
+    "errorMessage": null,
+    "data": {
+        "events": [
+            {
+                "id": "480e200e199564b43806ed98e8051a31",
+                "sportKey": "basketball_nba",
+                "sportTitle": "NBA",
+                "commenceTime": "2025-02-14T01:00:00Z",
+                "homeTeam": "New Orleans Pelicans",
+                "awayTeam": "Sacramento Kings",
+                "bookmakers": [
+                    {
+                        "key": "fanduel",
+                        "title": "FanDuel",
+                        "lastUpdate": null,
+                        "markets": [
+                            {
+                                "key": "player_assists",
+                                "lastUpdate": "2025-02-13T20:20:47Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -108,
+                                        "description": "Malik Monk",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -118,
+                                        "description": "Malik Monk",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 112,
+                                        "description": "Trey Murphy III",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -142,
+                                        "description": "Trey Murphy III",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 124,
+                                        "description": "Zach LaVine",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -160,
+                                        "description": "Zach LaVine",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -148,
+                                        "description": "Domantas Sabonis",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 116,
+                                        "description": "Domantas Sabonis",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 114,
+                                        "description": "C.J. McCollum",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -146,
+                                        "description": "C.J. McCollum",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "DeMar DeRozan",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 102,
+                                        "description": "DeMar DeRozan",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -108,
+                                        "description": "Jose Alvarado",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -118,
+                                        "description": "Jose Alvarado",
+                                        "point": 6.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points",
+                                "lastUpdate": "2025-02-13T20:20:47Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Keegan Murray",
+                                        "point": 11.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -111,
+                                        "description": "Keegan Murray",
+                                        "point": 11.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -113,
+                                        "description": "Zach LaVine",
+                                        "point": 22.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -113,
+                                        "description": "Zach LaVine",
+                                        "point": 22.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -128,
+                                        "description": "Trey Murphy III",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 100,
+                                        "description": "Trey Murphy III",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -102,
+                                        "description": "Domantas Sabonis",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -128,
+                                        "description": "Domantas Sabonis",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -111,
+                                        "description": "Yves Missi",
+                                        "point": 9.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Yves Missi",
+                                        "point": 9.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -104,
+                                        "description": "DeMar DeRozan",
+                                        "point": 21.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -122,
+                                        "description": "DeMar DeRozan",
+                                        "point": 21.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -102,
+                                        "description": "C.J. McCollum",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "C.J. McCollum",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -102,
+                                        "description": "Malik Monk",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Malik Monk",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Jose Alvarado",
+                                        "point": 11.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -111,
+                                        "description": "Jose Alvarado",
+                                        "point": 11.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -111,
+                                        "description": "Keon Ellis",
+                                        "point": 9.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Keon Ellis",
+                                        "point": 9.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_assists",
+                                "lastUpdate": "2025-02-13T20:20:47Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -111,
+                                        "description": "Domantas Sabonis",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Domantas Sabonis",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -118,
+                                        "description": "Zach LaVine",
+                                        "point": 26.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -108,
+                                        "description": "Zach LaVine",
+                                        "point": 26.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -113,
+                                        "description": "Trey Murphy III",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -113,
+                                        "description": "Trey Murphy III",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -111,
+                                        "description": "C.J. McCollum",
+                                        "point": 28.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "C.J. McCollum",
+                                        "point": 28.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -102,
+                                        "description": "DeMar DeRozan",
+                                        "point": 25.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "DeMar DeRozan",
+                                        "point": 25.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -111,
+                                        "description": "Jose Alvarado",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Jose Alvarado",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Malik Monk",
+                                        "point": 25.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -106,
+                                        "description": "Malik Monk",
+                                        "point": 25.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_rebounds",
+                                "lastUpdate": "2025-02-13T20:20:47Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -102,
+                                        "description": "Domantas Sabonis",
+                                        "point": 33.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Domantas Sabonis",
+                                        "point": 33.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -106,
+                                        "description": "Yves Missi",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Yves Missi",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Trey Murphy III",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -111,
+                                        "description": "Trey Murphy III",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -104,
+                                        "description": "Keegan Murray",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Keegan Murray",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -122,
+                                        "description": "DeMar DeRozan",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -104,
+                                        "description": "DeMar DeRozan",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -104,
+                                        "description": "Malik Monk",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -122,
+                                        "description": "Malik Monk",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -111,
+                                        "description": "Zach LaVine",
+                                        "point": 26.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Zach LaVine",
+                                        "point": 26.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -122,
+                                        "description": "C.J. McCollum",
+                                        "point": 27.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -104,
+                                        "description": "C.J. McCollum",
+                                        "point": 27.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -128,
+                                        "description": "Keon Ellis",
+                                        "point": 12.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 100,
+                                        "description": "Keon Ellis",
+                                        "point": 12.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_rebounds_assists",
+                                "lastUpdate": "2025-02-13T20:20:47Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -118,
+                                        "description": "Malik Monk",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -108,
+                                        "description": "Malik Monk",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -113,
+                                        "description": "Zach LaVine",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -113,
+                                        "description": "Zach LaVine",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -106,
+                                        "description": "Trey Murphy III",
+                                        "point": 35.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Trey Murphy III",
+                                        "point": 35.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -108,
+                                        "description": "Domantas Sabonis",
+                                        "point": 39.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -118,
+                                        "description": "Domantas Sabonis",
+                                        "point": 39.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -111,
+                                        "description": "C.J. McCollum",
+                                        "point": 32.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "C.J. McCollum",
+                                        "point": 32.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -118,
+                                        "description": "DeMar DeRozan",
+                                        "point": 28.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -108,
+                                        "description": "DeMar DeRozan",
+                                        "point": 28.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_rebounds",
+                                "lastUpdate": "2025-02-13T20:20:47Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -113,
+                                        "description": "Yves Missi",
+                                        "point": 8.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -113,
+                                        "description": "Yves Missi",
+                                        "point": 8.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -146,
+                                        "description": "Malik Monk",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 114,
+                                        "description": "Malik Monk",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -104,
+                                        "description": "Keegan Murray",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -122,
+                                        "description": "Keegan Murray",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -132,
+                                        "description": "C.J. McCollum",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 104,
+                                        "description": "C.J. McCollum",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -113,
+                                        "description": "DeMar DeRozan",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -113,
+                                        "description": "DeMar DeRozan",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -108,
+                                        "description": "Trey Murphy III",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Trey Murphy III",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 112,
+                                        "description": "Keon Ellis",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -142,
+                                        "description": "Keon Ellis",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Domantas Sabonis",
+                                        "point": 14.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -102,
+                                        "description": "Domantas Sabonis",
+                                        "point": 14.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -132,
+                                        "description": "Zach LaVine",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 104,
+                                        "description": "Zach LaVine",
+                                        "point": 3.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_threes",
+                                "lastUpdate": "2025-02-13T20:20:47Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": 116,
+                                        "description": "Trey Murphy III",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -148,
+                                        "description": "Trey Murphy III",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -148,
+                                        "description": "Zach LaVine",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 116,
+                                        "description": "Zach LaVine",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 136,
+                                        "description": "C.J. McCollum",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -174,
+                                        "description": "C.J. McCollum",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 148,
+                                        "description": "DeMar DeRozan",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -192,
+                                        "description": "DeMar DeRozan",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 124,
+                                        "description": "Keon Ellis",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -160,
+                                        "description": "Keon Ellis",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -184,
+                                        "description": "Keegan Murray",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 142,
+                                        "description": "Keegan Murray",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 120,
+                                        "description": "Malik Monk",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -154,
+                                        "description": "Malik Monk",
+                                        "point": 2.5
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "key": "draftkings",
+                        "title": "DraftKings",
+                        "lastUpdate": null,
+                        "markets": [
+                            {
+                                "key": "player_assists",
+                                "lastUpdate": "2025-02-13T20:20:33Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Jose Alvarado",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Jose Alvarado",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Malik Monk",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Malik Monk",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 114,
+                                        "description": "Domantas Sabonis",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -145,
+                                        "description": "Domantas Sabonis",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -145,
+                                        "description": "Trey Murphy III",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 114,
+                                        "description": "Trey Murphy III",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -140,
+                                        "description": "C.J. McCollum",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 110,
+                                        "description": "C.J. McCollum",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -154,
+                                        "description": "Zach LaVine",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 120,
+                                        "description": "Zach LaVine",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "DeMar DeRozan",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "DeMar DeRozan",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Yves Missi",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Yves Missi",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -135,
+                                        "description": "Keegan Murray",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 105,
+                                        "description": "Keegan Murray",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -145,
+                                        "description": "Keon Ellis",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 114,
+                                        "description": "Keon Ellis",
+                                        "point": 1.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points",
+                                "lastUpdate": "2025-02-13T20:20:33Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "C.J. McCollum",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "C.J. McCollum",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Trey Murphy III",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Trey Murphy III",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Zach LaVine",
+                                        "point": 22.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Zach LaVine",
+                                        "point": 22.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "DeMar DeRozan",
+                                        "point": 20.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "DeMar DeRozan",
+                                        "point": 20.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Malik Monk",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Malik Monk",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Domantas Sabonis",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Domantas Sabonis",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -130,
+                                        "description": "Jose Alvarado",
+                                        "point": 12.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 100,
+                                        "description": "Jose Alvarado",
+                                        "point": 12.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Keegan Murray",
+                                        "point": 11.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Keegan Murray",
+                                        "point": 11.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Keon Ellis",
+                                        "point": 9.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Keon Ellis",
+                                        "point": 9.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Jordan Hawkins",
+                                        "point": 9.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Jordan Hawkins",
+                                        "point": 9.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Yves Missi",
+                                        "point": 8.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Yves Missi",
+                                        "point": 8.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 100,
+                                        "description": "Jonas Valanciunas",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Jonas Valanciunas",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Jake LaRavia",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Jake LaRavia",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 114,
+                                        "description": "Trey Lyles",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -145,
+                                        "description": "Trey Lyles",
+                                        "point": 4.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_assists",
+                                "lastUpdate": "2025-02-13T20:20:33Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Trey Murphy III",
+                                        "point": 28.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Trey Murphy III",
+                                        "point": 28.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "C.J. McCollum",
+                                        "point": 28.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "C.J. McCollum",
+                                        "point": 28.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Zach LaVine",
+                                        "point": 26.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Zach LaVine",
+                                        "point": 26.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Malik Monk",
+                                        "point": 25.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Malik Monk",
+                                        "point": 25.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Domantas Sabonis",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Domantas Sabonis",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "DeMar DeRozan",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "DeMar DeRozan",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Jose Alvarado",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Jose Alvarado",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 100,
+                                        "description": "Keegan Murray",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -130,
+                                        "description": "Keegan Murray",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Keon Ellis",
+                                        "point": 10.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Keon Ellis",
+                                        "point": 10.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Yves Missi",
+                                        "point": 10.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Yves Missi",
+                                        "point": 10.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_rebounds",
+                                "lastUpdate": "2025-02-13T20:20:33Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Domantas Sabonis",
+                                        "point": 33.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Domantas Sabonis",
+                                        "point": 33.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Trey Murphy III",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Trey Murphy III",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "C.J. McCollum",
+                                        "point": 27.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "C.J. McCollum",
+                                        "point": 27.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Zach LaVine",
+                                        "point": 26.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Zach LaVine",
+                                        "point": 26.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "DeMar DeRozan",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "DeMar DeRozan",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Malik Monk",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Malik Monk",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Keegan Murray",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Keegan Murray",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Yves Missi",
+                                        "point": 17.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Yves Missi",
+                                        "point": 17.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Jose Alvarado",
+                                        "point": 15.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Jose Alvarado",
+                                        "point": 15.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Keon Ellis",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Keon Ellis",
+                                        "point": 13.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_rebounds_assists",
+                                "lastUpdate": "2025-02-13T20:20:33Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Domantas Sabonis",
+                                        "point": 39.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Domantas Sabonis",
+                                        "point": 39.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Trey Murphy III",
+                                        "point": 34.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Trey Murphy III",
+                                        "point": 34.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "C.J. McCollum",
+                                        "point": 32.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "C.J. McCollum",
+                                        "point": 32.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Zach LaVine",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Zach LaVine",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Malik Monk",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Malik Monk",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "DeMar DeRozan",
+                                        "point": 28.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "DeMar DeRozan",
+                                        "point": 28.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Jose Alvarado",
+                                        "point": 22.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Jose Alvarado",
+                                        "point": 22.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Keegan Murray",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Keegan Murray",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Yves Missi",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Yves Missi",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Keon Ellis",
+                                        "point": 14.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Keon Ellis",
+                                        "point": 14.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_rebounds",
+                                "lastUpdate": "2025-02-13T20:20:33Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Domantas Sabonis",
+                                        "point": 14.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Domantas Sabonis",
+                                        "point": 14.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Yves Missi",
+                                        "point": 8.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 100,
+                                        "description": "Yves Missi",
+                                        "point": 8.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Keegan Murray",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Keegan Murray",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Trey Murphy III",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Trey Murphy III",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 130,
+                                        "description": "Zach LaVine",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -166,
+                                        "description": "Zach LaVine",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -145,
+                                        "description": "Malik Monk",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 114,
+                                        "description": "Malik Monk",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 105,
+                                        "description": "C.J. McCollum",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -135,
+                                        "description": "C.J. McCollum",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "DeMar DeRozan",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "DeMar DeRozan",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Keon Ellis",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Keon Ellis",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -160,
+                                        "description": "Jose Alvarado",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 124,
+                                        "description": "Jose Alvarado",
+                                        "point": 3.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_threes",
+                                "lastUpdate": "2025-02-13T20:20:33Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": 110,
+                                        "description": "Trey Murphy III",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -140,
+                                        "description": "Trey Murphy III",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 130,
+                                        "description": "C.J. McCollum",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -166,
+                                        "description": "C.J. McCollum",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -140,
+                                        "description": "Zach LaVine",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 110,
+                                        "description": "Zach LaVine",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Jose Alvarado",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Jose Alvarado",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -160,
+                                        "description": "Keon Ellis",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 124,
+                                        "description": "Keon Ellis",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 124,
+                                        "description": "Malik Monk",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -160,
+                                        "description": "Malik Monk",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 130,
+                                        "description": "Keegan Murray",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -166,
+                                        "description": "Keegan Murray",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Jordan Hawkins",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Jordan Hawkins",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -200,
+                                        "description": "DeMar DeRozan",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 154,
+                                        "description": "DeMar DeRozan",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Domantas Sabonis",
+                                        "point": 0.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 100,
+                                        "description": "Domantas Sabonis",
+                                        "point": 0.5
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "key": "betmgm",
+                        "title": "BetMGM",
+                        "lastUpdate": null,
+                        "markets": [
+                            {
+                                "key": "player_assists",
+                                "lastUpdate": "2025-02-13T20:20:02Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": 115,
+                                        "description": "Zach LaVine",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -150,
+                                        "description": "Zach LaVine",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 115,
+                                        "description": "Keegan Murray",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -155,
+                                        "description": "Keegan Murray",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Yves Missi",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Yves Missi",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Malik Monk",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -118,
+                                        "description": "Malik Monk",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -118,
+                                        "description": "DeMar DeRozan",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "DeMar DeRozan",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 105,
+                                        "description": "Domantas Sabonis",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -140,
+                                        "description": "Domantas Sabonis",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 125,
+                                        "description": "C.J. McCollum",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -165,
+                                        "description": "C.J. McCollum",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 115,
+                                        "description": "Keon Ellis",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -155,
+                                        "description": "Keon Ellis",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 150,
+                                        "description": "Jonas Valanciunas",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -200,
+                                        "description": "Jonas Valanciunas",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 110,
+                                        "description": "Trey Lyles",
+                                        "point": 0.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -150,
+                                        "description": "Trey Lyles",
+                                        "point": 0.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 120,
+                                        "description": "Trey Murphy III",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -160,
+                                        "description": "Trey Murphy III",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 155,
+                                        "description": "Jordan Hawkins",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -210,
+                                        "description": "Jordan Hawkins",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 165,
+                                        "description": "Jake LaRavia",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -220,
+                                        "description": "Jake LaRavia",
+                                        "point": 1.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points",
+                                "lastUpdate": "2025-02-13T20:20:02Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Zach LaVine",
+                                        "point": 22.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Zach LaVine",
+                                        "point": 22.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Keegan Murray",
+                                        "point": 11.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Keegan Murray",
+                                        "point": 11.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Yves Missi",
+                                        "point": 8.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Yves Missi",
+                                        "point": 8.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Malik Monk",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Malik Monk",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "DeMar DeRozan",
+                                        "point": 20.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "DeMar DeRozan",
+                                        "point": 20.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Domantas Sabonis",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Domantas Sabonis",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 105,
+                                        "description": "Trey Murphy III",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -140,
+                                        "description": "Trey Murphy III",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Keon Ellis",
+                                        "point": 9.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Keon Ellis",
+                                        "point": 9.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Jonas Valanciunas",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Jonas Valanciunas",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 120,
+                                        "description": "Trey Lyles",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -160,
+                                        "description": "Trey Lyles",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "C.J. McCollum",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "C.J. McCollum",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Jordan Hawkins",
+                                        "point": 9.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Jordan Hawkins",
+                                        "point": 9.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Jake LaRavia",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -130,
+                                        "description": "Jake LaRavia",
+                                        "point": 3.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_assists",
+                                "lastUpdate": "2025-02-13T20:20:02Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Zach LaVine",
+                                        "point": 27.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Zach LaVine",
+                                        "point": 27.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Malik Monk",
+                                        "point": 26.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -130,
+                                        "description": "Malik Monk",
+                                        "point": 26.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Keegan Murray",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -118,
+                                        "description": "Keegan Murray",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 100,
+                                        "description": "Jonas Valanciunas",
+                                        "point": 8.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -135,
+                                        "description": "Jonas Valanciunas",
+                                        "point": 8.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "DeMar DeRozan",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -130,
+                                        "description": "DeMar DeRozan",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Keon Ellis",
+                                        "point": 10.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Keon Ellis",
+                                        "point": 10.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Domantas Sabonis",
+                                        "point": 25.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Domantas Sabonis",
+                                        "point": 25.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -118,
+                                        "description": "Trey Lyles",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Trey Lyles",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "C.J. McCollum",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "C.J. McCollum",
+                                        "point": 29.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Yves Missi",
+                                        "point": 10.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Yves Missi",
+                                        "point": 10.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Trey Murphy III",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Trey Murphy III",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 100,
+                                        "description": "Jordan Hawkins",
+                                        "point": 11.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -130,
+                                        "description": "Jordan Hawkins",
+                                        "point": 11.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -118,
+                                        "description": "Jake LaRavia",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Jake LaRavia",
+                                        "point": 4.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_rebounds",
+                                "lastUpdate": "2025-02-13T20:20:02Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Keegan Murray",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Keegan Murray",
+                                        "point": 18.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Malik Monk",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Malik Monk",
+                                        "point": 23.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -118,
+                                        "description": "DeMar DeRozan",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "DeMar DeRozan",
+                                        "point": 24.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -118,
+                                        "description": "Trey Murphy III",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Trey Murphy III",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Domantas Sabonis",
+                                        "point": 33.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Domantas Sabonis",
+                                        "point": 33.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Zach LaVine",
+                                        "point": 27.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Zach LaVine",
+                                        "point": 27.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -118,
+                                        "description": "Yves Missi",
+                                        "point": 17.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Yves Missi",
+                                        "point": 17.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -118,
+                                        "description": "Jonas Valanciunas",
+                                        "point": 12.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Jonas Valanciunas",
+                                        "point": 12.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Keon Ellis",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -130,
+                                        "description": "Keon Ellis",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Trey Lyles",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Trey Lyles",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -118,
+                                        "description": "C.J. McCollum",
+                                        "point": 28.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "C.J. McCollum",
+                                        "point": 28.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Jordan Hawkins",
+                                        "point": 12.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Jordan Hawkins",
+                                        "point": 12.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Jake LaRavia",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Jake LaRavia",
+                                        "point": 5.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_points_rebounds_assists",
+                                "lastUpdate": "2025-02-13T20:20:02Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Zach LaVine",
+                                        "point": 31.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Zach LaVine",
+                                        "point": 31.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "Malik Monk",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "Malik Monk",
+                                        "point": 30.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 100,
+                                        "description": "Trey Murphy III",
+                                        "point": 35.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -130,
+                                        "description": "Trey Murphy III",
+                                        "point": 35.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 105,
+                                        "description": "Keon Ellis",
+                                        "point": 14.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -145,
+                                        "description": "Keon Ellis",
+                                        "point": 14.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Keegan Murray",
+                                        "point": 20.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -118,
+                                        "description": "Keegan Murray",
+                                        "point": 20.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "DeMar DeRozan",
+                                        "point": 28.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -130,
+                                        "description": "DeMar DeRozan",
+                                        "point": 28.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Domantas Sabonis",
+                                        "point": 40.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Domantas Sabonis",
+                                        "point": 40.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -135,
+                                        "description": "Jake LaRavia",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 100,
+                                        "description": "Jake LaRavia",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -105,
+                                        "description": "C.J. McCollum",
+                                        "point": 33.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -125,
+                                        "description": "C.J. McCollum",
+                                        "point": 33.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Yves Missi",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Yves Missi",
+                                        "point": 19.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Jordan Hawkins",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -118,
+                                        "description": "Jordan Hawkins",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -130,
+                                        "description": "Jonas Valanciunas",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Jonas Valanciunas",
+                                        "point": 13.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -135,
+                                        "description": "Trey Lyles",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 100,
+                                        "description": "Trey Lyles",
+                                        "point": 5.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_rebounds",
+                                "lastUpdate": "2025-02-13T20:20:02Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": -118,
+                                        "description": "Trey Murphy III",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Trey Murphy III",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "Keegan Murray",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "Keegan Murray",
+                                        "point": 6.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -118,
+                                        "description": "Yves Missi",
+                                        "point": 8.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Yves Missi",
+                                        "point": 8.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -115,
+                                        "description": "C.J. McCollum",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -115,
+                                        "description": "C.J. McCollum",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -118,
+                                        "description": "DeMar DeRozan",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "DeMar DeRozan",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 100,
+                                        "description": "Domantas Sabonis",
+                                        "point": 14.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -130,
+                                        "description": "Domantas Sabonis",
+                                        "point": 14.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 115,
+                                        "description": "Zach LaVine",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -150,
+                                        "description": "Zach LaVine",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Keon Ellis",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -120,
+                                        "description": "Keon Ellis",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Jonas Valanciunas",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Jonas Valanciunas",
+                                        "point": 5.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 120,
+                                        "description": "Jake LaRavia",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -160,
+                                        "description": "Jake LaRavia",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 130,
+                                        "description": "Malik Monk",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -175,
+                                        "description": "Malik Monk",
+                                        "point": 4.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 120,
+                                        "description": "Jordan Hawkins",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -160,
+                                        "description": "Jordan Hawkins",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -175,
+                                        "description": "Trey Lyles",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 135,
+                                        "description": "Trey Lyles",
+                                        "point": 1.5
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "player_threes",
+                                "lastUpdate": "2025-02-13T20:20:02Z",
+                                "outcomes": [
+                                    {
+                                        "name": "Over",
+                                        "price": 105,
+                                        "description": "Trey Murphy III",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -140,
+                                        "description": "Trey Murphy III",
+                                        "point": 3.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -155,
+                                        "description": "Zach LaVine",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 115,
+                                        "description": "Zach LaVine",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -185,
+                                        "description": "C.J. McCollum",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": 135,
+                                        "description": "C.J. McCollum",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 110,
+                                        "description": "Malik Monk",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -150,
+                                        "description": "Malik Monk",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 145,
+                                        "description": "DeMar DeRozan",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -200,
+                                        "description": "DeMar DeRozan",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -120,
+                                        "description": "Domantas Sabonis",
+                                        "point": 0.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -110,
+                                        "description": "Domantas Sabonis",
+                                        "point": 0.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 130,
+                                        "description": "Keon Ellis",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -175,
+                                        "description": "Keon Ellis",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 170,
+                                        "description": "Keegan Murray",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -225,
+                                        "description": "Keegan Murray",
+                                        "point": 2.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -110,
+                                        "description": "Trey Lyles",
+                                        "point": 0.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -118,
+                                        "description": "Trey Lyles",
+                                        "point": 0.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": 145,
+                                        "description": "Jake LaRavia",
+                                        "point": 0.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -200,
+                                        "description": "Jake LaRavia",
+                                        "point": 0.5
+                                    },
+                                    {
+                                        "name": "Over",
+                                        "price": -125,
+                                        "description": "Jordan Hawkins",
+                                        "point": 1.5
+                                    },
+                                    {
+                                        "name": "Under",
+                                        "price": -105,
+                                        "description": "Jordan Hawkins",
+                                        "point": 1.5
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             }
-        },
-        "Kings": {
-            "LINE": {
-                "betmgm": "-650",
-                "draftkings": "-625",
-                "fanduel": "-620"
-            },
-            "OU": {
-                "betmgm": "237.5",
-                "draftkings": "237.5",
-                "fanduel": "237.5"
-            },
-            "SPREAD": {
-                "betmgm": "-11.5",
-                "draftkings": "-11.0",
-                "fanduel": "-11.0"
-            }
-        },
-        "Knicks": {
-            "LINE": {
-                "betmgm": "-275",
-                "draftkings": "-285",
-                "fanduel": "-290"
-            },
-            "OU": {
-                "betmgm": "226.5",
-                "draftkings": "226.5",
-                "fanduel": "226.5"
-            },
-            "SPREAD": {
-                "betmgm": "-7.5",
-                "draftkings": "-7.0",
-                "fanduel": "-7.0"
-            }
-        },
-        "Lakers": {
-            "LINE": {
-                "betmgm": "-",
-                "draftkings": "-112",
-                "fanduel": "-122"
-            },
-            "OU": {
-                "betmgm": "231.5",
-                "draftkings": "232.0",
-                "fanduel": "232.0"
-            },
-            "SPREAD": {
-                "betmgm": "-1.5",
-                "draftkings": "-1.0",
-                "fanduel": "-1.0"
-            }
-        },
-        "Mavericks": {
-            "LINE": {
-                "betmgm": "-450",
-                "draftkings": "-440",
-                "fanduel": "-420"
-            },
-            "OU": {
-                "betmgm": "237.5",
-                "draftkings": "237.5",
-                "fanduel": "237.0"
-            },
-            "SPREAD": {
-                "betmgm": "-9.5",
-                "draftkings": "-9.5",
-                "fanduel": "-9.5"
-            }
-        },
-        "Pacers": {
-            "LINE": {
-                "betmgm": "-225",
-                "draftkings": "-218",
-                "fanduel": "-215"
-            },
-            "OU": {
-                "betmgm": "226.5",
-                "draftkings": "226.5",
-                "fanduel": "226.5"
-            },
-            "SPREAD": {
-                "betmgm": "-5.5",
-                "draftkings": "-5.5",
-                "fanduel": "-5.5"
-            }
-        },
-        "Rockets": {
-            "LINE": {
-                "betmgm": "-275",
-                "draftkings": "-270",
-                "fanduel": "-275"
-            },
-            "OU": {
-                "betmgm": "215.5",
-                "draftkings": "215.0",
-                "fanduel": "215.0"
-            },
-            "SPREAD": {
-                "betmgm": "-6.5",
-                "draftkings": "-6.5",
-                "fanduel": "-7.0"
-            }
-        },
-        "Suns": {
-            "LINE": {
-                "betmgm": "-200",
-                "draftkings": "-198",
-                "fanduel": "-188"
-            },
-            "OU": {
-                "betmgm": "222.5",
-                "draftkings": "222.5",
-                "fanduel": "222.5"
-            },
-            "SPREAD": {
-                "betmgm": "-5.5",
-                "draftkings": "-5.0",
-                "fanduel": "-5.0"
-            }
-        },
-        "Thunder": {
-            "LINE": {
-                "betmgm": "-275",
-                "draftkings": "-278",
-                "fanduel": "-270"
-            },
-            "OU": {
-                "betmgm": "224.5",
-                "draftkings": "224.0",
-                "fanduel": "223.5"
-            },
-            "SPREAD": {
-                "betmgm": "-7.5",
-                "draftkings": "-7.0",
-                "fanduel": "-7.0"
-            }
+        ],
+        "optimalOddsMap": {
+            "480e200e199564b43806ed98e8051a31": [
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "Under",
+                    "price": 100,
+                    "point": 12.5,
+                    "betType": "player_points_rebounds"
+                },
+                {
+                    "bookmaker": "BetMGM",
+                    "name": "Under",
+                    "price": 100,
+                    "point": 6.5,
+                    "betType": "player_points_rebounds_assists"
+                },
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "Under",
+                    "price": 142,
+                    "point": 1.5,
+                    "betType": "player_threes"
+                },
+                {
+                    "bookmaker": "BetMGM",
+                    "name": "Over",
+                    "price": 170,
+                    "point": 2.5,
+                    "betType": "player_threes"
+                },
+                {
+                    "bookmaker": "DraftKings",
+                    "name": "Over",
+                    "price": 100,
+                    "point": 13.5,
+                    "betType": "player_points_assists"
+                },
+                {
+                    "bookmaker": "BetMGM",
+                    "name": "Under",
+                    "price": 135,
+                    "point": 1.5,
+                    "betType": "player_rebounds"
+                },
+                {
+                    "bookmaker": "DraftKings",
+                    "name": "Under",
+                    "price": -105,
+                    "point": 25.5,
+                    "betType": "player_points_assists"
+                },
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "Over",
+                    "price": -102,
+                    "point": 33.5,
+                    "betType": "player_points_rebounds"
+                },
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "Under",
+                    "price": 100,
+                    "point": 23.5,
+                    "betType": "player_points"
+                },
+                {
+                    "bookmaker": "BetMGM",
+                    "name": "Over",
+                    "price": 120,
+                    "point": 3.5,
+                    "betType": "player_points"
+                },
+                {
+                    "bookmaker": "FanDuel",
+                    "name": "Under",
+                    "price": 116,
+                    "point": 5.5,
+                    "betType": "player_assists"
+                },
+                {
+                    "bookmaker": "BetMGM",
+                    "name": "Over",
+                    "price": 105,
+                    "point": 14.5,
+                    "betType": "player_points_rebounds_assists"
+                },
+                {
+                    "bookmaker": "DraftKings",
+                    "name": "Over",
+                    "price": 130,
+                    "point": 4.5,
+                    "betType": "player_rebounds"
+                },
+                {
+                    "bookmaker": "BetMGM",
+                    "name": "Over",
+                    "price": 165,
+                    "point": 1.5,
+                    "betType": "player_assists"
+                }
+            ]
         }
     }
 };
