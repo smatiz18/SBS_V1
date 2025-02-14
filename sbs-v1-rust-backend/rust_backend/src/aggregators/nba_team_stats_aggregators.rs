@@ -1,8 +1,18 @@
 use std::str::FromStr;
-
-
 use crate::models::{db::{nba_team_agg_game_stats_historical::{GameStats, NbaTeamAggGameStatsHistorical}, nba_team_stats::NbaTeamStats}, enums::season_type::SeasonType};
 
+
+/** enums ***********************************************************************/
+/********************************************************************************/
+enum GameLocation {
+    Home,
+    Away,
+    Total
+}
+/********************************************************************************/
+
+/** aggregator funcs ************************************************************/
+/********************************************************************************/
 pub fn map_nba_team_aggregated_game_stats_to_nba_team_stats(
     tags: Vec<NbaTeamAggGameStatsHistorical>
 ) -> Vec<NbaTeamStats> {
@@ -67,12 +77,6 @@ pub fn map_nba_team_aggregated_game_stats_to_nba_team_stats(
         .collect()
 }
 
-enum GameLocation {
-    Home,
-    Away,
-    Total
-}
-
 fn get_streak(sorted_game_stats: Vec<GameStats>, game_loc: GameLocation) -> String {
     let filtered_game_stats: Vec<GameStats> = sorted_game_stats.into_iter()
         .filter(|gs| {
@@ -135,8 +139,12 @@ fn num_losses(sorted_game_stats: Vec<GameStats>, segment_length: Option<u32>, ga
         .collect();
     filtered_game_stats.len() as u32
 }
+/********************************************************************************/
 
+/** helpers *********************************************************************/
+/********************************************************************************/
 fn sort_game_stats_last_to_first(mut game_stats: Vec<GameStats>) -> Vec<GameStats> {
     game_stats.sort_by(|x, y| y.date_start.cmp(&x.date_start));
     game_stats
 }
+/********************************************************************************/

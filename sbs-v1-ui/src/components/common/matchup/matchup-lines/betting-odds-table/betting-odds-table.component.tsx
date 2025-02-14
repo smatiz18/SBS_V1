@@ -3,8 +3,12 @@ import OddsCell from "../odds-cell/odds-cell.component";
 import './betting-odds-table.component.scss';
 
 const BettingOddsTable: React.FC<{params: BettingOddsTableParams}> = ({params}) => {
+    /* consts ***********************************************************************/
     const bettingOdds2dArr = new Array(params.rowOrdering.length + 1).fill(0).map(() => new Array(params.colOrdering.length + 1).fill(0));
+    /********************************************************************************/
 
+
+    /* table building workflow ******************************************************/
     /** populate headers */
     /** description top left corner cell */
     if (bettingOdds2dArr[0] !== undefined && bettingOdds2dArr[0][0] !== undefined) {
@@ -30,6 +34,7 @@ const BettingOddsTable: React.FC<{params: BettingOddsTableParams}> = ({params}) 
         
         bettingOdds2dArr[rowIdx + 1][colIdx + 1] = bettingOddsCell;
     });
+    /********************************************************************************/
 
     return (
         <div className='betting-odds-table-container'>

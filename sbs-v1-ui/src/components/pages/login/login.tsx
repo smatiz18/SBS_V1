@@ -15,17 +15,19 @@ import { AppDispatch } from '../../../store/store';
 import { Routes } from '../../../routes';
 import sbs_logo from '../../../assets/sbs-branding/sandbox_v3_1.png';
 
-const Login: React.FC<{}> = ({}) => {
-
+const Login: React.FC<{}> = ({ }) => {
+    /* consts ***********************************************************************/
     const [gitHubCreds, setGitHubCreds] = useState('');
     const [googleCreds, setGoogleCreds] = useState('');
     const githubRedirectUrlLocal = 'http://localhost:3000/sbs-v1/login';
-    const scopes = ["user","user:email"]
+    const scopes = ["user", "user:email"]
+    /********************************************************************************/
 
-    /* Store ****************************************/
+    /* Store ************************************************************************/
     const dispatch = useDispatch<AppDispatch>();
-    /************************************************/
+    /********************************************************************************/
 
+    /* Effects **********************************************************************/
     useEffect(() => {
         getLoginCredentials()
             .then((resp: AxiosResponse<GetLoginCredentialsResponse>) => {
@@ -53,26 +55,27 @@ const Login: React.FC<{}> = ({}) => {
                 });
         }
     }, []);
+    /********************************************************************************/
 
-    /* GitHub ***************************************/ 
+    /* GitHub ***********************************************************************/
     const loginWithGithub = () => {
         window.location.href = `https://github.com/login/oauth/authorize?client_id=${gitHubCreds}&redirect_uri=${githubRedirectUrlLocal}&scope=${scopes.join(',')}`;
     };
 
     const gitHubLoginloginComponent = () => {
         return (
-            <Button 
-                sx={loginButtonStyleSx} 
-                onClick={() => loginWithGithub()} 
+            <Button
+                sx={loginButtonStyleSx}
+                onClick={() => loginWithGithub()}
                 startIcon={<img src={gitHubIcon} className='logo-img'></img>}
             >
                 Login with GitHub
-            </Button>   
+            </Button>
         );
-    }; 
-    /************************************************/ 
+    };
+    /********************************************************************************/
 
-    /* Google ****************************************/ 
+    /* Google ***********************************************************************/
     const loginWithGoogle = useGoogleLogin({
         onSuccess: (response: CodeResponse) => {
             getGoogleAuth({ code: response.code })
@@ -90,23 +93,23 @@ const Login: React.FC<{}> = ({}) => {
 
     const googleLoginComponent = () => {
         return (
-            <Button sx={loginButtonStyleSx} 
-                onClick={loginWithGoogle as any} 
-                startIcon={<img src={googleIcon} 
-                className='logo-img'></img>}
+            <Button sx={loginButtonStyleSx}
+                onClick={loginWithGoogle as any}
+                startIcon={<img src={googleIcon}
+                    className='logo-img'></img>}
             >
                 Login with Google
             </Button>
         );
     };
-    /************************************************/ 
+    /********************************************************************************/
 
     return (
         <div className='login-page-container'>
             <div className='login-content-container'>
                 <div className='login-content-header'>
                     <div className='logo-wrapper'>
-                        <img src={sbs_logo} alt="Sports Betting Sandbox"/>
+                        <img src={sbs_logo} alt="Sports Betting Sandbox" />
                     </div>
                 </div>
                 <div className='login-options'>

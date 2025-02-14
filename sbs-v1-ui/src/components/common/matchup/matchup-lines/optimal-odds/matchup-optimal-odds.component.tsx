@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { MatchupLinesAndStats } from "../../../../../models/matchup-lines-and-stats";
 import { BetOptions } from "../../../../../models/enums/bet-options";
 import { OptimalOdds } from "../../../../../models/services/get-odds-response";
@@ -9,12 +8,14 @@ import { OptimalOddsTableParams } from "../../../../../models/component/optimal-
 import './matchup-optimal-odds.component.scss';
 import OptimalOddsTable from "../optimal-odds-table/optimal-odds-table.component";
 
-const MatchupOptimalOdds: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
-    const [betOption, setBetOption] = useState(BetOptions.Team);
-    const [currentLine, setCurrentLine] = useState('TeamLines');
+const MatchupOptimalOdds: React.FC<{
+    matchup:MatchupLinesAndStats, 
+    betOption: BetOptions, 
+    optimalOdds: OptimalOdds[]
+}> = ({matchup, betOption, optimalOdds}) => {
     
-    /** this is assuming TeamLines when player lines are implemented, implement that logic */
-    function getOptimalOddsTableRowOrdering() {
+    /* table row / col configs ******************************************************/
+    const optimalOddsTableRowOrdering = () => {
         switch (betOption) {
             /* maybe make only for team bet types */
             case BetOptions.Team:
@@ -24,14 +25,16 @@ const MatchupOptimalOdds: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}
         }
     }
 
-    function getOptimalOddsTotalsRowOrdering() {
+    const optimalOddsTotalsRowOrdering = () => {
         return ['Over', 'Under'];
     }
 
-    function getOptimalOddsTableColOrdering() {
+    const optimalOddsTableColOrdering = () => {
         return ['Odds', 'Sportsbook']
     }
+    /********************************************************************************/
     
+    /* transformers *****************************************************************/
     function transformOptimalOddsToOptimalOddsTableRow(optimalOdds: OptimalOdds) {
         return [
             {
@@ -49,21 +52,23 @@ const MatchupOptimalOdds: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}
             }
         ];
     }
+    /********************************************************************************/
     
+    /* table param funcs ************************************************************/
     function getOptimalOddsTableParams() {
         let optimalOddsTableParams;
         if (betOption === BetOptions.Team) {
-            const awayTeamOptimalOddsCells = matchup.optimalOdds?.filter(
+            const awayTeamOptimalOddsCells = optimalOdds.filter(
                 (optimalOdds: OptimalOdds) => optimalOdds.name === matchup.away.teamName
             )
             .flatMap(transformOptimalOddsToOptimalOddsTableRow);
 
-            const homeTeamOptimalOddsCells = matchup.optimalOdds?.filter(
+            const homeTeamOptimalOddsCells = optimalOdds.filter(
                 (optimalOdds: OptimalOdds) => optimalOdds.name === matchup.home.teamName
             )
             .flatMap(transformOptimalOddsToOptimalOddsTableRow);
 
-            const totalsOddsCells = matchup.optimalOdds?.filter(
+            const totalsOddsCells = optimalOdds.filter(
                 (optimalOdds: OptimalOdds) => optimalOdds.betType === TeamBetTypes.Totals
             )
             .flatMap(transformOptimalOddsToOptimalOddsTableRow);
@@ -71,22 +76,22 @@ const MatchupOptimalOdds: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}
             optimalOddsTableParams = [
                 {
                     optimalOddsCells: awayTeamOptimalOddsCells,
-                    rowOrdering: getOptimalOddsTableRowOrdering(),
-                    colOrdering: getOptimalOddsTableColOrdering(),
+                    rowOrdering: optimalOddsTableRowOrdering(),
+                    colOrdering: optimalOddsTableColOrdering(),
                     betOption: betOption,
                     description: matchup.away.teamNickname
                 } as OptimalOddsTableParams,
                 {
                     optimalOddsCells: homeTeamOptimalOddsCells,
-                    rowOrdering: getOptimalOddsTableRowOrdering(),
-                    colOrdering: getOptimalOddsTableColOrdering(),
+                    rowOrdering: optimalOddsTableRowOrdering(),
+                    colOrdering: optimalOddsTableColOrdering(),
                     betOption: betOption,
                     description: matchup.home.teamNickname
                 } as OptimalOddsTableParams,
                 {
                     optimalOddsCells: totalsOddsCells,
-                    rowOrdering: getOptimalOddsTotalsRowOrdering(),
-                    colOrdering: getOptimalOddsTableColOrdering(),
+                    rowOrdering: optimalOddsTotalsRowOrdering(),
+                    colOrdering: optimalOddsTableColOrdering(),
                     betOption: betOption,
                     description: getBetTypeLabel(TeamBetTypes.Totals)
                 } as OptimalOddsTableParams
@@ -95,6 +100,7 @@ const MatchupOptimalOdds: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}
 
         return optimalOddsTableParams || [];
     }
+    /********************************************************************************/
 
     return (
         <div className="matchup-optimal-odds-component-container">
@@ -102,7 +108,7 @@ const MatchupOptimalOdds: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}
                 <div className="optimal-odds-tables-container">
                     <div className="optimal-odds-tables">
                         { 
-                            matchup.optimalOdds !== undefined && getOptimalOddsTableParams()
+                            optimalOdds !== undefined && getOptimalOddsTableParams()
                                 .map((optimalOddsTableParams) => (<OptimalOddsTable params={optimalOddsTableParams}/>))
                         }
                     </div>

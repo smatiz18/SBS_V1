@@ -13,9 +13,8 @@ import { executeMongoQuery } from '../../../../../services/common/services';
 import { ExecuteMongoQueryRequest } from '../../../../../models/services/execute-mongo-query-request';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, deleteQueryBuilder}) => {
-    /** consts **********************************************************************/
-    /********************************************************************************/
+const SBSQueryBuilder: React.FC<{ id: string, deleteQueryBuilder: any }> = ({ id, deleteQueryBuilder }) => {
+    /* consts ***********************************************************************/
     enum AvailableCollections {
         NbaGamesHistorical = 'Team Historical Stats',
         NbaPlayerAggregatedGameStatsHistorical = 'Player Historical Stats',
@@ -37,7 +36,7 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
         ...Object.values(GameStatsOption).map((gso: any) => (
             gso.toString()
         )),
-    ];    
+    ];
     collectionToAvailableFieldsMap[AvailableCollections.NbaPlayerAggregatedGameStatsHistorical] = [
         'season',
         'seasonType',
@@ -72,7 +71,7 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
         'isHome'
     ];
 
-    const playerStatsAggPipeline = [  
+    const playerStatsAggPipeline = [
         {
             $project: {
                 playerStats: { $objectToArray: "$playerStats" },
@@ -96,7 +95,7 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
             }
         }
     ];
-   
+
     const collectionSelectOptions = Object.values(AvailableCollections).map((co) => (
         <MenuItem value={co}>
             {co}
@@ -105,7 +104,7 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
 
     const [currentCollection, setCurrentCollection] = useState(AvailableCollections.NbaGamesHistorical);
     const [queryBuilderFields, setQueryBuilderFields] = useState([] as any);
-    const [query, setQuery] = useState(  
+    const [query, setQuery] = useState(
         {
             combinator: 'and',
             rules: []
@@ -114,17 +113,16 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
     const [numOfOccurrences, setNumOfOccurrences] = useState(0);
     /********************************************************************************/
 
-    /** action funcs ****************************************************************/
-    /********************************************************************************/
+    /* action funcs *****************************************************************/
     useEffect(() => {
         updateQueryBuilderOptions(currentCollection);
-    }, [currentCollection]);       
+    }, [currentCollection]);
 
     const updateQueryBuilderOptions = (collection: AvailableCollections) => {
         setQueryBuilderFields(collectionToAvailableFieldsMap[collection]
             .map((f: any) => ({ name: f, label: f })));
     };
-    
+
     const handleCollectionChange = (x: any) => {
         setCurrentCollection(x.target.value);
     };
@@ -132,7 +130,7 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
     const onSearch = () => {
         const parsedQuery = parseQuery(query);
         const mongoQuery = formatQuery(parsedQuery, 'mongodb');
-        
+
         let prevPipelineStages: any[] = [];
         switch (currentCollection) {
             case AvailableCollections.NbaPlayerAggregatedGameStatsHistorical: {
@@ -142,10 +140,10 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
             default: break;
         };
 
-        const aggPipeline = prevPipelineStages.concat([ { $match: JSON.parse(mongoQuery) }]);
+        const aggPipeline = prevPipelineStages.concat([{ $match: JSON.parse(mongoQuery) }]);
 
         const stringifiedPipeline = aggPipeline.map((step) => JSON.stringify(step));
-        
+
         executeMongoQuery(
             {
                 aggregationPipeline: stringifiedPipeline,
@@ -155,10 +153,13 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
             setNumOfOccurrences(resp.data?.length || 0);
         });
     };
+
+    function onDelete(id: string): void {
+        deleteQueryBuilder(id);
+    }
     /********************************************************************************/
 
-    /** query parsers ***************************************************************/
-    /********************************************************************************/
+    /* query parsers ****************************************************************/
     const parseQuery = (query: any) => {
         switch (currentCollection) {
             case AvailableCollections.NbaGamesHistorical: {
@@ -172,11 +173,11 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
     };
 
     const getVisitorsAndHomeOrQuery = (
-        isHome: boolean, 
-        visitorsFieldName: string, 
-        homeFieldName: string, 
+        isHome: boolean,
+        visitorsFieldName: string,
+        homeFieldName: string,
         rule: any,
-        isNum?: boolean, 
+        isNum?: boolean,
         not?: boolean
     ) => {
         if (isHome) {
@@ -189,7 +190,7 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
         return {
             combinator: 'or',
             not: !!not,
-            id:  uuidv4(),
+            id: uuidv4(),
             rules: [
                 {
                     ...rule,
@@ -209,7 +210,7 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
 
     const parseNbaGamesHistoricalQuery = (query: any) => {
         const isHomeFilter = !!query.rules.find((rule: any) => rule.field === 'isHome');
-        
+
         const parsedRules = query.rules.map((rule: any) => {
             const ruleClone = cloneDeep(rule);
             switch (ruleClone.field) {
@@ -330,34 +331,30 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
             return ruleClone;
         });
 
-        return { 
-            ...query, 
-            rules: newRules 
+        return {
+            ...query,
+            rules: newRules
         };
     };
     /********************************************************************************/
-
-    function onDelete(id: string): void {
-        deleteQueryBuilder(id);
-    }
 
     return (
         <div className='query-builder-container' id={id}>
             <div className='query-builder-options'>
                 <div className='filter-option-wrapper'>
-                     <ThemeProvider theme={darkTheme}>
+                    <ThemeProvider theme={darkTheme}>
                         <div className='header-wrapper'>
                             <FormLabel id='demo-row-radio-buttons-group-label' sx={formLabelSx}>Data Source</FormLabel>
-                            <DeleteIcon sx={{ ...deleteIconSx, color: 'white' }} onClick={() => onDelete(id)}/>
+                            <DeleteIcon sx={{ ...deleteIconSx, color: 'white' }} onClick={() => onDelete(id)} />
                         </div>
                         <div className='select-wrapper'>
-                            <FormControl variant='standard' sx={{ width: '100%'}}>
+                            <FormControl variant='standard' sx={{ width: '100%' }}>
                                 <Select
                                     labelId='demo-simple-select-standard-label'
                                     id='demo-simple-select-standard'
                                     value={currentCollection}
                                     onChange={(x) => handleCollectionChange(x)}
-                                    sx={{...selectSx, fontSize: '.8rem'}}
+                                    sx={{ ...selectSx, fontSize: '.8rem' }}
                                 >
                                     {collectionSelectOptions}
                                 </Select>
@@ -367,9 +364,9 @@ const SBSQueryBuilder: React.FC<{id: string, deleteQueryBuilder: any}> = ({id, d
                 </div>
             </div>
             <div className='query-builder-wrapper'>
-                <QueryBuilder 
-                    fields={queryBuilderFields} 
-                    query={query as any} 
+                <QueryBuilder
+                    fields={queryBuilderFields}
+                    query={query as any}
                     onQueryChange={setQuery as any}
                     controlClassnames={{ queryBuilder: 'queryBuilder-branches' }}
                 />

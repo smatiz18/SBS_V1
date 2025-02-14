@@ -9,7 +9,7 @@ import ChartAnalyzerFilters from "./chart-analyzer-filters/chart-analyzer-filter
 import './chart-analyzer.component.scss';
 import { NbaTeamGameStatsFilters } from "../../../../../models/component/nba-team-game-stats-filters";
 import { GameStatsOption } from "../../../../../models/enums/game-stats-option";
-import { calculateRollingAverages, calculatgedExpandingAverages, mean, sortGameStatsObjs, stdDeviation } from "../../../../../utils/utils";
+import { calculateRollingAverages, calculatedExpandingAverages, mean, sortGameStatsObjs, stdDeviation } from "../../../../../utils/utils";
 import { TeamOptionsFilter } from "../../../../../models/enums/team-options-filter";
 import { GameStats } from "../../../../../models/nba-team-agg-game-stats-historical";
 import { QuickStatsAggregation } from "../../../../../models/enums/quick-stats-aggregation";
@@ -116,7 +116,7 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
             } else if (filter.aggregation === QuickStatsAggregation.RollingAverage) {
                 aggregatedPoints =  calculateRollingAverages(points, filter.aggregationSlice);
             } else if (filter.aggregation === QuickStatsAggregation.ExpandingAverage) {
-                aggregatedPoints = calculatgedExpandingAverages(points);
+                aggregatedPoints = calculatedExpandingAverages(points);
             }
 
             applicableGames = applicableGames.map((chartDataObj: any, idx: any) => {
@@ -171,15 +171,17 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
         });
         return chartData;
     };
-    /********************************************************************************/
 
     const getLineChart = (chartData: any[]) => {
+        const COLOR_1 = '#6a5acd';
+        const COLOR_2 = '#cd5a84';
+        const COLOR_3 = '#bdcd5a';
+        const COLOR_4 = '#5acda3';
         const chartLineColors = [
-            // TODO: think about these colors
-            '#6a5acd',
-            '#cd5a84',
-            '#bdcd5a',
-            '#5acda3'
+            COLOR_1,
+            COLOR_2,
+            COLOR_3,
+            COLOR_4
         ];
 
         return (
@@ -257,6 +259,7 @@ const ChartAnalyzer: React.FC<{matchup: Matchup, betOption: BetOptions}> = ({mat
           </ResponsiveContainer>
         )
     }
+    /********************************************************************************/
     
     return (
         <div className="chart-analyzer-container">

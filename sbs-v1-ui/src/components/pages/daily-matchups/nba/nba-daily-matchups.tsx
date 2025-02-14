@@ -8,32 +8,29 @@ import { getEvents } from "../../../../services/odds/services";
 import { OddsApiSports } from "../../../../models/enums/odds-api-sports";
 import { Event } from "../../../../models/odds/odds";
 import { NbaTeamsMappedByName, NbaTeamsMappedByNickname } from "../../../../constants/nba";
-import { format, toZonedTime } from 'date-fns-tz';
 import { SportsCategories } from "../../../../models/enums/sports-categories";
 import { NbaTeamStats } from "../../../../models/nba-team-stats";
 import { GetNbaTeamStatsRequest } from "../../../../models/services/get-nba-team-stats-request";
 import { SeasonType } from "../../../../models/enums/season-type";
-import { currentNbaSeason } from "../../../../utils/utils";
+import { currentNbaSeason, getCurrentDateEst } from "../../../../utils/utils";
 import { GetNbaTeamAggGameStatsRequest } from "../../../../models/services/get-nba-team-agg-game-stats-request";
 import { NbaTeamAggGameStatsHistorical } from "../../../../models/nba-team-agg-game-stats-historical";
 import _ from "lodash";
 import { oddsEventsMockResp, rotoWireDailyMatchupsMockResp } from "../../../../test/nba-matchups-mocks";
 
 const NbaDailyMatchups = () => {
+  /* consts ***********************************************************************/
   const USE_MOCKS = true;
   const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
+  /********************************************************************************/
 
+  /* effects **********************************************************************/
   useEffect(() => {
     fetchInitData(USE_MOCKS /* use mock data */);
   }, []);
+  /********************************************************************************/
 
-  const getDateEst = () => {
-    const timeZone = 'America/New_York';
-    const date = new Date();
-    const zonedDate = toZonedTime(date, timeZone);
-    return format(zonedDate, "MM/dd/yyyy,  hh:mm a 'EST'", { timeZone: timeZone });
-  }
-
+  /* data parsers *****************************************************************/
   function parseOddsEventsData(events: Event[]) {
     return events.reduce((map: any, event: Event) => {
       const teamNickname = NbaTeamsMappedByName[event.homeTeam]?.teamNickname;
@@ -45,7 +42,9 @@ const NbaDailyMatchups = () => {
       return map;
     }, {});
   }
+  /********************************************************************************/
 
+  /* data fetchers ****************************************************************/
   const fetchInitData = async (useMock: boolean) => {
     try {
       let oddsEventsResponse: any;
@@ -116,12 +115,13 @@ const NbaDailyMatchups = () => {
       /** implement later */
     }
   }
+  /********************************************************************************/
 
   return (
     <div className="page-container">
       <div className="header">
         <h1 className="header-title">NBA Matchups</h1>
-        <text className="date-time">{`@${getDateEst()}`}</text>
+        <text className="date-time">{`@${getCurrentDateEst()}`}</text>
       </div>
       <div className="content">
         <div className="main-content">

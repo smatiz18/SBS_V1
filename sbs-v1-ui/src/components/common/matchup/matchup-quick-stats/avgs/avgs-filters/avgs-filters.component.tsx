@@ -16,14 +16,19 @@ import { BetOptions } from "../../../../../../models/enums/bet-options";
 import { formLabelSx, radioLabelSx, radioIconSx, darkTheme, filterAccordianSx, accordianSummarySx } from "../../../../../../models/form-styles/styles";
 import { Matchup, TeamInfo } from "../../../../../../models/matchup";
 
-const AvgsFilters: React.FC<{betOption: BetOptions, matchup: Matchup, handleFilterChange: any}> = 
-    ({betOption, matchup, handleFilterChange}) => {
+const AvgsFilters: React.FC<{
+    betOption: BetOptions, 
+    matchup: Matchup, 
+    handleFilterChange: any}> = ({betOption, matchup, handleFilterChange}) => {
     
+    /* consts ***********************************************************************/
     const [teamFilters, setTeamFilters] = useState({ 
         away: GameLocationsFilter.All,
         home: GameLocationsFilter.All
     });
+    /********************************************************************************/
 
+    /* event handlers ***************************************************************/
     const onTeamFilterChange = (params: any) => {
         const isHome = params.target.value.split('_')[0] === matchup.home.teamNickname;
         const filter = params.target.value.split('_')[1] as GameLocationsFilter;
@@ -37,7 +42,9 @@ const AvgsFilters: React.FC<{betOption: BetOptions, matchup: Matchup, handleFilt
         );
         handleFilterChange(isHome ? { home: filter } : { away: filter });
     }
+    /*******************************************************************************/
 
+    /* getters *********************************************************************/
     const getTeamFilterOptions = (teamInfo: TeamInfo) => {
         const isHome = teamInfo.teamNickname === matchup.home.teamNickname;
         const filter = isHome ? teamFilters.home : teamFilters.away;
@@ -85,7 +92,8 @@ const AvgsFilters: React.FC<{betOption: BetOptions, matchup: Matchup, handleFilt
             </div>
         );
     }
-
+    /*******************************************************************************/
+    
     return (
         <div className="avgs-filters-container">
             <ThemeProvider theme={darkTheme}>

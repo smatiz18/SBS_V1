@@ -2,6 +2,8 @@ use std::collections::HashMap;
 use log::error;
 use crate::models::{aggregators::optimal_odds::OptimalOdds, enums::bookmakers::Bookmakers, odds::odds::{Bookmaker, Event, Market, Outcome}};
 
+/** optimal odds funcs **********************************************************/
+/********************************************************************************/
 pub fn get_optimal_odds_by_event_map(events: Vec<Event>) -> HashMap<String, Vec<OptimalOdds>> {
     events.into_iter()
         .map(|event| (event.id, get_optimal_odds(event.bookmakers.unwrap_or(vec!()))))
@@ -64,3 +66,4 @@ pub fn map_bookmaker_obj_to_optimal_odds(bookmakers: Vec<Bookmaker>) -> Vec<Opti
         })
         .collect()
 }
+/********************************************************************************/

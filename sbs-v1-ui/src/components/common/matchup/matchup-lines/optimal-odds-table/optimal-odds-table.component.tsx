@@ -3,8 +3,11 @@ import OddsCell from '../odds-cell/odds-cell.component';
 import './optimal-odds-table.component.scss';
 
 const OptimalOddsTable: React.FC<{params: OptimalOddsTableParams}> = ({params}) => {
+    /* consts ******************************************************/ 
     const optimalOdds2dArr = new Array(params.rowOrdering.length + 1).fill(0).map(() => new Array(params.colOrdering.length + 1).fill(0));
+    /********************************************************************************/
     
+    /* table building workflow ******************************************************/
     /** populate headers */
     /** description top left corner cell */
     if (optimalOdds2dArr[0] !== undefined && optimalOdds2dArr[0][0] !== undefined) {
@@ -30,6 +33,7 @@ const OptimalOddsTable: React.FC<{params: OptimalOddsTableParams}> = ({params}) 
         
         optimalOdds2dArr[rowIdx + 1][colIdx + 1] = optimalOddsCell;
     });
+    /********************************************************************************/
 
     return (
         <div className="optimal-odds-table-container">

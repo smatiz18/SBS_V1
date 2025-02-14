@@ -6,7 +6,6 @@ import { GetEventOddsRequest } from "../../models/services/get-event-odds-reques
 import { GetEventsRequest } from "../../models/services/get-events-request";
 
 export const ODDS_API_ROOT = '/odds-api';
-
 export const GET_ODDS = `${ODDS_API_ROOT}/odds/get`
 export const GET_EVENT_ODDS = `${ODDS_API_ROOT}/event-odds/get`;
 export const GET_EVENTS = `${ODDS_API_ROOT}/events/get`;

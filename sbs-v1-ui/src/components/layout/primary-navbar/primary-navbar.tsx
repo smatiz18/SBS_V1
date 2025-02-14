@@ -8,7 +8,6 @@ import { UserInfo } from '../../../models/user-info';
 import { clearUserInfo } from '../../../store/slices/user-info-slice';
 
 const PrimaryNavbar: React.FC<{}> = () => {
-    
     /* Store ****************************************/
     const userInfo: UserInfo = useSelector((state: RootState) => state.userInfo);
     const dispatch = useDispatch<AppDispatch>();

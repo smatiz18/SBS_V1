@@ -1,3 +1,7 @@
+import React from "react";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
 import { useEffect, useState } from "react";
 import { Bookmakers } from "../../../../../models/enums/bookmakers";
 import { MatchupLinesAndStats } from "../../../../../models/matchup-lines-and-stats";
@@ -7,10 +11,6 @@ import { supportedTeamMarketsBySport, TeamBetTypes } from "../../../../../models
 import { BettingOddsCell, BettingOddsTableParams } from "../../../../../models/component/betting-odds-table-params";
 import { SportsCategories } from "../../../../../models/enums/sports-categories";
 import { NbaTeamsMappedByName } from "../../../../../constants/nba";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
-import React from "react";
 import { smallFontSelectSx, toggleButtonSx, toggleGroupSx } from "../../../../../models/form-styles/styles";
 import { getBetTypeLabel } from "../../../../../utils/utils";
 import { ListSubheader, ToggleButton, ToggleButtonGroup } from "@mui/material";
@@ -20,19 +20,21 @@ import { OddsApiRegions } from "../../../../../models/enums/odds-api-regions";
 import { OddsFormat } from "../../../../../models/enums/odds-format";
 import { supportedPlayerMarketsBySport } from "../../../../../models/enums/player-bet-types";
 import { getEventOdds } from "../../../../../services/odds/services";
-import './matchup-bookmaker-lines.component.scss';
 import { GetOddsResponse } from "../../../../../models/services/get-odds-response";
 import { pelicansKingsPlayerOdds, rocketsWarriorsPlayersOdds } from "../../../../../test/nba-matchups-mocks";
+import './matchup-bookmaker-lines.component.scss';
 
 const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
+    /* consts ***********************************************************************/
     const USE_MOCKS = true;
     const [bookmaker, setBookmaker] = useState(Bookmakers.DraftKings);
     const [betOption, setBetOption] = useState(BetOptions.Team);
     const [selectedPlayer, setSelectedPlayer] = useState(matchup.away.projectedPlayers[0] || '');
     const [currentEventOdds, setCurrentEventOdds] = useState({} as GetOddsResponse);
-
+    const oddsApiSport = sportsKeyToOddsApiSports.get(matchup.oddsEvent?.sportKey || '') as OddsApiSports || null;
+    const awayPlayerOptions = matchup.away.projectedPlayers;
+    const homePlayerOptions = matchup.home.projectedPlayers;
     const getEventOddsRequest = () => {
-        const oddsApiSport = sportsKeyToOddsApiSports.get(matchup.oddsEvent?.sportKey || '') as OddsApiSports || null;
         const markets = betOption === BetOptions.Team ? 
             supportedTeamMarketsBySport.get(oddsApiSport) : 
             supportedPlayerMarketsBySport.get(oddsApiSport);
@@ -46,11 +48,9 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
         };
         return req;
     };
-   
+    /********************************************************************************/
 
-    const awayPlayerOptions = matchup.away.projectedPlayers;
-    const homePlayerOptions = matchup.home.projectedPlayers;
-
+    /* effects **********************************************************************/  
     useEffect(() => {
         getEventOddsForBetOption(USE_MOCKS);
     }, []);
@@ -58,7 +58,9 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
     useEffect(() => {
         getEventOddsForBetOption(USE_MOCKS);
     }, [betOption]);
+    /********************************************************************************/  
     
+    /* services *********************************************************************/
     const getEventOddsForBetOption = (useMocks: boolean) => {
         const req = getEventOddsRequest();
         if (useMocks) {
@@ -75,7 +77,9 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
                 });
         }
     }
+    /********************************************************************************/  
 
+    /* event handlers ***************************************************************/
     const handleBookmakerChange = (event: SelectChangeEvent) => {
       setBookmaker(event.target.value as Bookmakers);
     };
@@ -87,7 +91,9 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
     const handleSelectedPlayerChange = (event: SelectChangeEvent) => {
         setSelectedPlayer(event.target.value);
     }
+    /********************************************************************************/  
 
+    /* betting odds table funcs *****************************************************/
     function getBettingOddsTableRowOrdering() {
         switch (betOption) {
             case BetOptions.Team:
@@ -118,51 +124,62 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
         } as BettingOddsTableParams;
     }
 
+    const teamBettingOddsCells = (sportsbook: Bookmaker) => {
+        return sportsbook.markets.map((market: Market) => {
+            switch (market.key) {
+                case TeamBetTypes.H2H.toString():  
+                    return market.outcomes.map((outcome: Outcome) => {
+                        return {
+                            colKey: getBetTypeLabel(TeamBetTypes.H2H),
+                            rowKey: getTeamLabel(outcome.name),
+                            point: outcome.point, 
+                            price: outcome.price > 0 ? `+${outcome.price}` : outcome.price,
+                            description: outcome.description
+                        } as BettingOddsCell; 
+                    });
+                case TeamBetTypes.Spreads.toString():
+                    return market.outcomes.map((outcome: Outcome) => {
+                        return {
+                            colKey: getBetTypeLabel(TeamBetTypes.Spreads),
+                            rowKey: getTeamLabel(outcome.name),
+                            point: outcome.point, 
+                            price: outcome.price > 0 ? `+${outcome.price}` : outcome.price,
+                            description: outcome.description
+                        } as BettingOddsCell; 
+                    });
+                case TeamBetTypes.Totals.toString():          
+                    return market.outcomes.map((outcome: Outcome) => {
+                        const OULabel = outcome.name === 'Over' ? 'O' : 'U';
+                        return {
+                            colKey: getBetTypeLabel(TeamBetTypes.Totals),
+                            rowKey: outcome.name === 'Over' ? matchup.away.teamNickname : matchup.home.teamNickname,
+                            point:`${OULabel} ${outcome.point}`,
+                            price: outcome.price > 0 ? `+${outcome.price}` : outcome.price,
+                            description: outcome.description
+                        } as BettingOddsCell; 
+                    });
+                default:
+                    return [];
+            }
+        }).flat();
+    }
+
     function getBettingOddsCells() {
         let oddsCells: BettingOddsCell[] = [];
-        const sportsbook = matchup.oddsEvent?.bookmakers.find((sportsbook: Bookmaker) => {
-            return sportsbook.title === bookmaker.toString()
-        })!;
+        const sportsbook = matchup.oddsEvent?.bookmakers.find((sportsbook: Bookmaker) => 
+            sportsbook.title === bookmaker.toString()
+        )!;
         
         if (sportsbook) {
             if (betOption === BetOptions.Team) {
-                oddsCells = sportsbook.markets.map((market: Market) => {
-                    switch (market.key) {
-                        case TeamBetTypes.H2H.toString():  
-                            return market.outcomes.map((outcome: Outcome) => {
-                                return {
-                                    colKey: getBetTypeLabel(TeamBetTypes.H2H),
-                                    rowKey: getTeamLabel(outcome.name),
-                                    point: outcome.point, 
-                                    price: outcome.price > 0 ? `+${outcome.price}` : outcome.price,
-                                    description: outcome.description
-                                } as BettingOddsCell; 
-                            });
-                        case TeamBetTypes.Spreads.toString():
-                            return market.outcomes.map((outcome: Outcome) => {
-                                return {
-                                    colKey: getBetTypeLabel(TeamBetTypes.Spreads),
-                                    rowKey: getTeamLabel(outcome.name),
-                                    point: outcome.point, 
-                                    price: outcome.price > 0 ? `+${outcome.price}` : outcome.price,
-                                    description: outcome.description
-                                } as BettingOddsCell; 
-                            });
-                        case TeamBetTypes.Totals.toString():          
-                            return market.outcomes.map((outcome: Outcome) => {
-                                const OULabel = outcome.name === 'Over' ? 'O' : 'U';
-                                return {
-                                    colKey: getBetTypeLabel(TeamBetTypes.Totals),
-                                    rowKey: outcome.name === 'Over' ? matchup.away.teamNickname : matchup.home.teamNickname,
-                                    point:`${OULabel} ${outcome.point}`,
-                                    price: outcome.price > 0 ? `+${outcome.price}` : outcome.price,
-                                    description: outcome.description
-                                } as BettingOddsCell; 
-                            });
-                        default:
-                            return [];
+                oddsCells =  teamBettingOddsCells(sportsbook);
+            } else {
+                switch (oddsApiSport) {
+                    case OddsApiSports.BasketballNba: {
+                        
+                        break;
                     }
-                }).flat();
+                }
             }
         }
         return oddsCells;
@@ -176,6 +193,7 @@ const MatchupBookmakerLines: React.FC<{matchup: MatchupLinesAndStats}> = ({match
                  return name;
         }
     }
+    /********************************************************************************/
 
     return (
         <div className="matchup-bookmaker-lines-component-container">

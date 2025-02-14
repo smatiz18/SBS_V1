@@ -6,22 +6,26 @@ import PaginationItem from "@mui/material/PaginationItem";
 import { paginationSx } from "../../../../models/form-styles/styles";
 import { ChangeEvent, ReactElement, useState } from "react";
 import './matchup-lines.component.scss';
+import { BetOptions } from "../../../../models/enums/bet-options";
 
-const MatchupLines: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {
-
+const MatchupLines: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {  
+    // move matchup lines selectors to this component
+    /* consts ***********************************************************************/
     const pageLabels = ['Bookmaker Lines', 'Optimal Odds'];
     const bookmakerLinesComp = <MatchupBookmakerLines matchup={{...matchup}}/>;
-    const optimalOddsComp = <MatchupOptimalOdds matchup={{...matchup}}/>;
+    const optimalOddsComp = <MatchupOptimalOdds matchup={{ ...matchup }} betOption={BetOptions.Team} optimalOdds={[]}/>;
     const pageToCompMap: Record<string, ReactElement> = {
         '1': bookmakerLinesComp,
         '2': optimalOddsComp
     };
-    
     const [currentPage, setCurrentPage] = useState(1);
-    
+    /********************************************************************************/
+
+    /* event handlers ***************************************************************/
     const handlePaginationChange = (_: ChangeEvent<unknown>, page: number) => {
         setCurrentPage(page);
     }
+    /********************************************************************************/
 
     return (
         <div className='matchup-lines-container'>
