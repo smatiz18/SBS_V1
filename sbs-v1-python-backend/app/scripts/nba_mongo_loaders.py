@@ -1,14 +1,9 @@
 import requests
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
-import json
 import os
 import pandas as pd
-import numpy as np
-from pandas import DataFrame 
-import re
 from collections import defaultdict
-import json
 from datetime import datetime, timedelta
 import pytz
 
@@ -101,6 +96,10 @@ def get_games_by_date(date):
         requests.get(url, headers=headers, params=querystring)
         .json()['response']
     )
+    
+    if df.empty:
+        return df
+        
     df = df.loc[(df['status.long'] == 'Finished')]
     df = df.sort_values(by=['date.start'])
     
@@ -575,8 +574,9 @@ def populate_missing_nba_games_to_date():
     games_data_dict = []
     for date in date_list:
         games_df = get_games_by_date(date)
-        games_df['_id'] = games_df['id']
-        games_data_dict.append(games_df.to_dict('records'))
+        if not games_df.empty:
+            games_df['_id'] = games_df['id']
+            games_data_dict.append(games_df.to_dict('records'))
 
     objs = get_games_mongo_objs_from_nba_games_raw_dict(games_data_dict)
 
@@ -1082,7 +1082,8 @@ def run_nba_daily_games_data_loader():
     print('running NBA daily game data loader')
     game_ids = populate_missing_nba_games_to_date()
     print(f"loaded games with ids: {game_ids}") 
-    populate_nba_game_stats_for_game_ids(game_ids)
+    if len(game_ids) > 0:
+        populate_nba_game_stats_for_game_ids(game_ids)
     print("complete")
 
 def run_nba_historical_player_data_loader(season):
@@ -1097,6 +1098,7 @@ def run_nba_daily_player_data_loader():
     print('running NBA daily player data loader')
     game_ids = populate_missing_nba_game_player_stats_historical_to_date()
     print(f"loaded game player stats with game ids: {game_ids}") 
-    populate_missing_nba_player_aggregated_game_stats_historical(game_ids)
+    if len(game_ids) > 0:
+        populate_missing_nba_player_aggregated_game_stats_historical(game_ids)
     print("complete")
 ###################################################################################################################################

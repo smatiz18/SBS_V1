@@ -5,6 +5,8 @@ import { MatchupLinesAndStats } from '../../../models/matchup-lines-and-stats';
 import MatchupTeamStats from './matchup-team-stats/matchup-team-stats.component';
 import MatchupLines from './matchup-lines/matchup-lines.component';
 import { getHoursAndMinutesEt } from '../../../utils/utils';
+import MatchupQuickStats from './matchup-quick-stats/matchup-quick-stats.component';
+import { BetOptions } from '../../../models/enums/bet-options';
 
 const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
   return (
@@ -29,7 +31,7 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
           <img src={matchup.home.teamLogo} alt={`${matchup.home.teamNickname} logo`} className="team-logo" />
           <h2 className="team-nickname">{matchup.home.teamNickname} (Home)</h2>
           <div className='team-stats-wrapper'>
-            {/* <MatchupTeamStats teamStats={matchup.home.teamStats} sportsCategory={matchup.sportsCategory} isHome={true}/> */}
+            {/* <MatchupTeamStats teamStats={matchup.home.teamStats} sportsCategory={matchup.sportsCategory} isHome={true} /> */}
           </div>
           <ul className="team-lineup">
             {
@@ -44,9 +46,9 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
         <div className='lines-and-stats-content'>
           <MatchupLines matchup={{ ...matchup } as MatchupLinesAndStats} />
         </div>
-        {/* <div className="lines-and-stats-content">
-              <MatchupQuickStats matchup={{...matchup} as MatchupLinesAndStats} betOption={BetOptions.Team}/>
-            </div> */}
+        <div className="lines-and-stats-content">
+          {/* <MatchupQuickStats matchup={{ ...matchup } as MatchupLinesAndStats} betOption={BetOptions.Team} /> */}
+        </div>
       </div>
       <div className="footer"></div>
     </div>
