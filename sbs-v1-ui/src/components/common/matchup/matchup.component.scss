@@ -61,6 +61,29 @@
             margin-bottom: -.45rem;
         }
     }
+
+    .matchup-lines-and-stats-settings-container {
+        padding-top: 1.15rem;
+
+        .matchup-lines-and-stats-settings-team-view {
+            display: flex;
+            justify-content: center;
+        } 
+    
+        .matchup-lines-and-stats-settings-player-view {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            align-items: center;
+            justify-items: center;
+            gap: .75rem;
+        }
+
+        .toggle-wrapper,
+        .select-wrapper {
+            width: 12rem;
+        }
+    }
+    
     
     .lines-and-stats {
         width: 100%;
@@ -77,7 +100,7 @@
                 display: flex;
                 align-items: center;
                 gap: 1rem; // Space between the text and the line
-                padding-top: 40px;
+                padding-top: 25px;
                 padding-bottom: 1.2rem;
               
                 .line {

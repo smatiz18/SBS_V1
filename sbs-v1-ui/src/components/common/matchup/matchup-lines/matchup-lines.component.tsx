@@ -8,11 +8,11 @@ import { ChangeEvent, ReactElement, useState } from "react";
 import './matchup-lines.component.scss';
 import { BetOptions } from "../../../../models/enums/bet-options";
 
-const MatchupLines: React.FC<{matchup: MatchupLinesAndStats}> = ({matchup}) => {  
+const MatchupLines: React.FC<{matchup: MatchupLinesAndStats, betOption: BetOptions}> = ({matchup, betOption}) => {  
     // move matchup lines selectors to this component
     /* consts ***********************************************************************/
     const pageLabels = ['Bookmaker Lines', 'Optimal Odds'];
-    const bookmakerLinesComp = <MatchupBookmakerLines matchup={{...matchup}}/>;
+    const bookmakerLinesComp = <MatchupBookmakerLines matchup={{...matchup}} betOption={betOption}/>;
     const optimalOddsComp = <MatchupOptimalOdds matchup={{ ...matchup }} betOption={BetOptions.Team} optimalOdds={[]}/>;
     const pageToCompMap: Record<string, ReactElement> = {
         '1': bookmakerLinesComp,

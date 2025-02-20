@@ -1,22 +1,22 @@
-import { useEffect, useState } from "react";
-import MatchupComponent from "../../../common/matchup/matchup.component";
-import "./nba-daily-matchups.scss";
-import { getNbaMatchups, getNbaTeamAggGameStats, getNbaTeamStats } from "../../../../services/nba/services";
-import { NbaLogoMapper } from "../../../../assets/images/nba-logo-mapper";
-import { Matchup } from "../../../../models/matchup";
-import { getEvents } from "../../../../services/odds/services";
-import { OddsApiSports } from "../../../../models/enums/odds-api-sports";
-import { Event } from "../../../../models/odds/odds";
-import { NbaTeamsMappedByName, NbaTeamsMappedByNickname } from "../../../../constants/nba";
-import { SportsCategories } from "../../../../models/enums/sports-categories";
-import { NbaTeamStats } from "../../../../models/nba-team-stats";
-import { GetNbaTeamStatsRequest } from "../../../../models/services/get-nba-team-stats-request";
-import { SeasonType } from "../../../../models/enums/season-type";
-import { currentNbaSeason, getCurrentDateEst } from "../../../../utils/utils";
-import { GetNbaTeamAggGameStatsRequest } from "../../../../models/services/get-nba-team-agg-game-stats-request";
-import { NbaTeamAggGameStatsHistorical } from "../../../../models/nba-team-agg-game-stats-historical";
-import _ from "lodash";
-import { oddsEventsMockResp, rotoWireDailyMatchupsMockResp } from "../../../../test/nba-matchups-mocks";
+import { useEffect, useState } from 'react';
+import MatchupComponent from '../../../common/matchup/matchup.component';
+import { getNbaMatchups, getNbaTeamAggGameStats, getNbaTeamStats } from '../../../../services/nba/services';
+import { NbaLogoMapper } from '../../../../assets/images/nba-logo-mapper';
+import { Matchup } from '../../../../models/matchup';
+import { getEvents } from '../../../../services/odds/services';
+import { OddsApiSports } from '../../../../models/enums/odds-api-sports';
+import { Event } from '../../../../models/odds/odds';
+import { NbaTeamsMappedByName, NbaTeamsMappedByNickname } from '../../../../constants/nba';
+import { SportsCategories } from '../../../../models/enums/sports-categories';
+import { NbaTeamStats } from '../../../../models/nba-team-stats';
+import { GetNbaTeamStatsRequest } from '../../../../models/services/get-nba-team-stats-request';
+import { SeasonType } from '../../../../models/enums/season-type';
+import { currentNbaSeason, getCurrentDateEst } from '../../../../utils/utils';
+import { GetNbaTeamAggGameStatsRequest } from '../../../../models/services/get-nba-team-agg-game-stats-request';
+import { NbaTeamAggGameStatsHistorical } from '../../../../models/nba-team-agg-game-stats-historical';
+import _ from 'lodash';
+import { oddsEventsMockResp, rotoWireDailyMatchupsMockResp } from '../../../../test/nba-matchups-mocks';
+import './nba-daily-matchups.scss';
 
 const NbaDailyMatchups = () => {
   /* consts ***********************************************************************/
@@ -56,7 +56,14 @@ const NbaDailyMatchups = () => {
         oddsEventsResponse = await getEvents({ sports: OddsApiSports.BasketballNba });
         matchupsResp = await getNbaMatchups();
       }
-      _.set(matchupsResp, "data.data.data", JSON.parse(matchupsResp.data?.data?.data || ''));
+      _.set(matchupsResp, 'data.data.data', JSON.parse(matchupsResp.data?.data?.data || ''));
+
+      if (useMock) {
+        const filteredMatchups = (matchupsResp.data?.data?.data?.matchups || []).filter((m: any) =>
+          m.away.teamNickname === 'Kings' || m.away.teamNickname === 'Warriors'
+        );
+        _.set(matchupsResp, 'data.data.data.matchups', filteredMatchups);
+      }
 
       const nbaTeamStatsReq: GetNbaTeamStatsRequest = {
         teamIds: (matchupsResp.data?.data?.data.matchups || []).flatMap((matchup: Matchup) => (
@@ -118,19 +125,21 @@ const NbaDailyMatchups = () => {
   /********************************************************************************/
 
   return (
-    <div className="page-container">
-      <div className="header">
-        <h1 className="header-title">NBA Matchups</h1>
-        <text className="date-time">{`@${getCurrentDateEst()}`}</text>
+    <div className='page-container'>
+      <div className='header'>
+        <h1 className='header-title'>NBA Matchups</h1>
+        <text className='date-time'>{`@${getCurrentDateEst()}`}</text>
       </div>
-      <div className="content">
-        <div className="main-content">
-          {nbaMatchups.map((nbaMatchup: Matchup) => (
-            <MatchupComponent matchup={nbaMatchup} />
-          ))}
+      <div className='content'>
+        <div className='main-content'>
+          {
+            nbaMatchups.map((nbaMatchup: Matchup) => (
+              <MatchupComponent matchup={nbaMatchup} />
+            ))
+          }
         </div>
       </div>
-      <div className="footer">
+      <div className='footer'>
       </div>
     </div>
   );

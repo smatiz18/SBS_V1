@@ -15,13 +15,9 @@
             justify-content: center;
             
             .table-actions {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                align-items: center;
-                justify-items: center;
-                gap: .75rem;
+                display: flex;
+                justify-content: center;
 
-                .bet-options-toggle-wrapper,
                 .select-wrapper {
                     width: 12rem;
                 }
