@@ -16,6 +16,12 @@
                 border-top: none;
                 border-left: none;
 
+                .single-optimal-odds-table-row-header-cell {
+                    padding-right: .35rem;
+                    text-align: right;
+                    font-size: .8rem;
+                    font-weight: 500;
+                }
 
                 .optimal-odds-table-col-header-cell,
                 .optimal-odds-table-row-header-cell {

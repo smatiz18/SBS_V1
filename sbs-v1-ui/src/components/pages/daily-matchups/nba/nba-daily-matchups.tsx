@@ -60,7 +60,7 @@ const NbaDailyMatchups = () => {
 
       if (useMock) {
         const filteredMatchups = (matchupsResp.data?.data?.data?.matchups || []).filter((m: any) =>
-          m.away.teamNickname === 'Kings' || m.away.teamNickname === 'Warriors'
+          m.away.teamNickname === 'Knicks' || m.away.teamNickname === 'Grizzlies'
         );
         _.set(matchupsResp, 'data.data.data.matchups', filteredMatchups);
       }

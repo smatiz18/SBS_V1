@@ -7,6 +7,7 @@ pub struct OptimalOdds {
     pub bookmaker: Bookmakers,
     pub name: String,
     pub price: f64,
+    pub bet_type: String,
     pub point: Option<f64>,
-    pub bet_type: String
+    pub player_name: Option<String>
 }

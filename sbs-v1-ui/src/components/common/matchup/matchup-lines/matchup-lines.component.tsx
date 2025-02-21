@@ -6,7 +6,6 @@ import PaginationItem from "@mui/material/PaginationItem";
 import { paginationSx } from "../../../../models/form-styles/styles";
 import { ChangeEvent, ReactElement, useEffect, useState } from "react";
 import { BetOptions } from "../../../../models/enums/bet-options";
-import { pelicansKingsPlayerOdds, pelicansKingsTeamOdds, rocketsWarriorsPlayersOdds, rocketsWarriorsTeamOdds } from "../../../../test/nba-matchups-mocks";
 import { GetOddsResponse } from "../../../../models/services/get-odds-response";
 import { getEventOdds } from "../../../../services/odds/services";
 import { supportedTeamMarketsBySport } from "../../../../models/enums/team-bet-types";
@@ -17,6 +16,7 @@ import { OddsApiRegions } from "../../../../models/enums/odds-api-regions";
 import { OddsFormat } from "../../../../models/enums/odds-format";
 import { Bookmakers } from "../../../../models/enums/bookmakers";
 import './matchup-lines.component.scss';
+import { grizzliesMagicPlayerOdds, grizzliesMagicTeamOdds, knicksCavsPlayersOdds, knicksCavsTeamOdds } from "../../../../test/nba-matchups-mocks";
 
 const MatchupLines: React.FC<{
     matchup: MatchupLinesAndStats, 
@@ -37,16 +37,18 @@ const MatchupLines: React.FC<{
             selectedPlayerName={selectedPlayerName}
         />
     );
-    const getOtimalOddsComp = () => (
-        currentEventOdds.optimalOddsMap![matchup.oddsEvent?.id || ''] && 
+    const getOtimalOddsComp = () => {
+        return currentEventOdds.teamOptimalOddsMap![matchup.oddsEvent?.id || ''] && 
         <MatchupOptimalOdds 
             matchup={{ ...matchup }} 
-            betOption={BetOptions.Team} 
-            optimalOdds={currentEventOdds.optimalOddsMap![matchup.oddsEvent?.id || '']}
-            oddsApiSport={oddsApiSport} 
+            betOption={betOption} 
+            teamOptimalOdds={betOption === BetOptions.Team ? currentEventOdds.teamOptimalOddsMap![matchup.oddsEvent?.id || ''] : undefined }
+            playerOptimalOdds={betOption === BetOptions.Player ? currentEventOdds.playerOptimalOddsMap![matchup.oddsEvent?.id || '']: undefined}
+            oddsApiSport={oddsApiSport}
+            selectedPlayerName={selectedPlayerName} 
         />
-    );
-    const [currentEventOdds, setCurrentEventOdds] = useState({ events: [], optimalOddsMap: {} } as GetOddsResponse);
+    };
+    const [currentEventOdds, setCurrentEventOdds] = useState({ events: [], teamOptimalOddsMap: {}, playerOptimalOddsMap: {} } as GetOddsResponse);
     const [bookmakerLinesComp, setBookmakerLinesComp] = useState(getBookmakerLinesComp());
     const [optimalOddsComp, setOptimalOddsComp] = useState(getOtimalOddsComp());
 
@@ -92,9 +94,9 @@ const MatchupLines: React.FC<{
         if (USE_MOCKS) {
             let mockedOdds: any = [];
             if (betOption === BetOptions.Team) {
-                mockedOdds = [rocketsWarriorsTeamOdds, pelicansKingsTeamOdds];        
+                mockedOdds = [knicksCavsTeamOdds, grizzliesMagicTeamOdds];        
             } else {
-                mockedOdds = [rocketsWarriorsPlayersOdds, pelicansKingsPlayerOdds];
+                mockedOdds = [knicksCavsPlayersOdds, grizzliesMagicPlayerOdds];
             }
             const oddsForEvent = mockedOdds.find((respObj: any) => respObj.data.events[0].id === matchup.oddsEvent?.id)!;
             setCurrentEventOdds((oddsForEvent.data || {}) as unknown as GetOddsResponse);

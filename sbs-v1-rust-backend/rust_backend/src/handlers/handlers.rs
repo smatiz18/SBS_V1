@@ -4,7 +4,7 @@ use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use crate::aggregators::nba_feature_map_aggregators::get_nba_backtest_feature_map;
-use crate::aggregators::optimal_odds_aggregators::get_optimal_odds_by_event_map;
+use crate::aggregators::optimal_odds_aggregators::{get_player_optimal_odds_by_event_map, get_team_optimal_odds_by_event_map};
 use crate::db::base_mongo::aggregate;
 use crate::db::user_info_mongo_dao::handle_user_login;
 use crate::models::db::cached_web_api_response::CachedWebApiResponse;
@@ -27,6 +27,7 @@ use crate::models::services::get_odds_response::GetOddsResponse;
 use crate::models::services::login_auth_request::LoginAuthRequest;
 use crate::models::web_api::web_api_res::WebApiRes;
 use crate::web_api::web_api::{authenticate_github_token, authenticate_google_token, get_event_odds_odds_api, get_events_odds_api, get_github_user_email_info, get_github_user_info, get_google_user_info, get_nba_daily_matchups_from_rotowire, get_nba_players_by_team_and_season_rapid_api, get_odds_odds_api};
+use std::collections::HashMap;
 use std::env;
 use log::{info, error};
 
@@ -301,7 +302,8 @@ pub fn transform_odds_api_odds_resp_to_web_api_resp(events: Vec<Event>) -> WebAp
         data: Some (
             serde_json::to_value(GetOddsResponse {
                 events: events.clone(),
-                optimal_odds_map: get_optimal_odds_by_event_map(events.clone()),
+                team_optimal_odds_map: get_team_optimal_odds_by_event_map(events.clone()),
+                player_optimal_odds_map: get_player_optimal_odds_by_event_map(events.clone()),
             }).expect("failed to parse GetOddsResponse")
         )
     };

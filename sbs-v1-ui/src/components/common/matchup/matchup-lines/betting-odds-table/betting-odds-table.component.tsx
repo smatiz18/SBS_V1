@@ -3,10 +3,11 @@ import OddsCell from "../odds-cell/odds-cell.component";
 import './betting-odds-table.component.scss';
 
 const BettingOddsTable: React.FC<{params: BettingOddsTableParams}> = ({params}) => {
+    // TODO add description cell
+    
     /* consts ***********************************************************************/
     const bettingOdds2dArr = new Array(params.rowOrdering.length + 1).fill(0).map(() => new Array(params.colOrdering.length + 1).fill(0));
     /********************************************************************************/
-
 
     /* table building workflow ******************************************************/
     /** populate headers */

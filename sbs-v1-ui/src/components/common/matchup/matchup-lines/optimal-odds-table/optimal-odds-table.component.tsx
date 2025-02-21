@@ -2,8 +2,11 @@ import { OptimalOddsTableParams, OptimalOddsCell } from '../../../../../models/c
 import OddsCell from '../odds-cell/odds-cell.component';
 import './optimal-odds-table.component.scss';
 
-const OptimalOddsTable: React.FC<{params: OptimalOddsTableParams}> = ({params}) => {
-    /* consts ******************************************************/ 
+const OptimalOddsTable: React.FC<{
+    params: OptimalOddsTableParams, 
+    numTables: number}> = ({params, numTables}) => {
+    console.log(numTables);
+        /* consts ******************************************************/ 
     const optimalOdds2dArr = new Array(params.rowOrdering.length + 1).fill(0).map(() => new Array(params.colOrdering.length + 1).fill(0));
     /********************************************************************************/
     
@@ -56,7 +59,7 @@ const OptimalOddsTable: React.FC<{params: OptimalOddsTableParams}> = ({params}) 
                                             } else if (cellContent.colHeader !== undefined) {
                                                 return (
                                                     <th key={colIndex}>
-                                                        <div className="optimal-odds-table-col-header-cell">
+                                                        <div className={`${numTables === 1 ? 'single-' : ''}optimal-odds-table-col-header-cell`}>
                                                             {cellContent.colHeader}
                                                         </div>
                                                     </th>
@@ -64,7 +67,7 @@ const OptimalOddsTable: React.FC<{params: OptimalOddsTableParams}> = ({params}) 
                                             } else if (cellContent.rowHeader !== undefined) {
                                                 return (
                                                     <th key={colIndex}>
-                                                        <div className="optimal-odds-table-row-header-cell">
+                                                        <div className={`${numTables === 1 ? 'single-' : ''}optimal-odds-table-row-header-cell`}>
                                                             {cellContent.rowHeader}
                                                         </div>
                                                     </th>

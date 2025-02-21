@@ -6,8 +6,14 @@
 
     .optimal-odds-tables-container {
         display: flex;
+        justify-content: center;
         align-items: center;
         
+        .single-optimal-odds-tables {
+            display: flex;
+            justify-content: center;
+        }
+
         .optimal-odds-tables {
             display: grid;
             grid-template-columns: repeat(2, 1fr);

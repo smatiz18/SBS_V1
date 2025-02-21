@@ -6,5 +6,6 @@ use crate::models::{aggregators::optimal_odds::OptimalOdds, odds::odds::Event};
 #[serde(rename_all = "camelCase")]
 pub struct GetOddsResponse {
     pub events: Vec<Event>,
-    pub optimal_odds_map: HashMap<String, Vec<OptimalOdds>>
+    pub team_optimal_odds_map: HashMap<String, Vec<OptimalOdds>>,
+    pub player_optimal_odds_map: HashMap<String, HashMap<String, Vec<OptimalOdds>>>
 }
