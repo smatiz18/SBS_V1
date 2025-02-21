@@ -14,6 +14,20 @@ export const getBetTypeLabel = (betType: TeamBetTypes | PlayerBetTypes) => {
             return 'Spread';
         case TeamBetTypes.Totals:
             return 'Total';
+        case PlayerBetTypes.PlayerAssists:
+            return 'Assists';
+        case PlayerBetTypes.PlayerPoints:
+            return 'Points';
+        case PlayerBetTypes.PlayerPointsAssists:
+            return 'Pts + Ass';
+        case PlayerBetTypes.PlayerPointsRebounds:
+            return 'Pts + Reb';
+        case PlayerBetTypes.PlayerPointsReboundsAssists:
+            return 'Pts + Reb + Ass';
+        case PlayerBetTypes.PlayerRebounds:
+            return 'Rebounds';
+        case PlayerBetTypes.PlayerThrees:
+            return 'Threes';
         default:
             return betType;
     }
@@ -100,4 +114,4 @@ export const getCurrentDateEst = () => {
     const date = new Date();
     const zonedDate = toZonedTime(date, timeZone);
     return format(zonedDate, "MM/dd/yyyy,  hh:mm a 'EST'", { timeZone: timeZone });
-  }
+}

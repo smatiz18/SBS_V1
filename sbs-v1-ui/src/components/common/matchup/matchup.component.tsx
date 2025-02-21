@@ -109,7 +109,7 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
       </div>
       <div className="lines-and-stats">
         <div className='lines-and-stats-content'>
-          <MatchupLines matchup={{ ...matchup } as MatchupLinesAndStats} betOption={betOption} />
+          <MatchupLines matchup={{ ...matchup } as MatchupLinesAndStats} betOption={betOption} selectedPlayerName={selectedPlayer}/>
         </div>
         <div className="lines-and-stats-content">
           <MatchupQuickStats matchup={{ ...matchup } as MatchupLinesAndStats} betOption={BetOptions.Team} />

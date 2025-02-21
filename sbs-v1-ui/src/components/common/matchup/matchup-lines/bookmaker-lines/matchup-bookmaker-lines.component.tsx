@@ -1,81 +1,41 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Bookmakers } from "../../../../../models/enums/bookmakers";
 import { MatchupLinesAndStats } from "../../../../../models/matchup-lines-and-stats";
 import { BetOptions } from "../../../../../models/enums/bet-options";
 import { Bookmaker, Market, Outcome } from "../../../../../models/odds/odds";
-import { supportedTeamMarketsBySport, TeamBetTypes } from "../../../../../models/enums/team-bet-types";
+import { TeamBetTypes } from "../../../../../models/enums/team-bet-types";
 import { BettingOddsCell, BettingOddsTableParams } from "../../../../../models/component/betting-odds-table-params";
 import { SportsCategories } from "../../../../../models/enums/sports-categories";
 import { NbaTeamsMappedByName } from "../../../../../constants/nba";
 import { smallFontSelectSx } from "../../../../../models/form-styles/styles";
 import { getBetTypeLabel } from "../../../../../utils/utils";
-import { GetEventOddsRequest } from "../../../../../models/services/get-event-odds-request";
-import { OddsApiSports, sportsKeyToOddsApiSports } from "../../../../../models/enums/odds-api-sports";
-import { OddsApiRegions } from "../../../../../models/enums/odds-api-regions";
-import { OddsFormat } from "../../../../../models/enums/odds-format";
-import { supportedPlayerMarketsBySport } from "../../../../../models/enums/player-bet-types";
-import { getEventOdds } from "../../../../../services/odds/services";
-import { GetOddsResponse } from "../../../../../models/services/get-odds-response";
-import { pelicansKingsPlayerOdds, rocketsWarriorsPlayersOdds } from "../../../../../test/nba-matchups-mocks";
+import { OddsApiSports } from "../../../../../models/enums/odds-api-sports";
 import BettingOddsTable from "../betting-odds-table/betting-odds-table.component";
+import { Event } from "../../../../../models/odds/odds";
 import './matchup-bookmaker-lines.component.scss';
+import { PlayerBetTypes } from "../../../../../models/enums/player-bet-types";
+import _ from "lodash";
 
 const MatchupBookmakerLines: React.FC<{
     matchup: MatchupLinesAndStats,
-    betOption: BetOptions
-}> = ({ matchup, betOption }) => {
+    betOption: BetOptions,
+    eventOdds: Event,
+    oddsApiSport: OddsApiSports,
+    selectedPlayerName: string
+}> = ({ matchup, betOption, eventOdds, oddsApiSport, selectedPlayerName }) => {
     /* consts ***********************************************************************/
-    const USE_MOCKS = true;
     const [bookmaker, setBookmaker] = useState(Bookmakers.DraftKings);
-    const [currentEventOdds, setCurrentEventOdds] = useState({} as GetOddsResponse);
-    const oddsApiSport = sportsKeyToOddsApiSports.get(matchup.oddsEvent?.sportKey || '') as OddsApiSports || null;
-    const getEventOddsRequest = () => {
-        const markets = betOption === BetOptions.Team ?
-            supportedTeamMarketsBySport.get(oddsApiSport) :
-            supportedPlayerMarketsBySport.get(oddsApiSport);
-        const req: GetEventOddsRequest = {
-            eventId: matchup.oddsEvent?.id || '',
-            sports: oddsApiSport,
-            regions: OddsApiRegions.US,
-            markets: markets || [],
-            oddsFormat: OddsFormat.American,
-            // bookmakers: Object.values(Bookmakers)
-        } as any;
-        return req;
-    };
+    const [bettingOddsTableParams, setBettingOddsTableParams] = useState(undefined as any);
     /********************************************************************************/
 
     /* effects **********************************************************************/
     useEffect(() => {
-        getEventOddsForBetOption(USE_MOCKS);
-    }, []);
-
-    useEffect(() => {
-        getEventOddsForBetOption(USE_MOCKS);
-    }, [betOption]);
-    /********************************************************************************/
-
-    /* services *********************************************************************/
-    const getEventOddsForBetOption = (useMocks: boolean) => {
-        const req = getEventOddsRequest();
-        if (useMocks) {
-            const oddsForEvent = [rocketsWarriorsPlayersOdds, pelicansKingsPlayerOdds]
-                .find((respObj: any) => respObj.data.events[0].eventId === matchup.oddsEvent?.id)!;
-            setCurrentEventOdds((oddsForEvent?.data || {}) as any);
-        } else {
-            getEventOdds(req)
-                .then((res) => {
-                    setCurrentEventOdds(res.data?.data);
-                })
-                .catch((e) => {
-                    console.error(e);
-                });
-        }
-    }
+        setBettingOddsTableParams(getBettingOddsTableParams());
+    }, [betOption, bookmaker, selectedPlayerName]);
     /********************************************************************************/
 
     /* event handlers ***************************************************************/
@@ -86,23 +46,37 @@ const MatchupBookmakerLines: React.FC<{
 
     /* betting odds table funcs *****************************************************/
     function getBettingOddsTableRowOrdering() {
-        switch (betOption) {
-            case BetOptions.Team:
-                /* maybe make only for team bet types */
-                return [matchup.away.teamNickname, matchup.home.teamNickname];
-            default:
-                return undefined;
+        let rowOrdering = undefined;
+        if (betOption === BetOptions.Team) {
+            rowOrdering = [matchup.away.teamNickname, matchup.home.teamNickname];  
+        } else {
+            switch (oddsApiSport) {
+                case OddsApiSports.BasketballNba:
+                    rowOrdering = [
+                        getBetTypeLabel(PlayerBetTypes.PlayerPoints),
+                        getBetTypeLabel(PlayerBetTypes.PlayerAssists),
+                        getBetTypeLabel(PlayerBetTypes.PlayerRebounds),
+                        getBetTypeLabel(PlayerBetTypes.PlayerPointsAssists),
+                        getBetTypeLabel(PlayerBetTypes.PlayerPointsRebounds),
+                        getBetTypeLabel(PlayerBetTypes.PlayerPointsReboundsAssists),
+                        getBetTypeLabel(PlayerBetTypes.PlayerThrees)
+                    ];
+            }
         }
+        return rowOrdering;
     }
 
     function getBettingOddsTableColOrdering() {
-        switch (betOption) {
-            /* maybe make only for team bet types */
-            case BetOptions.Team:
-                return ['Spread', 'Total', 'Moneyline'];
-            default:
-                return undefined;
+        let colOrdering = undefined;
+        if (betOption === BetOptions.Team) {
+            colOrdering = ['Spread', 'Total', 'Moneyline'];  
+        } else {
+            switch (oddsApiSport) {
+                case OddsApiSports.BasketballNba:
+                    colOrdering = ['Over', 'Under'];
+            }
         }
+        return colOrdering;
     }
 
     function getBettingOddsTableParams() {
@@ -111,12 +85,13 @@ const MatchupBookmakerLines: React.FC<{
             rowOrdering: getBettingOddsTableRowOrdering(),
             colOrdering: getBettingOddsTableColOrdering(),
             betOption: betOption,
-            bookmaker: bookmaker
+            bookmaker: bookmaker,
+            description: betOption === BetOptions.Player ? selectedPlayerName : undefined
         } as BettingOddsTableParams;
     }
 
-    const teamBettingOddsCells = (sportsbook: Bookmaker) => {
-        return sportsbook.markets.map((market: Market) => {
+    const teamBettingOddsCells = (bookmakerOdds: Bookmaker) => {
+        return bookmakerOdds.markets.map((market: Market) => {
             switch (market.key) {
                 case TeamBetTypes.H2H.toString():
                     return market.outcomes.map((outcome: Outcome) => {
@@ -155,19 +130,105 @@ const MatchupBookmakerLines: React.FC<{
         }).flat();
     }
 
+    const nbaPlayerBettingOddsCells = (bookmakerOdds: Bookmaker) => {
+        const getOULabel = (outcome: Outcome) => outcome.name === 'Over' ? 'O' : 'U';
+        const filteredBookmakerMarkets = _.cloneDeep(bookmakerOdds).markets.map((market: Market) => {
+            market.outcomes = market.outcomes.filter((outcome: Outcome) => outcome.description === selectedPlayerName);
+            return market;
+        });
+        return filteredBookmakerMarkets.map((market: Market) => {
+            switch (market.key) {
+                case PlayerBetTypes.PlayerPoints.toString():
+                    return market.outcomes.map((outcome: Outcome) => {
+                        return {
+                            colKey: outcome.name,
+                            rowKey: getBetTypeLabel(PlayerBetTypes.PlayerPoints),
+                            point: `${getOULabel(outcome)} ${outcome.point}`,
+                            price: outcome.price > 0 ? `+${outcome.price}` : outcome.price,
+                            description: outcome.description
+                        } as BettingOddsCell;
+                    });
+                case PlayerBetTypes.PlayerAssists.toString():
+                    return market.outcomes.map((outcome: Outcome) => {
+                        return {
+                            colKey: outcome.name,
+                            rowKey: getBetTypeLabel(PlayerBetTypes.PlayerAssists),
+                            point: `${getOULabel(outcome)} ${outcome.point}`,
+                            price: outcome.price > 0 ? `+${outcome.price}` : outcome.price,
+                            description: outcome.description
+                        } as BettingOddsCell;
+                    });
+                case PlayerBetTypes.PlayerRebounds.toString():
+                    return market.outcomes.map((outcome: Outcome) => {
+                        return {
+                            colKey: outcome.name,
+                            rowKey: getBetTypeLabel(PlayerBetTypes.PlayerRebounds),
+                            point: `${getOULabel(outcome)} ${outcome.point}`,
+                            price: outcome.price > 0 ? `+${outcome.price}` : outcome.price,
+                            description: outcome.description
+                        } as BettingOddsCell;
+                    });
+
+                case PlayerBetTypes.PlayerThrees.toString():
+                    return market.outcomes.map((outcome: Outcome) => {
+                        return {
+                            colKey: outcome.name,
+                            rowKey: getBetTypeLabel(PlayerBetTypes.PlayerThrees),
+                            point: `${getOULabel(outcome)} ${outcome.point}`,
+                            price: outcome.price > 0 ? `+${outcome.price}` : outcome.price,
+                            description: outcome.description
+                        } as BettingOddsCell;
+                    });
+                case PlayerBetTypes.PlayerPointsAssists.toString():
+                    return market.outcomes.map((outcome: Outcome) => {
+                        return {
+                            colKey: outcome.name,
+                            rowKey: getBetTypeLabel(PlayerBetTypes.PlayerPointsAssists),
+                            point: `${getOULabel(outcome)} ${outcome.point}`,
+                            price: outcome.price > 0 ? `+${outcome.price}` : outcome.price,
+                            description: outcome.description
+                        } as BettingOddsCell;
+                    });
+                case PlayerBetTypes.PlayerPointsRebounds.toString():
+                    return market.outcomes.map((outcome: Outcome) => {
+                        return {
+                            colKey: outcome.name,
+                            rowKey: getBetTypeLabel(PlayerBetTypes.PlayerPointsRebounds),
+                            point: `${getOULabel(outcome)} ${outcome.point}`,
+                            price: outcome.price > 0 ? `+${outcome.price}` : outcome.price,
+                            description: outcome.description
+                        } as BettingOddsCell;
+                    });
+                case PlayerBetTypes.PlayerPointsReboundsAssists.toString():
+                    return market.outcomes.map((outcome: Outcome) => {
+                        return {
+                            colKey: outcome.name,
+                            rowKey: getBetTypeLabel(PlayerBetTypes.PlayerPointsReboundsAssists),
+                            point: `${getOULabel(outcome)} ${outcome.point}`,
+                            price: outcome.price > 0 ? `+${outcome.price}` : outcome.price,
+                            description: outcome.description
+                        } as BettingOddsCell;
+                    });
+                default:
+                        return [];
+                }
+        }).flat();
+    }
+
     function getBettingOddsCells() {
         let oddsCells: BettingOddsCell[] = [];
-        const sportsbook = matchup.oddsEvent?.bookmakers.find((sportsbook: Bookmaker) =>
+        
+        const bookmakerOdds = eventOdds.bookmakers.find((sportsbook: Bookmaker) =>
             sportsbook.title === bookmaker.toString()
         )!;
 
-        if (sportsbook) {
+        if (bookmakerOdds) {
             if (betOption === BetOptions.Team) {
-                oddsCells = teamBettingOddsCells(sportsbook);
+                oddsCells = teamBettingOddsCells(bookmakerOdds);
             } else {
                 switch (oddsApiSport) {
                     case OddsApiSports.BasketballNba: {
-
+                        oddsCells = nbaPlayerBettingOddsCells(bookmakerOdds);
                         break;
                     }
                 }
@@ -210,11 +271,10 @@ const MatchupBookmakerLines: React.FC<{
                         </div>
                     </div>
                     <div className="table-wrapper">
-                        {/* {
-                            matchup.oddsEvent?.bookmakers !== undefined && 
-                            betOption === BetOptions.Team && 
-                            <BettingOddsTable params={getBettingOddsTableParams()}/>
-                        } */}
+                        {
+                            bettingOddsTableParams &&
+                            <BettingOddsTable params={bettingOddsTableParams}/>
+                        }
                     </div>
                 </div>
             </div>

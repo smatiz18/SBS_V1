@@ -5,32 +5,58 @@ import { getBetTypeLabel } from "../../../../../utils/utils";
 import { BettingOddsCell } from "../../../../../models/component/betting-odds-table-params";
 import { TeamBetTypes } from "../../../../../models/enums/team-bet-types";
 import { OptimalOddsTableParams } from "../../../../../models/component/optimal-odds-table-params";
-import './matchup-optimal-odds.component.scss';
 import OptimalOddsTable from "../optimal-odds-table/optimal-odds-table.component";
+import { OddsApiSports } from "../../../../../models/enums/odds-api-sports";
+import { useEffect } from "react";
+import { PlayerBetTypes } from "../../../../../models/enums/player-bet-types";
+import './matchup-optimal-odds.component.scss';
 
 const MatchupOptimalOdds: React.FC<{
-    matchup:MatchupLinesAndStats, 
+    matchup: MatchupLinesAndStats, 
     betOption: BetOptions, 
-    optimalOdds: OptimalOdds[]
-}> = ({matchup, betOption, optimalOdds}) => {
+    optimalOdds: OptimalOdds[],
+    oddsApiSport: OddsApiSports
+}> = ({matchup, betOption, optimalOdds, oddsApiSport}) => {
+
+    /* effects **********************************************************************/
+    useEffect(() => {
+        console.log(optimalOdds);
+    }, []);    
+    /********************************************************************************/
+
     
     /* table row / col configs ******************************************************/
     const optimalOddsTableRowOrdering = () => {
-        switch (betOption) {
-            /* maybe make only for team bet types */
-            case BetOptions.Team:
-                return ['Spread', 'Moneyline']; 
-            default:
-                return undefined;
-        }
+        let rowOrdering = undefined;
+                if (betOption === BetOptions.Team) {
+                    rowOrdering = ['Spread', 'Moneyline '];  
+                } else {
+                    switch (oddsApiSport) {
+                        case OddsApiSports.BasketballNba:
+                            rowOrdering = [
+                                getBetTypeLabel(PlayerBetTypes.PlayerPoints),
+                                getBetTypeLabel(PlayerBetTypes.PlayerAssists),
+                                getBetTypeLabel(PlayerBetTypes.PlayerRebounds),
+                                getBetTypeLabel(PlayerBetTypes.PlayerPointsAssists),
+                                getBetTypeLabel(PlayerBetTypes.PlayerPointsRebounds),
+                                getBetTypeLabel(PlayerBetTypes.PlayerPointsReboundsAssists),
+                                getBetTypeLabel(PlayerBetTypes.PlayerThrees)
+                            ];
+                    }
+                }
+                return rowOrdering;
     }
 
-    const optimalOddsTotalsRowOrdering = () => {
+    const teamOptimalOddsTotalsRowOrdering = () => {
         return ['Over', 'Under'];
     }
 
-    const optimalOddsTableColOrdering = () => {
+    const teamOptimalOddsTableColOrdering = () => {
         return ['Odds', 'Sportsbook']
+    }
+
+    const playerOptimalOddsTableColOrdering = () => {
+        return ['Over', 'Under', 'Sportsbook'];
     }
     /********************************************************************************/
     
@@ -77,27 +103,26 @@ const MatchupOptimalOdds: React.FC<{
                 {
                     optimalOddsCells: awayTeamOptimalOddsCells,
                     rowOrdering: optimalOddsTableRowOrdering(),
-                    colOrdering: optimalOddsTableColOrdering(),
+                    colOrdering: teamOptimalOddsTableColOrdering(),
                     betOption: betOption,
                     description: matchup.away.teamNickname
                 } as OptimalOddsTableParams,
                 {
                     optimalOddsCells: homeTeamOptimalOddsCells,
                     rowOrdering: optimalOddsTableRowOrdering(),
-                    colOrdering: optimalOddsTableColOrdering(),
+                    colOrdering: teamOptimalOddsTableColOrdering(),
                     betOption: betOption,
                     description: matchup.home.teamNickname
                 } as OptimalOddsTableParams,
                 {
                     optimalOddsCells: totalsOddsCells,
-                    rowOrdering: optimalOddsTotalsRowOrdering(),
-                    colOrdering: optimalOddsTableColOrdering(),
+                    rowOrdering: teamOptimalOddsTotalsRowOrdering(),
+                    colOrdering: teamOptimalOddsTableColOrdering(),
                     betOption: betOption,
                     description: getBetTypeLabel(TeamBetTypes.Totals)
                 } as OptimalOddsTableParams
             ];
         }
-
         return optimalOddsTableParams || [];
     }
     /********************************************************************************/
