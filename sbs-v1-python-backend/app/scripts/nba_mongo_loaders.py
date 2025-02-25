@@ -796,6 +796,14 @@ def populate_missing_nba_player_aggregated_game_stats_historical(game_ids):
                     {
                         '$set': {
                             f"playerStats.{game_id}": player_stats_to_upsert   
+                        },
+                        "$setOnInsert": {              # Fields to include if inserting a new document
+                            'playerId': player_stats['playerId'],
+                            'teamId': team_id,
+                            'season': season,
+                            'seasonType': season_type,
+                            'firstname': player_stats['playerFirstname'],
+                            'lastname': player_stats['playerLastname'],
                         }
                     },
                     upsert=True

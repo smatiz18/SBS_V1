@@ -23,7 +23,7 @@ const MatchupLines: React.FC<{
     betOption: BetOptions, 
     selectedPlayerName: string}> = ({matchup, betOption, selectedPlayerName}) => {  
     /* consts ***********************************************************************/
-    const USE_MOCKS = true;
+    const USE_MOCKS = false;
     const pageLabels = ['Bookmaker Lines', 'Optimal Odds'];
     const oddsApiSport = sportsKeyToOddsApiSports.get(matchup.oddsEvent?.sportKey || '') as OddsApiSports || null;
     
