@@ -1,12 +1,13 @@
 import { OptimalOddsTableParams, OptimalOddsCell } from '../../../../../models/component/optimal-odds-table-params';
+import { Bookmakers } from '../../../../../models/enums/bookmakers';
 import OddsCell from '../odds-cell/odds-cell.component';
 import './optimal-odds-table.component.scss';
 
 const OptimalOddsTable: React.FC<{
     params: OptimalOddsTableParams, 
     numTables: number}> = ({params, numTables}) => {
-    console.log(numTables);
-        /* consts ******************************************************/ 
+
+    /* consts ***********************************************************************/ 
     const optimalOdds2dArr = new Array(params.rowOrdering.length + 1).fill(0).map(() => new Array(params.colOrdering.length + 1).fill(0));
     /********************************************************************************/
     
@@ -14,7 +15,7 @@ const OptimalOddsTable: React.FC<{
     /** populate headers */
     /** description top left corner cell */
     if (optimalOdds2dArr[0] !== undefined && optimalOdds2dArr[0][0] !== undefined) {
-        optimalOdds2dArr[0][0] = { description: params.description || '' };
+        optimalOdds2dArr[0][0] = { tableDescription: params.description || '' };
     }
 
     params.colOrdering.forEach((colLabel: any, index: number) => {
@@ -48,11 +49,11 @@ const OptimalOddsTable: React.FC<{
                                 <tr key={rowIndex}>
                                     {
                                         row.map((cellContent: any, colIndex: number) => {
-                                            if (cellContent.description !== undefined) {
+                                            if (cellContent.tableDescription !== undefined) {
                                                 return (
                                                     <th key={colIndex}>
                                                         <div className="optimal-odds-table-description-cell">
-                                                            {cellContent.description}
+                                                            {cellContent.tableDescription}
                                                         </div>
                                                     </th>
                                                 );
@@ -75,7 +76,13 @@ const OptimalOddsTable: React.FC<{
                                             }
                                             return (
                                                 <td key={colIndex}>
-                                                    <OddsCell params={{ label: cellContent.point, odds: cellContent.price, bookmaker: cellContent.bookmaker }}/>
+                                                    <OddsCell params={
+                                                        { 
+                                                            label: cellContent.point?.toString() || '', 
+                                                            odds: cellContent.price?.toString() || '-', 
+                                                            bookmaker: cellContent.bookmaker || Bookmakers.DraftKings 
+                                                        }
+                                                    }/>
                                                 </td>
                                             );     
                                         })

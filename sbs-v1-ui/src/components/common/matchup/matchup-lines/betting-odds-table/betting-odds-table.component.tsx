@@ -13,7 +13,7 @@ const BettingOddsTable: React.FC<{params: BettingOddsTableParams}> = ({params}) 
     /** populate headers */
     /** description top left corner cell */
     if (bettingOdds2dArr[0] !== undefined && bettingOdds2dArr[0][0] !== undefined) {
-        bettingOdds2dArr[0][0] = { colHeader: params.description || '' };
+        bettingOdds2dArr[0][0] = { tableDescription: params.description || '' };
     }
 
     params.colOrdering.forEach((colLabel: any, index: number) => {
@@ -47,6 +47,15 @@ const BettingOddsTable: React.FC<{params: BettingOddsTableParams}> = ({params}) 
                                 <tr key={rowIndex}>
                                     {
                                         row.map((cellContent: any, colIndex: number) => {
+                                            if (cellContent.tableDescription !== undefined) {
+                                                return (
+                                                    <th key={colIndex}>
+                                                        <div className="odds-table-description-cell">
+                                                            {cellContent.tableDescription}
+                                                        </div>
+                                                    </th>
+                                                );
+                                            }
                                             if (cellContent.colHeader !== undefined) {
                                                 return (
                                                     <th key={colIndex}>

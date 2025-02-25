@@ -20,7 +20,7 @@ import './nba-daily-matchups.scss';
 
 const NbaDailyMatchups = () => {
   /* consts ***********************************************************************/
-  const USE_MOCKS = false;
+  const USE_MOCKS = true;
   const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
   /********************************************************************************/
 

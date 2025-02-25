@@ -102,6 +102,26 @@ const AvgsTable: React.FC<{
         'h2',
         'total',
     ];
+
+    const nbaPlayerAvgsColHeaders = [
+        'Player',
+        'Agg', 
+        avgSelect(FIRST_AGG_COL_IDX /* idx */), 
+        avgSelect(SECOND_AGG_COL_IDX /* idx */), 
+        avgSelect(THIRD_AGG_COL_IDX /* idx */), 
+        avgSelect(COMP_AGG_COL_IDX /* idx */, true /* additional tag */), 
+        'σ'
+    ];
+    
+    const nbaPlayerAvgsRowHeaders = [
+        'q1',
+        'q2',
+        'h1',
+        'q3',
+        'q4',
+        'h2',
+        'total',
+    ];
     /********************************************************************************/
 
     /* effects **********************************************************************/

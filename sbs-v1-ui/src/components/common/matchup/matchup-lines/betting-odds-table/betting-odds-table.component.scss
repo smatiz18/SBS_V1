@@ -4,18 +4,24 @@
             border-collapse: collapse;
         }
     }
+
+    .odds-table-description-cell {
+        font-weight: 600;
+        text-align: center;
+        font-size: .8rem;
+    }
     
     .odds-table-col-header-cell {
         padding: .25rem;
         text-align: center;
-        font-size: .8rem;
         font-weight: 500;
+        font-size: .8rem;
     }
 
     .odds-table-row-header-cell {
         padding-right: .35rem;
         text-align: right;
-        font-size: .8rem;
         font-weight: 500;
+        font-size: .8rem;
     }
 }

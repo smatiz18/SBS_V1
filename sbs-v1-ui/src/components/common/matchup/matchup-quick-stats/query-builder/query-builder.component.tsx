@@ -21,7 +21,7 @@ const SBSQueryBuilder: React.FC<{ id: string, deleteQueryBuilder: any }> = ({ id
     };
 
     const enumToCollectionMap = new Map([
-        [AvailableCollections.NbaGamesHistorical, 'nba_game_historical'],
+        [AvailableCollections.NbaGamesHistorical, 'nba_games_historical'],
         [AvailableCollections.NbaPlayerAggregatedGameStatsHistorical, 'nba_player_aggregated_game_stats_historical']
     ]);
 

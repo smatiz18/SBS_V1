@@ -15,15 +15,15 @@ import { GetEventOddsRequest } from "../../../../models/services/get-event-odds-
 import { OddsApiRegions } from "../../../../models/enums/odds-api-regions";
 import { OddsFormat } from "../../../../models/enums/odds-format";
 import { Bookmakers } from "../../../../models/enums/bookmakers";
-import './matchup-lines.component.scss';
 import { grizzliesMagicPlayerOdds, grizzliesMagicTeamOdds, knicksCavsPlayersOdds, knicksCavsTeamOdds } from "../../../../test/nba-matchups-mocks";
+import './matchup-lines.component.scss';
 
 const MatchupLines: React.FC<{
     matchup: MatchupLinesAndStats, 
     betOption: BetOptions, 
     selectedPlayerName: string}> = ({matchup, betOption, selectedPlayerName}) => {  
     /* consts ***********************************************************************/
-    const USE_MOCKS = false;
+    const USE_MOCKS = true;
     const pageLabels = ['Bookmaker Lines', 'Optimal Odds'];
     const oddsApiSport = sportsKeyToOddsApiSports.get(matchup.oddsEvent?.sportKey || '') as OddsApiSports || null;
     
