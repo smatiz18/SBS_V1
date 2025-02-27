@@ -14,7 +14,7 @@ pub struct NbaPlayerAggGameStatsHistorical {
     #[serde(rename = "teamId")]
     pub team_id: f64,
     
-    pub season: Option<String>,
+    pub season: Option<i32>,
     
     #[serde(rename = "seasonType")]
     pub season_type: Option<String>,

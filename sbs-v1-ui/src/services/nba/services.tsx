@@ -21,7 +21,7 @@ export const GET_NBA_LINEUPS = `${NBA_API_ROOT}/daily-matchups/get`;
 export const GET_NBA_GAMES_BY_TEAM_AND_SEASON = `${NBA_API_ROOT}/historical-games/get`;
 export const GET_NBA_ODDS_BY_TEAM_AND_SEASON = `${NBA_API_ROOT}/historical-odds/get`;
 export const GET_NBA_PLAYERS_BY_TEAM_AND_SEASON = `${NBA_API_ROOT}/players-by-team-and-season/get`;
-export const GET_NBA_PLAYERS_STATS_NAME_AND_SEASON = `${NBA_API_ROOT}/player-stats-by-name-and-season/get`;
+export const GET_NBA_PLAYERS_BY_STATS_NAME_AND_SEASON = `${NBA_API_ROOT}/player-stats-by-name-and-season/get`;
 export const GET_NBA_TEAM_AGG_GAME_STATS = `${NBA_API_ROOT}/team-agg-game-stats/get`;
 export const GET_NBA_TEAM_STATS = `${NBA_API_ROOT}/team-stats/get`;
 
@@ -42,7 +42,7 @@ export function getNbaPlayersByTeamAndSeason(req: GetNbaPlayersByTeamAndSeasonRe
 }
 
 export function getNbaPlayerStatsByNameAndSeason(req: GetNbaPlayerStatsByNameAndSeasonRequest): Promise<AxiosResponse<NbaPlayerAggGameStatsHistorical[]>> {
-  return axios.post<NbaPlayerAggGameStatsHistorical[]>(`${RUST_SERVER}${GET_NBA_PLAYERS_BY_TEAM_AND_SEASON}`, req);
+  return axios.post<NbaPlayerAggGameStatsHistorical[]>(`${RUST_SERVER}${GET_NBA_PLAYERS_BY_STATS_NAME_AND_SEASON}`, req);
 }
 
 export function getNbaTeamAggGameStats(req: GetNbaTeamAggGameStatsRequest) {

@@ -15,6 +15,7 @@ import _ from "lodash";
 import { GameLocationsFilter } from "../../../../../models/enums/game-locations-filter";
 import AvgsFilters from "./avgs-filters/avgs-filters.component";
 import './avgs-table.component.scss';
+import { PlayerStatsObj } from "../../../../../models/nba-player-game-stats-historical";
 
 const AvgsTable: React.FC<{
     matchup: MatchupLinesAndStats, 
@@ -23,36 +24,71 @@ const AvgsTable: React.FC<{
 }> = ({matchup, betOption, selectedPlayerName}) => {
     
     /* consts ***********************************************************************/
-    const FIRST_AGG_COL_IDX = 2;
-    const SECOND_AGG_COL_IDX = 3;
-    const THIRD_AGG_COL_IDX = 4;
-    const COMP_AGG_COL_IDX = 5;    
-    const AGG_COL_IDXS = [2,3,4,5];
+    const TEAM_FIRST_AGG_COL_IDX = 2;
+    const TEAM_SECOND_AGG_COL_IDX = 3;
+    const TEAM_THIRD_AGG_COL_IDX = 4;
+    const TEAM_COMP_AGG_COL_IDX = 5;    
+    const TEAM_AGG_COL_IDXS = [2,3,4,5];
 
-    const initColIdxToAggValMap: Record<number, any> = {};
-    initColIdxToAggValMap[FIRST_AGG_COL_IDX] = 3;
-    initColIdxToAggValMap[SECOND_AGG_COL_IDX] = 5;
-    initColIdxToAggValMap[THIRD_AGG_COL_IDX] = 10;
-    initColIdxToAggValMap[COMP_AGG_COL_IDX] = 20;
-    
+    const PLAYER_FIRST_AGG_COL_IDX = 1;
+    const PLAYER_SECOND_AGG_COL_IDX = 2;
+    const PLAYER_THIRD_AGG_COL_IDX = 3;
+    const PLAYER_COMP_AGG_COL_IDX = 4;    
+    const PLAYER_AGG_COL_IDXS = [1,2,3,4];
+
+    const getColIdxToAggValMap = () => {
+        let currColIdxToAggValMap: any = {};
+        if (betOption === BetOptions.Team) {
+            currColIdxToAggValMap[TEAM_FIRST_AGG_COL_IDX] = 3;
+            currColIdxToAggValMap[TEAM_SECOND_AGG_COL_IDX] = 5;
+            currColIdxToAggValMap[TEAM_THIRD_AGG_COL_IDX] = 10;
+            currColIdxToAggValMap[TEAM_COMP_AGG_COL_IDX] = 20;
+        } else {
+            currColIdxToAggValMap[PLAYER_FIRST_AGG_COL_IDX] = 3;
+            currColIdxToAggValMap[PLAYER_SECOND_AGG_COL_IDX] = 5;
+            currColIdxToAggValMap[PLAYER_THIRD_AGG_COL_IDX] = 10;
+            currColIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX] = 20;
+        }
+        return currColIdxToAggValMap;
+    } 
+
+    const [colIdxToAggValMap, setColIdxToAggValMap] = useState(getColIdxToAggValMap() || {}) ;
     const [quickStatsTableRows, setQuickStatsTableRows] = useState([] as any[]);
     const [quickStatsTableColHeaders, setQuickStatsTableColHeaders] = useState([] as any[]);
-    const [colIdxToAggValMap, setColIdxToAggValMap] = useState(initColIdxToAggValMap);
     const [teamFilters, setTeamFilters] = useState({ 
-        away: GameLocationsFilter.All,
-        home: GameLocationsFilter.All
+        awayTeamGameLocations: GameLocationsFilter.All,
+        homeTeamGameLocations: GameLocationsFilter.All
     });
-    const aggregatableColIdxs = AGG_COL_IDXS;
+    const [playerFilters, setPlayerFilters] = useState({ 
+        gameLocations: GameLocationsFilter.All
+    });
+    
+    const getAggregatableColIdx = () => {
+        if (betOption === BetOptions.Team) {
+            return TEAM_AGG_COL_IDXS;
+        }
+        return PLAYER_AGG_COL_IDXS;
+    }
+    const [aggregatableColIdxs, setAggregatableColIdxs] = useState(getAggregatableColIdx());
+    /********************************************************************************/
 
     let colHeaders: any[] = [];
     let rowHeaders: any[] = [];
 
     const handleFilterChange = (value: any) => {
-        const filtersUpdate = {
-            ...teamFilters, 
-            ...value
-        };
-        setTeamFilters(filtersUpdate);
+        if (betOption === BetOptions.Team) {
+            const filtersUpdate = {
+                ...teamFilters, 
+                ...value
+            };
+            setTeamFilters(filtersUpdate);
+        } else {
+            const filtersUpdate = {
+                ...playerFilters, 
+                ...value
+            };
+            setPlayerFilters(filtersUpdate);
+        }
     };
 
     const avgSelect = (idx: number, isComparator?: boolean) => {
@@ -65,6 +101,8 @@ const AvgsTable: React.FC<{
             selectOptions = selectOptions.concat([comparatorSelectOption]);
         }
 
+        const value = colIdxToAggValMap[idx];
+
         return (
             <div className="select-wrapper" id={idx.toString()}>
                 <ThemeProvider theme={darkTheme}>
@@ -72,7 +110,7 @@ const AvgsTable: React.FC<{
                         <Select
                             labelId="demo-simple-select-standard-label"
                             id="demo-simple-select-standard"
-                            value={colIdxToAggValMap[idx]}
+                            value={value === undefined ? '' : value}
                             onChange={(val: any) => updateAggValToColMap(val, idx)}
                             sx={{...selectSx, fontSize: '.7rem'}}
                         >
@@ -84,13 +122,13 @@ const AvgsTable: React.FC<{
         );
     };
 
-    const teamAvgsColHeaders = [
+    const teamAvgsColHeaders = () => [
         'Team',
         'Agg', 
-        avgSelect(FIRST_AGG_COL_IDX /* idx */), 
-        avgSelect(SECOND_AGG_COL_IDX /* idx */), 
-        avgSelect(THIRD_AGG_COL_IDX /* idx */), 
-        avgSelect(COMP_AGG_COL_IDX /* idx */, true /* additional tag */), 
+        avgSelect(TEAM_FIRST_AGG_COL_IDX /* idx */), 
+        avgSelect(TEAM_SECOND_AGG_COL_IDX /* idx */), 
+        avgSelect(TEAM_THIRD_AGG_COL_IDX /* idx */), 
+        avgSelect(TEAM_COMP_AGG_COL_IDX /* idx */, true /* additional tag */), 
         'σ'
     ];
     
@@ -104,12 +142,12 @@ const AvgsTable: React.FC<{
         'total',
     ];
 
-    const nbaPlayerAvgsColHeaders = [
+    const nbaPlayerAvgsColHeaders = () => [
         'Agg', 
-        avgSelect(FIRST_AGG_COL_IDX /* idx */), 
-        avgSelect(SECOND_AGG_COL_IDX /* idx */), 
-        avgSelect(THIRD_AGG_COL_IDX /* idx */), 
-        avgSelect(COMP_AGG_COL_IDX /* idx */, true /* additional tag */), 
+        avgSelect(PLAYER_FIRST_AGG_COL_IDX /* idx */), 
+        avgSelect(PLAYER_SECOND_AGG_COL_IDX /* idx */), 
+        avgSelect(PLAYER_THIRD_AGG_COL_IDX /* idx */), 
+        avgSelect(PLAYER_COMP_AGG_COL_IDX /* idx */, true /* additional tag */), 
         'σ'
     ];
     
@@ -126,19 +164,24 @@ const AvgsTable: React.FC<{
 
     /* effects **********************************************************************/
     useEffect(() => {
+        setColIdxToAggValMap(getColIdxToAggValMap());
+        setAggregatableColIdxs(getAggregatableColIdx());
+    }, [betOption]);
+
+    useEffect(() => {
         initializeComponentVars();
         calculateTable();
-    }, [betOption, colIdxToAggValMap, teamFilters]);
+    }, [betOption, colIdxToAggValMap, teamFilters, playerFilters, selectedPlayerName]);
     /********************************************************************************/
 
     const initializeComponentVars = () => {
         if (betOption === BetOptions.Team) {
-            colHeaders = teamAvgsColHeaders;
+            colHeaders = teamAvgsColHeaders();
             rowHeaders = teamAvgsRowHeaders; 
         } else {
             switch (matchup.sportsCategory) {
                 case SportsCategories.NBA: {
-                    colHeaders = nbaPlayerAvgsColHeaders;
+                    colHeaders = nbaPlayerAvgsColHeaders();
                     rowHeaders = nbaPlayerAvgsRowHeaders;
                     break;
                 }
@@ -155,18 +198,17 @@ const AvgsTable: React.FC<{
                     const cellMappedRows = mapRawCellsToQuickStatsTableCell(
                         rows as [][],
                         new Set(Object.keys(colIdxToAggValMap).map(k => parseInt(k)) as any), 
-                        COMP_AGG_COL_IDX,
+                        TEAM_COMP_AGG_COL_IDX,
                         (row) => row[1] === 'Sum',
                     );
                     setQuickStatsTableColHeaders(colHeaders);
                     setQuickStatsTableRows(cellMappedRows);
                 } else {
                     const rows = nbaAvgPlayerRows();
-                    console.log("PLAYER ROWS");
                     const cellMappedRows = mapRawCellsToQuickStatsTableCell(
                         rows as [][],
                         new Set(Object.keys(colIdxToAggValMap).map(k => parseInt(k)) as any), 
-                        COMP_AGG_COL_IDX,
+                        PLAYER_COMP_AGG_COL_IDX,
                         (_) => false,
                     );
                     setQuickStatsTableColHeaders(colHeaders);
@@ -179,16 +221,21 @@ const AvgsTable: React.FC<{
     /* helpers **********************************************************************/
     const nbaAvgPlayerRows = () => {
         const playerAggStats  = matchup.playerAggGameStats || [];
-        
-        console.log('PLAYER STATS', playerAggStats);
-
         const playerStats = playerAggStats.find((currPlayerStats) => `${currPlayerStats.firstname} ${currPlayerStats.lastname}` === selectedPlayerName);
-        // add player home / away filters
-        const sortedPlayerStats = sortNbaPlayerStatsObjs(Object.values(playerStats?.playerStats || {}));
+        const sortedAndFilteredPlayerStats = sortNbaPlayerStatsObjs(Object.values(playerStats?.playerStats || {}))
+            .filter((statsObj: PlayerStatsObj) => {
+                if (playerFilters.gameLocations === GameLocationsFilter.Away) {
+                    return !statsObj.isHome;
+                } else if (playerFilters.gameLocations === GameLocationsFilter.Home) {
+                    return statsObj.isHome;
+                }
+                return true;
+            });
+        
         return rowHeaders.map((currRow: string) => {
             switch (currRow) {
                 case 'Points': {
-                    const points = sortedPlayerStats.map(x => x.points || 0);
+                    const points = sortedAndFilteredPlayerStats.map(x => x.points || 0);
                     return colHeaders.map((colHeader: any) => {
                         if (colHeader === 'Agg') {
                             return 'Points';
@@ -206,10 +253,10 @@ const AvgsTable: React.FC<{
                     });
                 }
                 case 'Assists': {
-                    const assists = sortedPlayerStats.map(x => x.assists || 0);
+                    const assists = sortedAndFilteredPlayerStats.map(x => x.assists || 0);
                     return colHeaders.map((colHeader: any) => {
                         if (colHeader === 'Agg') {
-                            return 'Points';
+                            return 'Assists';
                         } else if (colHeader === 'σ') {
                             return stdDeviation(assists);
                         } else if (colHeader.props?.id !== undefined) {
@@ -225,10 +272,10 @@ const AvgsTable: React.FC<{
                     });
                 }
                 case 'Rebounds': {
-                    const rebounds = sortedPlayerStats.map(x => x.totReb || 0);
+                    const rebounds = sortedAndFilteredPlayerStats.map(x => x.totReb || 0);
                     return colHeaders.map((colHeader: any) => {
                         if (colHeader === 'Agg') {
-                            return 'Points';
+                            return 'Rebounds';
                         } else if (colHeader === 'σ') {
                             return stdDeviation(rebounds);
                         } else if (colHeader.props?.id !== undefined) {
@@ -243,10 +290,10 @@ const AvgsTable: React.FC<{
                     });
                 }
                 case 'Pts + Ass': {
-                    const ptsAss = sortedPlayerStats.map(x => (x.points || 0) + (x.assists || 0));
+                    const ptsAss = sortedAndFilteredPlayerStats.map(x => (x.points || 0) + (x.assists || 0));
                     return colHeaders.map((colHeader: any) => {
                         if (colHeader === 'Agg') {
-                            return 'Points';
+                            return 'Pts + Ass';
                         } else if (colHeader === 'σ') {
                             return stdDeviation(ptsAss);
                         } else if (colHeader.props?.id !== undefined) {
@@ -261,10 +308,10 @@ const AvgsTable: React.FC<{
                     });
                 }
                 case 'Pts + Reb': {
-                    const ptsReb = sortedPlayerStats.map(x => (x.points || 0) + (x.totReb || 0));
+                    const ptsReb = sortedAndFilteredPlayerStats.map(x => (x.points || 0) + (x.totReb || 0));
                     return colHeaders.map((colHeader: any) => {
                         if (colHeader === 'Agg') {
-                            return 'Points';
+                            return 'Pts + Reb';
                         } else if (colHeader === 'σ') {
                             return stdDeviation(ptsReb);
                         } else if (colHeader.props?.id !== undefined) {
@@ -279,10 +326,10 @@ const AvgsTable: React.FC<{
                     });
                 }
                 case 'Pts + Reb + Ass': {
-                    const ptsRebAss = sortedPlayerStats.map(x => (x.points || 0) + (x.totReb || 0) + (x.assists || 0));
+                    const ptsRebAss = sortedAndFilteredPlayerStats.map(x => (x.points || 0) + (x.totReb || 0) + (x.assists || 0));
                     return colHeaders.map((colHeader: any) => {
                         if (colHeader === 'Agg') {
-                            return 'Points';
+                            return 'Pts + Reb + Ass';
                         } else if (colHeader === 'σ') {
                             return stdDeviation(ptsRebAss);
                         } else if (colHeader.props?.id !== undefined) {
@@ -297,10 +344,10 @@ const AvgsTable: React.FC<{
                     });
                 }
                 case 'Threes': {
-                    const threes = sortedPlayerStats.map(x => x.tpm || 0);
+                    const threes = sortedAndFilteredPlayerStats.map(x => x.tpm || 0);
                     return colHeaders.map((colHeader: any) => {
                         if (colHeader === 'Agg') {
-                            return 'Points';
+                            return 'Threes';
                         } else if (colHeader === 'σ') {
                             return stdDeviation(threes);
                         } else if (colHeader.props?.id !== undefined) {
@@ -324,13 +371,13 @@ const AvgsTable: React.FC<{
         const rows = teamsAggStats.flatMap((currStats: NbaTeamAggGameStatsHistorical) => {    
             const isHome = matchup.home.teamNickname === currStats.teamNickname;
             const sortedStats = sortGameStatsObjs(Object.values(currStats.gameStats)).filter((x: GameStats) => {
-                if (isHome && teamFilters.home === GameLocationsFilter.Away) {
+                if (isHome && teamFilters.homeTeamGameLocations === GameLocationsFilter.Away) {
                     return !x.isHome;
-                } else if (isHome && teamFilters.home === GameLocationsFilter.Home) {
+                } else if (isHome && teamFilters.homeTeamGameLocations === GameLocationsFilter.Home) {
                     return x.isHome;
-                } else if (!isHome && teamFilters.away === GameLocationsFilter.Away) {
+                } else if (!isHome && teamFilters.awayTeamGameLocations === GameLocationsFilter.Away) {
                     return !x.isHome;
-                } else if (!isHome && teamFilters.away === GameLocationsFilter.Home) {
+                } else if (!isHome && teamFilters.awayTeamGameLocations === GameLocationsFilter.Home) {
                     return x.isHome;
                 }
                 return true;
@@ -544,7 +591,7 @@ const AvgsTable: React.FC<{
 
     return (
         <div className="quick-stats-table-container" id={`${matchup.away.teamNickname}-${matchup.home.teamNickname}`}>
-            <AvgsFilters handleFilterChange={handleFilterChange} betOption={betOption} matchup={matchup}/>
+            <AvgsFilters handleFilterChange={handleFilterChange} betOption={betOption} matchup={matchup} selectedPlayerName={selectedPlayerName}/>
             <QuickStatsTable params={
                 {
                     rows: quickStatsTableRows, 

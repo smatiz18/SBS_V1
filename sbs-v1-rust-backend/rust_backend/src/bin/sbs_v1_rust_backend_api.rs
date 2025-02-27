@@ -56,7 +56,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                .route(GET_HISTORICAL_ODDS, web::get().to(get_nba_odds_by_team_and_season))
                .route(GET_PLAYERS_BY_TEAM_AND_SEASON, web::get().to(get_nba_players_by_team_and_season))
                .route(GET_PLAYER_STATS_BY_ID_AND_SEASON, web::get().to(get_nba_player_stats_by_id_and_season))
-               .route(GET_PLAYER_STATS_BY_NAME_AND_SEASON, web::get().to(get_nba_player_stats_by_name_and_season))
+               .route(GET_PLAYER_STATS_BY_NAME_AND_SEASON, web::post().to(get_nba_player_stats_by_name_and_season))
                .route(GET_NBA_TEAM_AGG_GAME_STATS, web::post().to(get_nba_team_agg_game_stats))
                .route(GET_NBA_TEAM_STATS, web::post().to(get_nba_team_stats))
                .route(GET_NBA_DAILY_MATCHUPS, web::get().to(get_nba_daily_matchups))

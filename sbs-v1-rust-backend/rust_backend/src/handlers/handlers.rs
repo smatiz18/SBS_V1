@@ -9,6 +9,7 @@ use crate::db::base_mongo::aggregate;
 use crate::db::user_info_mongo_dao::handle_user_login;
 use crate::models::db::cached_web_api_response::CachedWebApiResponse;
 use crate::models::db::user_info::{LoginSource, UserInfo};
+use crate::models::enums::season_type::SeasonType;
 use crate::models::enums::sports_categories::SportsCategories;
 use crate::models::odds::odds::Event;
 use crate::models::services::execute_mongo_query_request::ExecuteMongoQueryRequest;
@@ -108,7 +109,7 @@ pub async fn get_nba_player_stats_by_id_and_season(
 
 pub async fn get_nba_player_stats_by_name_and_season(
     app_state: web::Data<AppState>, 
-    req: web::Query<GetNbaPlayerStatsByNameAndSeasonRequest>
+    req: web::Json<GetNbaPlayerStatsByNameAndSeasonRequest>
 ) -> impl Responder {
     info!("Recieved req for get_nba_player_stats_by_name_and_season names: {:?}, season: {}", req.names.clone(), req.season);
     let objs_result = 
@@ -116,7 +117,7 @@ pub async fn get_nba_player_stats_by_name_and_season(
         &app_state.as_ref().nba_player_aggregated_game_stats_historical_collection, 
         req.names.clone(),
         req.season,
-        req.season_type
+        req.season_type.clone().or(Some(SeasonType::ALL))
     ).await; 
 
     match objs_result {
