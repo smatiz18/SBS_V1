@@ -1,29 +1,45 @@
-import { ChangeEvent, ReactElement, useState } from "react";
+import { ChangeEvent, ReactElement, useEffect, useState } from "react";
 import { BetOptions } from "../../../../models/enums/bet-options";
 import { MatchupLinesAndStats } from "../../../../models/matchup-lines-and-stats";
 import AvgsTable from "./avgs/avgs-table.component";
 import _ from "lodash";
-import './matchup-quick-stats.component.scss';
 import Pagination from "@mui/material/Pagination";
-import './matchup-quick-stats.component.scss';
 import { paginationSx } from "../../../../models/form-styles/styles";
 import PaginationItem from "@mui/material/PaginationItem";
 import ChartAnalyzer from "./chart-analyzer/chart-analyzer.component";
 import PastOccurrences from "./past-occurrences/past-occurrences.component";
+import './matchup-quick-stats.component.scss';
 
-const MatchupQuickStats: React.FC<{ matchup: MatchupLinesAndStats, betOption: BetOptions }> = ({ matchup, betOption }) => {
+const MatchupQuickStats: React.FC<{ 
+    matchup: MatchupLinesAndStats, 
+    betOption: BetOptions, 
+    selectedPlayerName?: string 
+}> = ({ matchup, betOption, selectedPlayerName }) => {
     /* consts ***********************************************************************/
-    const avgsTable = <AvgsTable matchup={matchup} betOption={betOption} />;
-    const chartAnalyzer = <ChartAnalyzer matchup={matchup} betOption={betOption} />
-    const pastOccurences = <PastOccurrences />;
-    const pageToCompMap: Record<string, ReactElement> = {
-        '1': avgsTable,
-        '2': chartAnalyzer,
-        '3': pastOccurences
+    const getAvgsTable = () => {
+        return <AvgsTable matchup={matchup} betOption={betOption} selectedPlayerName={selectedPlayerName}/>;
     };
-
+    const getChartAnalyzer = () => {
+        return <ChartAnalyzer matchup={matchup} betOption={betOption} />;
+    }
+    const pastOccurences = <PastOccurrences />;
+    const getPageToCompMap = (): Record<string, ReactElement> => {
+        return {
+            '1': getAvgsTable(),
+            '2': getChartAnalyzer(),
+            '3': pastOccurences
+        };
+    };
+    const [pageToCompMap, setPageToCompMap] = useState(getPageToCompMap());
     const pageLabels = ['Game Averages', 'Chart Analyzer', 'Past Occurences'];
     const [currentPage, setCurrentPage] = useState(1);
+    /********************************************************************************/
+
+    /* effects **********************************************************************/
+    useEffect(() => {
+        console.log("SOMETHING CHANGED");
+        setPageToCompMap(getPageToCompMap());
+    }, [betOption, selectedPlayerName]);
     /********************************************************************************/
 
     /* event handlers ***************************************************************/

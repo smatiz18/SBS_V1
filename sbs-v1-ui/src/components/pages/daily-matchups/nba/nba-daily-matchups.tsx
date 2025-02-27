@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import MatchupComponent from '../../../common/matchup/matchup.component';
-import { getNbaMatchups, getNbaTeamAggGameStats, getNbaTeamStats } from '../../../../services/nba/services';
+import { getNbaMatchups, getNbaPlayerStatsByNameAndSeason, getNbaTeamAggGameStats, getNbaTeamStats } from '../../../../services/nba/services';
 import { NbaLogoMapper } from '../../../../assets/images/nba-logo-mapper';
 import { Matchup } from '../../../../models/matchup';
 import { getEvents } from '../../../../services/odds/services';
@@ -12,10 +12,11 @@ import { NbaTeamStats } from '../../../../models/nba-team-stats';
 import { GetNbaTeamStatsRequest } from '../../../../models/services/get-nba-team-stats-request';
 import { SeasonType } from '../../../../models/enums/season-type';
 import { currentNbaSeason, getCurrentDateEst } from '../../../../utils/utils';
-import { GetNbaTeamAggGameStatsRequest } from '../../../../models/services/get-nba-team-agg-game-stats-request';
 import { NbaTeamAggGameStatsHistorical } from '../../../../models/nba-team-agg-game-stats-historical';
-import _ from 'lodash';
 import { oddsEventsMockResp, rotoWireDailyMatchupsMockResp } from '../../../../test/nba-matchups-mocks';
+import { GetNbaPlayerStatsByNameAndSeasonRequest, Name } from '../../../../models/services/get-nba-player-stats-by-name-and-season-request';
+import { NbaPlayerAggGameStatsHistorical } from '../../../../models/nba-player-agg-game-stats-historical';
+import _ from 'lodash';
 import './nba-daily-matchups.scss';
 
 const NbaDailyMatchups = () => {
@@ -44,7 +45,78 @@ const NbaDailyMatchups = () => {
   }
   /********************************************************************************/
 
+  /* helpers **********************************************************************/
+  const aggregateAllProjectedPlayersFromMatchups = (matchups: Matchup[]) => {
+    const names: Name[] = matchups.flatMap((matchup: Matchup) => {
+      return (matchup.away.projectedPlayers || []).concat(matchup.home.projectedPlayers || [])
+        .map((name: string) => ({ firstname: name.split(' ')[0], lastname: name.split(' ')[1] }))
+    });
+    return names;
+  }
+  /********************************************************************************/
+
   /* data fetchers ****************************************************************/
+  const getNbaPlayerAggStatsHelper = async (matchups: Matchup[]) => {
+    const nbaPlayerStatsReq: GetNbaPlayerStatsByNameAndSeasonRequest = {
+      names: aggregateAllProjectedPlayersFromMatchups(matchups),
+      season: currentNbaSeason,
+      seasonType: SeasonType.All
+    };
+    const nbaPlayerStatsResp = await getNbaPlayerStatsByNameAndSeason(nbaPlayerStatsReq);
+    const nbaPlayerStats: NbaPlayerAggGameStatsHistorical[] = nbaPlayerStatsResp.data;
+    const nbaPlayerStatsReqMappedByHomeTeam = matchups
+      .reduce((agg: Record<string, NbaPlayerAggGameStatsHistorical[]>, curr: Matchup) => {
+
+        const playerSet = new Set((curr.home.projectedPlayers || [] as string[])
+          .concat(curr.away.projectedPlayers || [] as string[]));
+
+        nbaPlayerStats.forEach((playerStats: NbaPlayerAggGameStatsHistorical) => {
+          if (playerSet.has(`${playerStats.firstname} ${playerStats.lastname}`)) {
+            if (agg[curr.home.teamName] && agg[curr.home.teamName].length > 0) {
+              agg[curr.home.teamName] = agg[curr.home.teamName].concat([playerStats]);
+            } else {
+              agg[curr.home.teamName] = [playerStats];
+            }
+          }
+        });
+
+        return agg;
+      }, {});
+    return nbaPlayerStatsReqMappedByHomeTeam;
+  }
+
+  const getNbaTeamStatsReq = (matchups: Matchup[]) => {
+    return {
+      teamIds: matchups.flatMap((matchup: Matchup) => (
+        [
+          NbaTeamsMappedByNickname[matchup.away.teamNickname].nbaApiId,
+          NbaTeamsMappedByNickname[matchup.home.teamNickname].nbaApiId
+        ])
+      ),
+      season: currentNbaSeason,
+      seasonType: SeasonType.All
+    } as GetNbaTeamStatsRequest;
+  }
+
+  const getNbaTeamStatsHelper = async (matchups: Matchup[]) => {
+    const nbaTeamStats = await getNbaTeamStats(getNbaTeamStatsReq(matchups) as any);
+    const nbaTeamStatsMappedByTeamNickname = nbaTeamStats.data
+      .reduce((agg: Record<string, NbaTeamStats>, curr: NbaTeamStats) => {
+        agg[curr.teamNickname] = curr;
+        return agg;
+      }, {});
+    return nbaTeamStatsMappedByTeamNickname;
+  }
+  const getNbaTeamAggGameStatsHelper = async (matchups: Matchup[]) => {
+    const nbaTeamAggGameStats = await getNbaTeamAggGameStats(getNbaTeamStatsReq(matchups) as any);
+    const nbaTeamAggGameStatsMappedByTeamNickname = nbaTeamAggGameStats.data
+      .reduce((agg: Record<string, NbaTeamAggGameStatsHistorical>, curr: NbaTeamAggGameStatsHistorical) => {
+        agg[curr.teamNickname] = curr;
+        return agg;
+      }, {});
+    return nbaTeamAggGameStatsMappedByTeamNickname;
+  }
+
   const fetchInitData = async (useMock: boolean) => {
     try {
       let oddsEventsResponse: any;
@@ -65,35 +137,19 @@ const NbaDailyMatchups = () => {
         _.set(matchupsResp, 'data.data.data.matchups', filteredMatchups);
       }
 
-      const nbaTeamStatsReq: GetNbaTeamStatsRequest = {
-        teamIds: (matchupsResp.data?.data?.data.matchups || []).flatMap((matchup: Matchup) => (
-          [
-            NbaTeamsMappedByNickname[matchup.away.teamNickname].nbaApiId,
-            NbaTeamsMappedByNickname[matchup.home.teamNickname].nbaApiId
-          ])
-        ),
-        season: currentNbaSeason,
-        seasonType: SeasonType.All
-      };
+      const matchups = matchupsResp.data?.data?.data.matchups || [] as Matchup[];
 
-      const nbaTeamStats = await getNbaTeamStats(nbaTeamStatsReq);
-      const nbaTeamStatsMappedByTeamNickname = nbaTeamStats.data
-        .reduce((agg: Record<string, NbaTeamStats>, curr: NbaTeamStats) => {
-          agg[curr.teamNickname] = curr;
-          return agg;
-        }, {});
+      /* player aggregated stats */
+      const nbaPlayerStatsReqMappedByHomeTeam = await getNbaPlayerAggStatsHelper(matchups);
 
-      const nbaTeamAggGameStats = await getNbaTeamAggGameStats(nbaTeamStatsReq as GetNbaTeamAggGameStatsRequest);
-      const nbaTeamAggGameStatsMappedByTeamNickname = nbaTeamAggGameStats.data
-        .reduce((agg: Record<string, NbaTeamAggGameStatsHistorical>, curr: NbaTeamAggGameStatsHistorical) => {
-          agg[curr.teamNickname] = curr;
-          return agg;
-        }, {});
+      /* team aggregated stats ***/
+      const nbaTeamStatsMappedByTeamNickname = await getNbaTeamStatsHelper(matchups);
+      const nbaTeamAggGameStatsMappedByTeamNickname = await getNbaTeamAggGameStatsHelper(matchups);
 
       const eventMappedByHomeTeam = parseOddsEventsData(oddsEventsResponse.data.data as Event[]);
-      const enrichedMatchups = (matchupsResp.data?.data?.data.matchups || []).map((matchup: Matchup) => {
+      const enrichedMatchups = matchups.map((matchup: Matchup) => {
         matchup.sportsCategory = SportsCategories.NBA;
-
+        matchup.playerAggGameStats = nbaPlayerStatsReqMappedByHomeTeam[matchup.home.teamName];
         matchup.away.teamLogo = NbaLogoMapper.get(matchup.away.teamNickname)!;
         matchup.away.teamStats = nbaTeamStatsMappedByTeamNickname[matchup.away.teamNickname];
         matchup.away.teamAggGameStats = nbaTeamAggGameStatsMappedByTeamNickname[matchup.away.teamNickname];
@@ -109,7 +165,6 @@ const NbaDailyMatchups = () => {
           matchup.oddsEvent = oddsEvent;
           matchup.dateStart = oddsEvent.commenceTime;
         }
-
         return matchup;
       })
         .filter((m: Matchup) => m.dateStart !== undefined);

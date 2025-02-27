@@ -2,7 +2,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { MatchupLinesAndStats } from "../../../../../models/matchup-lines-and-stats";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { mean, range, sliceLast, sortGameStatsObjs, stdDeviation } from "../../../../../utils/utils";
+import { mean, range, sliceLast, sortGameStatsObjs, sortNbaPlayerStatsObjs, stdDeviation } from "../../../../../utils/utils";
 import { darkTheme, selectSx } from "../../../../../models/form-styles/styles";
 import { useEffect, useState } from "react";
 import QuickStatsTable from "../quick-stats-table/quick-stats-table.component";
@@ -12,14 +12,15 @@ import { GameStats, NbaTeamAggGameStatsHistorical } from "../../../../../models/
 import { SportsCategories } from "../../../../../models/enums/sports-categories";
 import { QuickStatsCellParams } from "../../../../../models/component/quick-stats-cell-params";
 import _ from "lodash";
-import './avgs-table.component.scss';
 import { GameLocationsFilter } from "../../../../../models/enums/game-locations-filter";
 import AvgsFilters from "./avgs-filters/avgs-filters.component";
+import './avgs-table.component.scss';
 
 const AvgsTable: React.FC<{
     matchup: MatchupLinesAndStats, 
     betOption: BetOptions,
-}> = ({matchup, betOption}) => {
+    selectedPlayerName?: string
+}> = ({matchup, betOption, selectedPlayerName}) => {
     
     /* consts ***********************************************************************/
     const FIRST_AGG_COL_IDX = 2;
@@ -104,7 +105,6 @@ const AvgsTable: React.FC<{
     ];
 
     const nbaPlayerAvgsColHeaders = [
-        'Player',
         'Agg', 
         avgSelect(FIRST_AGG_COL_IDX /* idx */), 
         avgSelect(SECOND_AGG_COL_IDX /* idx */), 
@@ -114,13 +114,13 @@ const AvgsTable: React.FC<{
     ];
     
     const nbaPlayerAvgsRowHeaders = [
-        'q1',
-        'q2',
-        'h1',
-        'q3',
-        'q4',
-        'h2',
-        'total',
+        'Points',
+        'Assists',
+        'Rebounds',
+        'Pts + Ass',
+        'Pts + Reb',
+        'Pts + Reb + Ass',
+        'Threes',
     ];
     /********************************************************************************/
 
@@ -135,6 +135,15 @@ const AvgsTable: React.FC<{
         if (betOption === BetOptions.Team) {
             colHeaders = teamAvgsColHeaders;
             rowHeaders = teamAvgsRowHeaders; 
+        } else {
+            switch (matchup.sportsCategory) {
+                case SportsCategories.NBA: {
+                    colHeaders = nbaPlayerAvgsColHeaders;
+                    rowHeaders = nbaPlayerAvgsRowHeaders;
+                    break;
+                }
+                default: break;
+            }
         }
     }
 
@@ -151,12 +160,164 @@ const AvgsTable: React.FC<{
                     );
                     setQuickStatsTableColHeaders(colHeaders);
                     setQuickStatsTableRows(cellMappedRows);
+                } else {
+                    const rows = nbaAvgPlayerRows();
+                    console.log("PLAYER ROWS");
+                    const cellMappedRows = mapRawCellsToQuickStatsTableCell(
+                        rows as [][],
+                        new Set(Object.keys(colIdxToAggValMap).map(k => parseInt(k)) as any), 
+                        COMP_AGG_COL_IDX,
+                        (_) => false,
+                    );
+                    setQuickStatsTableColHeaders(colHeaders);
+                    setQuickStatsTableRows(cellMappedRows);
                 }
             }
         }
     }
 
     /* helpers **********************************************************************/
+    const nbaAvgPlayerRows = () => {
+        const playerAggStats  = matchup.playerAggGameStats || [];
+        
+        console.log('PLAYER STATS', playerAggStats);
+
+        const playerStats = playerAggStats.find((currPlayerStats) => `${currPlayerStats.firstname} ${currPlayerStats.lastname}` === selectedPlayerName);
+        // add player home / away filters
+        const sortedPlayerStats = sortNbaPlayerStatsObjs(Object.values(playerStats?.playerStats || {}));
+        return rowHeaders.map((currRow: string) => {
+            switch (currRow) {
+                case 'Points': {
+                    const points = sortedPlayerStats.map(x => x.points || 0);
+                    return colHeaders.map((colHeader: any) => {
+                        if (colHeader === 'Agg') {
+                            return 'Points';
+                        } else if (colHeader === 'σ') {
+                            return stdDeviation(points);
+                        } else if (colHeader.props?.id !== undefined) {
+                            const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
+                            if (slice !== undefined && points !== undefined && slice !== 'all') {
+                                return mean(sliceLast(points, slice));
+                            } else if (slice === 'all') {
+                                return mean(points);
+                            }
+                        }
+                        return '-';
+                    });
+                }
+                case 'Assists': {
+                    const assists = sortedPlayerStats.map(x => x.assists || 0);
+                    return colHeaders.map((colHeader: any) => {
+                        if (colHeader === 'Agg') {
+                            return 'Points';
+                        } else if (colHeader === 'σ') {
+                            return stdDeviation(assists);
+                        } else if (colHeader.props?.id !== undefined) {
+                            const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
+                            if (slice !== undefined && assists !== undefined && slice !== 'all') {
+                                return mean(sliceLast(assists, slice));
+                            } else if (slice === 'all') {
+                                return mean(assists);
+                            }
+                        }
+                        return '-';
+
+                    });
+                }
+                case 'Rebounds': {
+                    const rebounds = sortedPlayerStats.map(x => x.totReb || 0);
+                    return colHeaders.map((colHeader: any) => {
+                        if (colHeader === 'Agg') {
+                            return 'Points';
+                        } else if (colHeader === 'σ') {
+                            return stdDeviation(rebounds);
+                        } else if (colHeader.props?.id !== undefined) {
+                            const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
+                            if (slice !== undefined && rebounds !== undefined && slice !== 'all') {
+                                return mean(sliceLast(rebounds, slice));
+                            } else if (slice === 'all') {
+                                return mean(rebounds);
+                            }
+                        }
+                        return '-';
+                    });
+                }
+                case 'Pts + Ass': {
+                    const ptsAss = sortedPlayerStats.map(x => (x.points || 0) + (x.assists || 0));
+                    return colHeaders.map((colHeader: any) => {
+                        if (colHeader === 'Agg') {
+                            return 'Points';
+                        } else if (colHeader === 'σ') {
+                            return stdDeviation(ptsAss);
+                        } else if (colHeader.props?.id !== undefined) {
+                            const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
+                            if (slice !== undefined && ptsAss !== undefined && slice !== 'all') {
+                                return mean(sliceLast(ptsAss, slice));
+                            } else if (slice === 'all') {
+                                return mean(ptsAss);
+                            }
+                        }
+                        return '-';
+                    });
+                }
+                case 'Pts + Reb': {
+                    const ptsReb = sortedPlayerStats.map(x => (x.points || 0) + (x.totReb || 0));
+                    return colHeaders.map((colHeader: any) => {
+                        if (colHeader === 'Agg') {
+                            return 'Points';
+                        } else if (colHeader === 'σ') {
+                            return stdDeviation(ptsReb);
+                        } else if (colHeader.props?.id !== undefined) {
+                            const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
+                            if (slice !== undefined && ptsReb !== undefined && slice !== 'all') {
+                                return mean(sliceLast(ptsReb, slice));
+                            } else if (slice === 'all') {
+                                return mean(ptsReb);
+                            }
+                        }
+                        return '-';
+                    });
+                }
+                case 'Pts + Reb + Ass': {
+                    const ptsRebAss = sortedPlayerStats.map(x => (x.points || 0) + (x.totReb || 0) + (x.assists || 0));
+                    return colHeaders.map((colHeader: any) => {
+                        if (colHeader === 'Agg') {
+                            return 'Points';
+                        } else if (colHeader === 'σ') {
+                            return stdDeviation(ptsRebAss);
+                        } else if (colHeader.props?.id !== undefined) {
+                            const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
+                            if (slice !== undefined && ptsRebAss !== undefined && slice !== 'all') {
+                                return mean(sliceLast(ptsRebAss, slice));
+                            } else if (slice === 'all') {
+                                return mean(ptsRebAss);
+                            }
+                        }
+                        return '-';
+                    });
+                }
+                case 'Threes': {
+                    const threes = sortedPlayerStats.map(x => x.tpm || 0);
+                    return colHeaders.map((colHeader: any) => {
+                        if (colHeader === 'Agg') {
+                            return 'Points';
+                        } else if (colHeader === 'σ') {
+                            return stdDeviation(threes);
+                        } else if (colHeader.props?.id !== undefined) {
+                            const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
+                            if (slice !== undefined && threes !== undefined && slice !== 'all') {
+                                return mean(sliceLast(threes, slice));
+                            } else if (slice === 'all') {
+                                return mean(threes);
+                            }
+                        }
+                        return '-';
+                    });
+                }
+            }
+        })
+    }
+
     const nbaAvgTeamRows = () => {
         /* calculated avg columns are idx 2,3,4 std dev col is 5 */
         const teamsAggStats = [matchup.away.teamAggGameStats, matchup.home.teamAggGameStats];

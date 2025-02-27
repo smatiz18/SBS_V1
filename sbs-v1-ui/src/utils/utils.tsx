@@ -2,6 +2,7 @@ import { format, toZonedTime } from "date-fns-tz";
 import { PlayerBetTypes } from "../models/enums/player-bet-types";
 import { TeamBetTypes } from "../models/enums/team-bet-types";
 import { GameStats } from "../models/nba-team-agg-game-stats-historical";
+import { PlayerStatsObj } from "../models/nba-player-game-stats-historical";
 
 // TODO ensure this gets updated every season
 export const currentNbaSeason = 2024;
@@ -64,6 +65,10 @@ export const stdDeviation = (vec: number[]) => {
 
 export const sortGameStatsObjs = (stats: GameStats[]) => {
     return stats.sort((a, b) => Date.parse(a.dateStart) - Date.parse(b.dateStart));
+}
+
+export const sortNbaPlayerStatsObjs = (stats: PlayerStatsObj[]) => {
+    return stats.sort((a, b) => Date.parse(a.dateStart || '') - Date.parse(b.dateStart || ''));
 }
 
 export const calculateRollingAverages = (vec: number[], period: number) => {

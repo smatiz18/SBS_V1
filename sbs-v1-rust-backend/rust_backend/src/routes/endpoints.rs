@@ -12,6 +12,7 @@ pub const GET_HISTORICAL_GAMES: &str = "/historical-games/get";
 pub const GET_HISTORICAL_ODDS: &str = "/historical-odds/get";
 pub const GET_PLAYERS_BY_TEAM_AND_SEASON: &str = "/players-by-team-and-season/get";
 pub const GET_PLAYER_STATS_BY_ID_AND_SEASON: &str = "/player-stats-by-id-and-season/get";
+pub const GET_PLAYER_STATS_BY_NAME_AND_SEASON: &str = "/player-stats-by-name-and-season/get";
 pub const GET_NBA_TEAM_AGG_GAME_STATS: &str = "/team-agg-game-stats/get";
 pub const GET_NBA_TEAM_STATS: &str = "/team-stats/get";
 pub const GET_NBA_DAILY_MATCHUPS: &str = "/daily-matchups/get";

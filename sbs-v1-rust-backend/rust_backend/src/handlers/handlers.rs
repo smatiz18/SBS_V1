@@ -15,6 +15,7 @@ use crate::models::services::execute_mongo_query_request::ExecuteMongoQueryReque
 use crate::models::services::get_backtest_feature_map_request::BacktestFeatureMapRequest;
 use crate::models::services::get_event_odds_request::GetEventOddsRequest;
 use crate::models::services::get_events_request::GetEventsRequest;
+use crate::models::services::get_nba_player_stats_by_name_season_request::GetNbaPlayerStatsByNameAndSeasonRequest;
 use crate::models::services::get_nba_team_agg_game_stats_request::GetNbaTeamAggGameStatsRquest;
 use crate::models::services::get_nba_games_by_team_and_season_request::GetNbaGamesByTeamAndSeasonRequest;
 use crate::models::services::get_nba_odds_by_team_and_season_request::GetNbaOddsByTeamAndSeasonRequest;
@@ -27,7 +28,6 @@ use crate::models::services::get_odds_response::GetOddsResponse;
 use crate::models::services::login_auth_request::LoginAuthRequest;
 use crate::models::web_api::web_api_res::WebApiRes;
 use crate::web_api::web_api::{authenticate_github_token, authenticate_google_token, get_event_odds_odds_api, get_events_odds_api, get_github_user_email_info, get_github_user_info, get_google_user_info, get_nba_daily_matchups_from_rotowire, get_nba_players_by_team_and_season_rapid_api, get_odds_odds_api};
-use std::collections::HashMap;
 use std::env;
 use log::{info, error};
 
@@ -90,7 +90,7 @@ pub async fn get_nba_player_stats_by_id_and_season(
     let objs_result = nba_player_aggregated_game_stats_historical_mongo_dao::get_nba_agg_player_stats_by_id_and_season(
         &app_state.as_ref().nba_player_aggregated_game_stats_historical_collection, 
         req.player_id,
-        &req.season,
+        req.season,
         None
     ).await; 
 
@@ -101,6 +101,31 @@ pub async fn get_nba_player_stats_by_id_and_season(
         },
         Err(e) => {
             error!("Failed to get nba odds by teams and season: {:?}", e);
+            HttpResponse::InternalServerError().body(format!("{:?}", e))
+        }
+    }
+}
+
+pub async fn get_nba_player_stats_by_name_and_season(
+    app_state: web::Data<AppState>, 
+    req: web::Query<GetNbaPlayerStatsByNameAndSeasonRequest>
+) -> impl Responder {
+    info!("Recieved req for get_nba_player_stats_by_name_and_season names: {:?}, season: {}", req.names.clone(), req.season);
+    let objs_result = 
+        nba_player_aggregated_game_stats_historical_mongo_dao::get_nba_agg_player_stats_by_name_and_season(
+        &app_state.as_ref().nba_player_aggregated_game_stats_historical_collection, 
+        req.names.clone(),
+        req.season,
+        req.season_type
+    ).await; 
+
+    match objs_result {
+        Ok(objs) => {
+            info!("Returned {} docs from mongo", objs.len());
+            HttpResponse::Ok().json(objs)
+        },
+        Err(e) => {
+            error!("Failed to get nba odds by name and season: {:?}", e);
             HttpResponse::InternalServerError().body(format!("{:?}", e))
         }
     }

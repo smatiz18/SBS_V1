@@ -185,7 +185,7 @@ pub async fn get_feature_map_for_player_bet_type(
     let nba_player_stats_avgs_res = get_nba_agg_player_stats_by_id_and_season(
         &nba_player_games_stats_avgs_historical_coll, 
         req.player_id.unwrap(), 
-        &req.season.to_string(),
+        req.season as i32,
         Some(req.season_type)
     )
     .await

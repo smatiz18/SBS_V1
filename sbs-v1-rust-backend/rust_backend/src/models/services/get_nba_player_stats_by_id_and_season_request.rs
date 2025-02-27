@@ -4,5 +4,5 @@ use serde::{Serialize, Deserialize};
 #[serde(rename_all = "camelCase")]
 pub struct GetNbaPlayerStatsByIdAndSeasonRequest {
     pub player_id: f64,
-    pub season: String
+    pub season: i32
 }

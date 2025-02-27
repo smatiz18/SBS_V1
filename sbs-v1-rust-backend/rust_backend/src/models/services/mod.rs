@@ -17,3 +17,4 @@ pub mod github_api_auth_request;
 pub mod login_result;
 pub mod get_event_odds_request;
 pub mod get_events_request;
+pub mod get_nba_player_stats_by_name_season_request;
