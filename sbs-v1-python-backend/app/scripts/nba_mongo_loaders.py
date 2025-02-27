@@ -775,6 +775,7 @@ def populate_missing_nba_player_aggregated_game_stats_historical(game_ids):
             game_id = player_stats.get('gameId')
             team_id = player_stats.get('teamId')
             is_home = player_stats.get('isHome')
+            pos = player_stats.get('pos')
             win = player_stats.get('win')
             date_start = obj.get('dateStart')
             season = obj.get('season')
@@ -795,7 +796,8 @@ def populate_missing_nba_player_aggregated_game_stats_historical(game_ids):
                     { '_id': f"{player_id}_{team_id}_{season}_{season_type}" },
                     {
                         '$set': {
-                            f"playerStats.{game_id}": player_stats_to_upsert   
+                            f"playerStats.{game_id}": player_stats_to_upsert, 
+                            'pos': pos
                         },
                         "$setOnInsert": {              # Fields to include if inserting a new document
                             'playerId': player_stats['playerId'],
@@ -880,7 +882,8 @@ def aggregate_player_stats_for_player(player_obj, team_id, season, start_date, e
     except Exception as e:
         print(f"ERROR Parsing Player Data for: {player_obj['firstname']} {player_obj['lastname']}")
         print('Error: ', e)
-        return None    
+        return None
+    player_doc['pos'] = normalized_df.iloc[0]['pos'] if not normalized_df.empty else None    
     player_doc['playerStats'] = transform_list_to_dict(player_stats.to_dict(orient='records'), 'gameId')
     return player_doc
 #########################################################
