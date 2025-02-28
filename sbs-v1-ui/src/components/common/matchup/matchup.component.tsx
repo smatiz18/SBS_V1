@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import './matchup.component.scss';
 import { Matchup } from '../../../models/matchup';
 import { MatchupLinesAndStats } from '../../../models/matchup-lines-and-stats';
 import MatchupTeamStats from './matchup-team-stats/matchup-team-stats.component';
 import MatchupLines from './matchup-lines/matchup-lines.component';
-import { getHoursAndMinutesEt } from '../../../utils/utils';
+import { getHoursAndMinutesEt, sliceLast, sortNbaPlayerStatsObjs } from '../../../utils/utils';
 import MatchupQuickStats from './matchup-quick-stats/matchup-quick-stats.component';
 import { BetOptions } from '../../../models/enums/bet-options';
 import { FormControl, ListSubheader, MenuItem, Select, SelectChangeEvent, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { smallFontSelectSx, toggleButtonSx, toggleGroupSx } from '../../../models/form-styles/styles';
+import { NbaPlayerAggGameStatsHistorical } from '../../../models/nba-player-agg-game-stats-historical';
+import { SportsCategories } from '../../../models/enums/sports-categories';
+import { PlayerStatsObj } from '../../../models/nba-player-game-stats-historical';
+import './matchup.component.scss';
 
 const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
   const [selectedPlayer, setSelectedPlayer] = useState(matchup.away.projectedPlayers[0] || '');
@@ -24,6 +27,44 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
   const handleSelectedPlayerChange = (event: SelectChangeEvent) => {
     setSelectedPlayer(event.target.value);
   }
+
+  const getStreakEmojiForNbaPlayerStats = (stats?: NbaPlayerAggGameStatsHistorical) => {
+    let emoji = '😐';
+    if (stats) {
+      if (matchup.sportsCategory === SportsCategories.NBA) {
+        const sortedStats: PlayerStatsObj[] = sortNbaPlayerStatsObjs(Object.values(stats.playerStats));
+        const points = sortedStats.map((stats: PlayerStatsObj) => stats.points || 0);
+        const assists = sortedStats.map((stats: PlayerStatsObj) => stats.assists || 0);
+        const reb = sortedStats.map((stats: PlayerStatsObj) => stats.totReb || 0);
+        const threes = sortedStats.map((stats: PlayerStatsObj) => stats.tpm || 0);
+        const blks = sortedStats.map((stats: PlayerStatsObj) => stats.blocks || 0);
+        const stls = sortedStats.map((stats: PlayerStatsObj) => stats.steals || 0);
+  
+        const sum_vec = points.map((point: number, idx: number) => point + assists[idx] + reb[idx] + threes[idx] + blks[idx] + stls[idx]);
+        const ten_game_sum_avg = sliceLast(sum_vec, 10);
+        const three_game_sum_avg = sliceLast(sum_vec, 3);
+        if (three_game_sum_avg > ten_game_sum_avg) {
+          emoji = '🔥';
+        } else {
+          emoji = '🧊';
+        }
+      }
+    }
+    return emoji;
+  };
+
+  const getPlayerLineup = (isHome: boolean) => {
+    if (matchup.sportsCategory === SportsCategories.NBA) {
+      return ((isHome ? matchup.home.projectedPlayers : matchup.away.projectedPlayers) || []).map(player => {
+        const stats = matchup.playerAggGameStats.find((playerStats: NbaPlayerAggGameStatsHistorical) => (
+          `${playerStats.firstname} ${playerStats.lastname}` === player
+        ));
+        let emoji = getStreakEmojiForNbaPlayerStats(stats);
+        return <li key={player} className="player">{`${player} ${emoji}`}</li>;
+      })
+    }
+    return [];
+  }
   /********************************************************************************/
   return (
     <div className="matchup-component">
@@ -35,9 +76,7 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
             <MatchupTeamStats teamStats={matchup.away.teamStats} sportsCategory={matchup.sportsCategory} isHome={false} />
           </div>
           <ul className="team-lineup">
-            {matchup.away.projectedPlayers.map(player => (
-              <li key={player} className="player">{player}</li>
-            ))}
+            {getPlayerLineup(/* isHome */ false)}
           </ul>
         </div>
         <div className='date-start'>
@@ -50,11 +89,7 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
             <MatchupTeamStats teamStats={matchup.home.teamStats} sportsCategory={matchup.sportsCategory} isHome={true} />
           </div>
           <ul className="team-lineup">
-            {
-              matchup.home.projectedPlayers.map(player => (
-                <li key={player} className="player">{player}</li>
-              ))
-            }
+            {getPlayerLineup(/* isHome */true)}
           </ul>
         </div>
       </div>
