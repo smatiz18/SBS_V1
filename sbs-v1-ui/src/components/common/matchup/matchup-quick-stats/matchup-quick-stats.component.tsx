@@ -20,7 +20,7 @@ const MatchupQuickStats: React.FC<{
         return <AvgsTable matchup={matchup} betOption={betOption} selectedPlayerName={selectedPlayerName}/>;
     };
     const getChartAnalyzer = () => {
-        return <ChartAnalyzer matchup={matchup} betOption={betOption} />;
+        return <ChartAnalyzer matchup={matchup} betOption={betOption} selectedPlayerName={selectedPlayerName}/>;
     }
     const pastOccurences = <PastOccurrences />;
     const getPageToCompMap = (): Record<string, ReactElement> => {

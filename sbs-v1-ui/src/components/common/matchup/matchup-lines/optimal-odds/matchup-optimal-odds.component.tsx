@@ -46,7 +46,7 @@ const MatchupOptimalOdds: React.FC<{
     }
 
     const teamOptimalOddsTableColOrdering = () => {
-        return ['Odds', 'Sportsbook']
+        return ['Odds']
     }
 
     const playerOptimalOddsTableColOrdering = () => {
@@ -65,21 +65,13 @@ const MatchupOptimalOdds: React.FC<{
     
     /* transformers *****************************************************************/
     function transformTeamOptimalOddsToOptimalOddsTableRow(optimalOdds: OptimalOdds) {
-        return [
-            {
-                rowKey: optimalOdds.betType === TeamBetTypes.Totals ? optimalOdds.name : getBetTypeLabel(optimalOdds.betType),
-                colKey: 'Odds', 
-                point: optimalOdds.point, 
-                price: optimalOdds.price > 0 ? `+${optimalOdds.price}` : optimalOdds.price, 
-                bookmaker: optimalOdds.bookmaker
-            } as BettingOddsCell,
-            {
-                rowKey: optimalOdds.betType === TeamBetTypes.Totals ? optimalOdds.name : getBetTypeLabel(optimalOdds.betType),
-                colKey: 'Sportsbook',
-                price: optimalOdds.bookmaker,
-                bookmaker: optimalOdds.bookmaker
-            }
-        ];
+        return {
+            rowKey: optimalOdds.betType === TeamBetTypes.Totals ? optimalOdds.name : getBetTypeLabel(optimalOdds.betType),
+            colKey: 'Odds', 
+            point: optimalOdds.point, 
+            price: optimalOdds.price > 0 ? `+${optimalOdds.price}` : optimalOdds.price, 
+            bookmaker: optimalOdds.bookmaker
+        };
     }
 
     function transformPlayerOptimalOddsToOptimalOddsTableRow(optimalOdds: OptimalOdds) {
@@ -100,17 +92,17 @@ const MatchupOptimalOdds: React.FC<{
             const awayTeamOptimalOddsCells = teamOptimalOdds.filter(
                 (optimalOdds: OptimalOdds) => optimalOdds.name === matchup.away.teamName
             )
-            .flatMap(transformTeamOptimalOddsToOptimalOddsTableRow);
+            .map(transformTeamOptimalOddsToOptimalOddsTableRow);
 
             const homeTeamOptimalOddsCells = teamOptimalOdds.filter(
                 (optimalOdds: OptimalOdds) => optimalOdds.name === matchup.home.teamName
             )
-            .flatMap(transformTeamOptimalOddsToOptimalOddsTableRow);
+            .map(transformTeamOptimalOddsToOptimalOddsTableRow);
 
             const totalsOddsCells = teamOptimalOdds.filter(
                 (optimalOdds: OptimalOdds) => optimalOdds.betType === TeamBetTypes.Totals
             )
-            .flatMap(transformTeamOptimalOddsToOptimalOddsTableRow);
+            .map(transformTeamOptimalOddsToOptimalOddsTableRow);
 
             optimalOddsTableParams = [
                 {

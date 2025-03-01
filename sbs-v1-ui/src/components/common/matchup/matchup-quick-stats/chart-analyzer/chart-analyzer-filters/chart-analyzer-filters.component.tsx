@@ -17,12 +17,19 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { SportsCategories } from "../../../../../../models/enums/sports-categories";
 import { TeamOptionsFilter } from "../../../../../../models/enums/team-options-filter"; import { set } from "lodash";
 import NbaTeamFilterOptions from "./nba-team-filter-options/nba-team-filter-options.component";
+import { NbaPlayerGameStatsFilters } from "../../../../../../models/component/nba-player-game-stats-filters";
+import { NbaPlayerStatsOption } from "../../../../../../models/enums/nba-player-stats-option";
 
-const ChartAnalyzerFilters: React.FC<{ betOption: BetOptions, matchup: Matchup, handleFilterChange: any }> =
-    ({ betOption, matchup, handleFilterChange }) => {
+const ChartAnalyzerFilters: React.FC<{ 
+    betOption: 
+    BetOptions, 
+    matchup: Matchup, 
+    handleFilterChange: any 
+}> = ({ betOption, matchup, handleFilterChange }) => {
 
         /* const ************************************************************************/
         const [nbaTeamGameStatsFilters, setNbaTeamGameStatsFilters] = useState([] as NbaTeamGameStatsFilters[]);
+        const [nbaPlayerGameStatsFilters, setNbaPlayerGameStatsFilters] = useState([] as NbaPlayerGameStatsFilters[]);
         const [chartFilterAccordianDetails, setChartFilterAccordianDetails] = useState([] as any);
         const [nextChartFilterAccordianDetailId, setNextChartFilterAccordianDetailId] = useState(0);
         const initNbaTeamGameStatsFilter: NbaTeamGameStatsFilters = {
@@ -30,6 +37,17 @@ const ChartAnalyzerFilters: React.FC<{ betOption: BetOptions, matchup: Matchup, 
             teamFilter: TeamOptionsFilter.Away,
             gameLocationFilter: GameLocationsFilter.All,
             gameStatsOption: GameStatsOption.total,
+            aggregation: QuickStatsAggregation.Actual,
+            aggregationSlice: 5,
+            showLineOfBestFit: false,
+            showStdDeviationLines: false,
+            showMinMaxLines: false
+        };
+
+        const initNbaPlayerGameStatsFilter: NbaPlayerGameStatsFilters = {
+            id: 0,
+            gameLocationFilter: GameLocationsFilter.All,
+            playerStatsOption: NbaPlayerStatsOption.Points,
             aggregation: QuickStatsAggregation.Actual,
             aggregationSlice: 5,
             showLineOfBestFit: false,
