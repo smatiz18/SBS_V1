@@ -62,7 +62,7 @@ const ChartAnalyzerFilters: React.FC<{
         /* effects **********************************************************************/
         useEffect(() => {
             initStatsFilters();
-        }, []);
+        }, [betOption, selectedPlayerName]);
 
         useEffect(() => {
             setChartFilterAccordianDetails(getNbaTeamFilterOptionsComponent(nbaTeamGameStatsFilters));
@@ -175,7 +175,7 @@ const ChartAnalyzerFilters: React.FC<{
 
         /* helpers **********************************************************************/
         const getNbaPlayerFilterOptionsComponent = (nbaPlayerGameStatsFilters: NbaPlayerGameStatsFilters[]) => {
-            nbaPlayerGameStatsFilters.map((filter, idx) => (
+            return nbaPlayerGameStatsFilters.map((filter, idx) => (
                 <Accordion sx={subFilterAccordianSx} id={filter.id} defaultExpanded={idx === 0}>
                     <div className="accordian-summary-header">
                         <div className="summary-wrapper">
@@ -198,14 +198,15 @@ const ChartAnalyzerFilters: React.FC<{
                             id={filter.id}
                             nbaPlayerGameStatsFiltersObj={filter}
                             handleNbaPlayerGameStatsFiltersUpdate={handleNbaPlayerGameStatsFiltersUpdate}
+                            selectedPlayerName={selectedPlayerName}
                         />
                     </AccordionDetails>
                 </Accordion>
             ));
         };
 
-        const getNbaTeamFilterOptionsComponent = (nbaTeamGameStatsFilters: NbaTeamGameStatsFilters[]) => (
-            nbaTeamGameStatsFilters.map((filter, idx) => (
+        const getNbaTeamFilterOptionsComponent = (nbaTeamGameStatsFilters: NbaTeamGameStatsFilters[]) => {
+            return nbaTeamGameStatsFilters.map((filter, idx) => (
                 <Accordion sx={subFilterAccordianSx} id={filter.id} defaultExpanded={idx === 0}>
                     <div className="accordian-summary-header">
                         <div className="summary-wrapper">
@@ -231,8 +232,8 @@ const ChartAnalyzerFilters: React.FC<{
                         />
                     </AccordionDetails>
                 </Accordion>
-            ))
-        );
+            ));
+        };
         /********************************************************************************/
 
         return (

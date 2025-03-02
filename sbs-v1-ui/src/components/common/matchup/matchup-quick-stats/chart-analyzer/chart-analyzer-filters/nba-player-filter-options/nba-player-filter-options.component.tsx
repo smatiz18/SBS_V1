@@ -1,35 +1,103 @@
 import MenuItem from "@mui/material/MenuItem";
-import { NbaTeamGameStatsFilters } from "../../../../../../../models/component/nba-team-game-stats-filters";
 import { Matchup } from "../../../../../../../models/matchup";
 import { range } from "../../../../../../../utils/utils";
 import { QuickStatsAggregation } from "../../../../../../../models/enums/quick-stats-aggregation";
 import { ThemeProvider } from "@emotion/react";
 import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Select, Checkbox } from "@mui/material";
 import { GameLocationsFilter } from "../../../../../../../models/enums/game-locations-filter";
-import { GameStatsOption } from "../../../../../../../models/enums/game-stats-option";
-import { TeamOptionsFilter } from "../../../../../../../models/enums/team-options-filter";
 import { formLabelSx, radioLabelSx, radioIconSx, darkTheme, selectSx, checkboxFormControlLabelSx } from "../../../../../../../models/form-styles/styles";
 import { NbaPlayerGameStatsFilters } from "../../../../../../../models/component/nba-player-game-stats-filters";
+import { NbaPlayerStatsOption } from "../../../../../../../models/enums/nba-player-stats-option";
+import { NbaTeamsMappedByNbaApiId } from "../../../../../../../constants/nba";
+import { useEffect, useState } from "react";
+import { getAllNbaPlayerStatsObjsFromAllTeams } from "../../../../../../../models/nba-player-agg-game-stats-historical";
 
 const NbaPlayerFilterOptions: React.FC<{
     matchup: Matchup, 
     id: any, 
     nbaPlayerGameStatsFiltersObj: NbaPlayerGameStatsFilters, 
-    handleNbaPlayerGameStatsFiltersUpdate: any
-}> = ({matchup, id, nbaPlayerGameStatsFiltersObj, handleNbaPlayerGameStatsFiltersUpdate}) => {            
+    handleNbaPlayerGameStatsFiltersUpdate: any,
+    selectedPlayerName?: string
+}> = ({matchup, id, nbaPlayerGameStatsFiltersObj, handleNbaPlayerGameStatsFiltersUpdate, selectedPlayerName}) => {   
+    const [playerStatsObjects, setPlayerStatsObjects] = useState(getAllNbaPlayerStatsObjsFromAllTeams(matchup.playerAggGameStats, selectedPlayerName!));
+
+    /* option getters ****************************************************************/
+
+    const getNumOfGames = () => playerStatsObjects.length;
+
+    const getTeamIdOptions = () => {        
+        return [<MenuItem value='all'>All</MenuItem>].concat(
+            Array.from(new Set(playerStatsObjects.map((pso) => pso.teamId!)).values())
+                .map((teamId: number) => {
+                    return (
+                        <MenuItem value={teamId}>
+                            {NbaTeamsMappedByNbaApiId[teamId].teamNickname}
+                        </MenuItem>
+                    );
+                })
+        );
+    };
+
+    const getNumOfGamesSelectOptions = () => range(1, getNumOfGames()).map((o) => (
+        <MenuItem value={o}>{o}</MenuItem>
+    )).concat([<MenuItem value='all'>All</MenuItem>]);
+
+    const getAggregationOptions = () => Object.values(QuickStatsAggregation).map((agg: QuickStatsAggregation) => {
+        return (
+            <MenuItem value={agg}>
+                {agg.toString()}
+            </MenuItem>
+        );
+    });
+
+    const getAggregationSliceOptions = () => range(1, getNumOfGames()).map((o) => (
+        <MenuItem value={o}>{o}</MenuItem>
+    )).concat([<MenuItem value='all'>All</MenuItem>]);
+
+    const getPlayerStatsOption = () => Object.values(NbaPlayerStatsOption).map((pso: NbaPlayerStatsOption) => {
+        return (
+            <MenuItem value={pso}>
+                {pso.toString()}
+            </MenuItem>
+        );
+    });
+    /*********************************************************************************/     
+
+    /* consts ************************************************************************/
+    const [teamIdOptions, setTeamIdOptions] = useState(getTeamIdOptions());
+    const [numOfGamesSelectOptions, setNumOfGamesSelectOptions] = useState(getNumOfGamesSelectOptions());
+    const [aggregationOptions, setAggregationOptions] = useState(getAggregationOptions());
+    const [aggregationSliceOptions, setAggregationSliceOptions] = useState(getAggregationSliceOptions());
+    const [playerStatsOption, setPlayerStatsOption] = useState(getPlayerStatsOption());
+    /*********************************************************************************/
+    
+    /* effects ***********************************************************************/
+    useEffect(() => {
+        setPlayerStatsObjects(getAllNbaPlayerStatsObjsFromAllTeams(matchup.playerAggGameStats, selectedPlayerName!));
+    }, [selectedPlayerName]);
+
+    useEffect(() => {
+        setTeamIdOptions(getTeamIdOptions());
+        setNumOfGamesSelectOptions(getNumOfGamesSelectOptions());
+        setAggregationOptions(getAggregationOptions());
+        setAggregationSliceOptions(getAggregationSliceOptions());
+        setPlayerStatsOption(getPlayerStatsOption());
+    }, [playerStatsObjects]);
+    /*********************************************************************************/    
+    
     /* event handlers ****************************************************************/
     const handleTeamSelectChange = (x: any, id: any) => {
         handleNbaPlayerGameStatsFiltersUpdate({
             id: id,
-            valuePath: 'teamFilter',
-            value: x.target.value
+            valuePath: 'teamIdFilter',
+            value: x.target.value === 'all' ? undefined : x.target.value
         });
     };
 
-    const handleGameStatSelectChange = (x: any, id: any) => {
+    const handlePlayerStatSelectChange = (x: any, id: any) => {
         handleNbaPlayerGameStatsFiltersUpdate({
             id: id,
-            valuePath: 'gameStatsOption',
+            valuePath: 'playerStatsOption',
             value: x.target.value
         });
     };
@@ -91,52 +159,27 @@ const NbaPlayerFilterOptions: React.FC<{
         });
     };
     /********************************************************************************/
-    
-    /* option ***********************************************************************/
-    const numOfGames = nbaTeamGameStatsFiltersObj.teamFilter === TeamOptionsFilter.Away ?
-    Object.values(matchup.away.teamAggGameStats.gameStats).length :
-    Object.values(matchup.home.teamAggGameStats.gameStats).length;
-
-    const numOfGamesSelectOptions = range(1, numOfGames).map((o) => (
-        <MenuItem value={o}>{o}</MenuItem>
-    )).concat([<MenuItem value='all'>All</MenuItem>]);
-
-    const aggregationOptions = Object.values(QuickStatsAggregation).map((agg: QuickStatsAggregation) => {
-        return (
-            <MenuItem value={agg}>
-                {agg.toString()}
-            </MenuItem>
-        );
-    });
-
-    const aggregationSliceOptions = range(1, numOfGames).map((o) => (
-        <MenuItem value={o}>{o}</MenuItem>
-    )).concat([<MenuItem value='all'>All</MenuItem>]);
-
-    const gameStatsOption = Object.values(GameStatsOption).map((gso: GameStatsOption) => {
-        return (
-            <MenuItem value={gso}>
-                {gso.toString()}
-            </MenuItem>
-        );
-    });
-    /********************************************************************************/
 
     return (
         <FormControl>
             <div className='filter-options'>
-                <div className='filter-option-wrapper'>
+            <div className='filter-option-wrapper'>
                     <FormLabel id="demo-row-radio-buttons-group-label" sx={formLabelSx}>Team</FormLabel>
-                    <RadioGroup
-                        row
-                        aria-labelledby="demo-row-radio-buttons-group-label"
-                        name="row-radio-buttons-group"
-                        value={nbaTeamGameStatsFiltersObj.teamFilter}
-                        onChange={(x) => handleTeamSelectChange(x, id)}
-                    >
-                        <FormControlLabel sx={radioLabelSx} value={TeamOptionsFilter.Away} control={<Radio sx={radioIconSx}/>} label={matchup.away.teamNickname}/>
-                        <FormControlLabel sx={radioLabelSx} value={TeamOptionsFilter.Home} control={<Radio sx={radioIconSx}/>} label={matchup.home.teamNickname} /> 
-                    </RadioGroup>
+                    <div className="select-wrapper">
+                        <ThemeProvider theme={darkTheme}>
+                            <FormControl variant="standard" sx={{ width: '100%'}}>
+                                <Select
+                                    labelId="demo-simple-select-standard-label"
+                                    id="demo-simple-select-standard"
+                                    value={nbaPlayerGameStatsFiltersObj.teamIdFilter === undefined ? 'all' : nbaPlayerGameStatsFiltersObj.teamIdFilter}
+                                    onChange={(x) => handleTeamSelectChange(x, id)}
+                                    sx={{...selectSx, fontSize: '.8rem'}}
+                                >
+                                    {teamIdOptions}
+                                </Select>
+                            </FormControl>
+                        </ThemeProvider>
+                    </div>
                 </div>
                 <div className="filter-option-wrapper">
                     <FormLabel id="demo-row-radio-buttons-group-label" sx={formLabelSx}>Game Location</FormLabel>
@@ -144,7 +187,7 @@ const NbaPlayerFilterOptions: React.FC<{
                         row
                         aria-labelledby="demo-row-radio-buttons-group-label"
                         name="row-radio-buttons-group"
-                        value={nbaTeamGameStatsFiltersObj.gameLocationFilter}
+                        value={nbaPlayerGameStatsFiltersObj.gameLocationFilter}
                         onChange={(x) => handleGameLocationChange(x, id)}
                     >
                         <FormControlLabel sx={radioLabelSx} value={GameLocationsFilter.All} control={<Radio sx={radioIconSx}/>} label={GameLocationsFilter.All} />
@@ -153,18 +196,18 @@ const NbaPlayerFilterOptions: React.FC<{
                     </RadioGroup>
                 </div> 
                 <div className='filter-option-wrapper'>
-                    <FormLabel id="demo-row-radio-buttons-group-label" sx={formLabelSx}>Game Stat</FormLabel>
+                    <FormLabel id="demo-row-radio-buttons-group-label" sx={formLabelSx}>Player Stat</FormLabel>
                     <div className="select-wrapper">
                         <ThemeProvider theme={darkTheme}>
                             <FormControl variant="standard" sx={{ width: '100%'}}>
                                 <Select
                                     labelId="demo-simple-select-standard-label"
                                     id="demo-simple-select-standard"
-                                    value={nbaTeamGameStatsFiltersObj.gameStatsOption}
-                                    onChange={(x) => handleGameStatSelectChange(x, id)}
+                                    value={nbaPlayerGameStatsFiltersObj.playerStatsOption}
+                                    onChange={(x) => handlePlayerStatSelectChange(x, id)}
                                     sx={{...selectSx, fontSize: '.8rem'}}
                                 >
-                                    {gameStatsOption}
+                                    {playerStatsOption}
                                 </Select>
                             </FormControl>
                         </ThemeProvider>
@@ -178,7 +221,7 @@ const NbaPlayerFilterOptions: React.FC<{
                                 <Select
                                     labelId="demo-simple-select-standard-label"
                                     id="demo-simple-select-standard"
-                                    value={nbaTeamGameStatsFiltersObj.aggregation}
+                                    value={nbaPlayerGameStatsFiltersObj.aggregation}
                                     onChange={(x) => handleAggregatorSelectChange(x, id)}
                                     sx={{...selectSx, fontSize: '.8rem'}}
                                 >
@@ -189,7 +232,7 @@ const NbaPlayerFilterOptions: React.FC<{
                     </div>
                 </div>
                 {
-                    nbaTeamGameStatsFiltersObj.aggregation === QuickStatsAggregation.RollingAverage && (
+                    nbaPlayerGameStatsFiltersObj.aggregation === QuickStatsAggregation.RollingAverage && (
                         <div className='filter-option-wrapper'>
                             <FormLabel id="demo-row-radio-buttons-group-label" sx={formLabelSx}>Aggregation Slice</FormLabel>
                             <div className="select-wrapper">
@@ -198,7 +241,7 @@ const NbaPlayerFilterOptions: React.FC<{
                                         <Select
                                             labelId="demo-simple-select-standard-label"
                                             id="demo-simple-select-standard"
-                                            value={nbaTeamGameStatsFiltersObj.aggregationSlice}
+                                            value={nbaPlayerGameStatsFiltersObj.aggregationSlice}
                                             onChange={(x) => handleAggregatorSliceSelectChange(x, id)}
                                             sx={{...selectSx, fontSize: '.8rem'}}
                                         >
@@ -218,7 +261,7 @@ const NbaPlayerFilterOptions: React.FC<{
                                 <Select
                                     labelId="demo-simple-select-standard-label"
                                     id="demo-simple-select-standard"
-                                    value={nbaTeamGameStatsFiltersObj.numberOfGames === undefined ? 'all' : nbaTeamGameStatsFiltersObj.numberOfGames }
+                                    value={nbaPlayerGameStatsFiltersObj.numberOfGames === undefined ? 'all' : nbaPlayerGameStatsFiltersObj.numberOfGames }
                                     onChange={(x) => handlePastNumGamesSelectChange(x, id)}
                                     sx={{...selectSx, fontSize: '.8rem'}}
                                 >
@@ -232,21 +275,21 @@ const NbaPlayerFilterOptions: React.FC<{
                     <FormControlLabel
                         label="Line of best fit"
                         sx={checkboxFormControlLabelSx}
-                        control={<Checkbox checked={nbaTeamGameStatsFiltersObj.showLineOfBestFit} onChange={(x) => handleShowLineOfBestFitChange(x, id)} />}
+                        control={<Checkbox checked={nbaPlayerGameStatsFiltersObj.showLineOfBestFit} onChange={(x) => handleShowLineOfBestFitChange(x, id)} />}
                     />
                 </div> */}
                 <div className='filter-option-wrapper'>
                     <FormControlLabel
                         label="Std Dev"
                         sx={checkboxFormControlLabelSx}
-                        control={<Checkbox checked={nbaTeamGameStatsFiltersObj.showStdDeviationLines} onChange={(x) => handleShowStdDeviationLinesChange(x, id)} />}
+                        control={<Checkbox checked={nbaPlayerGameStatsFiltersObj.showStdDeviationLines} onChange={(x) => handleShowStdDeviationLinesChange(x, id)} />}
                     />
                 </div>
                 <div className='filter-option-wrapper'>
                     <FormControlLabel
                         label="Min Max"
                         sx={checkboxFormControlLabelSx}
-                        control={<Checkbox checked={nbaTeamGameStatsFiltersObj.showMinMaxLines} onChange={(x) => handleShowMinMaxLinesChange(x, id)} />}
+                        control={<Checkbox checked={nbaPlayerGameStatsFiltersObj.showMinMaxLines} onChange={(x) => handleShowMinMaxLinesChange(x, id)} />}
                     />
                 </div>
             </div>

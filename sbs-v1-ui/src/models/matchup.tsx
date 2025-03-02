@@ -21,4 +21,3 @@ export interface TeamInfo {
     teamNickname: string,
     teamLogo: string,
 }
-

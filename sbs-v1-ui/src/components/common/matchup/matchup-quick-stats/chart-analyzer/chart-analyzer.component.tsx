@@ -14,9 +14,9 @@ import { GameStats } from "../../../../../models/nba-team-agg-game-stats-histori
 import { QuickStatsAggregation } from "../../../../../models/enums/quick-stats-aggregation";
 import { get, groupBy, max, min, set } from "lodash";
 import { NbaPlayerGameStatsFilters } from "../../../../../models/component/nba-player-game-stats-filters";
-import { NbaPlayerAggGameStatsHistorical } from "../../../../../models/nba-player-agg-game-stats-historical";
 import { PlayerStatsObj } from "../../../../../models/nba-player-game-stats-historical";
 import { NbaPlayerStatsOption } from "../../../../../models/enums/nba-player-stats-option";
+import { getAllNbaPlayerStatsObjsFromAllTeams } from "../../../../../models/nba-player-agg-game-stats-historical";
 import './chart-analyzer.component.scss';
 
 const ChartAnalyzer: React.FC<{
@@ -42,20 +42,21 @@ const ChartAnalyzer: React.FC<{
 
    /* consts ***********************************************************************/
     useEffect(() => {
-        let chartDataWithNoRefLines = [];
+        let enrichedChartDataWithRefLines = [];
         switch (matchup.sportsCategory) {
             case SportsCategories.NBA: {
                 if (betOption === BetOptions.Team) {
-                    chartDataWithNoRefLines = getNbaTeamGameStatsFiltersChartData(teamFilters);
+                    const chartDataWithNoRefLines = getNbaTeamGameStatsFiltersChartData(teamFilters);
+                    enrichedChartDataWithRefLines = enrichChartDataWithRefLines(chartDataWithNoRefLines, teamFilters);
                 } else {
-                    chartDataWithNoRefLines = getNbaPlayerGameStatsFilterChartData(playerFilters);
+                    const chartDataWithNoRefLines = getNbaPlayerGameStatsFilterChartData(playerFilters);
+                    enrichedChartDataWithRefLines = enrichChartDataWithRefLines(chartDataWithNoRefLines, playerFilters);
                 }
                 break;
             }
         }
-        const enrichedChartDataWithRefLines = enrichChartDataWithRefLines(chartDataWithNoRefLines, teamFilters);
         setChartData(enrichedChartDataWithRefLines);
-    }, [teamFilters, playerFilters]);
+    }, [teamFilters, playerFilters, betOption, selectedPlayerName]);
     /*******************************************************************************/
 
     /* event handlers **************************************************************/
@@ -185,18 +186,9 @@ const ChartAnalyzer: React.FC<{
             return teamIdFilter && gameLocationFilter; 
         });
     }
-
+    
     const getNbaPlayerGameStatsFilterChartData = (filters: NbaPlayerGameStatsFilters[]) => {
-        const playerStatsAggObj = matchup.playerAggGameStats
-            .filter((obj: NbaPlayerAggGameStatsHistorical) => `${obj.firstname} ${obj.lastname}` === selectedPlayerName);
-        const enrichedStats = playerStatsAggObj.flatMap((obj: NbaPlayerAggGameStatsHistorical) => {
-            return Object.values(obj.playerStats).map((pso: PlayerStatsObj) => 
-                ({
-                    ...pso,
-                    teamId: obj.teamId
-                })
-            );
-        });
+        const enrichedStats = getAllNbaPlayerStatsObjsFromAllTeams(matchup.playerAggGameStats, selectedPlayerName!);
 
         const maxNumOfGames = getNbaMaxNumOfPlayerGamesWithFilters(filters, enrichedStats);
         const rawChartData = filters.flatMap((filter: NbaPlayerGameStatsFilters) => {
@@ -439,7 +431,7 @@ const ChartAnalyzer: React.FC<{
         let chartLines = [];
         switch (matchup.sportsCategory) {
             case SportsCategories.NBA:
-                chartLines = teamFilters.flatMap((filter: NbaPlayerGameStatsFilters, idx: any) => {
+                chartLines = playerFilters.flatMap((filter: NbaPlayerGameStatsFilters, idx: any) => {
                     const lines = [
                         (
                             <Line 
@@ -499,35 +491,29 @@ const ChartAnalyzer: React.FC<{
         }
         return chartLines;
     }
-
-    const getLineChart = (chartData: any[]) => {
-        return (
-            <ResponsiveContainer width="100%" height={300}>
-                <LineChart
-                    data={chartData}
-                    margin={{
-                        top: 0, right: 0, left: -30, bottom: 0,
-                    }}
-                >
-                    <CartesianGrid stroke="#ddd" vertical={false}/>
-                    <XAxis dataKey="date" style={quickStatsLineChartStyle} hide={true}/>
-                    <YAxis style={quickStatsLineChartStyle}/>
-                    <Tooltip />
-                    <Legend />
-                    {
-                        betOption === BetOptions.Team ? getTeamChartLines() : getPlayerChartLines()
-                    }
-                </LineChart>
-          </ResponsiveContainer>
-        )
-    }
     /********************************************************************************/
     
     return (
         <div className="chart-analyzer-container">
             <ChartAnalyzerFilters betOption={betOption} matchup={matchup} handleFilterChange={handleFilterChange} selectedPlayerName={selectedPlayerName}/>
             <div className="chart-wrapper">
-                {getLineChart(chartData)}
+                <ResponsiveContainer width="100%" height={300}>
+                    <LineChart
+                        data={chartData}
+                        margin={{
+                            top: 0, right: 0, left: -30, bottom: 0,
+                        }}
+                    >
+                        <CartesianGrid stroke="#ddd" vertical={false}/>
+                        <XAxis dataKey="date" style={quickStatsLineChartStyle} hide={true}/>
+                        <YAxis style={quickStatsLineChartStyle}/>
+                        <Tooltip />
+                        <Legend />
+                        {
+                            betOption === BetOptions.Team ? getTeamChartLines() : getPlayerChartLines()
+                        }
+                    </LineChart>
+                </ResponsiveContainer>
             </div>
         </div>
     );

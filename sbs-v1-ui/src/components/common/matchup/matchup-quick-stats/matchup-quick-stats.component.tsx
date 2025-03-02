@@ -37,7 +37,6 @@ const MatchupQuickStats: React.FC<{
 
     /* effects **********************************************************************/
     useEffect(() => {
-        console.log("SOMETHING CHANGED");
         setPageToCompMap(getPageToCompMap());
     }, [betOption, selectedPlayerName]);
     /********************************************************************************/
