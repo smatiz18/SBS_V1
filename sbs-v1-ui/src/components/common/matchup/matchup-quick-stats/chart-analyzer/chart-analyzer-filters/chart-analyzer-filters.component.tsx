@@ -19,13 +19,16 @@ import { TeamOptionsFilter } from "../../../../../../models/enums/team-options-f
 import NbaTeamFilterOptions from "./nba-team-filter-options/nba-team-filter-options.component";
 import { NbaPlayerGameStatsFilters } from "../../../../../../models/component/nba-player-game-stats-filters";
 import { NbaPlayerStatsOption } from "../../../../../../models/enums/nba-player-stats-option";
+import { NbaTeamsMappedByNbaApiId } from "../../../../../../constants/nba";
+import NbaPlayerFilterOptions from "./nba-player-filter-options/nba-player-filter-options.component";
 
 const ChartAnalyzerFilters: React.FC<{ 
     betOption: 
     BetOptions, 
     matchup: Matchup, 
-    handleFilterChange: any 
-}> = ({ betOption, matchup, handleFilterChange }) => {
+    handleFilterChange: any,
+    selectedPlayerName?: string
+}> = ({ betOption, matchup, handleFilterChange, selectedPlayerName }) => {
 
         /* const ************************************************************************/
         const [nbaTeamGameStatsFilters, setNbaTeamGameStatsFilters] = useState([] as NbaTeamGameStatsFilters[]);
@@ -58,23 +61,32 @@ const ChartAnalyzerFilters: React.FC<{
 
         /* effects **********************************************************************/
         useEffect(() => {
-            initNbaTeamGameStatsFilters();
+            initStatsFilters();
         }, []);
 
         useEffect(() => {
             setChartFilterAccordianDetails(getNbaTeamFilterOptionsComponent(nbaTeamGameStatsFilters));
             handleFilterChange(nbaTeamGameStatsFilters);
         }, [nbaTeamGameStatsFilters]);
+
+        useEffect(() => {
+            setChartFilterAccordianDetails(getNbaPlayerFilterOptionsComponent(nbaPlayerGameStatsFilters));
+            handleFilterChange(nbaPlayerGameStatsFilters);
+        }, [nbaPlayerGameStatsFilters]);
         /********************************************************************************/
 
-        const initNbaTeamGameStatsFilters = () => {
-            if (betOption === BetOptions.Team) {
-                switch (matchup.sportsCategory) {
-                    case SportsCategories.NBA: {
+        const initStatsFilters = () => {
+            switch (matchup.sportsCategory) {
+                case SportsCategories.NBA: {
+                    if (betOption === BetOptions.Team) {
                         setNbaTeamGameStatsFilters([{ ...initNbaTeamGameStatsFilter }]);
-                        break;
+                    } else {
+                        setNbaPlayerGameStatsFilters([{...initNbaPlayerGameStatsFilter}]);
                     }
+                    break;
                 }
+                default:
+                    break;
             }
         }
 
@@ -104,6 +116,17 @@ const ChartAnalyzerFilters: React.FC<{
             const aggregation = `${filter.aggregation.replace(/([a-z])([A-Z])/g, "$1 $2")}${filter.aggregation === QuickStatsAggregation.RollingAverage ? `(${filter.aggregationSlice})` : ''}`;
             return `${teamNickname}: ${`${numOfGames} ${gameLocation} ${filter.gameStatsOption} ${includeAggregation ? aggregation : ''} points`.toLowerCase()} (${filter.id})`;
         };
+
+        const getNbaPlayerFilterAccordianSummaryLabel = (filter: NbaPlayerGameStatsFilters) => {
+            const numOfGames = filter.numberOfGames === undefined || filter.numberOfGames as any === 'all' ?
+                'all' :
+                `last ${filter.numberOfGames}`;
+            const gameLocation = `${filter.gameLocationFilter === GameLocationsFilter.All ? '' : filter.gameLocationFilter} games`;
+            const includeAggregation = filter.aggregation !== QuickStatsAggregation.Actual;
+            const aggregation = `${filter.aggregation.replace(/([a-z])([A-Z])/g, "$1 $2")}${filter.aggregation === QuickStatsAggregation.RollingAverage ? `(${filter.aggregationSlice})` : ''}`;
+            const teamFilter = filter.teamIdFilter !== undefined ? NbaTeamsMappedByNbaApiId[filter.teamIdFilter as any].teamNickname : '';
+            return `${selectedPlayerName}: ${`${numOfGames} ${teamFilter} ${gameLocation} ${includeAggregation ? aggregation : ''} ${filter.playerStatsOption}`.toLowerCase()} (${filter.id})`;
+        }
         /********************************************************************************/
 
         /* handlers *********************************************************************/
@@ -114,6 +137,17 @@ const ChartAnalyzerFilters: React.FC<{
         }) => {
             setNbaTeamGameStatsFilters((nbaTeamGameStatsFilters: NbaTeamGameStatsFilters[]) => {
                 const updatedFilters = updateObjInVecById(nbaTeamGameStatsFilters, params.id, params.valuePath, params.value);
+                return updatedFilters;
+            });
+        };
+
+        const handleNbaPlayerGameStatsFiltersUpdate = (params: {
+            id: any,
+            valuePath: string,
+            value: any
+        }) => {
+            setNbaPlayerGameStatsFilters((nbaPlayerGameStatsFilters: NbaPlayerGameStatsFilters[]) => {
+                const updatedFilters = updateObjInVecById(nbaPlayerGameStatsFilters, params.id, params.valuePath, params.value);
                 return updatedFilters;
             });
         };
@@ -140,6 +174,36 @@ const ChartAnalyzerFilters: React.FC<{
         /********************************************************************************/
 
         /* helpers **********************************************************************/
+        const getNbaPlayerFilterOptionsComponent = (nbaPlayerGameStatsFilters: NbaPlayerGameStatsFilters[]) => {
+            nbaPlayerGameStatsFilters.map((filter, idx) => (
+                <Accordion sx={subFilterAccordianSx} id={filter.id} defaultExpanded={idx === 0}>
+                    <div className="accordian-summary-header">
+                        <div className="summary-wrapper">
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1-content"
+                                id="panel1-header"
+                                sx={accordianSummarySx}
+                            >
+                                {getNbaPlayerFilterAccordianSummaryLabel(filter)}
+                            </AccordionSummary>
+                        </div>
+                        <div className="delete-icon-wrapper">
+                            <DeleteIcon sx={deleteIconSx} onClick={() => onDelete(filter.id)} />
+                        </div>
+                    </div>
+                    <AccordionDetails>
+                        <NbaPlayerFilterOptions
+                            matchup={matchup}
+                            id={filter.id}
+                            nbaPlayerGameStatsFiltersObj={filter}
+                            handleNbaPlayerGameStatsFiltersUpdate={handleNbaPlayerGameStatsFiltersUpdate}
+                        />
+                    </AccordionDetails>
+                </Accordion>
+            ));
+        };
+
         const getNbaTeamFilterOptionsComponent = (nbaTeamGameStatsFilters: NbaTeamGameStatsFilters[]) => (
             nbaTeamGameStatsFilters.map((filter, idx) => (
                 <Accordion sx={subFilterAccordianSx} id={filter.id} defaultExpanded={idx === 0}>

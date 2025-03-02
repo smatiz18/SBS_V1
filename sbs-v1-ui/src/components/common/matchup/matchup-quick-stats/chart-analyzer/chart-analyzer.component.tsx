@@ -525,7 +525,7 @@ const ChartAnalyzer: React.FC<{
     
     return (
         <div className="chart-analyzer-container">
-            <ChartAnalyzerFilters betOption={betOption} matchup={matchup} handleFilterChange={handleFilterChange}/>
+            <ChartAnalyzerFilters betOption={betOption} matchup={matchup} handleFilterChange={handleFilterChange} selectedPlayerName={selectedPlayerName}/>
             <div className="chart-wrapper">
                 {getLineChart(chartData)}
             </div>
