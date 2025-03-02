@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Matchup } from '../../../models/matchup';
 import { MatchupLinesAndStats } from '../../../models/matchup-lines-and-stats';
 import MatchupTeamStats from './matchup-team-stats/matchup-team-stats.component';
@@ -11,14 +11,21 @@ import { smallFontSelectSx, toggleButtonSx, toggleGroupSx } from '../../../model
 import { NbaPlayerAggGameStatsHistorical } from '../../../models/nba-player-agg-game-stats-historical';
 import { SportsCategories } from '../../../models/enums/sports-categories';
 import { PlayerStatsObj } from '../../../models/nba-player-game-stats-historical';
+import TooltipIcon from '../tooltip/tooltip-icon';
 import './matchup.component.scss';
 
 const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
   const [selectedPlayer, setSelectedPlayer] = useState(matchup.away.projectedPlayers[0] || '');
   const [betOption, setBetOption] = useState(BetOptions.Team);
-  const awayPlayerOptions = matchup.away.projectedPlayers;
-  const homePlayerOptions = matchup.home.projectedPlayers;
+  const [awayPlayerOptions, setAwayPlayerOptions] = useState(matchup.away.projectedPlayers);
+  const [homePlayerOptions, setHomePlayerOptions] = useState(matchup.home.projectedPlayers);
 
+  /* effects **********************************************************************/
+  useEffect(() => {
+    setAwayPlayerOptions(matchup.away.projectedPlayers);
+    setHomePlayerOptions(matchup.home.projectedPlayers);
+  },[matchup]);
+  /********************************************************************************/
   /* event handlers ***************************************************************/
   const handleBetOptionsToggleChange = (event: any) => {
     setBetOption(event?.target.value);
@@ -93,6 +100,7 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
           </ul>
         </div>
       </div>
+      <TooltipIcon description={`${'🔥'} = 3 game stats avg > 10 game stats avg\n${'🧊'} = 3 game stats avg < 10 game stats avg\n${'😐'} = player data unavailable`} isLightMode={true}/>
       <div className="matchup-lines-and-stats-settings-container">
         <div 
           className={`matchup-lines-and-stats-settings-${betOption === BetOptions.Team ? 'team-view' : 'player-view'}`}

@@ -18,16 +18,26 @@ import { GetNbaPlayerStatsByNameAndSeasonRequest, Name } from '../../../../model
 import { NbaPlayerAggGameStatsHistorical } from '../../../../models/nba-player-agg-game-stats-historical';
 import _ from 'lodash';
 import './nba-daily-matchups.scss';
+import TooltipIcon from '../../../common/tooltip/tooltip-icon';
 
 const NbaDailyMatchups = () => {
   /* consts ***********************************************************************/
-  const USE_MOCKS = true;
+  const USE_MOCKS = false;
   const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
+  const [lastDataRefreshDate, setLastDataRefreshDate]= useState(getCurrentDateEst());
   /********************************************************************************/
 
   /* effects **********************************************************************/
   useEffect(() => {
     fetchInitData(USE_MOCKS /* use mock data */);
+
+    const interval = setInterval(() => {
+      console.log('Refreshing Data...');
+      fetchInitData(USE_MOCKS /* use mock data */);
+      setLastDataRefreshDate(getCurrentDateEst());
+    }, 15 /* min */ * 60 /* sec */ * 1000 /* ms */);
+
+    return () => clearInterval(interval);
   }, []);
   /********************************************************************************/
 
@@ -183,7 +193,12 @@ const NbaDailyMatchups = () => {
     <div className='daily-matchups-container'>
       <div className='header'>
         <h1 className='header-title'>NBA Matchups</h1>
-        <text className='date-time'>{`@${getCurrentDateEst()}`}</text>
+        <div className='date-time-wrapper'>
+          {`@${lastDataRefreshDate}`}
+          <div className='tooltip-icon-wrapper'>
+            <TooltipIcon description='All non odds data is refreshed every 15 min' isLightMode={true}/>
+          </div>
+        </div>
       </div>
       <div className='content'>
         <div className='main-content'>

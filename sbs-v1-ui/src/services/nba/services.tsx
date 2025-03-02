@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from "axios";
-import { GetNbaMatchupsResponse } from "../../models/services/get-nba-matchups-response";
 import { NbaGameHistorical } from "../../models/nba-game-historical";
 import { NbaOddsHistorical } from "../../models/odds/odds-historical";
 import { GetNbaPlayersByTeamAndSeasonRequest } from "../../models/services/get-nba-players-by-team-and-season-request";

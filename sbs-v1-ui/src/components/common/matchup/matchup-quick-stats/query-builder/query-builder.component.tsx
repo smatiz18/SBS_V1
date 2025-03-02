@@ -6,36 +6,36 @@ import Select from '@mui/material/Select';
 import { Button, FormLabel, MenuItem } from '@mui/material';
 import { GameStatsOption } from '../../../../../models/enums/game-stats-option';
 import { useEffect, useState } from 'react';
-import './query-builder.component.scss';
 import { cloneDeep } from 'lodash';
-import { v4 as uuidv4 } from 'uuid';
 import { executeMongoQuery } from '../../../../../services/common/services';
 import { ExecuteMongoQueryRequest } from '../../../../../models/services/execute-mongo-query-request';
 import DeleteIcon from '@mui/icons-material/Delete';
+import './query-builder.component.scss';
 
 const SBSQueryBuilder: React.FC<{ id: string, deleteQueryBuilder: any }> = ({ id, deleteQueryBuilder }) => {
     /* consts ***********************************************************************/
     enum AvailableCollections {
-        NbaGamesHistorical = 'Team Historical Stats',
+        NbaTeamAggregatedGameStatsHistorical = 'Team Historical Stats',
         NbaPlayerAggregatedGameStatsHistorical = 'Player Historical Stats',
     };
 
     const enumToCollectionMap = new Map([
-        [AvailableCollections.NbaGamesHistorical, 'nba_games_historical'],
+        [AvailableCollections.NbaTeamAggregatedGameStatsHistorical, 'nba_team_aggregated_game_stats_historical'],
         [AvailableCollections.NbaPlayerAggregatedGameStatsHistorical, 'nba_player_aggregated_game_stats_historical']
     ]);
 
     const collectionToAvailableFieldsMap: any = {};
 
-    collectionToAvailableFieldsMap[AvailableCollections.NbaGamesHistorical] = [
+    collectionToAvailableFieldsMap[AvailableCollections.NbaTeamAggregatedGameStatsHistorical] = [
         'season',
-        'dateStart',
+        'seasonType',
         'teamName',
         'teamNickname',
+        'win',
         'isHome',
         ...Object.values(GameStatsOption).map((gso: any) => (
             gso.toString()
-        )),
+        )).filter((gso: any) => gso !== 'h1' && gso !== 'h2'),
     ];
     collectionToAvailableFieldsMap[AvailableCollections.NbaPlayerAggregatedGameStatsHistorical] = [
         'season',
@@ -96,13 +96,38 @@ const SBSQueryBuilder: React.FC<{ id: string, deleteQueryBuilder: any }> = ({ id
         }
     ];
 
+    const teamStatsAggPipeline = [
+        {
+            $project: {
+                gameStats: { $objectToArray: "$gameStats" },
+                otherFields: "$$ROOT"
+            }
+        },
+        { $unwind: "$gameStats" },
+        {
+            $replaceRoot: {
+                newRoot: {
+                    $mergeObjects: [
+                        "$otherFields",
+                        "$gameStats.v"
+                    ]
+                }
+            }
+        },
+        {
+            $project: {
+                gameStats: 0,
+            }
+        }
+    ];
+
     const collectionSelectOptions = Object.values(AvailableCollections).map((co) => (
         <MenuItem value={co}>
             {co}
         </MenuItem>
     ));
 
-    const [currentCollection, setCurrentCollection] = useState(AvailableCollections.NbaGamesHistorical);
+    const [currentCollection, setCurrentCollection] = useState(AvailableCollections.NbaTeamAggregatedGameStatsHistorical);
     const [queryBuilderFields, setQueryBuilderFields] = useState([] as any);
     const [query, setQuery] = useState(
         {
@@ -137,6 +162,10 @@ const SBSQueryBuilder: React.FC<{ id: string, deleteQueryBuilder: any }> = ({ id
                 prevPipelineStages = playerStatsAggPipeline;
                 break;
             }
+            case AvailableCollections.NbaTeamAggregatedGameStatsHistorical: {
+                prevPipelineStages = teamStatsAggPipeline;
+                break;
+            }
             default: break;
         };
 
@@ -162,141 +191,54 @@ const SBSQueryBuilder: React.FC<{ id: string, deleteQueryBuilder: any }> = ({ id
     /* query parsers ****************************************************************/
     const parseQuery = (query: any) => {
         switch (currentCollection) {
-            case AvailableCollections.NbaGamesHistorical: {
-                return parseNbaGamesHistoricalQuery(query);
+            case AvailableCollections.NbaTeamAggregatedGameStatsHistorical: {
+                return parseNbaTeamAggregatedGameStatsHistoricalQuery(query);
             }
             case AvailableCollections.NbaPlayerAggregatedGameStatsHistorical: {
-                return parseNbaPlayerAggregatedGameStatsHistorical(query);
+                return parseNbaPlayerAggregatedGameStatsHistoricalQuery(query);
             }
             default: return query;
         };
     };
 
-    const getVisitorsAndHomeOrQuery = (
-        isHome: boolean,
-        visitorsFieldName: string,
-        homeFieldName: string,
-        rule: any,
-        isNum?: boolean,
-        not?: boolean
-    ) => {
-        if (isHome) {
-            return {
-                ...rule,
-                field: homeFieldName,
-                value: isNum ? parseFloat(rule.value) : rule.value
-            };
-        }
-        return {
-            combinator: 'or',
-            not: !!not,
-            id: uuidv4(),
-            rules: [
-                {
-                    ...rule,
-                    field: visitorsFieldName,
-                    id: uuidv4(),
-                    value: isNum ? parseFloat(rule.value) : rule.value
-                },
-                {
-                    ...rule,
-                    field: homeFieldName,
-                    id: uuidv4(),
-                    value: isNum ? parseFloat(rule.value) : rule.value
-                }
+    const parseNbaTeamAggregatedGameStatsHistoricalQuery = (query: any) => {
+        let numericalStats = new Set(
+            [
+                'season',
+                'total',
+                'q1',
+                'q2',
+                'q3',
+                'q4'
             ]
-        };
-    }
+        );
 
-    const parseNbaGamesHistoricalQuery = (query: any) => {
-        const isHomeFilter = !!query.rules.find((rule: any) => rule.field === 'isHome');
-
-        const parsedRules = query.rules.map((rule: any) => {
+        const newRules = query.rules.map((rule: any) => {
             const ruleClone = cloneDeep(rule);
-            switch (ruleClone.field) {
-                case 'season': {
-                    return {
-                        ...ruleClone,
-                        value: parseFloat(ruleClone.value)
-                    };
+            if (numericalStats.has(rule.field)) {
+                if (rule.field === 'total') {
+                    ruleClone.field = 'points';
+                } else if (rule.field === 'q1') {
+                    ruleClone.field = 'linescore.0';
+                } else if (rule.field === 'q2') {
+                    ruleClone.field = 'linescore.1';
+                } else if (rule.field === 'q3') {
+                    ruleClone.field = 'linescore.2';
+                } else if (rule.field === 'q4') {
+                    ruleClone.field = 'linescore.3';
                 }
-                case 'teamName': {
-                    return getVisitorsAndHomeOrQuery(
-                        isHomeFilter,
-                        'teamsVisitorsName',
-                        'teamsHomeName',
-                        ruleClone
-                    );
-                }
-                case 'teamNickname': {
-                    return getVisitorsAndHomeOrQuery(
-                        isHomeFilter,
-                        'teamsVisitorsNickname',
-                        'teamsHomeNickname',
-                        ruleClone
-                    );
-                }
-                case GameStatsOption.q1: {
-                    return getVisitorsAndHomeOrQuery(
-                        isHomeFilter,
-                        'scoresVisitorsLinescore.0',
-                        'scoresHomeLinescore.0',
-                        ruleClone,
-                        true
-                    );
-                }
-                case GameStatsOption.q2: {
-                    return getVisitorsAndHomeOrQuery(
-                        isHomeFilter,
-                        'scoresVisitorsLinescore.1',
-                        'scoresHomeLinescore.1',
-                        ruleClone,
-                        true
-                    );
-                }
-                // TODO: implement later
-                // case GameStatsOption.h1: {
-                // }
-                case GameStatsOption.q3: {
-                    return getVisitorsAndHomeOrQuery(
-                        isHomeFilter,
-                        'scoresVisitorsLinescore.2',
-                        'scoresHomeLinescore.2',
-                        ruleClone,
-                        true
-                    );
-                }
-                case GameStatsOption.q4: {
-                    return getVisitorsAndHomeOrQuery(
-                        isHomeFilter,
-                        'scoresVisitorsLinescore.3',
-                        'scoresHomeLinescore.3',
-                        ruleClone,
-                        true
-                    );
-                }
-                // TODO: implement later
-                // case GameStatsOption.h2: {
-                // }
-                case GameStatsOption.total: {
-                    return getVisitorsAndHomeOrQuery(
-                        isHomeFilter,
-                        'scoresVisitorsPoints',
-                        'scoresHomePoints',
-                        ruleClone,
-                        true
-                    );
-                }
+                ruleClone.value = parseFloat(ruleClone.value);
             }
             return ruleClone;
         });
+
         return {
             ...query,
-            rules: parsedRules
+            rules: newRules
         };
     };
 
-    const parseNbaPlayerAggregatedGameStatsHistorical = (query: any) => {
+    const parseNbaPlayerAggregatedGameStatsHistoricalQuery = (query: any) => {
         let numericalStats = new Set(
             [
                 'points',

@@ -18,6 +18,7 @@
     &:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 100;
     }
 
     .team-info {
@@ -99,18 +100,18 @@
             .header-container {
                 display: flex;
                 align-items: center;
-                gap: 1rem; // Space between the text and the line
+                gap: 1rem;
                 padding-top: 25px;
                 padding-bottom: 1.2rem;
               
                 .line {
                   flex-grow: 1;
-                  height: 1px; // Adjust thickness
-                  background-color: variables.$gray-border; // Adjust color as needed
+                  height: 1px;
+                  background-color: variables.$gray-border;
                 }
               
                 h3 {
-                  margin: 0; // Remove default margin for a cleaner look
+                  margin: 0;
                 }
             }
             

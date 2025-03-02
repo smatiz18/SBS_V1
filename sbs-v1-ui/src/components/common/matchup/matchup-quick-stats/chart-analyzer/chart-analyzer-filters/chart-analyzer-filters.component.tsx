@@ -154,22 +154,54 @@ const ChartAnalyzerFilters: React.FC<{
 
         const addNewChartDataSet = () => {
             const newId = getNextAccordianDetailsId();
-            setNbaTeamGameStatsFilters((nbaTeamGameStatsFilters: NbaTeamGameStatsFilters[]) => {
-                const newFilters = [
-                    ...nbaTeamGameStatsFilters,
-                    {
-                        ...initNbaTeamGameStatsFilter,
-                        id: newId
+            switch (matchup.sportsCategory) {
+                case SportsCategories.NBA: {
+                    if (betOption === BetOptions.Team) {
+                        setNbaTeamGameStatsFilters((nbaTeamGameStatsFilters: NbaTeamGameStatsFilters[]) => {
+                            const newFilters = [
+                                ...nbaTeamGameStatsFilters,
+                                {
+                                    ...initNbaTeamGameStatsFilter,
+                                    id: newId
+                                }
+                            ];
+                            return newFilters;
+                        });
+                    } else {
+                        setNbaPlayerGameStatsFilters((nbaPlayerGameStatsFilters: NbaPlayerGameStatsFilters[]) => {
+                            const newFilters = [
+                                ...nbaPlayerGameStatsFilters,
+                                {
+                                    ...initNbaPlayerGameStatsFilter,
+                                    id: newId
+                                }
+                            ];
+                            return newFilters;
+                        });
                     }
-                ];
-                return newFilters;
-            });
+                    break;
+                }
+                default:
+                    break;
+            }
+            
         }
 
         const onDelete = (id: any) => {
-            setNbaTeamGameStatsFilters((nbaTeamGameStatsFilters: NbaTeamGameStatsFilters[]) => {
-                return nbaTeamGameStatsFilters.filter((x: any) => x.id !== id);
-            });
+            switch (matchup.sportsCategory) {
+                case SportsCategories.NBA: {
+                    if (betOption === BetOptions.Team) {
+                        setNbaTeamGameStatsFilters((nbaTeamGameStatsFilters: NbaTeamGameStatsFilters[]) => {
+                            return nbaTeamGameStatsFilters.filter((x: any) => x.id !== id);
+                        });
+                    } else {
+                        setNbaPlayerGameStatsFilters((nbaPlayerGameStatsFilters: NbaPlayerGameStatsFilters[]) => {
+                            return nbaPlayerGameStatsFilters.filter((x: any) => x.id !== id);
+                        });
+                    }
+                }
+            }
+           
         };
         /********************************************************************************/
 

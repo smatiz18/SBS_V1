@@ -1,6 +1,6 @@
 use actix_web::{ web, HttpResponse, Responder};
 use bson::Document;
-use chrono::Utc;
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use crate::aggregators::nba_feature_map_aggregators::get_nba_backtest_feature_map;
@@ -235,8 +235,6 @@ pub async fn execute_aggregation_query(
 }
 /********************************************************************************/
 
-
-
 /** web api handlers ************************************************************/
 /********************************************************************************/
 /**
@@ -280,16 +278,19 @@ pub async fn get_nba_players_by_team_and_season(
                     60 /* minutes */ * 
                     60 /* seconds */ * 
                     1000 /* millseconds */;
+
+                let cached_date_time = Utc::now();
                 
                 let resp_obj_as_web_api_res = WebApiRes {
                     is_error: false,
                     error_message: None,
-                    data: Some(serde_json::to_value(resp_obj.clone()).unwrap())
+                    data: Some(serde_json::to_value(resp_obj.clone()).unwrap()),
+                    cached_date_time: Some(cached_date_time),
                 };
 
                 let cached_resp_obj = CachedWebApiResponse {
                     _id: cached_resp_id,
-                    cached_date_time: Utc::now(),
+                    cached_date_time,
                     response: resp_obj_as_web_api_res,
                     wait_refresh,
                 };
@@ -321,7 +322,7 @@ pub async fn get_nba_players_by_team_and_season(
 
 /** Odds API */
 /** Odds API Helper */
-pub fn transform_odds_api_odds_resp_to_web_api_resp(events: Vec<Event>) -> WebApiRes {
+pub fn transform_odds_api_odds_resp_to_web_api_resp(events: Vec<Event>, cached_date_time_opt: Option<DateTime<Utc>>) -> WebApiRes {
     let resp_obj_as_web_api_res = WebApiRes {
         is_error: false,
         error_message: None,
@@ -331,7 +332,8 @@ pub fn transform_odds_api_odds_resp_to_web_api_resp(events: Vec<Event>) -> WebAp
                 team_optimal_odds_map: get_team_optimal_odds_by_event_map(events.clone()),
                 player_optimal_odds_map: get_player_optimal_odds_by_event_map(events.clone()),
             }).expect("failed to parse GetOddsResponse")
-        )
+        ),
+        cached_date_time: cached_date_time_opt
     };
     resp_obj_as_web_api_res
 }
@@ -370,17 +372,20 @@ pub async fn get_events(
                     60 /* seconds */ * 
                     1000 /* millseconds */;
                 
+                let cached_date_time = Utc::now();
+
                 let resp_obj_as_web_api_res = WebApiRes {
                     is_error: false,
                     error_message: None,
                     data: Some(
                         serde_json::to_value(resp_obj.clone()).expect("failed to parse events!")
-                    )
+                    ),
+                    cached_date_time: Some(cached_date_time)
                 };
 
                 let cached_resp_obj = CachedWebApiResponse {
                     _id: cached_resp_id,
-                    cached_date_time: Utc::now(),
+                    cached_date_time,
                     response: resp_obj_as_web_api_res.clone(),
                     wait_refresh,
                 };
@@ -445,12 +450,14 @@ pub async fn get_odds(
                 let wait_refresh = 2 /* minutes */ * 
                     60 /* seconds */ * 
                     1000 /* millseconds */;
+
+                let cached_date_time = Utc::now();
                 
-                let resp_obj_as_web_api_res = transform_odds_api_odds_resp_to_web_api_resp(resp_obj);
+                let resp_obj_as_web_api_res = transform_odds_api_odds_resp_to_web_api_resp(resp_obj, Some(cached_date_time));
 
                 let cached_resp_obj = CachedWebApiResponse {
                     _id: cached_resp_id,
-                    cached_date_time: Utc::now(),
+                    cached_date_time,
                     response: resp_obj_as_web_api_res.clone(),
                     wait_refresh,
                 };
@@ -516,12 +523,14 @@ pub async fn get_event_odds(
                 let wait_refresh = 2 /* minutes */ * 
                     60 /* seconds */ * 
                     1000 /* millseconds */;
+
+                let cached_date_time = Utc::now();
                 
-                let resp_obj_as_web_api_res = transform_odds_api_odds_resp_to_web_api_resp(vec!(resp_obj));
+                let resp_obj_as_web_api_res = transform_odds_api_odds_resp_to_web_api_resp(vec!(resp_obj), Some(cached_date_time));
 
                 let cached_resp_obj = CachedWebApiResponse {
                     _id: cached_resp_id,
-                    cached_date_time: Utc::now(),
+                    cached_date_time,
                     response: resp_obj_as_web_api_res.clone(),
                     wait_refresh,
                 };
@@ -579,16 +588,19 @@ pub async fn get_nba_daily_matchups(
         60 /* minutes */ * 
         60 /* seconds */ * 
         1000 /* millseconds */;
+
+    let cached_date_time = Utc::now();
     
     let resp_obj_as_web_api_res = WebApiRes {
         is_error: false,
         error_message: None,
-        data: Some(serde_json::to_value(res.clone()).unwrap())
+        data: Some(serde_json::to_value(res.clone()).unwrap()),
+        cached_date_time: Some(cached_date_time)
     };
 
     let cached_resp_obj = CachedWebApiResponse {
         _id: cached_resp_id,
-        cached_date_time: Utc::now(),
+        cached_date_time,
         response: resp_obj_as_web_api_res,
         wait_refresh,
     };

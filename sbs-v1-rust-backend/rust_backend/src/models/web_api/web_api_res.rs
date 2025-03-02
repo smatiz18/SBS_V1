@@ -1,3 +1,4 @@
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -6,5 +7,6 @@ use serde_json::Value;
 pub struct WebApiRes {
     pub is_error: bool,
     pub error_message: Option<String>,
-    pub data: Option<Value>
+    pub data: Option<Value>,
+    pub cached_date_time: Option<DateTime<Utc>>
 }

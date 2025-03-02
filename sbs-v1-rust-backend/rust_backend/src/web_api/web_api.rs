@@ -1,5 +1,6 @@
 use std::{env, fs};
 use awc::error::HeaderValue;
+use chrono::Utc;
 use log::{error, info};
 use pyo3::{types::PyModule, Py, PyAny, Python};
 use reqwest::header::{HeaderMap, AUTHORIZATION, CONTENT_TYPE, USER_AGENT};
@@ -144,7 +145,8 @@ pub async fn authenticate_google_token(req: LoginAuthRequest) -> WebApiRes {
                         WebApiRes {
                             is_error: false,
                             error_message: None,
-                            data: Some(r)
+                            data: Some(r),
+                            cached_date_time: Some(Utc::now())
                         }
                     },
                     Err(e) => {
@@ -152,7 +154,8 @@ pub async fn authenticate_google_token(req: LoginAuthRequest) -> WebApiRes {
                         WebApiRes {
                             is_error: true,
                             error_message: Some(e.to_string()),
-                            data: None
+                            data: None,
+                            cached_date_time: None
                         }
                     }
                 }
@@ -162,7 +165,8 @@ pub async fn authenticate_google_token(req: LoginAuthRequest) -> WebApiRes {
                 WebApiRes {
                     is_error: true,
                     error_message: Some(e.to_string()),
-                    data: None
+                    data: None,
+                    cached_date_time: None
                 }
             }
         }
@@ -214,7 +218,8 @@ pub async fn authenticate_github_token(req: LoginAuthRequest) -> WebApiRes {
                         WebApiRes {
                             is_error: false,
                             error_message: None,
-                            data: Some(data)
+                            data: Some(data),
+                            cached_date_time: Some(Utc::now())
                         }
                     },
                     Err(e) => {
@@ -222,7 +227,8 @@ pub async fn authenticate_github_token(req: LoginAuthRequest) -> WebApiRes {
                         WebApiRes {
                             is_error: true,
                             error_message: Some(e.to_string()),
-                            data: None
+                            data: None,
+                            cached_date_time: None
                         } 
                     }
                 }
@@ -232,7 +238,8 @@ pub async fn authenticate_github_token(req: LoginAuthRequest) -> WebApiRes {
                 WebApiRes {
                     is_error: true,
                     error_message: Some(e.to_string()),
-                    data: None
+                    data: None,
+                    cached_date_time: None
                 }           
             }
         }
@@ -287,7 +294,8 @@ pub fn get_nba_daily_matchups_from_rotowire() -> WebApiRes {
             return WebApiRes {
                 is_error: true,
                 error_message: Some(e.to_string()),
-                data: None
+                data: None,
+                cached_date_time: None
             };
         }
     };
@@ -317,7 +325,8 @@ pub fn get_nba_daily_matchups_from_rotowire() -> WebApiRes {
                         WebApiRes {
                             is_error: false,
                             error_message: None,
-                            data: Some(v)
+                            data: Some(v),
+                            cached_date_time: Some(Utc::now())
                         }
                     ),
                     Err(e) => {
@@ -326,7 +335,8 @@ pub fn get_nba_daily_matchups_from_rotowire() -> WebApiRes {
                             WebApiRes {
                                 is_error: true,
                                 error_message: Some(e.to_string()),
-                                data: None 
+                                data: None,
+                                cached_date_time: None
                             }
                         )
                     }
@@ -338,7 +348,8 @@ pub fn get_nba_daily_matchups_from_rotowire() -> WebApiRes {
                     WebApiRes {
                         is_error: true,
                         error_message: Some(e.to_string()),
-                        data: None 
+                        data: None,
+                        cached_date_time: None
                     }
                 )
             },
@@ -350,7 +361,8 @@ pub fn get_nba_daily_matchups_from_rotowire() -> WebApiRes {
         Err(e) => WebApiRes {
             is_error: true,
             error_message: Some(e.to_string()),
-            data: None
+            data: None,
+            cached_date_time: None
         }
     }
 }
@@ -360,7 +372,7 @@ pub fn get_nba_daily_matchups_from_rotowire() -> WebApiRes {
 /********************************************************************************/
 async fn get(url: &str, headers: HeaderMap) -> WebApiRes {
     let client: reqwest::Client = reqwest::Client::new();
- 
+    let cached_date_time = Utc::now();
     match client.get(url.to_owned())
         .headers(headers)
         .send()
@@ -369,7 +381,8 @@ async fn get(url: &str, headers: HeaderMap) -> WebApiRes {
                 WebApiRes {
                     is_error: false,
                     error_message: None,
-                    data: Some(r.json::<Value>().await.unwrap_or(json!({ "err": "err" })))
+                    data: Some(r.json::<Value>().await.unwrap_or(json!({ "err": "err" }))),
+                    cached_date_time: Some(cached_date_time)
                 }
             },
             Err(e) => {
@@ -377,7 +390,8 @@ async fn get(url: &str, headers: HeaderMap) -> WebApiRes {
                 WebApiRes {
                     is_error: true,
                     error_message: Some(e.to_string()),
-                    data: None
+                    data: None,
+                    cached_date_time: Some(cached_date_time)
                 }
             }
         }

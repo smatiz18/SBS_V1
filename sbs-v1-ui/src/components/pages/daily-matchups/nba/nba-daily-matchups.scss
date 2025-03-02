@@ -22,10 +22,16 @@
             color: variables.$white-background-header-title-color;
         }
         
-        .date-time {
+        .date-time-wrapper {
+            display: flex;
+            align-items: center;
             margin-top: -.25rem;
             font-size: .85em;
-            opacity: .75;
+            color: variables.$white-background-header-title-color;
+
+            .tooltip-icon-wrapper {
+                padding-left: .25rem;
+            }
         }
     }
     

@@ -1,0 +1,94 @@
+@use "../../../variables";
+
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+
+    .tooltip-icon {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background 0.3s ease;
+
+        .custom-char {
+            font-size: 14px;
+            font-weight: bold;
+        }
+    }
+
+    .tooltip-text {
+        position: absolute;
+        top: 35px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        white-space: pre;
+        word-wrap: normal;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        opacity: 0.95;
+        z-index: 100;
+
+        span {
+            display: block; // Ensures each line appears on a new line
+        }
+    }
+
+    .tooltip-arrow {
+        position: absolute;
+        top: -5px;
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+        width: 8px;
+        height: 8px;
+    }
+}
+
+/* Dark Mode (Default) */
+.dark-mode {
+    .tooltip-icon {
+        background: variables.$dk-dark-gray;
+        color: white;
+
+        &:hover {
+            background: variables.$fd-gray;
+        }
+    }
+
+    .tooltip-text {
+        background: variables.$dk-dark-gray;
+        color: white;
+    }
+
+    .tooltip-arrow {
+        background: variables.$dk-dark-gray;
+    }
+}
+
+/* Light Mode */
+.light-mode {
+    .tooltip-icon {
+        color: variables.$text-subtle;
+
+        &:hover {
+            background: variables.$gray-border;
+        }
+    }
+
+    .tooltip-text {
+        background: white;
+        color: black;
+        border: 1px solid variables.$gray-border;
+    }
+
+    .tooltip-arrow {
+        background: white;
+        border-left: 1px solid variables.$gray-border;
+        border-top: 1px solid variables.$gray-border;
+    }
+}

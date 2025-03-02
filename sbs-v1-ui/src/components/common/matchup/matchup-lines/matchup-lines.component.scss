@@ -1,5 +1,14 @@
+@use '../.././../../variables';
+
 .matchup-lines-container {    
     .pagination-wrapper {
         padding-top: 1.66rem;
+    }
+
+    .data-refresh-date-time-wrapper {
+        margin-top: -1rem;
+        margin-bottom: 1rem;
+        font-size: .7rem;
+        color: variables.$white-background-header-title-color;
     }
 }

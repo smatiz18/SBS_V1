@@ -16,6 +16,8 @@ import { OddsApiRegions } from "../../../../models/enums/odds-api-regions";
 import { OddsFormat } from "../../../../models/enums/odds-format";
 import { Bookmakers } from "../../../../models/enums/bookmakers";
 import { grizzliesMagicPlayerOdds, grizzliesMagicTeamOdds, knicksCavsPlayersOdds, knicksCavsTeamOdds } from "../../../../test/nba-matchups-mocks";
+import TooltipIcon from "../../../common/tooltip/tooltip-icon";
+import { getCurrentDateEst } from "../../../../utils/utils";
 import './matchup-lines.component.scss';
 
 const MatchupLines: React.FC<{
@@ -23,7 +25,7 @@ const MatchupLines: React.FC<{
     betOption: BetOptions, 
     selectedPlayerName: string}> = ({matchup, betOption, selectedPlayerName}) => {  
     /* consts ***********************************************************************/
-    const USE_MOCKS = true;
+    const USE_MOCKS = false;
     const pageLabels = ['Bookmaker Lines', 'Optimal Odds'];
     const oddsApiSport = sportsKeyToOddsApiSports.get(matchup.oddsEvent?.sportKey || '') as OddsApiSports || null;
     
@@ -72,15 +74,26 @@ const MatchupLines: React.FC<{
         } as any;
         return req;
     };
+
+    const [lastDataRefreshDateTime, setLastDataRefreshDateTime] = useState(getCurrentDateEst());
     /********************************************************************************/
 
     /* effects **********************************************************************/
     useEffect(() => {
-        getEventOddsForBetOption();
+        getAndSetEventOddsForBetOption();
+
+        const interval = setInterval(() => {
+            console.log('Refreshing Event Odds Data...');
+            getAndSetEventOddsForBetOption();
+            setLastDataRefreshDateTime(getCurrentDateEst());
+        }
+        , 2 /* min */ *  /* sec */ 60 *  /* milli */ 1000);
+
+        return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
-        getEventOddsForBetOption();
+        getAndSetEventOddsForBetOption();
     }, [betOption]);
 
     useEffect(() => {
@@ -90,7 +103,7 @@ const MatchupLines: React.FC<{
     /********************************************************************************/
 
     /* services *********************************************************************/
-    const getEventOddsForBetOption = () => {
+    const getAndSetEventOddsForBetOption = () => {
         if (USE_MOCKS) {
             let mockedOdds: any = [];
             if (betOption === BetOptions.Team) {
@@ -123,6 +136,10 @@ const MatchupLines: React.FC<{
              <div className="header-container">
                 <h3>Matchup Lines</h3>
                 <div className="line"></div>
+                <TooltipIcon description={`Odds Data refreshed every 2 min\n\nDK = DraftKings\nFD = FanDuel\nBMGM = BetMGM`} isLightMode={true}/>
+            </div>
+            <div className="data-refresh-date-time-wrapper">
+                {lastDataRefreshDateTime}
             </div>
             {pageToCompMap[currentPage.toString()] || <div className='empty-comp'></div>}
             <div className="pagination-wrapper">

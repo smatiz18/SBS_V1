@@ -1,5 +1,6 @@
 export interface WebApiRes {
     isError: boolean,
     errorMessage?: string,
-    data?: any
+    data?: any,
+    cachedDateTime: Date
 }
