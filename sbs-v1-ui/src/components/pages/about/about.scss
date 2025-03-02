@@ -1,7 +1,8 @@
 @use "../../../variables";
 
-.about-container {
+.about-page-container {
     max-width: 1200px;
+    min-width: 580px;
     margin: 0 auto;
     padding: 20px;
     background-color: white;

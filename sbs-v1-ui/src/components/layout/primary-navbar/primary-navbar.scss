@@ -1,19 +1,18 @@
-@use '../../../variables';
+@use "../../../variables";
 
 .primary-navbar {
   background: linear-gradient(45deg, #0a0a23, #1a0033);
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding: 0 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid #e5e5e5;
   height: 4rem;
+  min-width: 580px;
 
   .logo {
     display: flex;
-    flex-direction: row;
     align-items: center;
     gap: 1rem;
 
@@ -24,7 +23,7 @@
     .sbs-beta {
       border: 1px solid adjust-color(lighten(variables.$color-1, 20%), $saturation: 70%);
       border-radius: 4px;
-      padding: .15rem .5rem .15rem .5rem;
+      padding: 0.15rem 0.5rem;
       color: adjust-color(lighten(variables.$color-1, 20%), $saturation: 70%);
     }
   }
@@ -54,34 +53,110 @@
       }
     }
 
-    .nav-links-dropdown {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background-color: variables.$main-purple-dark;
-      list-style: none;
-      margin: 0;
-      padding: 0.4rem 0;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      border-radius: 4px;
-      display: none;
-      z-index: 10;
+    /* Extend Dropdown Width */
+    .dropdown {
+      position: relative;
 
-      a {
-        padding: 0.5rem 1rem;
-        color: white;
-        white-space: nowrap;
-        transition: background-color 0.3s ease;
+      > a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+      }
 
-        &:hover {
-          background-color: variables.$main-purple;
-          color: white;
+      .nav-links-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%; // Extends width of the dropdown to match "Daily Matchups"
+        background-color: variables.$main-purple-dark;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        display: none;
+        z-index: 10;
+
+        li {
+          padding: 0;
+
+          a {
+            display: block;
+            color: white;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+              background-color: variables.$main-purple;
+            }
+          }
         }
       }
-    }
 
-    .nav-link:hover .nav-links-dropdown {
+      &:hover .nav-links-dropdown {
+        display: block;
+      }
+    }
+  }
+
+  /* Mobile Styles */
+  .mobile-menu-btn {
+    display: none;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  
+  @media (max-width: 800px) {
+    .mobile-menu-btn {
       display: block;
+    }
+  
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      position: absolute; // ✅ Keeps menu inside the flow, does not stick when scrolling
+      top: 4rem; // ✅ Positioned right below the navbar
+      left: 0;
+      width: 100%;
+      max-height: 60vh; // ✅ Limits menu height to 60% of the viewport
+      background: #1a0033;
+      padding: 1rem;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid #e5e5e5;
+      z-index: 1000;
+      overflow-y: auto; // ✅ Enables internal scrolling for long menus
+    }
+  
+    .nav-links.open {
+      display: flex;
+    }
+  
+    .nav-link {
+      margin: 0;
+      text-align: center;
+      padding: 0.5rem 0;
+  
+      a {
+        display: block;
+        padding: 1rem;
+      }
+    }
+  
+    /* Fix for dropdown in mobile mode */
+    .dropdown .nav-links-dropdown {
+      position: static;
+      display: block;
+      background: none;
+      box-shadow: none;
+      padding: 0.5rem;
+    }
+  
+    .dropdown .nav-links-dropdown li {
+      padding: 0.5rem 0;
     }
   }
 }

@@ -507,7 +507,7 @@ const ChartAnalyzer: React.FC<{
                         <CartesianGrid stroke="#ddd" vertical={false}/>
                         <XAxis dataKey="date" style={quickStatsLineChartStyle} hide={true}/>
                         <YAxis style={quickStatsLineChartStyle}/>
-                        <Tooltip />
+                        <Tooltip/>
                         <Legend />
                         {
                             betOption === BetOptions.Team ? getTeamChartLines() : getPlayerChartLines()

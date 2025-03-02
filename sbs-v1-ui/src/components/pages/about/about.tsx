@@ -5,7 +5,7 @@ import nbaMatchups from "../../../assets/images/nba-matchups.png";
 import sbs_logo from '../../../assets/sbs-branding/sandbox_v3_1.png';
 const About = () => {
     return (
-        <div className='about-container'>
+        <div className='about-page-container'>
             <div className="about-content">
                 <div className='logo-wrapper'>
                     <img src={sbs_logo} alt="Sports Betting Sandbox"/>

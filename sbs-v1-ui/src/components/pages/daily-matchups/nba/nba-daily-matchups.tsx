@@ -180,7 +180,7 @@ const NbaDailyMatchups = () => {
   /********************************************************************************/
 
   return (
-    <div className='page-container'>
+    <div className='daily-matchups-container'>
       <div className='header'>
         <h1 className='header-title'>NBA Matchups</h1>
         <text className='date-time'>{`@${getCurrentDateEst()}`}</text>
