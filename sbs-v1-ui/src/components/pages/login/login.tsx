@@ -3,7 +3,6 @@ import { Button } from '@mui/material';
 import googleIcon from '../../../assets/images/google-logo.png';
 import gitHubIcon from '../../../assets/images/github-icon.png';
 import { loginButtonStyleSx } from '../../../models/form-styles/styles';
-import './login.scss'
 import { useEffect, useState } from 'react';
 import { getGitHubAuth, getGoogleAuth, getLoginCredentials } from '../../../services/common/services';
 import { GetLoginCredentialsResponse } from '../../../models/services/get-login-credentials-response';
@@ -14,6 +13,8 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../store/store';
 import { Routes } from '../../../routes';
 import sbs_logo from '../../../assets/sbs-branding/sandbox_v3_1.png';
+import AlertMessage from '../../common/alert/alert-message';
+import './login.scss';
 
 const Login: React.FC<{}> = ({ }) => {
     /* consts ***********************************************************************/
@@ -21,6 +22,7 @@ const Login: React.FC<{}> = ({ }) => {
     const [googleCreds, setGoogleCreds] = useState('');
     const githubRedirectUrlLocal = 'http://localhost:3000/sbs-v1/login';
     const scopes = ["user", "user:email"]
+    const [alertMessage, setAlertMessage] = useState<React.ReactNode>(null);
     /********************************************************************************/
 
     /* Store ************************************************************************/
@@ -45,9 +47,10 @@ const Login: React.FC<{}> = ({ }) => {
                 .then((resp: AxiosResponse<LoginResult>) => {
                     if (!resp.data.isError && resp.data.userInfo) {
                         dispatch(setUserInfo(resp.data.userInfo));
+                        setAlertMessage(null);
                         window.location.href = `${Routes.root}${Routes.about}`;
                     } else {
-                        /* error msg... */
+                        setAlertMessage(<AlertMessage message={resp.data.errorMessage || 'Unable to login with GitHub!'} type="error" />);
                     }
                 })
                 .catch((e: any) => {
@@ -82,9 +85,10 @@ const Login: React.FC<{}> = ({ }) => {
                 .then((resp: AxiosResponse<LoginResult>) => {
                     if (!resp.data.isError && resp.data.userInfo) {
                         dispatch(setUserInfo(resp.data.userInfo));
+                        setAlertMessage(null);
                         window.location.href = `${Routes.root}${Routes.about}`;
                     } else {
-                        /* error msg... */
+                        setAlertMessage(<AlertMessage message={resp.data.errorMessage || 'Unable to login with Google!'} type="error" />);
                     }
                 });
         },
@@ -107,6 +111,7 @@ const Login: React.FC<{}> = ({ }) => {
     return (
         <div className='login-page-container'>
             <div className='login-content-container'>
+                {alertMessage}
                 <div className='login-content-header'>
                     <div className='logo-wrapper'>
                         <img src={sbs_logo} alt="Sports Betting Sandbox" />

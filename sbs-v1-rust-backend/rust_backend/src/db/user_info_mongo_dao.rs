@@ -49,8 +49,8 @@ pub async fn handle_user_login(
             match_query.clone(), 
             doc! {
                 "$set": doc! {
-                    "last_login": Utc::now().to_rfc3339_opts(SecondsFormat::AutoSi, true),
-                    "number_of_logins": users[0].number_of_logins.unwrap_or(0) + 1
+                    "lastLogin": Utc::now().to_rfc3339_opts(SecondsFormat::AutoSi, true),
+                    "numberOfLogins": users[0].number_of_logins.unwrap_or(0) + 1
                 }
             }, 
             None

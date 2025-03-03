@@ -2,6 +2,6 @@ import { UserInfo } from "../user-info";
 
 export interface LoginResult {
     isError: boolean,
-    errorMessage?: String,
+    errorMessage?: string,
     userInfo?: UserInfo
 }

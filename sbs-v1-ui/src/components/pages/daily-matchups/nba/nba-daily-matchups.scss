@@ -46,6 +46,16 @@
             justify-content: center;
             flex-wrap: wrap;
         }
-    
+    }
+
+    .no-matchups-content {
+        display: flex;
+        justify-content: center;
+        padding: 2rem;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        font-size: 1.5rem;
+        color: variables.$white-background-header-title-color;
     }
 }

@@ -24,6 +24,7 @@ const NbaDailyMatchups = () => {
   /* consts ***********************************************************************/
   const USE_MOCKS = false;
   const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
+  const [showNoMatchupsAvailableContent, setShowNoMatchupsAvailableContent] = useState(false);
   const [lastDataRefreshDate, setLastDataRefreshDate]= useState(getCurrentDateEst());
   /********************************************************************************/
 
@@ -177,17 +178,25 @@ const NbaDailyMatchups = () => {
         }
         return matchup;
       })
-        .filter((m: Matchup) => m.dateStart !== undefined);
+      .filter((m: Matchup) => m.dateStart !== undefined);
 
       setNbaMatchups(enrichedMatchups);
+      setShowNoMatchupsAvailableContent(enrichedMatchups.length === 0);
     } catch (error) {
       console.error(error);
-      /** implement later */
-    } finally {
+      setShowNoMatchupsAvailableContent(true);
       /** implement later */
     }
   }
   /********************************************************************************/
+
+  const noMatchupsContent = () => {
+    return (
+      <div className='no-matchups-content'>
+        {'No Matchups Avaiable :('}
+      </div>
+    );
+  }
 
   return (
     <div className='daily-matchups-container'>
@@ -209,6 +218,7 @@ const NbaDailyMatchups = () => {
           }
         </div>
       </div>
+      { showNoMatchupsAvailableContent && noMatchupsContent() }
       <div className='footer'>
       </div>
     </div>
