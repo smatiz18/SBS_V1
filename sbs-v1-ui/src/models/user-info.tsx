@@ -9,8 +9,8 @@ export interface UserInfo {
     firstname?: string,
     lastname?: string,
     isPremiumUser?: boolean,
-    memberSince?: Date,
-    lastLogin?: Date,
+    memberSince?: string,
+    lastLogin?: string,
     numberOfLogins?: number,
     loginSource: LoginSource
 }

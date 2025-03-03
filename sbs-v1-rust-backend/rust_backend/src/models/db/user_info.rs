@@ -23,6 +23,7 @@ impl fmt::Display for LoginSource {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct UserInfo {
     pub _id: String,
     pub email: String,
