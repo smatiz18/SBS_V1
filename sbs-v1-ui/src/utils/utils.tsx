@@ -5,7 +5,8 @@ import { GameStats } from "../models/nba-team-agg-game-stats-historical";
 import { PlayerStatsObj } from "../models/nba-player-game-stats-historical";
 
 // TODO ensure this gets updated every season
-export const currentNbaSeason = 2024;
+export const CURRENT_NBA_SEASON = 2024;
+export const EST_TIMEZONE = 'America/New_York';
 
 export const getBetTypeLabel = (betType: TeamBetTypes | PlayerBetTypes) => {
     switch (betType) {
@@ -115,8 +116,20 @@ export const getHoursAndMinutesEt = (dateString: string) => {
 };
 
 export const getCurrentDateEst = () => {
-    const timeZone = 'America/New_York';
     const date = new Date();
-    const zonedDate = toZonedTime(date, timeZone);
-    return format(zonedDate, "MM/dd/yyyy,  hh:mm a 'EST'", { timeZone: timeZone });
+    const zonedDate = toZonedTime(date, EST_TIMEZONE);
+    return format(zonedDate, "MM/dd/yyyy,  hh:mm a 'EST'", { timeZone: EST_TIMEZONE });
 }
+
+export const convertUTCStringToESTString = (utcString: string) => {
+    // Parse UTC string to Date object
+    const utcDate = new Date(utcString);
+  
+    // Convert to EST (Eastern Time)
+    const estDateString = utcDate.toLocaleString("en-US", {
+      timeZone: EST_TIMEZONE,
+    });
+  
+    return estDateString;
+};
+  

@@ -11,14 +11,14 @@ import { SportsCategories } from '../../../../models/enums/sports-categories';
 import { NbaTeamStats } from '../../../../models/nba-team-stats';
 import { GetNbaTeamStatsRequest } from '../../../../models/services/get-nba-team-stats-request';
 import { SeasonType } from '../../../../models/enums/season-type';
-import { currentNbaSeason, getCurrentDateEst } from '../../../../utils/utils';
+import { CURRENT_NBA_SEASON, getCurrentDateEst } from '../../../../utils/utils';
 import { NbaTeamAggGameStatsHistorical } from '../../../../models/nba-team-agg-game-stats-historical';
 import { oddsEventsMockResp, rotoWireDailyMatchupsMockResp } from '../../../../test/nba-matchups-mocks';
 import { GetNbaPlayerStatsByNameAndSeasonRequest, Name } from '../../../../models/services/get-nba-player-stats-by-name-and-season-request';
 import { NbaPlayerAggGameStatsHistorical } from '../../../../models/nba-player-agg-game-stats-historical';
 import _ from 'lodash';
-import './nba-daily-matchups.scss';
 import TooltipIcon from '../../../common/tooltip/tooltip-icon';
+import './nba-daily-matchups.scss';
 
 const NbaDailyMatchups = () => {
   /* consts ***********************************************************************/
@@ -69,7 +69,7 @@ const NbaDailyMatchups = () => {
   const getNbaPlayerAggStatsHelper = async (matchups: Matchup[]) => {
     const nbaPlayerStatsReq: GetNbaPlayerStatsByNameAndSeasonRequest = {
       names: aggregateAllProjectedPlayersFromMatchups(matchups),
-      season: currentNbaSeason,
+      season: CURRENT_NBA_SEASON,
       seasonType: SeasonType.All
     };
     const nbaPlayerStatsResp = await getNbaPlayerStatsByNameAndSeason(nbaPlayerStatsReq);
@@ -103,7 +103,7 @@ const NbaDailyMatchups = () => {
           NbaTeamsMappedByNickname[matchup.home.teamNickname].nbaApiId
         ])
       ),
-      season: currentNbaSeason,
+      season: CURRENT_NBA_SEASON,
       seasonType: SeasonType.All
     } as GetNbaTeamStatsRequest;
   }
