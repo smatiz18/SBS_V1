@@ -34,7 +34,7 @@ const About = () => {
                         <div className="feature">
                             <img src={optimalOdds} alt="Odds Tracking" />
                             <h3>Odds Tracking</h3>
-                            <p>Compare real-time odds from multiple sportsbooks and get the best value.</p>
+                            <p>Compare odds from multiple sportsbooks and get the best value.</p>
                         </div>
                         <div className="feature">
                             <img src={chartAnalyzer} alt="Advanced Analytics" />
@@ -51,7 +51,7 @@ const About = () => {
                     <div className="timeline-container">
                         <div className="timeline-item">
                             <div className="date">Q1 2025</div>
-                            <div className="event">🚀 Include Player Props and Stats 🚀</div>
+                            <div className="event">🚀 Standalone Player/Team Stats Analysis Page 🚀</div>
                         </div>
                         <div className="timeline-item">
                             <div className="date">Q2 2025</div>

@@ -60,7 +60,7 @@ const PrimaryNavbar: React.FC = () => {
                         onMouseLeave={() => setDropdownOpen(false)}
                     >
                         <a href={`${Routes.root}${Routes.dailyMatchups}${Routes.nba}`}>
-                            Daily Matchups ▼
+                            {'Daily Matchups  ▼'}
                         </a>
                         {isDropdownOpen && (
                             <ul className="nav-links-dropdown">
