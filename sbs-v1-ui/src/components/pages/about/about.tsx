@@ -77,7 +77,7 @@ const About = () => {
                             <div className="timeline-container">
                                 <div className="timeline-item">
                                     <div className="date">Q1 2025</div>
-                                    <div className="event">🚀 Standalone Player/Team Stats Analysis Page 🚀</div>
+                                    <div className="event">🚀 High EV Bet Analysis 🚀</div>
                                 </div>
                                 <div className="timeline-item">
                                     <div className="date">Q2 2025</div>

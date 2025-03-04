@@ -227,9 +227,7 @@ const NbaDailyMatchups = () => {
                 }
               </div>
             </motion.div>
-          ) : (
-            <p className="loading">Loading...</p>
-          )
+          ) : null
         }
       </div>
       {showNoMatchupsAvailableContent && noMatchupsContent()}
