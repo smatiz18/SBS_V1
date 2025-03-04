@@ -42,8 +42,6 @@ const App = () => {
     }, 15 /* min */ * 60 /* sec */ * 1000 /* ms */);
     
     return () => clearInterval(interval);
-
-
   }, []);
   
   return (
