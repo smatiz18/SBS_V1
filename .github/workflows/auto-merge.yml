@@ -1,0 +1,27 @@
+name: Auto Merge Dev to Main
+
+on:
+  schedule:
+    - cron: "0 3 * * *"  # Runs every day at 3 AM UTC (10 PM EST)
+  workflow_dispatch:  # Allows manual trigger if needed
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_ACTIONS_PAT }}
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions@github.com"
+
+      - name: Merge Dev into Main
+        run: |
+          git checkout main
+          git pull origin main
+          git merge --no-ff dev -m "Automated merge from dev to main"
+          git push origin main
