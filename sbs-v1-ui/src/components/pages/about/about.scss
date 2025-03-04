@@ -8,20 +8,22 @@
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: 100vh;
+
+    .logo-wrapper {
+        display: flex;
+        justify-content: center;
+        padding-top: 40px;
+        img {
+            max-width: 500px;
+        }
+    }
 
     .about-content {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 40px;
+        padding: 20px 40px 40px 40px;
         color: variables.$white-background-paragraph-color;
-
-        .logo-wrapper {
-            display: flex;
-            justify-content: center;
-            img {
-                max-width: 500px;
-            }
-        }
 
 
         section {

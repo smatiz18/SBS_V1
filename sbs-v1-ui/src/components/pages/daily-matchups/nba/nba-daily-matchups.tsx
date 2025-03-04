@@ -18,6 +18,7 @@ import { GetNbaPlayerStatsByNameAndSeasonRequest, Name } from '../../../../model
 import { NbaPlayerAggGameStatsHistorical } from '../../../../models/nba-player-agg-game-stats-historical';
 import _ from 'lodash';
 import TooltipIcon from '../../../common/tooltip/tooltip-icon';
+import { motion } from "framer-motion";
 import './nba-daily-matchups.scss';
 
 const NbaDailyMatchups = () => {
@@ -25,7 +26,7 @@ const NbaDailyMatchups = () => {
   const USE_MOCKS = false;
   const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
   const [showNoMatchupsAvailableContent, setShowNoMatchupsAvailableContent] = useState(false);
-  const [lastDataRefreshDate, setLastDataRefreshDate]= useState(getCurrentDateEst());
+  const [lastDataRefreshDate, setLastDataRefreshDate] = useState(getCurrentDateEst());
   /********************************************************************************/
 
   /* effects **********************************************************************/
@@ -178,7 +179,7 @@ const NbaDailyMatchups = () => {
         }
         return matchup;
       })
-      .filter((m: Matchup) => m.dateStart !== undefined);
+        .filter((m: Matchup) => m.dateStart !== undefined);
 
       setNbaMatchups(enrichedMatchups);
       setShowNoMatchupsAvailableContent(enrichedMatchups.length === 0);
@@ -205,20 +206,33 @@ const NbaDailyMatchups = () => {
         <div className='date-time-wrapper'>
           {`@${lastDataRefreshDate}`}
           <div className='tooltip-icon-wrapper'>
-            <TooltipIcon description='All non odds data is refreshed every 15 min' isLightMode={true}/>
+            <TooltipIcon description='All non odds data is refreshed every 15 min' isLightMode={true} />
           </div>
         </div>
       </div>
       <div className='content'>
-        <div className='main-content'>
-          {
-            nbaMatchups.map((nbaMatchup: Matchup) => (
-              <MatchupComponent matchup={nbaMatchup} />
-            ))
-          }
-        </div>
+        {
+          nbaMatchups.length > 0 ? (
+            <motion.div
+              className="fade-in"
+              initial={{ opacity: 0, transform: "translateY(10px)" }}
+              animate={{ opacity: 1, transform: "translateY(0px)" }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+              <div className='main-content'>
+                {
+                  nbaMatchups.map((nbaMatchup: Matchup) => (
+                    <MatchupComponent matchup={nbaMatchup} />
+                  ))
+                }
+              </div>
+            </motion.div>
+          ) : (
+            <p className="loading">Loading...</p>
+          )
+        }
       </div>
-      { showNoMatchupsAvailableContent && noMatchupsContent() }
+      {showNoMatchupsAvailableContent && noMatchupsContent()}
       <div className='footer'>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { CodeResponse, TokenResponse, useGoogleLogin } from '@react-oauth/google';
+import { CodeResponse, useGoogleLogin } from '@react-oauth/google';
 import { Button } from '@mui/material';
 import googleIcon from '../../../assets/images/google-logo.png';
 import gitHubIcon from '../../../assets/images/github-icon.png';
@@ -14,6 +14,7 @@ import { AppDispatch } from '../../../store/store';
 import { Routes } from '../../../routes';
 import sbs_logo from '../../../assets/sbs-branding/sandbox_v3_1.png';
 import AlertMessage from '../../common/alert/alert-message';
+import { motion } from 'framer-motion';
 import './login.scss';
 
 const Login: React.FC<{}> = ({ }) => {
@@ -23,6 +24,7 @@ const Login: React.FC<{}> = ({ }) => {
     const githubRedirectUrlLocal = 'http://localhost:3000/sbs-v1/login';
     const scopes = ["user", "user:email"]
     const [alertMessage, setAlertMessage] = useState<React.ReactNode>(null);
+    const [isLogoLoaded, setIsLogoLoaded] = useState(false);
     /********************************************************************************/
 
     /* Store ************************************************************************/
@@ -112,22 +114,36 @@ const Login: React.FC<{}> = ({ }) => {
         <div className='login-page-container'>
             <div className='login-content-container'>
                 {alertMessage}
-                <div className='login-content-header'>
+                <motion.div
+                    className='login-content-header'
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={isLogoLoaded ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                >
                     <div className='logo-wrapper'>
-                        <img src={sbs_logo} alt="Sports Betting Sandbox" />
+                        {!isLogoLoaded && <div className='logo-placeholder'></div>}
+                        <img
+                            src={sbs_logo}
+                            alt="Sports Betting Sandbox"
+                            onLoad={() => setIsLogoLoaded(true)}
+                            style={{ visibility: isLogoLoaded ? "visible" : "hidden" }}
+                        />
                     </div>
-                </div>
-                <div className='login-options'>
-                    <div className='login-wrapper'>
-                        {googleLoginComponent()}
-                    </div>
-                    <div className='login-wrapper'>
-                        {gitHubLoginloginComponent()}
-                    </div>
-                </div>
+                </motion.div>
+                {isLogoLoaded && (
+                    <motion.div
+                        className='login-options'
+                        initial={{ opacity: 0, transform: "translateY(5px)" }}
+                        animate={{ opacity: 1, transform: "translateY(0px)" }}
+                        transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
+                    >
+                        <div className='login-wrapper'>{googleLoginComponent()}</div>
+                        <div className='login-wrapper'>{gitHubLoginloginComponent()}</div>
+                    </motion.div>
+                )}
             </div>
         </div>
     );
-}
+};
 
 export default Login;

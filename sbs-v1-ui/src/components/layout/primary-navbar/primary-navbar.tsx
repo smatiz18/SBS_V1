@@ -1,22 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
-import './primary-navbar.scss';
+import { Link } from 'react-router-dom'; // ✅ Use Link instead of <a>
 import { Routes } from '../../../routes';
 import sbs_logo from '../../../assets/sbs-branding/sandbox_v3_3.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store/store';
 import { UserInfo } from '../../../models/user-info';
 import { clearUserInfo } from '../../../store/slices/user-info-slice';
+import './primary-navbar.scss';
 
 const PrimaryNavbar: React.FC = () => {
-    /* Store ****************************************/
     const userInfo: UserInfo = useSelector((state: RootState) => state.userInfo);
     const dispatch = useDispatch<AppDispatch>();
-    /************************************************/
+
     const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const mobileMenuRef = useRef<HTMLUListElement | null>(null);
 
-    // **Fix: Close the mobile menu when clicking outside**
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (
@@ -28,7 +27,6 @@ const PrimaryNavbar: React.FC = () => {
             }
         };
 
-        // Only add event listener when the menu is open
         if (isMobileMenuOpen) {
             document.addEventListener("mousedown", handleClickOutside);
         } else {
@@ -47,7 +45,6 @@ const PrimaryNavbar: React.FC = () => {
                 <div className='sbs-beta'>Beta</div>
             </div>
 
-            {/* Mobile Menu Button */}
             <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}>
                 ☰
             </button>
@@ -59,13 +56,13 @@ const PrimaryNavbar: React.FC = () => {
                         onMouseEnter={() => setDropdownOpen(true)}
                         onMouseLeave={() => setDropdownOpen(false)}
                     >
-                        <a href={`${Routes.root}${Routes.dailyMatchups}${Routes.nba}`}>
+                        <Link to={`${Routes.root}${Routes.dailyMatchups}${Routes.nba}`}>
                             {'Daily Matchups  ▼'}
-                        </a>
+                        </Link>
                         {isDropdownOpen && (
                             <ul className="nav-links-dropdown">
                                 <li className="nav-link-dropdown">
-                                    <a href={`${Routes.root}${Routes.dailyMatchups}${Routes.nba}`}>NBA</a>
+                                    <Link to={`${Routes.root}${Routes.dailyMatchups}${Routes.nba}`}>NBA</Link>
                                 </li>
                             </ul>
                         )}
@@ -73,18 +70,18 @@ const PrimaryNavbar: React.FC = () => {
                 )}
 
                 <li className="nav-link">
-                    <a href={`${Routes.root}${Routes.about}`}>About</a>
+                    <Link to={`${Routes.root}${Routes.about}`}>About</Link> {/* ✅ Fix */}
                 </li>
 
                 {!userInfo.email ? (
                     <li className="nav-link">
-                        <a href={`${Routes.root}${Routes.login}`}>Login</a>
+                        <Link to={`${Routes.root}${Routes.login}`}>Login</Link> {/* ✅ Fix */}
                     </li>
                 ) : (
                     <li className="nav-link">
-                        <a href={`${Routes.root}${Routes.login}`} onClick={() => dispatch(clearUserInfo())}>
+                        <Link to={`${Routes.root}${Routes.login}`} onClick={() => dispatch(clearUserInfo())}>
                             Logout
-                        </a>
+                        </Link>
                     </li>
                 )}
             </ul>
