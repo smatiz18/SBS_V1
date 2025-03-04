@@ -3,7 +3,7 @@ name: Auto Merge Dev to Main
 on:
   schedule:
     - cron: "0 3 * * *"  # Runs every day at 3 AM UTC (10 PM EST)
-  workflow_dispatch:  # Allows manual trigger if needed
+  workflow_dispatch:
 
 jobs:
   merge:
@@ -12,12 +12,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GH_ACTIONS_PAT }}
+          fetch-depth: 0  # Ensures full Git history
 
       - name: Configure Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions@github.com"
+
+      - name: Authenticate with Personal Access Token
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GH_ACTIONS_PAT }}@github.com/smatiz18/SBS_V1.git
+          git fetch origin
 
       - name: Merge Dev into Main
         run: |
