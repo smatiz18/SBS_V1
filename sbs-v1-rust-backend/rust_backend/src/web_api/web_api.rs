@@ -306,16 +306,16 @@ async fn get_rotowire_nba_lineups_response() -> Result<serde_json::Value, reqwes
     let mut matchups = Vec::new();
     
     for matchup in &team_matchups {
-        let away_team = matchup.get("away").unwrap();
-        let home_team = matchup.get("home").unwrap();
+        let away_team = matchup.away.clone();
+        let home_team = matchup.home.clone();
         matchups.push(json!({
             "away": {
                 "teamNickname": away_team,
-                "projectedPlayers": projected_player_lineups_by_team.get(away_team),
+                "projectedPlayers": projected_player_lineups_by_team.get(&away_team),
             },
             "home": {
                 "teamNickname": home_team,
-                "projectedPlayers": projected_player_lineups_by_team.get(home_team),
+                "projectedPlayers": projected_player_lineups_by_team.get(&home_team),
             },
         }));
     }
@@ -326,31 +326,54 @@ async fn get_rotowire_nba_lineups_response() -> Result<serde_json::Value, reqwes
     }))
 }
 
-fn get_team_matchups(document: &Html) -> Vec<HashMap<String, String>> {
-    let selector = Selector::parse("div.lineup__matchup").unwrap();
-    let a_tag_selector = Selector::parse("a").unwrap();
+#[derive(Debug)]
+struct Matchup {
+    away: String,
+    home: String,
+}
+fn get_team_matchups(document: &Html) -> Vec<Matchup> {
+    let matchup_selector = Selector::parse("div.lineup__matchup").unwrap();
+    let team_selector = Selector::parse("a").unwrap();
+
     let mut matchups = Vec::new();
     
-    for element in document.select(&selector) {
-        let mut home_team = String::new();
-        let mut away_team = String::new();
-        
-        for a_tag in element.select(&a_tag_selector) {
-            if a_tag.value().classes().any(|c| c.contains("is-home")) {
-                home_team = a_tag.text().collect::<String>().trim().to_string();
+    for matchup in document.select(&matchup_selector) {
+        if matchup.select(&team_selector).any(|a| a.value().attr("class").map_or(false, |c| c.contains("lineup__mteam"))) {
+            let home_team_a_tag = matchup
+                .select(&team_selector)
+                .filter(|a| a.value().attr("class").map_or(false, |c| c.contains("is-home")))
+                .next();
+            
+            let away_team_a_tag = matchup
+                .select(&team_selector)
+                .filter(|a| a.value().attr("class").map_or(false, |c| c.contains("is-visit")))
+                .next();
+    
+            if let (Some(home), Some(away)) = (home_team_a_tag, away_team_a_tag) {
+                let home_team_text: Vec<_> = home.text().collect();
+                let away_team_text: Vec<_> = away.text().collect();
+                
+                let home_team = home_team_text
+                    .iter()
+                    .filter(|text| !text.trim().is_empty())
+                    .map(|text| text.trim())
+                    .take(1) // Take only the first meaningful text before any span content
+                    .collect::<Vec<_>>()
+                    .join(" ");
+                
+                let away_team = away_team_text
+                    .iter()
+                    .filter(|text| !text.trim().is_empty())
+                    .map(|text| text.trim())
+                    .take(1) // Take only the first meaningful text before any span content
+                    .collect::<Vec<_>>()
+                    .join(" ");
+                
+                matchups.push(Matchup { away: away_team.to_string(), home: home_team.to_string() });
             }
-            if a_tag.value().classes().any(|c| c.contains("is-visit")) {
-                away_team = a_tag.text().collect::<String>().trim().to_string();
-            }
-        }
-        
-        if !home_team.is_empty() && !away_team.is_empty() {
-            let mut matchup = HashMap::new();
-            matchup.insert("away".to_string(), away_team);
-            matchup.insert("home".to_string(), home_team);
-            matchups.push(matchup);
         }
     }
+    
     matchups
 }
 

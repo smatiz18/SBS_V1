@@ -2,9 +2,207 @@ export const rotoWireDailyMatchupsMockResp = {
     "isError": false,
     "errorMessage": null,
     "data": {
-        "isError": false,
-        "errorMessage": null,
-        "data": "{\"matchups\": [{\"away\": {\"teamNickname\": \"Knicks\", \"projectedPlayers\": [\"Jalen Brunson\", \"Mikal Bridges\", \"Josh Hart\", \"OG Anunoby\", \"Karl-Anthony Towns\"]}, \"home\": {\"teamNickname\": \"Cavaliers\", \"projectedPlayers\": [\"Darius Garland\", \"Donovan Mitchell\", \"Max Strus\", \"Evan Mobley\", \"Jarrett Allen\"]}}, {\"away\": {\"teamNickname\": \"Grizzlies\", \"projectedPlayers\": [\"Ja Morant\", \"Desmond Bane\", \"Jaylen Wells\", \"Jaren Jackson\", \"Zach Edey\"]}, \"home\": {\"teamNickname\": \"Magic\", \"projectedPlayers\": [\"Cole Anthony\", \"Kentavious Caldwell-Pope\", \"Franz Wagner\", \"Paolo Banchero\", \"Goga Bitadze\"]}}, {\"away\": {\"teamNickname\": \"Bucks\", \"projectedPlayers\": [\"Damian Lillard\", \"Andre Jackson\", \"Taurean Prince\", \"Giannis Antetokounmpo\", \"Brook Lopez\"]}, \"home\": {\"teamNickname\": \"Wizards\", \"projectedPlayers\": [\"Jordan Poole\", \"Bilal Coulibaly\", \"Khris Middleton\", \"Kyshawn George\", \"Alex Sarr\"]}}, {\"away\": {\"teamNickname\": \"Heat\", \"projectedPlayers\": [\"Tyler Herro\", \"Duncan Robinson\", \"Andrew Wiggins\", \"Bam Adebayo\", \"Kel'el Ware\"]}, \"home\": {\"teamNickname\": \"Raptors\", \"projectedPlayers\": [\"Immanuel Quickley\", \"Gradey Dick\", \"RJ Barrett\", \"Scottie Barnes\", \"Jonathan Mogbo\"]}}, {\"away\": {\"teamNickname\": \"Pelicans\", \"projectedPlayers\": [\"Jose Alvarado\", \"CJ McCollum\", \"Trey Murphy\", \"Zion Williamson\", \"Yves Missi\"]}, \"home\": {\"teamNickname\": \"Mavericks\", \"projectedPlayers\": [\"Kyrie Irving\", \"Max Christie\", \"Klay Thompson\", \"Kessler Edwards\", \"P.J. Washington\"]}}, {\"away\": {\"teamNickname\": \"Pistons\", \"projectedPlayers\": [\"Cade Cunningham\", \"Tim Hardaway\", \"Ausar Thompson\", \"Tobias Harris\", \"Jalen Duren\"]}, \"home\": {\"teamNickname\": \"Spurs\", \"projectedPlayers\": [\"Chris Paul\", \"De'Aaron Fox\", \"Devin Vassell\", \"Harrison Barnes\", \"Jeremy Sochan\"]}}, {\"away\": {\"teamNickname\": \"Timberwolves\", \"projectedPlayers\": [\"Mike Conley\", \"Anthony Edwards\", \"Jaden McDaniels\", \"Naz Reid\", \"Rudy Gobert\"]}, \"home\": {\"teamNickname\": \"Rockets\", \"projectedPlayers\": [\"Aaron Holiday\", \"Jalen Green\", \"Amen Thompson\", \"Dillon Brooks\", \"Alperen Sengun\"]}}, {\"away\": {\"teamNickname\": \"Thunder\", \"projectedPlayers\": [\"Shai Gilgeous-Alexander\", \"Luguentz Dort\", \"Jalen Williams\", \"Chet Holmgren\", \"Isaiah Hartenstein\"]}, \"home\": {\"teamNickname\": \"Jazz\", \"projectedPlayers\": [\"Isaiah Collier\", \"Jordan Clarkson\", \"Lauri Markkanen\", \"John Collins\", \"Walker Kessler\"]}}, {\"away\": {\"teamNickname\": \"Warriors\", \"projectedPlayers\": [\"Stephen Curry\", \"Brandin Podziemski\", \"Moses Moody\", \"Jimmy Butler\", \"Draymond Green\"]}, \"home\": {\"teamNickname\": \"Kings\", \"projectedPlayers\": [\"Malik Monk\", \"Zach LaVine\", \"DeMar DeRozan\", \"Keegan Murray\", \"Domantas Sabonis\"]}}], \"isError\": false}"
+        "matchups": [
+            {
+                "away": {
+                    "teamNickname": "Knicks",
+                    "projectedPlayers": [
+                        "Jalen Brunson",
+                        "Mikal Bridges",
+                        "Josh Hart",
+                        "OG Anunoby",
+                        "Karl-Anthony Towns"
+                    ]
+                },
+                "home": {
+                    "teamNickname": "Cavaliers",
+                    "projectedPlayers": [
+                        "Darius Garland",
+                        "Donovan Mitchell",
+                        "Max Strus",
+                        "Evan Mobley",
+                        "Jarrett Allen"
+                    ]
+                }
+            },
+            {
+                "away": {
+                    "teamNickname": "Grizzlies",
+                    "projectedPlayers": [
+                        "Ja Morant",
+                        "Desmond Bane",
+                        "Jaylen Wells",
+                        "Jaren Jackson",
+                        "Zach Edey"
+                    ]
+                },
+                "home": {
+                    "teamNickname": "Magic",
+                    "projectedPlayers": [
+                        "Cole Anthony",
+                        "Kentavious Caldwell-Pope",
+                        "Franz Wagner",
+                        "Paolo Banchero",
+                        "Goga Bitadze"
+                    ]
+                }
+            },
+            {
+                "away": {
+                    "teamNickname": "Bucks",
+                    "projectedPlayers": [
+                        "Damian Lillard",
+                        "Andre Jackson",
+                        "Taurean Prince",
+                        "Giannis Antetokounmpo",
+                        "Brook Lopez"
+                    ]
+                },
+                "home": {
+                    "teamNickname": "Wizards",
+                    "projectedPlayers": [
+                        "Jordan Poole",
+                        "Bilal Coulibaly",
+                        "Khris Middleton",
+                        "Kyshawn George",
+                        "Alex Sarr"
+                    ]
+                }
+            },
+            {
+                "away": {
+                    "teamNickname": "Heat",
+                    "projectedPlayers": [
+                        "Tyler Herro",
+                        "Duncan Robinson",
+                        "Andrew Wiggins",
+                        "Bam Adebayo",
+                        "Kel'el Ware"
+                    ]
+                },
+                "home": {
+                    "teamNickname": "Raptors",
+                    "projectedPlayers": [
+                        "Immanuel Quickley",
+                        "Gradey Dick",
+                        "RJ Barrett",
+                        "Scottie Barnes",
+                        "Jonathan Mogbo"
+                    ]
+                }
+            },
+            {
+                "away": {
+                    "teamNickname": "Pelicans",
+                    "projectedPlayers": [
+                        "Jose Alvarado",
+                        "CJ McCollum",
+                        "Trey Murphy",
+                        "Zion Williamson",
+                        "Yves Missi"
+                    ]
+                },
+                "home": {
+                    "teamNickname": "Mavericks",
+                    "projectedPlayers": [
+                        "Kyrie Irving",
+                        "Max Christie",
+                        "Klay Thompson",
+                        "Kessler Edwards",
+                        "P.J. Washington"
+                    ]
+                }
+            },
+            {
+                "away": {
+                    "teamNickname": "Pistons",
+                    "projectedPlayers": [
+                        "Cade Cunningham",
+                        "Tim Hardaway",
+                        "Ausar Thompson",
+                        "Tobias Harris",
+                        "Jalen Duren"
+                    ]
+                },
+                "home": {
+                    "teamNickname": "Spurs",
+                    "projectedPlayers": [
+                        "Chris Paul",
+                        "De'Aaron Fox",
+                        "Devin Vassell",
+                        "Harrison Barnes",
+                        "Jeremy Sochan"
+                    ]
+                }
+            },
+            {
+                "away": {
+                    "teamNickname": "Timberwolves",
+                    "projectedPlayers": [
+                        "Mike Conley",
+                        "Anthony Edwards",
+                        "Jaden McDaniels",
+                        "Naz Reid",
+                        "Rudy Gobert"
+                    ]
+                },
+                "home": {
+                    "teamNickname": "Rockets",
+                    "projectedPlayers": [
+                        "Aaron Holiday",
+                        "Jalen Green",
+                        "Amen Thompson",
+                        "Dillon Brooks",
+                        "Alperen Sengun"
+                    ]
+                }
+            },
+            {
+                "away": {
+                    "teamNickname": "Thunder",
+                    "projectedPlayers": [
+                        "Shai Gilgeous-Alexander",
+                        "Luguentz Dort",
+                        "Jalen Williams",
+                        "Chet Holmgren",
+                        "Isaiah Hartenstein"
+                    ]
+                },
+                "home": {
+                    "teamNickname": "Jazz",
+                    "projectedPlayers": [
+                        "Isaiah Collier",
+                        "Jordan Clarkson",
+                        "Lauri Markkanen",
+                        "John Collins",
+                        "Walker Kessler"
+                    ]
+                }
+            },
+            {
+                "away": {
+                    "teamNickname": "Warriors",
+                    "projectedPlayers": [
+                        "Stephen Curry",
+                        "Brandin Podziemski",
+                        "Moses Moody",
+                        "Jimmy Butler",
+                        "Draymond Green"
+                    ]
+                },
+                "home": {
+                    "teamNickname": "Kings",
+                    "projectedPlayers": [
+                        "Malik Monk",
+                        "Zach LaVine",
+                        "DeMar DeRozan",
+                        "Keegan Murray",
+                        "Domantas Sabonis"
+                    ]
+                }
+            }
+        ],
+        "isError": false
     }
 }
 

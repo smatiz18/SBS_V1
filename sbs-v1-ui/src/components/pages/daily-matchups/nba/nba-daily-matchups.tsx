@@ -140,10 +140,9 @@ const NbaDailyMatchups = () => {
         oddsEventsResponse = await getEvents({ sports: OddsApiSports.BasketballNba });
         matchupsResp = await getNbaMatchups();
       }
-      _.set(matchupsResp, 'data.data.data', JSON.parse(matchupsResp.data?.data?.data || ''));
 
       if (useMock) {
-        const filteredMatchups = (matchupsResp.data?.data?.data?.matchups || []).filter((m: any) =>
+        const filteredMatchups = (matchupsResp.data?.data?.matchups || []).filter((m: any) =>
           m.away.teamNickname === 'Knicks' || m.away.teamNickname === 'Grizzlies'
         );
         _.set(matchupsResp, 'data.data.data.matchups', filteredMatchups);
@@ -194,7 +193,7 @@ const NbaDailyMatchups = () => {
   const noMatchupsContent = () => {
     return (
       <div className='no-matchups-content'>
-        {'No Matchups Avaiable :('}
+        {'No Matchups Available :('}
       </div>
     );
   }
