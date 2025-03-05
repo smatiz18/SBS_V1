@@ -1,6 +1,6 @@
 
 /* RUST SERVER ROUTES */
-pub const SERVER_URL: &str = "127.0.0.1:8080";
+pub const SERVER_URL: &str = "0.0.0.0:8000";
 
 pub const DB_QUERY_API_ROOT: &str = "db-query-api";
 pub const ODDS_API_ROOT: &str = "odds-api";
