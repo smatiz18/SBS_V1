@@ -2,18 +2,22 @@
 
 use std::fs;
 use log::{error, info};
+
+#[cfg(feature = "pyo3_required")]
 use pyo3::{types::PyModule, Py, PyAny, PyResult, Python};
+
 use crate::{aggregators::nba_team_stats_aggregators::map_nba_team_aggregated_game_stats_to_nba_team_stats, constants::{dates::{get_season_types, NBA_SEASON_DATE_MAP}, python_script_paths::{NBA_GAME_DATA_LOADER_RUNNER_FUNCTION, NBA_MONGO_LOADER_FILE, NBA_PLAYER_DATA_LOADER_RUNNER_FUNCTION, SBS_V1_PYTHON_BACKEND_MODULE}}, db::{nba_team_aggregated_game_stats_historical_mongo_dao, nba_team_stats_mongo_dao}, models::{app_state::AppState, db::{nba_team_agg_game_stats_historical::NbaTeamAggGameStatsHistorical, nba_team_stats::NbaTeamStats}}};
 
 /** Old loader logic that is already written in python will stay that way. In the future 
  * we should migrate this over to rust but for the sake of prototyping let's keep it in python
  */
 
+ #[cfg(feature = "pyo3_required")]
 fn get_nba_mongo_loader_path() -> String {
     format!("../../{}/app/scripts/{}", SBS_V1_PYTHON_BACKEND_MODULE, NBA_MONGO_LOADER_FILE)
 }
 
-// remember to set env variables
+#[cfg(feature = "pyo3_required")]
 pub fn daily_nba_game_data_loader() -> PyResult<()> {
     let source_code = match fs::read_to_string(get_nba_mongo_loader_path()) {
         Ok(code) => {
@@ -52,6 +56,7 @@ pub fn daily_nba_game_data_loader() -> PyResult<()> {
     })
 }
 
+#[cfg(feature = "pyo3_required")]
 pub fn daily_nba_player_data_loader() -> PyResult<()> {
     let source_code = match fs::read_to_string(get_nba_mongo_loader_path()) {
         Ok(code) => {
@@ -91,6 +96,7 @@ pub fn daily_nba_player_data_loader() -> PyResult<()> {
     })
 }
 
+#[cfg(feature = "pyo3_required")]
 pub async fn load_nba_daily_stats_cache(app_state: AppState, season: u32) -> Result<String, String> {
     let season_types = get_season_types(NBA_SEASON_DATE_MAP.clone(), season);
 

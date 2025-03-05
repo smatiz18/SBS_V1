@@ -29,3 +29,4 @@ pub const GET_GITHUB_AUTH: &str = "/github-auth/get";
 pub const NBA_RAPID_API_HOST: &str = "api-nba-v1.p.rapidapi.com";
 pub const NBA_RAPID_API_ROOT: &str = "https://api-nba-v1.p.rapidapi.com";
 pub const THE_ODDS_API_ROOT: &str = "https://api.the-odds-api.com/v4/";
+pub const ROTOWIRE_NBA_LINEUPS: &str = "https://www.rotowire.com/basketball/nba-lineups.php";

@@ -580,7 +580,7 @@ pub async fn get_nba_daily_matchups(
         return HttpResponse::Ok().json(cached_response_opt.unwrap().response);
     }
 
-    let res = get_nba_daily_matchups_from_rotowire();
+    let res = get_nba_daily_matchups_from_rotowire().await;
     info!("Returned nba daily matchups!");
     info!("Caching response!");
                 

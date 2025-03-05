@@ -1,16 +1,11 @@
-use std::{env, fs};
+use std::{collections::HashMap, env};
 use awc::error::HeaderValue;
 use chrono::Utc;
 use log::{error, info};
-use pyo3::{types::PyModule, Py, PyAny, Python};
 use reqwest::header::{HeaderMap, AUTHORIZATION, CONTENT_TYPE, USER_AGENT};
+use scraper::{Html, Selector};
 use serde_json::{json, Value};
 use crate::{
-    constants::python_script_paths::{
-        GET_NBA_MATCHUPS_FILE, 
-        GET_NBA_MATCHUPS_FUNCTION, 
-        SBS_V1_PYTHON_BACKEND_MODULE
-    }, 
     models::{
         services::{
             get_event_odds_request::GetEventOddsRequest, get_events_request::GetEventsRequest, get_nba_players_by_team_and_season_request::GetNbaPlayersByTeamAndSeasonRequest, get_odds_request::GetOddsRequest, github_api_auth_request::GitHubApiAuthRequest, google_api_auth_request::GoogleApiAuthRequest, login_auth_request::LoginAuthRequest
@@ -20,7 +15,8 @@ use crate::{
     routes::endpoints::{
         NBA_RAPID_API_HOST, 
         NBA_RAPID_API_ROOT, 
-        THE_ODDS_API_ROOT
+        THE_ODDS_API_ROOT,
+        ROTOWIRE_NBA_LINEUPS
     }
 };
 
@@ -283,88 +279,106 @@ pub async fn get_github_user_email_info(access_token: String) -> WebApiRes {
 
 /** rotowire ********************************************************************/
 /********************************************************************************/
-pub fn get_nba_daily_matchups_from_rotowire() -> WebApiRes {
-    let source_code = match fs::read_to_string(&get_nba_daily_matchups_path()) {
-        Ok(code) => {
-            info!("---------------- loaded source code! ----------------");
-            code
+pub async fn get_nba_daily_matchups_from_rotowire() -> WebApiRes {
+    match get_rotowire_nba_lineups_response().await {
+        Ok(result) => WebApiRes {
+            data: Some(result),
+            is_error: false,
+            error_message: None,
+            cached_date_time: Some(Utc::now())
         },
-        Err(e) => { 
-            error!("---------------- failed to open filed at path ----------------: {:?}", e);
-            return WebApiRes {
-                is_error: true,
-                error_message: Some(e.to_string()),
-                data: None,
-                cached_date_time: None
-            };
-        }
-    };
-
-
-    let res = Python::with_gil(|py| {
-        let loader_source_code: Py<PyAny> = match PyModule::from_code_bound(
-            py,
-            &source_code,
-            GET_NBA_MATCHUPS_FILE,
-            SBS_V1_PYTHON_BACKEND_MODULE
-        ) {
-            Ok(resp) => resp.into(),
-            Err(e) => {
-                error!("---------------- unable to load PyModule ----------------: {:?}", e);
-                return Err(e);
-            }
-        };
-
-        match loader_source_code.call_method0(py, GET_NBA_MATCHUPS_FUNCTION)  {
-            Ok(res) => {
-
-                let contents: String = res.extract(py)?;
-
-                match serde_json::to_value(contents) {
-                    Ok(v) => Ok(
-                        WebApiRes {
-                            is_error: false,
-                            error_message: None,
-                            data: Some(v),
-                            cached_date_time: Some(Utc::now())
-                        }
-                    ),
-                    Err(e) => {
-                        error!("unable to parse result! {:?}", e);
-                        Ok(
-                            WebApiRes {
-                                is_error: true,
-                                error_message: Some(e.to_string()),
-                                data: None,
-                                cached_date_time: None
-                            }
-                        )
-                    }
-                }
-            },
-            Err(e) => {
-                error!("unable to call method {:?}", GET_NBA_MATCHUPS_FUNCTION);
-                Ok(
-                    WebApiRes {
-                        is_error: true,
-                        error_message: Some(e.to_string()),
-                        data: None,
-                        cached_date_time: None
-                    }
-                )
-            },
-        }
-    });
-
-    match res {
-        Ok(web_api_res) => web_api_res,
         Err(e) => WebApiRes {
+            data: None,
             is_error: true,
             error_message: Some(e.to_string()),
-            data: None,
             cached_date_time: None
         }
     }
+}
+
+async fn get_rotowire_nba_lineups_response() -> Result<serde_json::Value, reqwest::Error> {
+    let resp = reqwest::get(ROTOWIRE_NBA_LINEUPS).await?.text().await?;
+    let document = Html::parse_document(&resp);
+    
+    let team_matchups = get_team_matchups(&document);
+    let projected_player_lineups_by_team = get_projected_player_lineups_by_team(&document);
+    
+    let mut matchups = Vec::new();
+    
+    for matchup in &team_matchups {
+        let away_team = matchup.get("away").unwrap();
+        let home_team = matchup.get("home").unwrap();
+        matchups.push(json!({
+            "away": {
+                "teamNickname": away_team,
+                "projectedPlayers": projected_player_lineups_by_team.get(away_team),
+            },
+            "home": {
+                "teamNickname": home_team,
+                "projectedPlayers": projected_player_lineups_by_team.get(home_team),
+            },
+        }));
+    }
+    
+    Ok(json!({
+        "matchups": matchups,
+        "isError": false,
+    }))
+}
+
+fn get_team_matchups(document: &Html) -> Vec<HashMap<String, String>> {
+    let selector = Selector::parse("div.lineup__matchup").unwrap();
+    let a_tag_selector = Selector::parse("a").unwrap();
+    let mut matchups = Vec::new();
+    
+    for element in document.select(&selector) {
+        let mut home_team = String::new();
+        let mut away_team = String::new();
+        
+        for a_tag in element.select(&a_tag_selector) {
+            if a_tag.value().classes().any(|c| c.contains("is-home")) {
+                home_team = a_tag.text().collect::<String>().trim().to_string();
+            }
+            if a_tag.value().classes().any(|c| c.contains("is-visit")) {
+                away_team = a_tag.text().collect::<String>().trim().to_string();
+            }
+        }
+        
+        if !home_team.is_empty() && !away_team.is_empty() {
+            let mut matchup = HashMap::new();
+            matchup.insert("away".to_string(), away_team);
+            matchup.insert("home".to_string(), home_team);
+            matchups.push(matchup);
+        }
+    }
+    matchups
+}
+
+fn get_projected_player_lineups_by_team(document: &Html) -> HashMap<String, Vec<String>> {
+    let button_selector = Selector::parse("button.see-court-on-off").unwrap();
+    let player_selector = Selector::parse("li.lineup__player a").unwrap();
+    
+    let mut players_by_team = HashMap::new();
+    
+    for button in document.select(&button_selector) {
+        if let Some(nickname) = button.value().attr("data-nickname") {
+            players_by_team.insert(nickname.to_string(), Vec::new());
+            if let Some(player_ids) = button.value().attr("data-lineup") {
+                let player_ids: Vec<&str> = player_ids.split(',').collect();
+                for player_id in &player_ids[..5] {
+                    for player_div in document.select(&player_selector) {
+                        if let Some(href) = player_div.value().attr("href") {
+                            if href.contains(player_id) {
+                                let player_name = player_div.text().collect::<String>().trim().to_string();
+                                players_by_team.entry(nickname.to_string()).or_default().push(player_name);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    players_by_team
 }
 /********************************************************************************/
 
@@ -395,9 +409,5 @@ async fn get(url: &str, headers: HeaderMap) -> WebApiRes {
                 }
             }
         }
-}
-
-fn get_nba_daily_matchups_path() -> String {
-    format!("../../{}/app/services/rotowire/{}", SBS_V1_PYTHON_BACKEND_MODULE, GET_NBA_MATCHUPS_FILE)
 }
 /********************************************************************************/
