@@ -1,0 +1,28 @@
+# Ignore Rust build artifacts
+target/
+debug/
+release/
+
+# Ignore build dependencies cache (DO NOT ignore Cargo.lock for binaries!)
+**/Cargo.toml.orig
+**/CACHEDIR.TAG
+**/.rustc_info.json
+
+# Ignore system-specific files
+*.DS_Store
+*.log
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Ignore Git repository files
+.git/
+.gitignore
+
+# Ignore IDE/editor files
+.idea/
+.vscode/
+
+# Ignore Docker-related files
+.dockerignore

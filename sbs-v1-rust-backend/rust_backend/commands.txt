@@ -1,6 +1,8 @@
-/** nba daily loader commmand */
-RUST_LOG=info cargo run --bin nba_daily_data_loaders
+/** nba daily loader */
+RUST_LOG=info cargo run --bin sbs_v1_daily_data_loaders --features pyo3_required
 
 /** nba api */
-/* TODO: Move this to seperate bin */
-RUST_LOG=info cargo run --bin rust_backend
+RUST_LOG=info cargo run --bin sbs_v1_rust_backend_api
+
+/** building docker image for sbs_v1_rust_backend_api */
+docker build -t sebdb/sbs-v1-rust-backend .
