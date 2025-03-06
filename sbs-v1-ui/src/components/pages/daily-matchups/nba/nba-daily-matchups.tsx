@@ -148,7 +148,7 @@ const NbaDailyMatchups = () => {
         _.set(matchupsResp, 'data.data.data.matchups', filteredMatchups);
       }
 
-      const matchups = matchupsResp.data?.data?.data.matchups || [] as Matchup[];
+      const matchups = matchupsResp.data?.data?.data?.matchups || [] as Matchup[];
 
       /* player aggregated stats */
       const nbaPlayerStatsReqMappedByHomeTeam = await getNbaPlayerAggStatsHelper(matchups);

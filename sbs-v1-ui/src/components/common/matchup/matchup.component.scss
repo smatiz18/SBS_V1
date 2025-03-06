@@ -5,14 +5,36 @@
     flex-direction: column;
     align-items: center;
     color: variables.$header-text-color;
-    margin: 20px;
+    margin: 20px 0px;
     padding: 20px;
     border: 1px solid variables.$gray-border;
     border-radius: 10px;
     background-color: variables.$offwhite-background;
-    min-width: 500px;
     max-width: 500px;
+    width: 100%;
     overflow-wrap: normal;
+
+    @media (max-width: 500px) { // Tablet and smaller screens
+        padding: 13.5px;
+
+        .date-start {
+            font-size: .8rem;
+        }
+
+        .all-team-stats-small-screen-wrapper {
+            padding: 15px 0px;
+
+            .team-stats-small-screen-wrapper {
+                .team-nickname {
+                    min-width: 3.5rem;
+                    font-size: .8rem;
+                    font-weight: 600;
+                }
+                display: flex;
+                font-size: .8rem;
+            }
+        }
+    }
     
     transition: 0.3s;
     &:hover {
@@ -43,7 +65,7 @@
         }
         
         .team-name {
-            font-size: 1.5em;
+            font-size: 1.5rem;
             margin-bottom: 10px;
         }
         
@@ -53,7 +75,7 @@
         }
 
         .player {
-            font-size: 1em;
+            font-size: 1rem;
             margin: 5px 0;
         }
 
@@ -117,7 +139,7 @@
             
             h3 {
                 margin-top: 0;
-                font-size: 1em;
+                font-size: 1rem;
             }
 
             p {

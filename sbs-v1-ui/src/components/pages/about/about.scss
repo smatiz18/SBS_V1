@@ -6,6 +6,10 @@
     padding: 20px;
     background-color: white;
 
+    @media (max-width: 500px) {
+        padding: 20px 10px; // Single column layout on smaller screens
+    }
+
     .logo-wrapper {
         display: flex;
         justify-content: center;
@@ -23,7 +27,7 @@
         color: variables.$white-background-paragraph-color;
 
         @media (max-width: 500px) {
-            padding: 20px; // Single column layout on smaller screens
+            padding: 20px 0px; // Single column layout on smaller screens
         }
 
         section {
@@ -129,6 +133,22 @@
                 .event {
                     font-size: 1rem;
                     opacity: 0.9;
+                }       
+            }
+
+            @media (max-width: 500px) {
+                .timeline-item {
+                    padding: 13px;
+                    border-radius: 4px;
+                    transition: 0.3s;
+
+                    .date {
+                        font-weight: bold;
+                        background: #6a5acd;
+                        color: #fff;
+                        padding: 5px 9px;
+                        border-radius: 4px;
+                    }
                 }
             }
         }

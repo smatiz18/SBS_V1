@@ -22,7 +22,11 @@ export const reactInputStyles = {
 
 export const selectSx = {
   fontFamily: sbsFont,
-  width: '100%'
+  width: '100%',
+  "&.MuiSelect-icon": {
+    fontSize: ".35rem",
+    right: "2px"
+  }
 };
 
 export const smallFontSelectSx = {
@@ -119,8 +123,17 @@ export const formLabelSx = {
 export const paginationSx = {
   display: 'flex',
   justifyContent: 'center', 
-  fontSize: '.8rem',
-  fontFamily: sbsFont 
+  fontSize: '.7rem',
+  fontFamily: sbsFont,
+  "& .MuiPaginationItem-icon": {
+    fontSize: ".8rem",
+  },
+  "& .MuiPaginationItem-root": {
+    minWidth: "15px",
+    height: "25px",
+    padding: "5px",
+    fontSize: ".8rem"
+  }
 };
 
 export const accordianSummarySx = {

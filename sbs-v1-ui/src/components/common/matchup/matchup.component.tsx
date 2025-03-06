@@ -14,11 +14,39 @@ import { PlayerStatsObj } from '../../../models/nba-player-game-stats-historical
 import TooltipIcon from '../tooltip/tooltip-icon';
 import './matchup.component.scss';
 
+const useMediaQuery = (query: string): boolean => {
+  const getMatches = (): boolean => {
+    if (typeof window !== "undefined") {
+      return window.matchMedia(query).matches;
+    }
+    return false; // Default to false on SSR
+  };
+
+  const [matches, setMatches] = useState<boolean>(getMatches());
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(query);
+    
+    const handleChange = () => {
+      setMatches(getMatches());
+    };
+
+    // Set initial state correctly
+    handleChange();
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, [query]);
+
+  return matches;
+};
+
 const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
   const [selectedPlayer, setSelectedPlayer] = useState(matchup.away.projectedPlayers[0] || '');
   const [betOption, setBetOption] = useState(BetOptions.Team);
   const [awayPlayerOptions, setAwayPlayerOptions] = useState(matchup.away.projectedPlayers);
   const [homePlayerOptions, setHomePlayerOptions] = useState(matchup.home.projectedPlayers);
+  const isSmallScreen = useMediaQuery("(max-width: 500px)");
 
   /* effects **********************************************************************/
   useEffect(() => {
@@ -75,31 +103,62 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
   /********************************************************************************/
   return (
     <div className="matchup-component">
+      {
+        isSmallScreen && 
+          <div className='date-start'>
+            {`@${getHoursAndMinutesEt(matchup.dateStart)} ET`}
+          </div>
+      }
       <div className="team-info">
         <div className="team away">
           <img src={matchup.away.teamLogo} alt={`${matchup.away.teamNickname} logo`} className="team-logo" />
           <h2 className="team-nickname">{matchup.away.teamNickname} (Away)</h2>
-          <div className='team-stats-wrapper'>
-            <MatchupTeamStats teamStats={matchup.away.teamStats} sportsCategory={matchup.sportsCategory} isHome={false} />
-          </div>
+          {
+
+            !isSmallScreen && <div className='team-stats-wrapper'>
+              <MatchupTeamStats teamStats={matchup.away.teamStats} sportsCategory={matchup.sportsCategory} isHome={false} />
+            </div>
+          }
           <ul className="team-lineup">
             {getPlayerLineup(/* isHome */ false)}
           </ul>
         </div>
-        <div className='date-start'>
-          {`@${getHoursAndMinutesEt(matchup.dateStart)} ET`}
-        </div>
+        { 
+          !isSmallScreen && 
+          <div className='date-start'>
+            {`@${getHoursAndMinutesEt(matchup.dateStart)} ET`}
+          </div>
+        }
         <div className="team home">
           <img src={matchup.home.teamLogo} alt={`${matchup.home.teamNickname} logo`} className="team-logo" />
           <h2 className="team-nickname">{matchup.home.teamNickname} (Home)</h2>
-          <div className='team-stats-wrapper'>
-            <MatchupTeamStats teamStats={matchup.home.teamStats} sportsCategory={matchup.sportsCategory} isHome={true} />
-          </div>
+          {
+            !isSmallScreen && <div className='team-stats-wrapper'>
+              <MatchupTeamStats teamStats={matchup.home.teamStats} sportsCategory={matchup.sportsCategory} isHome={true} />
+            </div>
+          }
           <ul className="team-lineup">
             {getPlayerLineup(/* isHome */true)}
           </ul>
         </div>
       </div>
+      {
+        isSmallScreen && 
+        <div className='all-team-stats-small-screen-wrapper'>
+          <div className='team-stats-small-screen-wrapper'>
+            <div className='team-nickname'>
+              {`${matchup.away.teamNickname}: `}
+            </div>
+            <MatchupTeamStats teamStats={matchup.away.teamStats} sportsCategory={matchup.sportsCategory} isHome={false} />
+          </div>
+          <div className='team-stats-small-screen-wrapper'>
+            <div className='team-nickname'>
+              {`${matchup.home.teamNickname}: `}
+            </div>
+            <MatchupTeamStats teamStats={matchup.home.teamStats} sportsCategory={matchup.sportsCategory} isHome={false} />
+          </div>
+        </div>
+      }
       <TooltipIcon description={`${'🔥'} = 3 game stats avg > 10 game stats avg\n${'🧊'} = 3 game stats avg < 10 game stats avg\n${'😐'} = player data unavailable`} isLightMode={true}/>
       <div className="matchup-lines-and-stats-settings-container">
         <div 

@@ -7,6 +7,10 @@
     margin: 0 auto;
     padding: 20px;
     background-color: white;
+
+    @media (max-width: 500px) {
+        padding: 20px 5px;
+    }
   
     /* Header styles */
     .header {
@@ -14,6 +18,10 @@
         flex-direction: column;
         justify-content: space-between;
         align-items: left;
+
+        @media (max-width: 500px) {
+            padding-left: 10px;
+        }    
 
         h1 {
             color: variables.$white-background-header-title-color;
@@ -41,6 +49,7 @@
             display: flex;
             flex-direction: row;
             justify-content: center;
+            gap: 20px;
             flex-wrap: wrap;
         }
     }

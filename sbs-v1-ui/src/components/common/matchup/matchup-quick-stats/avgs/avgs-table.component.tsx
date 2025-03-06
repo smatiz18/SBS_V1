@@ -14,8 +14,8 @@ import { QuickStatsCellParams } from "../../../../../models/component/quick-stat
 import _ from "lodash";
 import { GameLocationsFilter } from "../../../../../models/enums/game-locations-filter";
 import AvgsFilters from "./avgs-filters/avgs-filters.component";
-import './avgs-table.component.scss';
 import { PlayerStatsObj } from "../../../../../models/nba-player-game-stats-historical";
+import './avgs-table.component.scss';
 
 const AvgsTable: React.FC<{
     matchup: MatchupLinesAndStats, 
@@ -94,7 +94,7 @@ const AvgsTable: React.FC<{
     const avgSelect = (idx: number, isComparator?: boolean) => {
         let selectOptions = range(1,20).map((o) => (
             <MenuItem value={o}>
-                {`${o} game avg`}</MenuItem>
+                {`${o}g. avg`}</MenuItem>
         ));
         if (isComparator) {
             const comparatorSelectOption =  <MenuItem value='all'>All Avg</MenuItem>;

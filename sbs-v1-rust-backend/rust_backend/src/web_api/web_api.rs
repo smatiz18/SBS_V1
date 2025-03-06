@@ -391,28 +391,37 @@ fn get_projected_player_lineups_by_team(document: &Html) -> HashMap<String, Vec<
     let button_selector = Selector::parse("button.see-court-on-off").unwrap();
     let player_selector = Selector::parse("li.lineup__player a").unwrap();
     
-    let mut players_by_team = HashMap::new();
-    
+    let mut players_by_team: HashMap<String, Vec<String>> = HashMap::new();
+
     for button in document.select(&button_selector) {
         if let Some(nickname) = button.value().attr("data-nickname") {
-            players_by_team.insert(nickname.to_string(), Vec::new());
+            let mut player_list = Vec::new();
+            
             if let Some(player_ids) = button.value().attr("data-lineup") {
                 let player_ids: Vec<&str> = player_ids.split(',').collect();
+                
                 for player_id in &player_ids[..5] {
                     for player_div in document.select(&player_selector) {
                         if let Some(href) = player_div.value().attr("href") {
                             if href.contains(player_id) {
-                                let player_name = player_div.text().collect::<String>().trim().to_string();
-                                players_by_team.entry(nickname.to_string()).or_default().push(player_name);
+                                if let Some(full_name) = player_div.value().attr("title") {
+                                    if !player_list.contains(&full_name.to_string()) {
+                                        player_list.push(full_name.to_string());
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
+
+            players_by_team.insert(nickname.to_string(), player_list);
         }
     }
+    
     players_by_team
 }
+
 /********************************************************************************/
 
 /** util ************************************************************************/
