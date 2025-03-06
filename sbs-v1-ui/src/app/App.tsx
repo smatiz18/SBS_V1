@@ -55,7 +55,6 @@ const App = () => {
             {/* Public Routes */}
             <Route path={`${PageRoutes.root}${PageRoutes.about}`} element={<Container path={PageRoutes.about} />} />
             <Route path={`${PageRoutes.root}${PageRoutes.login}`} element={<Container path={PageRoutes.login} />} />
-  
             {/* Protected Routes */}
             <Route element={<ProtectedRoute />}>
               <Route path={`${PageRoutes.root}${PageRoutes.dailyMatchups}${PageRoutes.nba}`} 
@@ -65,6 +64,7 @@ const App = () => {
               <Route path={`${PageRoutes.root}${PageRoutes.analytics}`} 
                 element={<Container path={PageRoutes.analytics} />} />
             </Route>
+            <Route path="*" element={<Container path={PageRoutes.about} />} />
           </Routes>
         </div>
       </BrowserRouter>
