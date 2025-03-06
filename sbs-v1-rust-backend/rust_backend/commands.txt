@@ -5,4 +5,4 @@ RUST_LOG=info cargo run --bin sbs_v1_daily_data_loaders --features pyo3_required
 RUST_LOG=info cargo run --bin sbs_v1_rust_backend_api
 
 /** building docker image for sbs_v1_rust_backend_api */
-docker build -t sebdb/sbs-v1-rust-backend .
+docker buildx build --platform linux/amd64 -t sebdb/sbs-v1-rust-backend .

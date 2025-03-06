@@ -140,7 +140,8 @@ export const accordianSummarySx = {
   margin: 0, 
   padding: 0, 
   backgroundColor: dkDarkGray,
-  borderRadius: '4px'
+  borderRadius: '4px',
+  fontSize: '.8rem'
 };
 
 export const quickStatsLineChartStyle = {

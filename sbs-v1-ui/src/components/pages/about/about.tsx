@@ -85,7 +85,7 @@ const About = () => {
                                 </div>
                                 <div className="timeline-item">
                                     <div className="date">Q3 2025</div>
-                                    <div className="event">🚀 Betting Strategy Backtesting 🚀</div>
+                                    <div className="event">🚀 Strategy Backtesting 🚀</div>
                                 </div>
                             </div>
                         </section>
