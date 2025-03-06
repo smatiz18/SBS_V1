@@ -1,5 +1,6 @@
 use mongodb::Collection;
 use mongodb::bson::Document;
+use std::env;
 
 #[derive(Clone)]
 pub struct AppState {
@@ -24,5 +25,12 @@ impl AppState {
             "cached_web_api_response_collection" => Some(self.cached_web_api_response_collection.clone()),
             _ => None
         }
+    }
+}
+
+pub fn get_env() -> String {
+    match env::var("ENV") {
+        Ok(curr_env) => curr_env,
+        Err(_e) => "dev".to_string()
     }
 }

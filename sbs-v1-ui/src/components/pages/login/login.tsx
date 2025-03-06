@@ -21,7 +21,8 @@ const Login: React.FC<{}> = ({ }) => {
     /* consts ***********************************************************************/
     const [gitHubCreds, setGitHubCreds] = useState('');
     const [googleCreds, setGoogleCreds] = useState('');
-    const githubRedirectUrlLocal = 'http://localhost:3000/sbs-v1/login';
+    const githubRedirectUrlLocal = process.env.ENV !== 'prod' ? 
+        'http://localhost:3000/sbs-v1/login' : 'https://sportsbettingsandbox.com/sbs-v1/login';
     const scopes = ["user", "user:email"]
     const [alertMessage, setAlertMessage] = useState<React.ReactNode>(null);
     const [isLogoLoaded, setIsLogoLoaded] = useState(false);
@@ -38,8 +39,8 @@ const Login: React.FC<{}> = ({ }) => {
                 setGitHubCreds(resp.data.githubClientId);
                 setGoogleCreds(resp.data.googleClientId);
             })
-            .catch((e: any) => {
-                console.log('Unable to retrieve credentials! ', e);
+            .catch((_e: any) => {
+                setAlertMessage(<AlertMessage message={'Unable to retrieve credentials!'} type="error" />);
             });
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -55,8 +56,8 @@ const Login: React.FC<{}> = ({ }) => {
                         setAlertMessage(<AlertMessage message={resp.data.errorMessage || 'Unable to login with GitHub!'} type="error" />);
                     }
                 })
-                .catch((e: any) => {
-                    console.log('Unable to retrieve credentials! ', e);
+                .catch((_e: any) => {
+                    setAlertMessage(<AlertMessage message={'Unable to retrieve credentials!'} type="error" />);
                 });
         }
     }, []);
@@ -92,6 +93,8 @@ const Login: React.FC<{}> = ({ }) => {
                     } else {
                         setAlertMessage(<AlertMessage message={resp.data.errorMessage || 'Unable to login with Google!'} type="error" />);
                     }
+                }).catch((_e) => {
+                    setAlertMessage(<AlertMessage message={'Unable to login with Google!'} type="error" />);
                 });
         },
         flow: 'auth-code'

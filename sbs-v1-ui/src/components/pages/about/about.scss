@@ -2,20 +2,17 @@
 
 .about-page-container {
     max-width: 1200px;
-    min-width: 580px;
     margin: 0 auto;
     padding: 20px;
     background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    min-height: 100vh;
 
     .logo-wrapper {
         display: flex;
         justify-content: center;
         padding-top: 40px;
         img {
-            max-width: 500px;
+            width: 100%;
+            max-width: 475px;
         }
     }
 
@@ -25,10 +22,16 @@
         padding: 20px 40px 40px 40px;
         color: variables.$white-background-paragraph-color;
 
+        @media (max-width: 500px) {
+            padding: 20px; // Single column layout on smaller screens
+        }
 
         section {
-            margin-bottom: 20px;
             padding: 20px;
+
+            @media (max-width: 500px) {
+                padding: 20px 0px 20px 0px; // Single column layout on smaller screens
+            }
         }
 
         h1,
@@ -52,6 +55,10 @@
                 gap: 20px;
                 padding: 20px;
                 text-align: center;
+
+                @media (max-width: 500px) {
+                    padding: 0;
+                }
             }
 
             .feature {

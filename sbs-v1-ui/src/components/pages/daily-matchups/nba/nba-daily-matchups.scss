@@ -4,12 +4,9 @@
 /* Container styles */
 .daily-matchups-container {
     max-width: 1200px;
-    min-width: 580px;
     margin: 0 auto;
     padding: 20px;
     background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   
     /* Header styles */
     .header {
@@ -52,7 +49,6 @@
         display: flex;
         justify-content: center;
         padding: 2rem;
-        max-width: 1200px;
         font-size: 1.5rem;
         color: variables.$white-background-header-title-color;
     }

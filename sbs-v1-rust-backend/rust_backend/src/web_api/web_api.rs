@@ -7,16 +7,12 @@ use scraper::{Html, Selector};
 use serde_json::{json, Value};
 use crate::{
     models::{
-        services::{
+        app_state::get_env, services::{
             get_event_odds_request::GetEventOddsRequest, get_events_request::GetEventsRequest, get_nba_players_by_team_and_season_request::GetNbaPlayersByTeamAndSeasonRequest, get_odds_request::GetOddsRequest, github_api_auth_request::GitHubApiAuthRequest, google_api_auth_request::GoogleApiAuthRequest, login_auth_request::LoginAuthRequest
-        }, 
-        web_api::web_api_res::WebApiRes
+        }, web_api::web_api_res::WebApiRes
     }, 
     routes::endpoints::{
-        NBA_RAPID_API_HOST, 
-        NBA_RAPID_API_ROOT, 
-        THE_ODDS_API_ROOT,
-        ROTOWIRE_NBA_LINEUPS
+        NBA_RAPID_API_HOST, NBA_RAPID_API_ROOT, ROTOWIRE_NBA_LINEUPS, THE_ODDS_API_ROOT
     }
 };
 
@@ -118,14 +114,21 @@ pub async fn authenticate_google_token(req: LoginAuthRequest) -> WebApiRes {
         .expect("You must set the SBS_GOOGLE_LOGIN_CLIENT_ID environment var!");
     let google_client_secret = env::var("SBS_GOOGLE_LOGIN_CLIENT_SECRET")
         .expect("You must set the SBS_GOOGLE_LOGIN_CLIENT_SECRET environment var!");
-    let redirect_uri_local = "http://localhost:3000".to_string();
+    
+    let env = get_env();
+    
+    let redirect_uri = if env != "prod" {
+        "http://localhost:3000".to_string()
+    } else {
+        "https://sportsbettingsanbox.com".to_string()
+    };
 
     let body = GoogleApiAuthRequest {
         client_id: google_client_id,
         client_secret: google_client_secret,
         code: req.code.clone(),
         grant_type: "authorization_code".to_string(),
-        redirect_uri: redirect_uri_local
+        redirect_uri: redirect_uri
     };
 
     let client = reqwest::Client::new();
@@ -190,13 +193,20 @@ pub async fn authenticate_github_token(req: LoginAuthRequest) -> WebApiRes {
         .expect("You must set the SBS_GITHUB_LOGIN_CLIENT_ID environment var!");
     let github_client_secret = env::var("SBS_GITHUB_LOGIN_CLIENT_SECRET")
         .expect("You must set the SBS_GITHUB_LOGIN_CLIENT_SECRET environment var!");
-    let redirect_uri_local = "http://localhost:3000/sbs-v1/login".to_string();
+    
+    let env = get_env();
+
+    let redirect_uri = if env != "prod" {
+        "http://localhost:3000/sbs-v1/login".to_string()
+    } else {
+        "https://sportsbettingsandbox.com/sbs-v1/login".to_string()
+    };
 
     let body = GitHubApiAuthRequest {
         client_id: github_client_id,
         client_secret: github_client_secret,
         code: req.code.to_string(),
-        redirect_uri: redirect_uri_local.to_string()
+        redirect_uri: redirect_uri.to_string()
     };
 
     let client = reqwest::Client::new();
