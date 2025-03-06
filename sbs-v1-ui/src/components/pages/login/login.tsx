@@ -21,7 +21,7 @@ const Login: React.FC<{}> = ({ }) => {
     /* consts ***********************************************************************/
     const [gitHubCreds, setGitHubCreds] = useState('');
     const [googleCreds, setGoogleCreds] = useState('');
-    const githubRedirectUrlLocal = process.env.ENV !== 'prod' ? 
+    const githubRedirectUrlLocal = process.env.REACT_APP_ENV !== 'prod' ? 
         'http://localhost:3000/sbs-v1/login' : 'https://sportsbettingsandbox.com/sbs-v1/login';
     const scopes = ["user", "user:email"]
     const [alertMessage, setAlertMessage] = useState<React.ReactNode>(null);
