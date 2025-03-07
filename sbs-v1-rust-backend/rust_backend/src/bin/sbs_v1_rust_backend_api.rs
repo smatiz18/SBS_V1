@@ -24,7 +24,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         App::new()
         .wrap(
             Cors::default()
-               .allow_any_origin()  // Allow all origins
+               .allowed_origin("https://www.sportsbettingsandbox.com")
+               .allowed_origin("http://localhost:3000")
                .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
                .allowed_headers(vec!["Content-Type", "Authorization"])
                .max_age(3600),
