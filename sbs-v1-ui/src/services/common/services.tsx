@@ -18,8 +18,8 @@ export function getLoginCredentials() {
     return axios.get<GetLoginCredentialsResponse>(`${RUST_SERVER}${GET_LOGIN_CREDENTIALS}`);
 }
 
-export function getGoogleAuth(accessToken: LoginAuthRequest) {
-    return axios.post<LoginResult>(`${RUST_SERVER}${GET_GOOGLE_AUTH}`, accessToken);
+export function getGoogleAuth(code: LoginAuthRequest) {
+    return axios.post<LoginResult>(`${RUST_SERVER}${GET_GOOGLE_AUTH}`, code);
 }
 
 export function getGitHubAuth(code: LoginAuthRequest) {

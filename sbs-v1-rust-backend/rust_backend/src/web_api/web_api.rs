@@ -120,7 +120,7 @@ pub async fn authenticate_google_token(req: LoginAuthRequest) -> WebApiRes {
     let redirect_uri = if env != "prod" {
         "http://localhost:3000".to_string()
     } else {
-        "https://sportsbettingsanbox.com".to_string()
+        "https://sportsbettingsandbox.com".to_string()
     };
 
     let body = GoogleApiAuthRequest {

@@ -96,7 +96,7 @@ export const calculatedExpandingAverages = (vec: number[]) => {
     return expandingAvgs;
 };
 
-export const getHoursAndMinutesEt = (dateString: string) => {
+export const getHoursAndMinutesEst = (dateString: string) => {
     if (!dateString) return "-";
 
     const date = new Date(dateString);

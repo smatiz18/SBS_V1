@@ -14,8 +14,19 @@ const PrimaryNavbar: React.FC = () => {
     const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isDropdownOpen, setDropdownOpen] = useState(false);
 
+    const navbarRef = useRef<HTMLDivElement | null>(null);
+
+    // TODO
+    // useEffect(() => {
+    // if (navbarRef.current) {
+    //     navbarRef.current.style.height = "auto"; // Reset height first
+    //     const newHeight = navbarRef.current.scrollHeight + "px";
+    //     navbarRef.current.style.height = newHeight; // Apply the new dynamic height
+    // }
+    // }, [nbaMatchups]); // Runs every time `nbaMatchups` updates put this in store
+
     return (
-        <nav className="primary-navbar" onMouseLeave={() => setMobileMenuOpen(false)}>
+        <nav ref={navbarRef} className="primary-navbar" onMouseLeave={() => setMobileMenuOpen(false)}>
             <div className="logo">
                 <img src={sbs_logo} alt="Sports Betting Sandbox" />
                 <div className='sbs-beta'>Beta</div>

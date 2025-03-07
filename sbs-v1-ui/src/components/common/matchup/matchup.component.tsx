@@ -3,7 +3,7 @@ import { Matchup } from '../../../models/matchup';
 import { MatchupLinesAndStats } from '../../../models/matchup-lines-and-stats';
 import MatchupTeamStats from './matchup-team-stats/matchup-team-stats.component';
 import MatchupLines from './matchup-lines/matchup-lines.component';
-import { getHoursAndMinutesEt, sliceLast, sortNbaPlayerStatsObjs } from '../../../utils/utils';
+import { getHoursAndMinutesEst, sliceLast, sortNbaPlayerStatsObjs } from '../../../utils/utils';
 import MatchupQuickStats from './matchup-quick-stats/matchup-quick-stats.component';
 import { BetOptions } from '../../../models/enums/bet-options';
 import { FormControl, ListSubheader, MenuItem, Select, SelectChangeEvent, ToggleButton, ToggleButtonGroup } from '@mui/material';
@@ -95,7 +95,12 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
           `${playerStats.firstname} ${playerStats.lastname}` === player
         ));
         let emoji = getStreakEmojiForNbaPlayerStats(stats);
-        return <li key={player} className="player">{`${player} ${emoji}`}</li>;
+        const playerFn = player.split(' ')[0];
+        const playerLastInit = player.split(' ')[1];
+
+        return <li key={player} className="player">
+          {`${playerFn} ${playerLastInit[0]}. ${emoji}`}
+        </li>;
       })
     }
     return [];
@@ -106,13 +111,13 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
       {
         isSmallScreen && 
           <div className='date-start'>
-            {`@${getHoursAndMinutesEt(matchup.dateStart)} ET`}
+            {`@${getHoursAndMinutesEst(matchup.dateStart)} EST`}
           </div>
       }
       <div className="team-info">
         <div className="team away">
           <img src={matchup.away.teamLogo} alt={`${matchup.away.teamNickname} logo`} className="team-logo" />
-          <h2 className="team-nickname">{matchup.away.teamNickname} (Away)</h2>
+          <h2 className="team-nickname">{matchup.away.teamNickname} (A)</h2>
           {
 
             !isSmallScreen && <div className='team-stats-wrapper'>
@@ -126,12 +131,12 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
         { 
           !isSmallScreen && 
           <div className='date-start'>
-            {`@${getHoursAndMinutesEt(matchup.dateStart)} ET`}
+            {`@${getHoursAndMinutesEst(matchup.dateStart)} EST`}
           </div>
         }
         <div className="team home">
           <img src={matchup.home.teamLogo} alt={`${matchup.home.teamNickname} logo`} className="team-logo" />
-          <h2 className="team-nickname">{matchup.home.teamNickname} (Home)</h2>
+          <h2 className="team-nickname">{matchup.home.teamNickname} (H)</h2>
           {
             !isSmallScreen && <div className='team-stats-wrapper'>
               <MatchupTeamStats teamStats={matchup.home.teamStats} sportsCategory={matchup.sportsCategory} isHome={true} />
@@ -155,7 +160,7 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
             <div className='team-nickname'>
               {`${matchup.home.teamNickname}: `}
             </div>
-            <MatchupTeamStats teamStats={matchup.home.teamStats} sportsCategory={matchup.sportsCategory} isHome={false} />
+            <MatchupTeamStats teamStats={matchup.home.teamStats} sportsCategory={matchup.sportsCategory} isHome={true} />
           </div>
         </div>
       }
