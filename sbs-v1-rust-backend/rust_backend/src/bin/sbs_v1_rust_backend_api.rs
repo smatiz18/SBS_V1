@@ -24,6 +24,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         App::new()
         .wrap(
             Cors::default()
+               .allowed_origin("http://www.sportsbettingsandbox.com")
+               .allowed_origin("http://www.sportsbettingsandboxapi.com")
                .allowed_origin("https://www.sportsbettingsandbox.com")
                .allowed_origin("https://www.sportsbettingsandboxapi.com")
                .allowed_origin("http://localhost:3000")

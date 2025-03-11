@@ -650,6 +650,8 @@ pub async fn get_google_auth(
     let authentication_res = authenticate_google_token(req.into_inner()).await;
 
     if authentication_res.data.is_some() {
+        info!("GOOGLE AUTHENTICATION RES DATA: {:?}", authentication_res.data.clone().unwrap());
+
         let auth_data = authentication_res.data.unwrap();
         let access_token = auth_data.get("access_token").expect("access_token");
         let web_api_res = get_google_user_info(
@@ -668,6 +670,8 @@ pub async fn get_google_auth(
         }
     
         if web_api_res.data.is_some() {
+            info!("GOOGLE USER INFO: {:?}", web_api_res.data.clone().unwrap());
+
             let google_user_info: GoogleUserInfo = serde_json::from_value(
                 web_api_res.data.clone().unwrap()
             ).unwrap();
