@@ -19,9 +19,12 @@ import { NbaPlayerAggGameStatsHistorical } from '../../../../models/nba-player-a
 import _ from 'lodash';
 import TooltipIcon from '../../../common/tooltip/tooltip-icon';
 import { motion } from "framer-motion";
+import { ring2 } from 'ldrs'
 import './nba-daily-matchups.scss';
 
+
 const NbaDailyMatchups = () => {
+  ring2.register();
   /* consts ***********************************************************************/
   const USE_MOCKS = false;
   const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
@@ -145,10 +148,10 @@ const NbaDailyMatchups = () => {
         const filteredMatchups = (matchupsResp.data?.data?.matchups || []).filter((m: any) =>
           m.away.teamNickname === 'Knicks' || m.away.teamNickname === 'Grizzlies'
         );
-        _.set(matchupsResp, 'data.data.data.matchups', filteredMatchups);
+        _.set(matchupsResp, 'data.data.matchups', filteredMatchups);
       }
 
-      const matchups = matchupsResp.data?.data?.data?.matchups || [] as Matchup[];
+      const matchups = matchupsResp.data?.data?.matchups || [] as Matchup[];
 
       /* player aggregated stats */
       const nbaPlayerStatsReqMappedByHomeTeam = await getNbaPlayerAggStatsHelper(matchups);
@@ -209,6 +212,7 @@ const NbaDailyMatchups = () => {
           </div>
         </div>
       </div>
+
       <div className='content'>
         {
           nbaMatchups.length > 0 ? (
@@ -229,6 +233,19 @@ const NbaDailyMatchups = () => {
           ) : null
         }
       </div>
+      {
+        nbaMatchups.length == 0 && !showNoMatchupsAvailableContent && 
+          <div className='loader-wrapper'>
+              <l-ring-2
+                size="30"
+                stroke="5"
+                stroke-length="0.25"
+                bg-opacity="0.1"
+                speed="0.8" 
+                color="rgb(71 85 105 / 1)" 
+              ></l-ring-2> 
+          </div>
+      }
       {showNoMatchupsAvailableContent && noMatchupsContent()}
       <div className='footer'>
       </div>

@@ -46,7 +46,7 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
   const [betOption, setBetOption] = useState(BetOptions.Team);
   const [awayPlayerOptions, setAwayPlayerOptions] = useState(matchup.away.projectedPlayers);
   const [homePlayerOptions, setHomePlayerOptions] = useState(matchup.home.projectedPlayers);
-  const isSmallScreen = useMediaQuery("(max-width: 500px)");
+  const isSmallScreen = useMediaQuery("(max-width: 600px)");
 
   /* effects **********************************************************************/
   useEffect(() => {

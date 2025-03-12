@@ -120,7 +120,7 @@ pub async fn authenticate_google_token(req: LoginAuthRequest) -> WebApiRes {
     let redirect_uri = if env != "prod" {
         "http://localhost:3000".to_string()
     } else {
-        "https://sportsbettingsandbox.com".to_string()
+        "postmessage".to_string()
     };
 
     let body = GoogleApiAuthRequest {
@@ -295,7 +295,7 @@ pub async fn get_nba_daily_matchups_from_rotowire() -> WebApiRes {
             data: Some(result),
             is_error: false,
             error_message: None,
-            cached_date_time: Some(Utc::now())
+            cached_date_time: None
         },
         Err(e) => WebApiRes {
             data: None,

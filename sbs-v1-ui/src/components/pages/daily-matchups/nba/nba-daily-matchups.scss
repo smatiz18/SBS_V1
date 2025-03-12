@@ -11,6 +11,10 @@
     @media (max-width: 500px) {
         padding: 20px 5px;
     }
+
+    @media (max-width: 420px) {
+        padding: 20px 0px;
+    }
   
     /* Header styles */
     .header {
@@ -42,9 +46,6 @@
     
     /* Content styles */
     .content {
-        display: flex;
-        gap: 20px;
-
         .main-content {
             display: flex;
             flex-direction: row;
@@ -53,7 +54,8 @@
             flex-wrap: wrap;
         }
     }
-
+    
+    .loader-wrapper,
     .no-matchups-content {
         display: flex;
         justify-content: center;

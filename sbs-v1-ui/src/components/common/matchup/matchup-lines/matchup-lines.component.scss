@@ -8,7 +8,17 @@
     .data-refresh-date-time-wrapper {
         margin-top: -1rem;
         margin-bottom: 1rem;
-        font-size: .7rem !important;
+        font-size: .8rem;
         color: variables.$white-background-header-title-color;
     }
+
+    @media (max-width: 420px) {
+        .data-refresh-date-time-wrapper {
+            margin-top: -1rem;
+            margin-bottom: 1rem;
+            padding-left: 5px;
+            font-size: .8rem;
+            color: variables.$white-background-header-title-color;
+        } 
+    } 
 }

@@ -592,16 +592,16 @@ pub async fn get_nba_daily_matchups(
     let cached_date_time = Utc::now();
     
     let resp_obj_as_web_api_res = WebApiRes {
-        is_error: false,
-        error_message: None,
-        data: Some(serde_json::to_value(res.clone()).unwrap()),
+        is_error: res.is_error,
+        error_message: res.error_message,
+        data: res.data,
         cached_date_time: Some(cached_date_time)
     };
 
     let cached_resp_obj = CachedWebApiResponse {
         _id: cached_resp_id,
         cached_date_time,
-        response: resp_obj_as_web_api_res,
+        response: resp_obj_as_web_api_res.clone(),
         wait_refresh,
     };
     
@@ -616,7 +616,7 @@ pub async fn get_nba_daily_matchups(
         error!("Unable to cache response");
     }
 
-    HttpResponse::Ok().json(res)
+    HttpResponse::Ok().json(resp_obj_as_web_api_res)
 }
 /********************************************************************************/
 
@@ -650,8 +650,6 @@ pub async fn get_google_auth(
     let authentication_res = authenticate_google_token(req.into_inner()).await;
 
     if authentication_res.data.is_some() {
-        info!("GOOGLE AUTHENTICATION RES DATA: {:?}", authentication_res.data.clone().unwrap());
-
         let auth_data = authentication_res.data.unwrap();
         let access_token = auth_data.get("access_token").expect("access_token");
         let web_api_res = get_google_user_info(
@@ -670,8 +668,6 @@ pub async fn get_google_auth(
         }
     
         if web_api_res.data.is_some() {
-            info!("GOOGLE USER INFO: {:?}", web_api_res.data.clone().unwrap());
-
             let google_user_info: GoogleUserInfo = serde_json::from_value(
                 web_api_res.data.clone().unwrap()
             ).unwrap();
