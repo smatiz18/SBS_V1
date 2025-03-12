@@ -23,7 +23,7 @@ const MatchupOptimalOdds: React.FC<{
     const optimalOddsTableRowOrdering = () => {
         let rowOrdering = undefined;
         if (betOption === BetOptions.Team) {
-            rowOrdering = ['Spread', 'Moneyline'];  
+            rowOrdering = [matchup.away.teamNickname, matchup.home.teamNickname];  
         } else {
             switch (oddsApiSport) {
                 case OddsApiSports.BasketballNba:
@@ -41,12 +41,8 @@ const MatchupOptimalOdds: React.FC<{
         return rowOrdering;
     }
 
-    const teamOptimalOddsTotalsRowOrdering = () => {
-        return ['Over', 'Under'];
-    }
-
     const teamOptimalOddsTableColOrdering = () => {
-        return ['Odds']
+        return ['Spread', 'Total', 'Moneyline'];
     }
 
     const playerOptimalOddsTableColOrdering = () => {
@@ -65,10 +61,14 @@ const MatchupOptimalOdds: React.FC<{
     
     /* transformers *****************************************************************/
     function transformTeamOptimalOddsToOptimalOddsTableRow(optimalOdds: OptimalOdds) {
+        const OULabel = optimalOdds.name === 'Over' ? 'O' : 'U';
+        const OUPoint = `${OULabel} ${optimalOdds.point}`;
+        const OURowKey = optimalOdds.name === 'Over' ? matchup.away.teamNickname : matchup.home.teamNickname;
+
         return {
-            rowKey: optimalOdds.betType === TeamBetTypes.Totals ? optimalOdds.name : getBetTypeLabel(optimalOdds.betType),
-            colKey: 'Odds', 
-            point: optimalOdds.point, 
+            rowKey: optimalOdds.betType === TeamBetTypes.Totals ? OURowKey : optimalOdds.name === matchup.away.teamName ? matchup.away.teamNickname : matchup.home.teamNickname,
+            colKey: getBetTypeLabel(optimalOdds.betType), 
+            point: optimalOdds.betType === TeamBetTypes.Totals ? OUPoint : optimalOdds.point,
             price: optimalOdds.price > 0 ? `+${optimalOdds.price}` : optimalOdds.price, 
             bookmaker: optimalOdds.bookmaker
         };
@@ -89,42 +89,14 @@ const MatchupOptimalOdds: React.FC<{
     function getOptimalOddsTableParams() {
         let optimalOddsTableParams;
         if (teamOptimalOdds && betOption === BetOptions.Team) {
-            const awayTeamOptimalOddsCells = teamOptimalOdds.filter(
-                (optimalOdds: OptimalOdds) => optimalOdds.name === matchup.away.teamName
-            )
-            .map(transformTeamOptimalOddsToOptimalOddsTableRow);
-
-            const homeTeamOptimalOddsCells = teamOptimalOdds.filter(
-                (optimalOdds: OptimalOdds) => optimalOdds.name === matchup.home.teamName
-            )
-            .map(transformTeamOptimalOddsToOptimalOddsTableRow);
-
-            const totalsOddsCells = teamOptimalOdds.filter(
-                (optimalOdds: OptimalOdds) => optimalOdds.betType === TeamBetTypes.Totals
-            )
-            .map(transformTeamOptimalOddsToOptimalOddsTableRow);
-
+            const optimalOddsCells = teamOptimalOdds.map(transformTeamOptimalOddsToOptimalOddsTableRow);
+            
             optimalOddsTableParams = [
                 {
-                    optimalOddsCells: awayTeamOptimalOddsCells,
+                    optimalOddsCells: optimalOddsCells,
                     rowOrdering: optimalOddsTableRowOrdering(),
                     colOrdering: teamOptimalOddsTableColOrdering(),
                     betOption: betOption,
-                    description: matchup.away.teamNickname
-                } as OptimalOddsTableParams,
-                {
-                    optimalOddsCells: homeTeamOptimalOddsCells,
-                    rowOrdering: optimalOddsTableRowOrdering(),
-                    colOrdering: teamOptimalOddsTableColOrdering(),
-                    betOption: betOption,
-                    description: matchup.home.teamNickname
-                } as OptimalOddsTableParams,
-                {
-                    optimalOddsCells: totalsOddsCells,
-                    rowOrdering: teamOptimalOddsTotalsRowOrdering(),
-                    colOrdering: teamOptimalOddsTableColOrdering(),
-                    betOption: betOption,
-                    description: getBetTypeLabel(TeamBetTypes.Totals)
                 } as OptimalOddsTableParams
             ];
         } else {

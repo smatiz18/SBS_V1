@@ -189,12 +189,12 @@ const ChartAnalyzer: React.FC<{
     
     const getNbaPlayerGameStatsFilterChartData = (filters: NbaPlayerGameStatsFilters[]) => {
         const enrichedStats = getAllNbaPlayerStatsObjsFromAllTeams(matchup.playerAggGameStats, selectedPlayerName!);
-
-        const maxNumOfGames = getNbaMaxNumOfPlayerGamesWithFilters(filters, enrichedStats);
+        const sortedStats = sortNbaPlayerStatsObjs(enrichedStats);
+        const maxNumOfGames = getNbaMaxNumOfPlayerGamesWithFilters(filters, sortedStats);
         const rawChartData = filters.flatMap((filter: NbaPlayerGameStatsFilters) => {
             let applicableGames: any = applyPlayerGameLocationAndTeamFilter(
                 filter,
-                enrichedStats
+                sortedStats
             );
 
             const offset = maxNumOfGames - applicableGames.length;
