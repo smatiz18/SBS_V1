@@ -231,8 +231,9 @@ const AvgsTable: React.FC<{
     /* helpers **********************************************************************/
     const nbaAvgPlayerRows = () => {
         const playerAggStats  = matchup.playerAggGameStats || [];
-        const playerStats = playerAggStats.find((currPlayerStats) => `${currPlayerStats.firstname} ${currPlayerStats.lastname}` === selectedPlayerName);
-        const sortedAndFilteredPlayerStats = sortNbaPlayerStatsObjs(Object.values(playerStats?.playerStats || {}))
+        const playerStatsForAllTeams = playerAggStats.filter((currPlayerStats) => `${currPlayerStats.firstname} ${currPlayerStats.lastname}` === selectedPlayerName)
+            .flatMap((currPlayerStats) => Object.values(currPlayerStats.playerStats || {}));
+        const sortedAndFilteredPlayerStats = sortNbaPlayerStatsObjs(playerStatsForAllTeams)
             .filter((statsObj: PlayerStatsObj) => {
                 if (playerFilters.gameLocations === GameLocationsFilter.Away) {
                     return !statsObj.isHome;
