@@ -159,6 +159,16 @@ const AvgsTable: React.FC<{
         'Pts + Reb',
         'Pts + Reb + Ass',
         'Threes',
+        '3 Pt. %',
+        'Field Goals',
+        'Field Goal %',
+        'Free Throws',
+        'Free Throw %',
+        'Steals',
+        'Blocks',
+        'Turnovers',
+        'Plus Minus',
+        'Min',
     ];
     /********************************************************************************/
 
@@ -356,6 +366,186 @@ const AvgsTable: React.FC<{
                                 return mean(sliceLast(threes, slice));
                             } else if (slice === 'all') {
                                 return mean(threes);
+                            }
+                        }
+                        return '-';
+                    });
+                }
+                case '3 Pt. %': {
+                    const threePPct = sortedAndFilteredPlayerStats.map(x => x.tpp || 0);
+                    return colHeaders.map((colHeader: any) => {
+                        if (colHeader === 'Agg') {
+                            return '3 Pt. %';
+                        } else if (colHeader === 'σ') {
+                            return stdDeviation(threePPct);
+                        } else if (colHeader.props?.id !== undefined) {
+                            const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
+                            if (slice !== undefined && threePPct !== undefined && slice !== 'all') {
+                                return mean(sliceLast(threePPct, slice));
+                            } else if (slice === 'all') {
+                                return mean(threePPct).toFixed(2);
+                            }
+                        }
+                        return '-';
+                    });
+                }
+                case 'Field Goals': {
+                    const fieldGoals = sortedAndFilteredPlayerStats.map(x => x.fgm || 0);
+                    return colHeaders.map((colHeader: any) => {
+                        if (colHeader === 'Agg') {
+                            return 'Field Goals';
+                        } else if (colHeader === 'σ') {
+                            return stdDeviation(fieldGoals);
+                        } else if (colHeader.props?.id !== undefined) {
+                            const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
+                            if (slice !== undefined && fieldGoals !== undefined && slice !== 'all') {
+                                return mean(sliceLast(fieldGoals, slice));
+                            } else if (slice === 'all') {
+                                return mean(fieldGoals);
+                            }
+                        }
+                        return '-';
+                    });
+                }
+                case 'Field Goal %': {
+                    const fgp = sortedAndFilteredPlayerStats.map(x => x.fgp || 0);
+                    return colHeaders.map((colHeader: any) => {
+                        if (colHeader === 'Agg') {
+                            return 'Field Goal %';
+                        } else if (colHeader === 'σ') {
+                            return stdDeviation(fgp);
+                        } else if (colHeader.props?.id !== undefined) {
+                            const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
+                            if (slice !== undefined && fgp !== undefined && slice !== 'all') {
+                                return mean(sliceLast(fgp, slice));
+                            } else if (slice === 'all') {
+                                return mean(fgp);
+                            }
+                        }
+                        return '-';
+                    });
+                }
+                case 'Free Throws': {
+                    const freeThrows = sortedAndFilteredPlayerStats.map(x => x.ftm || 0);
+                    return colHeaders.map((colHeader: any) => {
+                        if (colHeader === 'Agg') {
+                            return 'Free Throws';
+                        } else if (colHeader === 'σ') {
+                            return stdDeviation(freeThrows);
+                        } else if (colHeader.props?.id !== undefined) {
+                            const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
+                            if (slice !== undefined && freeThrows !== undefined && slice !== 'all') {
+                                return mean(sliceLast(freeThrows, slice));
+                            } else if (slice === 'all') {
+                                return mean(freeThrows);
+                            }
+                        }
+                        return '-';
+                    });
+                }
+                case 'Free Throw %': {
+                    const freeThrowPct = sortedAndFilteredPlayerStats.map(x => x.ftp || 0);
+                    return colHeaders.map((colHeader: any) => {
+                        if (colHeader === 'Agg') {
+                            return 'Free Throw %';
+                        } else if (colHeader === 'σ') {
+                            return stdDeviation(freeThrowPct);
+                        } else if (colHeader.props?.id !== undefined) {
+                            const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
+                            if (slice !== undefined && freeThrowPct !== undefined && slice !== 'all') {
+                                return mean(sliceLast(freeThrowPct, slice));
+                            } else if (slice === 'all') {
+                                return mean(freeThrowPct);
+                            }
+                        }
+                        return '-';
+                    });
+                }
+                case 'Steals': {
+                    const steals = sortedAndFilteredPlayerStats.map(x => x.steals || 0);
+                    return colHeaders.map((colHeader: any) => {
+                        if (colHeader === 'Agg') {
+                            return 'Steals';
+                        } else if (colHeader === 'σ') {
+                            return stdDeviation(steals);
+                        } else if (colHeader.props?.id !== undefined) {
+                            const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
+                            if (slice !== undefined && steals !== undefined && slice !== 'all') {
+                                return mean(sliceLast(steals, slice));
+                            } else if (slice === 'all') {
+                                return mean(steals);
+                            }
+                        }
+                        return '-';
+                    });
+                }
+                case 'Blocks': {
+                    const blocks = sortedAndFilteredPlayerStats.map(x => x.blocks || 0);
+                    return colHeaders.map((colHeader: any) => {
+                        if (colHeader === 'Agg') {
+                            return 'Blocks';
+                        } else if (colHeader === 'σ') {
+                            return stdDeviation(blocks);
+                        } else if (colHeader.props?.id !== undefined) {
+                            const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
+                            if (slice !== undefined && blocks !== undefined && slice !== 'all') {
+                                return mean(sliceLast(blocks, slice));
+                            } else if (slice === 'all') {
+                                return mean(blocks);
+                            }
+                        }
+                        return '-';
+                    });
+                }
+                case 'Turnovers': {
+                    const turnovers = sortedAndFilteredPlayerStats.map(x => x.turnovers || 0);
+                    return colHeaders.map((colHeader: any) => {
+                        if (colHeader === 'Agg') {
+                            return 'Turnovers';
+                        } else if (colHeader === 'σ') {
+                            return stdDeviation(turnovers);
+                        } else if (colHeader.props?.id !== undefined) {
+                            const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
+                            if (slice !== undefined && turnovers !== undefined && slice !== 'all') {
+                                return mean(sliceLast(turnovers, slice));
+                            } else if (slice === 'all') {
+                                return mean(turnovers);
+                            }
+                        }
+                        return '-';
+                    });
+                }
+                case 'Plus Minus': {
+                    const plusMinus = sortedAndFilteredPlayerStats.map(x => x.plusMinus || 0);
+                    return colHeaders.map((colHeader: any) => {
+                        if (colHeader === 'Agg') {
+                            return 'Plus Minus';
+                        } else if (colHeader === 'σ') {
+                            return stdDeviation(plusMinus);
+                        } else if (colHeader.props?.id !== undefined) {
+                            const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
+                            if (slice !== undefined && plusMinus !== undefined && slice !== 'all') {
+                                return mean(sliceLast(plusMinus, slice));
+                            } else if (slice === 'all') {
+                                return mean(plusMinus);
+                            }
+                        }
+                        return '-';
+                    });
+                }
+                case 'Min': {
+                    const min = sortedAndFilteredPlayerStats.map(x => x.min || 0);
+                    return colHeaders.map((colHeader: any) => {
+                        if (colHeader === 'Agg') {
+                            return 'Min';
+                        } else if (colHeader === 'σ') {
+                            return stdDeviation(min);
+                        } else if (colHeader.props?.id !== undefined) {
+                            const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
+                            if (slice !== undefined && min !== undefined && slice !== 'all') {
+                                return mean(sliceLast(min, slice));
+                            } else if (slice === 'all') {
+                                return mean(min);
                             }
                         }
                         return '-';

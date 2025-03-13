@@ -26,7 +26,7 @@ const MatchupLines: React.FC<{
     selectedPlayerName: string}> = ({matchup, betOption, selectedPlayerName}) => {  
     /* consts ***********************************************************************/
     const USE_MOCKS = false;
-    const pageLabels = ['Bookmaker Lines', 'Optimal Odds'];
+    const pageLabels = ['Optimal Odds', 'Bookmaker Lines'];
     const oddsApiSport = sportsKeyToOddsApiSports.get(matchup.oddsEvent?.sportKey || '') as OddsApiSports || null;
     
     const getBookmakerLinesComp = () => (
@@ -55,8 +55,8 @@ const MatchupLines: React.FC<{
     const [optimalOddsComp, setOptimalOddsComp] = useState(getOtimalOddsComp());
 
     const pageToCompMap: Record<string, ReactElement> = {
-        '1': bookmakerLinesComp,
-        '2': optimalOddsComp
+        '1': optimalOddsComp,
+        '2': bookmakerLinesComp
     };
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -139,7 +139,7 @@ const MatchupLines: React.FC<{
                 <TooltipIcon description={`Odds Data refreshed every 2 min\n\nDK = DraftKings\nFD = FanDuel\nBMGM = BetMGM`} isLightMode={true}/>
             </div>
             <div className="data-refresh-date-time-wrapper">
-                {lastDataRefreshDateTime}
+                {`@${lastDataRefreshDateTime}`}
             </div>
             {pageToCompMap[currentPage.toString()] || <div className='empty-comp'></div>}
             <div className="pagination-wrapper">

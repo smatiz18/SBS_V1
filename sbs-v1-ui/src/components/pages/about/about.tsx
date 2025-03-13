@@ -4,6 +4,8 @@ import nbaMatchups from "../../../assets/images/nba-matchups.png";
 import sbs_logo from '../../../assets/sbs-branding/sandbox_v3_1.png';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from "react-router-dom";
+import { Routes } from "../../../routes";
 import './about.scss';
 
 const About = () => {
@@ -50,21 +52,27 @@ const About = () => {
                         <section className="features">
                             <h2>Features</h2>
                             <div className="feature-grid">
-                                <div className="feature">
-                                    <img src={nbaMatchups} alt="Daily Matchups" />
-                                    <h3>Daily Matchups</h3>
-                                    <p>See how teams stack up in our daily matchups dashboard.</p>
-                                </div>
-                                <div className="feature">
-                                    <img src={optimalOdds} alt="Odds Tracking" />
-                                    <h3>Odds Tracking</h3>
-                                    <p>Compare odds from multiple sportsbooks and get the best value.</p>
-                                </div>
-                                <div className="feature">
-                                    <img src={chartAnalyzer} alt="Advanced Analytics" />
-                                    <h3>Advanced Analytics</h3>
-                                    <p>Utilize in-depth metrics, trends, and historical insights.</p>
-                                </div>
+                                <Link to={`${Routes.root}${Routes.dailyMatchups}${Routes.nba}`} style={{ textDecoration: "none", color: "inherit" }}>
+                                    <div className="feature">
+                                        <img src={nbaMatchups} alt="Daily Matchups" />
+                                        <h3>Daily Matchups</h3>
+                                        <p>See how teams stack up in our daily matchups dashboard.</p>
+                                    </div>
+                                </Link>
+                                <Link to={`${Routes.root}${Routes.dailyMatchups}${Routes.nba}`} style={{ textDecoration: "none", color: "inherit" }}>
+                                    <div className="feature">
+                                        <img src={optimalOdds} alt="Odds Tracking" />
+                                        <h3>Odds Tracking</h3>
+                                        <p>Compare odds from multiple sportsbooks and get the best value.</p>
+                                    </div>
+                                </Link>
+                                <Link to={`${Routes.root}${Routes.dailyMatchups}${Routes.nba}`} style={{ textDecoration: "none", color: "inherit" }}>
+                                    <div className="feature">
+                                        <img src={chartAnalyzer} alt="Advanced Analytics" />
+                                        <h3>Advanced Analytics</h3>
+                                        <p>Utilize in-depth metrics, trends, and historical insights.</p>
+                                    </div>
+                                </Link>
                             </div>
                         </section>
 

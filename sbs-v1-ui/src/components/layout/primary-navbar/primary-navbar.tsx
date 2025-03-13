@@ -16,15 +16,6 @@ const PrimaryNavbar: React.FC = () => {
 
     const navbarRef = useRef<HTMLDivElement | null>(null);
 
-    // TODO
-    // useEffect(() => {
-    // if (navbarRef.current) {
-    //     navbarRef.current.style.height = "auto"; // Reset height first
-    //     const newHeight = navbarRef.current.scrollHeight + "px";
-    //     navbarRef.current.style.height = newHeight; // Apply the new dynamic height
-    // }
-    // }, [nbaMatchups]); // Runs every time `nbaMatchups` updates put this in store
-
     return (
         <nav ref={navbarRef} className="primary-navbar" onMouseLeave={() => setMobileMenuOpen(false)}>
             <div className="logo">
