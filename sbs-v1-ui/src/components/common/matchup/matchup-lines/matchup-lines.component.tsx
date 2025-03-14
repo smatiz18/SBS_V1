@@ -18,43 +18,62 @@ import { Bookmakers } from "../../../../models/enums/bookmakers";
 import { grizzliesMagicPlayerOdds, grizzliesMagicTeamOdds, knicksCavsPlayersOdds, knicksCavsTeamOdds } from "../../../../test/nba-matchups-mocks";
 import TooltipIcon from "../../../common/tooltip/tooltip-icon";
 import { getCurrentDateEst } from "../../../../utils/utils";
+import { ring2 } from 'ldrs';
+import { motion } from "framer-motion";
 import './matchup-lines.component.scss';
 
 const MatchupLines: React.FC<{
     matchup: MatchupLinesAndStats, 
     betOption: BetOptions, 
     selectedPlayerName: string}> = ({matchup, betOption, selectedPlayerName}) => {  
+    
+    ring2.register();
     /* consts ***********************************************************************/
     const USE_MOCKS = false;
     const pageLabels = ['Optimal Odds', 'Bookmaker Lines'];
     const oddsApiSport = sportsKeyToOddsApiSports.get(matchup.oddsEvent?.sportKey || '') as OddsApiSports || null;
-    
+    const [shouldRender, setShouldRender] = useState(false);
+
     const getBookmakerLinesComp = () => (
-        currentEventOdds.events[0] && 
-        <MatchupBookmakerLines 
-            matchup={{...matchup}} 
-            betOption={betOption}
-            eventOdds={currentEventOdds.events[0]}
-            oddsApiSport={oddsApiSport}
-            selectedPlayerName={selectedPlayerName}
-        />
+        currentEventOdds.events[0] && shouldRender && 
+        <motion.div
+            className="fade-in"
+            initial={{ opacity: 0, transform: "translateY(10px)" }}
+            animate={{ opacity: 1, transform: "translateY(0px)" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+        > 
+            <MatchupBookmakerLines 
+                matchup={{...matchup}} 
+                betOption={betOption}
+                eventOdds={currentEventOdds.events[0]}
+                oddsApiSport={oddsApiSport}
+                selectedPlayerName={selectedPlayerName}
+            />
+        </motion.div> as ReactElement
     );
-    const getOtimalOddsComp = () => {
-        return currentEventOdds.teamOptimalOddsMap![matchup.oddsEvent?.id || ''] && 
-        <MatchupOptimalOdds 
-            matchup={{ ...matchup }} 
-            betOption={betOption} 
-            teamOptimalOdds={betOption === BetOptions.Team ? currentEventOdds.teamOptimalOddsMap![matchup.oddsEvent?.id || ''] : undefined }
-            playerOptimalOdds={betOption === BetOptions.Player ? currentEventOdds.playerOptimalOddsMap![matchup.oddsEvent?.id || '']: undefined}
-            oddsApiSport={oddsApiSport}
-            selectedPlayerName={selectedPlayerName} 
-        />
-    };
+    const getOtimalOddsComp = () => (
+        currentEventOdds.teamOptimalOddsMap![matchup.oddsEvent?.id || ''] && shouldRender &&
+        <motion.div
+            className="fade-in"
+            initial={{ opacity: 0, transform: "translateY(10px)" }}
+            animate={{ opacity: 1, transform: "translateY(0px)" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+            <MatchupOptimalOdds 
+                matchup={{ ...matchup }} 
+                betOption={betOption} 
+                teamOptimalOdds={betOption === BetOptions.Team ? currentEventOdds.teamOptimalOddsMap![matchup.oddsEvent?.id || ''] : undefined }
+                playerOptimalOdds={betOption === BetOptions.Player ? currentEventOdds.playerOptimalOddsMap![matchup.oddsEvent?.id || '']: undefined}
+                oddsApiSport={oddsApiSport}
+                selectedPlayerName={selectedPlayerName} 
+            />
+        </motion.div> as ReactElement
+    );
     const [currentEventOdds, setCurrentEventOdds] = useState({ events: [], teamOptimalOddsMap: {}, playerOptimalOddsMap: {} } as GetOddsResponse);
     const [bookmakerLinesComp, setBookmakerLinesComp] = useState(getBookmakerLinesComp());
     const [optimalOddsComp, setOptimalOddsComp] = useState(getOtimalOddsComp());
 
-    const pageToCompMap: Record<string, ReactElement> = {
+    const pageToCompMap: Record<string, any> = {
         '1': optimalOddsComp,
         '2': bookmakerLinesComp
     };
@@ -114,9 +133,11 @@ const MatchupLines: React.FC<{
             const oddsForEvent = mockedOdds.find((respObj: any) => respObj.data.events[0].id === matchup.oddsEvent?.id)!;
             setCurrentEventOdds((oddsForEvent.data || {}) as unknown as GetOddsResponse);
         } else {
+            setShouldRender(false);
             getEventOdds(getEventOddsRequest())
                 .then((res) => {
                     setCurrentEventOdds(res.data?.data as GetOddsResponse);
+                    setShouldRender(true);
                 })
                 .catch((e) => {
                     console.error(e);
@@ -127,7 +148,9 @@ const MatchupLines: React.FC<{
 
     /* event handlers ***************************************************************/
     const handlePaginationChange = (_: ChangeEvent<unknown>, page: number) => {
+        setShouldRender(false);
         setCurrentPage(page);
+        setShouldRender(true);
     }
     /********************************************************************************/
 
@@ -141,7 +164,20 @@ const MatchupLines: React.FC<{
             <div className="data-refresh-date-time-wrapper">
                 {`@${lastDataRefreshDateTime}`}
             </div>
-            {pageToCompMap[currentPage.toString()] || <div className='empty-comp'></div>}
+            { shouldRender && pageToCompMap[currentPage.toString()] || <div className='empty-comp'></div> }
+            {
+                !shouldRender && 
+                    <div className='loader-wrapper'>
+                        <l-ring-2
+                        size="30"
+                        stroke="5"
+                        stroke-length="0.25"
+                        bg-opacity="0.1"
+                        speed="0.8" 
+                        color="rgb(71 85 105 / 1)" 
+                        ></l-ring-2> 
+                    </div>
+            }
             <div className="pagination-wrapper">
                 <Pagination 
                     count={2} 

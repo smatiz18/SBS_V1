@@ -21,4 +21,12 @@
             color: variables.$white-background-header-title-color;
         } 
     } 
+
+    .loader-wrapper {
+        display: flex;
+        justify-content: center;
+        padding: 2rem;
+        font-size: 1.5rem;
+        color: variables.$white-background-header-title-color;
+    }
 }

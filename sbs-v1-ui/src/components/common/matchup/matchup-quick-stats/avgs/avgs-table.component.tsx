@@ -384,7 +384,7 @@ const AvgsTable: React.FC<{
                             if (slice !== undefined && threePPct !== undefined && slice !== 'all') {
                                 return mean(sliceLast(threePPct, slice));
                             } else if (slice === 'all') {
-                                return mean(threePPct).toFixed(2);
+                                return mean(threePPct);
                             }
                         }
                         return '-';
