@@ -51,8 +51,9 @@ const MatchupLines: React.FC<{
             />
         </motion.div> as ReactElement
     );
+    
     const getOtimalOddsComp = () => (
-        currentEventOdds.teamOptimalOddsMap![matchup.oddsEvent?.id || ''] && shouldRender &&
+        shouldRender &&
         <motion.div
             className="fade-in"
             initial={{ opacity: 0, transform: "translateY(10px)" }}
@@ -69,16 +70,11 @@ const MatchupLines: React.FC<{
             />
         </motion.div> as ReactElement
     );
+    
     const [currentEventOdds, setCurrentEventOdds] = useState({ events: [], teamOptimalOddsMap: {}, playerOptimalOddsMap: {} } as GetOddsResponse);
-    const [bookmakerLinesComp, setBookmakerLinesComp] = useState(getBookmakerLinesComp());
-    const [optimalOddsComp, setOptimalOddsComp] = useState(getOtimalOddsComp());
-
-    const pageToCompMap: Record<string, any> = {
-        '1': optimalOddsComp,
-        '2': bookmakerLinesComp
-    };
-
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPageIdx, setCurrentPageIdx] = useState(1);
+    const [currentPageReactElement, setCurrentPageReactElement] = useState(getOtimalOddsComp());
+    
     const getEventOddsRequest = () => {
         const markets = betOption === BetOptions.Team ?
             supportedTeamMarketsBySport.get(oddsApiSport) :
@@ -109,20 +105,26 @@ const MatchupLines: React.FC<{
         , 2 /* min */ *  /* sec */ 60 *  /* milli */ 1000);
 
         return () => clearInterval(interval);
-    }, []);
-
-    useEffect(() => {
-        getAndSetEventOddsForBetOption();
     }, [betOption]);
 
     useEffect(() => {
-        setBookmakerLinesComp(getBookmakerLinesComp());
-        setOptimalOddsComp(getOtimalOddsComp());
-    }, [currentEventOdds, selectedPlayerName]);
+        switch (currentPageIdx) {
+            case 1:
+                setCurrentPageReactElement(getOtimalOddsComp());
+                break;
+            case 2:
+                setCurrentPageReactElement(getBookmakerLinesComp());
+                break;
+            default: 
+                setCurrentPageReactElement(<div className='empty-comp'></div>);
+                break;
+        }
+    }, [currentEventOdds, selectedPlayerName, currentPageIdx]);
     /********************************************************************************/
 
     /* services *********************************************************************/
     const getAndSetEventOddsForBetOption = () => {
+        setShouldRender(false);
         if (USE_MOCKS) {
             let mockedOdds: any = [];
             if (betOption === BetOptions.Team) {
@@ -132,8 +134,8 @@ const MatchupLines: React.FC<{
             }
             const oddsForEvent = mockedOdds.find((respObj: any) => respObj.data.events[0].id === matchup.oddsEvent?.id)!;
             setCurrentEventOdds((oddsForEvent.data || {}) as unknown as GetOddsResponse);
+            setShouldRender(true);
         } else {
-            setShouldRender(false);
             getEventOdds(getEventOddsRequest())
                 .then((res) => {
                     setCurrentEventOdds(res.data?.data as GetOddsResponse);
@@ -141,6 +143,7 @@ const MatchupLines: React.FC<{
                 })
                 .catch((e) => {
                     console.error(e);
+                    setShouldRender(true);
                 });
         }
     }
@@ -148,9 +151,7 @@ const MatchupLines: React.FC<{
 
     /* event handlers ***************************************************************/
     const handlePaginationChange = (_: ChangeEvent<unknown>, page: number) => {
-        setShouldRender(false);
-        setCurrentPage(page);
-        setShouldRender(true);
+        setCurrentPageIdx(page);
     }
     /********************************************************************************/
 
@@ -164,7 +165,7 @@ const MatchupLines: React.FC<{
             <div className="data-refresh-date-time-wrapper">
                 {`@${lastDataRefreshDateTime}`}
             </div>
-            { shouldRender && pageToCompMap[currentPage.toString()] || <div className='empty-comp'></div> }
+            { shouldRender && currentPageReactElement }
             {
                 !shouldRender && 
                     <div className='loader-wrapper'>
