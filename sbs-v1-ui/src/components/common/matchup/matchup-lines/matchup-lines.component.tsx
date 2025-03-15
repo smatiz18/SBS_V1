@@ -96,6 +96,7 @@ const MatchupLines: React.FC<{
     /* effects **********************************************************************/
     useEffect(() => {
         getAndSetEventOddsForBetOption();
+        setLastDataRefreshDateTime(getCurrentDateEst());
 
         const interval = setInterval(() => {
             console.log('Refreshing Event Odds Data...');
