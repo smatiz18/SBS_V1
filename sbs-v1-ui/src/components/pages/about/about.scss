@@ -71,6 +71,11 @@
                 color: variables.$text-subtle-lighter;
                 border-radius: 12px;
                 transition: 0.3s;
+                height: 100%;
+
+                @media (max-width: 100vh) {
+                    height: fit-content;
+                }
 
                 img {
                     max-width: 100%;

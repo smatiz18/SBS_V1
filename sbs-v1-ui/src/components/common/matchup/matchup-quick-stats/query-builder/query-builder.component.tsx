@@ -213,6 +213,13 @@ const SBSQueryBuilder: React.FC<{ id: string, deleteQueryBuilder: any }> = ({ id
             ]
         );
 
+        let booleanStats = new Set(
+            [
+                'win',
+                'isHome'
+            ]
+        );
+
         const newRules = query.rules.map((rule: any) => {
             const ruleClone = cloneDeep(rule);
             if (numericalStats.has(rule.field)) {
@@ -228,6 +235,12 @@ const SBSQueryBuilder: React.FC<{ id: string, deleteQueryBuilder: any }> = ({ id
                     ruleClone.field = 'linescore.3';
                 }
                 ruleClone.value = parseFloat(ruleClone.value);
+            } else if (booleanStats.has(rule.field)) {
+                if (rule.value === 'true') {
+                    ruleClone.value = true;
+                } else if (rule.value === 'false') {
+                    ruleClone.value = false;
+                }
             }
             return ruleClone;
         });
@@ -265,10 +278,23 @@ const SBSQueryBuilder: React.FC<{ id: string, deleteQueryBuilder: any }> = ({ id
             ]
         );
 
+        let booleanStats = new Set(
+            [
+                'win',
+                'isHome'
+            ]
+        );
+
         const newRules = query.rules.map((rule: any) => {
             const ruleClone = cloneDeep(rule);
             if (numericalStats.has(rule.field)) {
                 ruleClone.value = parseFloat(ruleClone.value);
+            } else if (booleanStats.has(rule.field)) {
+                if (rule.value === 'true') {
+                    ruleClone.value = true;
+                } else if (rule.value === 'false') {
+                    ruleClone.value = false;
+                }
             }
             return ruleClone;
         });
