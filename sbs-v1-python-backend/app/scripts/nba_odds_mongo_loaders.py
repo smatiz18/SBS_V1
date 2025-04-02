@@ -104,6 +104,13 @@ def make_distinct(list_of_objs, field):
 #########################################################
 
 #########################################################
+# Function to convert dot-separated to camelCase ########
+def to_camel_case(s, split):
+    parts = s.split(split)
+    return parts[0] + ''.join(word.capitalize() for word in parts[1:])
+#########################################################
+
+#########################################################
 # Function to recursively rename fields in a document and remove fields with periods
 def rename_and_remove_fields(doc, split):
     if isinstance(doc, dict):

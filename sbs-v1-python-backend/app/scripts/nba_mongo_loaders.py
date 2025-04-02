@@ -208,7 +208,12 @@ def rename_and_remove_fields(doc, split):
 # drop cols from a df ###################################
 def drop_cols(df, cols):
     for col in cols:
-        df = df.drop(col, axis=1)
+        filtered_df = df
+        try:
+            filtered_df = df.drop(col, axis=1)
+        except Exception as e:
+            print('unable to drop col: ', e)
+        df = filtered_df
     return df
 #########################################################
 
@@ -407,6 +412,14 @@ def get_mongo_pipeline_to_load_game_stats_per_team(team_id, season, start_date, 
 #################### constants ####################################################################################################
 ###################################################################################################################################
 nba_season_dates_map = {
+    2022: {
+        'regular_season_start': '2022-11-18',
+        'regular_season_end': '2023-04-09', 
+        'playoff_season_start': '2023-04-15',
+        'playoff_season_end': '2023-06-18',
+        'all_season_start': '2022-11-18',
+        'all_season_end': '2023-06-18',
+    },
     2023: {
         'regular_season_start': '2023-10-24',
         'regular_season_end': '2024-04-14', 
@@ -963,32 +976,36 @@ def map_nba_games_objs_to_nba_game_player_stats_objs(games):
     all_player_stats_per_game = []
     for game in games:
         game_id = game['_id']
-        home_team_id = game['teamsHomeId']
-        visitors_team_id = game['teamsVisitorsId']
-        did_home_team_win = game['scoresHomePoints'] > game['scoresVisitorsPoints']
-        players_dict_list = get_players_per_game_df(game_id).to_dict('records')
-
-        # Initialize a defaultdict
-        players_grouped_by_team = defaultdict(list)
-        # Group the data
-        for item in players_dict_list:
-            players_grouped_by_team[item['team.id']].append(item)
-        players_grouped_by_team['teamsHomePlayers'] = players_grouped_by_team.pop(home_team_id)
-        for player in players_grouped_by_team['teamsHomePlayers']:
-            player['isHome'] = True
-            player['win'] = did_home_team_win
-        players_grouped_by_team['teamsHomePlayers'] = transform_list_to_dict(players_grouped_by_team['teamsHomePlayers'], 'player.id')
-        players_grouped_by_team['teamsVisitorsPlayers'] = players_grouped_by_team.pop(visitors_team_id)
-        for player in players_grouped_by_team['teamsVisitorsPlayers']:
-            player['isHome'] = False
-            player['win'] = not did_home_team_win
-        players_grouped_by_team['teamsVisitorsPlayers'] = transform_list_to_dict(players_grouped_by_team['teamsVisitorsPlayers'], 'player.id')
-        players_grouped_by_team['teamsHomeId'] = home_team_id
-        players_grouped_by_team['teamsVisitorsId'] = visitors_team_id
-        players_grouped_by_team['season'] = game['season']
-        players_grouped_by_team['dateStart'] = game['dateStart']
-        players_grouped_by_team['_id'] = game_id
-        all_player_stats_per_game.append(rename_and_remove_fields(players_grouped_by_team, '.'))
+        try:
+            home_team_id = game['teamsHomeId']
+            visitors_team_id = game['teamsVisitorsId']
+            did_home_team_win = game['scoresHomePoints'] > game['scoresVisitorsPoints']
+            players_dict_list = get_players_per_game_df(game_id).to_dict('records')
+    
+            # Initialize a defaultdict
+            players_grouped_by_team = defaultdict(list)
+            # Group the data
+            for item in players_dict_list:
+                players_grouped_by_team[item['team.id']].append(item)
+            players_grouped_by_team['teamsHomePlayers'] = players_grouped_by_team.pop(home_team_id)
+            for player in players_grouped_by_team['teamsHomePlayers']:
+                player['isHome'] = True
+                player['win'] = did_home_team_win
+            players_grouped_by_team['teamsHomePlayers'] = transform_list_to_dict(players_grouped_by_team['teamsHomePlayers'], 'player.id')
+            players_grouped_by_team['teamsVisitorsPlayers'] = players_grouped_by_team.pop(visitors_team_id)
+            for player in players_grouped_by_team['teamsVisitorsPlayers']:
+                player['isHome'] = False
+                player['win'] = not did_home_team_win
+            players_grouped_by_team['teamsVisitorsPlayers'] = transform_list_to_dict(players_grouped_by_team['teamsVisitorsPlayers'], 'player.id')
+            players_grouped_by_team['teamsHomeId'] = home_team_id
+            players_grouped_by_team['teamsVisitorsId'] = visitors_team_id
+            players_grouped_by_team['season'] = game['season']
+            players_grouped_by_team['dateStart'] = game['dateStart']
+            players_grouped_by_team['_id'] = game_id
+            all_player_stats_per_game.append(rename_and_remove_fields(players_grouped_by_team, '.'))
+        except Exception as e:
+            print(f'unable to get players stats for game: {game_id}')
+        
     return all_player_stats_per_game
 #########################################################
 
