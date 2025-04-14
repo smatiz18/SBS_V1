@@ -84,15 +84,15 @@ const About = () => {
                             <h2>Development Roadmap</h2>
                             <div className="timeline-container">
                                 <div className="timeline-item">
-                                    <div className="date">Q1 2025</div>
+                                    <div className="date">Q2 2025</div>
                                     <div className="event">🚀 High EV Bet Analysis 🚀</div>
                                 </div>
                                 <div className="timeline-item">
-                                    <div className="date">Q2 2025</div>
+                                    <div className="date">Q3 2025</div>
                                     <div className="event">🚀 Expanded Sport Coverage 🚀</div>
                                 </div>
                                 <div className="timeline-item">
-                                    <div className="date">Q3 2025</div>
+                                    <div className="date">Q4 2025</div>
                                     <div className="event">🚀 Strategy Backtesting 🚀</div>
                                 </div>
                             </div>
