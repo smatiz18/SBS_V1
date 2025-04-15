@@ -95,5 +95,8 @@ pub struct PlayerStatsObj {
     pub win: bool,
 
     #[serde(rename = "isHome")]
-    pub is_home: bool
+    pub is_home: bool,
+
+    #[serde(rename = "opponentTeamId")]
+    pub opponent_team_id: Option<f64>
 }

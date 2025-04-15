@@ -657,6 +657,7 @@ def map_nba_games_historical_obj_to_game_stats_obj(obj, team_id):
         new_obj['points'] = obj['scoresHomePoints']
         new_obj['win'] = obj['scoresHomePoints'] > obj['scoresVisitorsPoints']
         new_obj['isHome'] = True
+        new_obj['opponentTeamId'] = obj['teamsVisitorsId']
     else: 
         new_obj['teamId'] = obj['teamsVisitorsId']
         new_obj['teamName'] = obj['teamsVisitorsName']
@@ -665,6 +666,7 @@ def map_nba_games_historical_obj_to_game_stats_obj(obj, team_id):
         new_obj['points'] = obj['scoresVisitorsPoints']
         new_obj['win'] = obj['scoresVisitorsPoints'] > obj['scoresHomePoints']
         new_obj['isHome'] = False
+        new_obj['opponentTeamId'] = obj['teamsHomeId']
     new_obj['dateStart'] = obj['dateStart']
     new_obj['gameId'] = obj['id']    
     return new_obj
@@ -787,12 +789,13 @@ def populate_missing_nba_player_aggregated_game_stats_historical(game_ids):
             player_id = player_stats.get('playerId')
             game_id = player_stats.get('gameId')
             team_id = player_stats.get('teamId')
+            opponent_team_id = player_stats.get('opponentTeamId')
             is_home = player_stats.get('isHome')
             pos = player_stats.get('pos')
             win = player_stats.get('win')
             date_start = obj.get('dateStart')
             season = obj.get('season')
-            
+
             player_stats_df = pd.DataFrame(player_stats, index=[0])
             non_prefaced_player_statistical_columns = [clean_col.split('.')[1] for clean_col in player_statistical_columns]
             player_stats_df = zero_non_numeric_values(player_stats_df[non_prefaced_player_statistical_columns])
@@ -802,6 +805,9 @@ def populate_missing_nba_player_aggregated_game_stats_historical(game_ids):
             player_stats_to_upsert['dateStart'] = date_start
             player_stats_to_upsert['isHome'] = is_home
             player_stats_to_upsert['win'] = win
+            player_stats_to_upsert['playerId'] = player_id 
+            player_stats_to_upsert['teamId'] = team_id
+            player_stats_to_upsert['opponentTeamId'] = opponent_team_id
             applicable_season_types = get_season_types_given_season_and_date(season, date_start)
             
             for season_type in applicable_season_types:
@@ -890,7 +896,7 @@ def aggregate_player_stats_for_player(player_obj, team_id, season, start_date, e
     
     try:
         player_stats_numerical_cols = zero_non_numeric_values(normalized_df[player_statistical_columns])
-        player_stats = pd.concat([player_stats_numerical_cols, normalized_df[['playerStats.gameId', 'dateStart', 'playerStats.win','playerStats.isHome']]], axis=1)
+        player_stats = pd.concat([player_stats_numerical_cols, normalized_df[['playerStats.gameId', 'dateStart', 'playerStats.win','playerStats.isHome', 'playerStats.teamId', 'playerStats.opponentTeamId', 'playerStats.playerId']]], axis=1)
         player_stats = player_stats.rename(columns=lambda x: remove_prefix_from_col(x))
     except Exception as e:
         print(f"ERROR Parsing Player Data for: {player_obj['firstname']} {player_obj['lastname']}")
@@ -991,11 +997,13 @@ def map_nba_games_objs_to_nba_game_player_stats_objs(games):
             for player in players_grouped_by_team['teamsHomePlayers']:
                 player['isHome'] = True
                 player['win'] = did_home_team_win
+                player['opponentTeamId'] = visitors_team_id
             players_grouped_by_team['teamsHomePlayers'] = transform_list_to_dict(players_grouped_by_team['teamsHomePlayers'], 'player.id')
             players_grouped_by_team['teamsVisitorsPlayers'] = players_grouped_by_team.pop(visitors_team_id)
             for player in players_grouped_by_team['teamsVisitorsPlayers']:
                 player['isHome'] = False
                 player['win'] = not did_home_team_win
+                player['opponentTeamId'] = home_team_id
             players_grouped_by_team['teamsVisitorsPlayers'] = transform_list_to_dict(players_grouped_by_team['teamsVisitorsPlayers'], 'player.id')
             players_grouped_by_team['teamsHomeId'] = home_team_id
             players_grouped_by_team['teamsVisitorsId'] = visitors_team_id

@@ -36,5 +36,7 @@ pub struct GameStats {
 
     pub game_id: u32,
 
-    pub is_home: bool
+    pub is_home: bool,
+
+    pub opponent_team_id: f64
 }

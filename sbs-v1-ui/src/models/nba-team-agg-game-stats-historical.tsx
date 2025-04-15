@@ -8,6 +8,7 @@ export interface GameStats {
     win: boolean,
     dateStart: string;
     isHome: boolean;
+    opponentTeamId: number;
 }
 
 export interface NbaTeamAggGameStatsHistorical {
