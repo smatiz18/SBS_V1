@@ -251,20 +251,26 @@ def load_latest_nba_player_historical_odds_by_game_ids(nbaApiIds):
 
     game_id_to_player_odds = []
     for odds in latest_odds:
-        markets = odds['bookmakerOdds'][0]['markets']
-        player_markets = list(filter(lambda x: x['key'] not in nba_team_market, markets))
-        
-        odds_for_player = dict()              
-        for market in player_markets:
-            outcomes = market['outcomes']
+        try:
+            markets = odds['bookmakerOdds'][0]['markets']
             
-            for outcome in outcomes:
-                name = outcome['description']
-                if name in odds_for_player:
-                    odds_for_player[name][market['key']] = outcome
-                else:
-                    odds_for_player[name] = { market['key']: outcome }
-        game_id_to_player_odds.append({ odds['nbaApiId']: odds_for_player })
+            player_markets = list(filter(lambda x: x['key'] not in nba_team_market, markets))
+            
+            odds_for_player = dict()              
+            for market in player_markets:
+                outcomes = market['outcomes']
+                
+                for outcome in outcomes:
+                    name = outcome['description']
+                    if name in odds_for_player:
+                        odds_for_player[name][market['key']] = outcome
+                    else:
+                        odds_for_player[name] = { market['key']: outcome }
+            game_id_to_player_odds.append({ odds['nbaApiId']: odds_for_player })
+            
+        except Exception as e:
+            print(f'error aggregating player odds for {odds['nbaApiId']}: {e}')
+
 
     for game_id_to_player_odds_obj in game_id_to_player_odds:
 
