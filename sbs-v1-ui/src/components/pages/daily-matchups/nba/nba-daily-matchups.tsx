@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import MatchupComponent from '../../../common/matchup/matchup.component';
-import { getNbaMatchups, getNbaPlayerStatsByNameAndSeason, getNbaTeamAggGameStats, getNbaTeamStats } from '../../../../services/nba/services';
+import { getNbaLiveScores, getNbaMatchups, getNbaPlayerStatsByNameAndSeason, getNbaTeamAggGameStats, getNbaTeamStats } from '../../../../services/nba/services';
 import { NbaLogoMapper } from '../../../../assets/images/nba-logo-mapper';
 import { Matchup } from '../../../../models/matchup';
 import { getEvents } from '../../../../services/odds/services';
@@ -37,8 +37,9 @@ const NbaDailyMatchups = () => {
   /* effects **********************************************************************/
   useEffect(() => {
     fetchInitData(USE_MOCKS /* use mock data */);
+    refreshLiveScores(USE_MOCKS /* use mock data */);
 
-    const interval = setInterval(() => {
+    const initDataInterval = setInterval(() => {
       console.log('Refreshing Data...');
       fetchInitData(USE_MOCKS /* use mock data */);
       setLastDataRefreshDate(getCurrentDateEst());
@@ -48,10 +49,11 @@ const NbaDailyMatchups = () => {
       console.log('Refreshing Live Score...');
       refreshLiveScores(USE_MOCKS /* use mock data */);
       setLastLiveScoreRefreshDate(getCurrentDateEst());
-    }, 15 /* min */ * 60 /* sec */ * 1000 /* ms */);
+    },  30 /* sec */ * 1000 /* ms */);
 
     return () => {
-      clearInterval(interval);
+      clearInterval(initDataInterval);
+      clearInterval(liveScoreInterval);
     };
   }, []);
   /********************************************************************************/
@@ -144,8 +146,19 @@ const NbaDailyMatchups = () => {
 
   const refreshLiveScores = async (useMock: boolean) => {
     if (useMock) {
-      return;
+      // idk
+    } else {
+      getNbaLiveScores()
+        .then((res) => {
+          console.log(res.data);
+
+        })
+        .catch((err) => {
+          console.error(err);
+        })
     }
+
+
   }
 
   const fetchInitData = async (useMock: boolean) => {
