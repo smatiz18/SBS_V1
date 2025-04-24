@@ -33,6 +33,22 @@ pub async fn get_nba_players_by_team_and_season_rapid_api(req: GetNbaPlayersByTe
 
     get(&url, headers).await
 }
+
+pub async fn get_nba_live_scores_rapid_api() -> WebApiRes {
+    let url = format!("{}/games?live=all", NBA_RAPID_API_ROOT);
+    let rapid_api_key = env::var("RAPID_API_KEY").expect("You must set RAPID_API_KEY environment var!");
+    let mut headers = HeaderMap::new();
+    headers.insert(
+        "x-rapidapi-host", 
+        HeaderValue::from_static(NBA_RAPID_API_HOST)
+    );
+    headers.insert(
+        "x-rapidapi-key",
+        HeaderValue::from_str(&rapid_api_key).expect("You must set RAPID_API_KEY environment var!")
+    );
+
+    get(&url, headers).await
+}
 /********************************************************************************/
 
 /** odds api ********************************************************************/

@@ -1,0 +1,18 @@
+@use '../../../variables';
+
+.status-circle {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: adjust-color(lighten(variables.$color-1, 20%), $saturation: 70%);
+    animation: smoothBlink 1.2s ease-in-out infinite;
+}
+
+@keyframes smoothBlink {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.3; // or 0 for full blink
+    }
+}

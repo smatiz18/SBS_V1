@@ -12,6 +12,7 @@ import { NbaPlayerAggGameStatsHistorical } from '../../../models/nba-player-agg-
 import { SportsCategories } from '../../../models/enums/sports-categories';
 import { PlayerStatsObj } from '../../../models/nba-player-game-stats-historical';
 import TooltipIcon from '../tooltip/tooltip-icon';
+import StatusCircle from '../status-circle/status-circle';
 import './matchup.component.scss';
 
 const useMediaQuery = (query: string): boolean => {
@@ -26,7 +27,7 @@ const useMediaQuery = (query: string): boolean => {
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(query);
-    
+
     const handleChange = () => {
       setMatches(getMatches());
     };
@@ -52,7 +53,7 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
   useEffect(() => {
     setAwayPlayerOptions(matchup.away.projectedPlayers);
     setHomePlayerOptions(matchup.home.projectedPlayers);
-  },[matchup]);
+  }, [matchup]);
   /********************************************************************************/
   /* event handlers ***************************************************************/
   const handleBetOptionsToggleChange = (event: any) => {
@@ -74,7 +75,7 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
         const threes = sortedStats.map((stats: PlayerStatsObj) => stats.tpm || 0);
         const blks = sortedStats.map((stats: PlayerStatsObj) => stats.blocks || 0);
         const stls = sortedStats.map((stats: PlayerStatsObj) => stats.steals || 0);
-  
+
         const sum_vec = points.map((point: number, idx: number) => point + assists[idx] + reb[idx] + threes[idx] + blks[idx] + stls[idx]);
         const ten_game_sum_avg = sliceLast(sum_vec, 10);
         const three_game_sum_avg = sliceLast(sum_vec, 3);
@@ -108,6 +109,27 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
   /********************************************************************************/
   return (
     <div className="matchup-component">
+
+      <div className="live-score-container">
+        <div className="status-circle-wrapper">
+          <StatusCircle />
+        </div>
+        <div className="score-row">
+          <div className="team-score">
+            <div className="team-nickname">Wolves</div>
+            <div className="live-score">42</div>
+          </div>
+
+          <span className="score-divider">–</span>
+
+          <div className="team-score">
+            <div className="team-nickname">Lakers</div>
+            <div className="live-score">53</div>
+          </div>
+        </div>
+
+        <div className="game-status">Q2 | 2:30</div>
+      </div>
       {
         isSmallScreen && 
           <div className='date-start'>
@@ -128,8 +150,8 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
             {getPlayerLineup(/* isHome */ false)}
           </ul>
         </div>
-        { 
-          !isSmallScreen && 
+        {
+          !isSmallScreen &&
           <div className='date-start'>
             {`@${getHoursAndMinutesEst(matchup.dateStart)} EST`}
           </div>
@@ -148,7 +170,7 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
         </div>
       </div>
       {
-        isSmallScreen && 
+        isSmallScreen &&
         <div className='all-team-stats-small-screen-wrapper'>
           <div className='team-stats-small-screen-wrapper'>
             <div className='team-nickname'>
@@ -166,7 +188,7 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
       }
       <TooltipIcon description={`${'🔥'} = 3 game stats avg > 10 game stats avg\n${'🧊'} = 3 game stats avg < 10 game stats avg\n${'😐'} = player data unavailable`} isLightMode={true}/>
       <div className="matchup-lines-and-stats-settings-container">
-        <div 
+        <div
           className={`matchup-lines-and-stats-settings-${betOption === BetOptions.Team ? 'team-view' : 'player-view'}`}
         >
           <div className="toggle-wrapper">

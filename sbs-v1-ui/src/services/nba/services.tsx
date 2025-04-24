@@ -13,6 +13,7 @@ import { NbaTeamAggGameStatsHistorical } from "../../models/nba-team-agg-game-st
 import { WebApiRes } from "../../models/services/web-api-res";
 import { NbaPlayerAggGameStatsHistorical } from "../../models/nba-player-agg-game-stats-historical";
 import { GetNbaPlayerStatsByNameAndSeasonRequest } from "../../models/services/get-nba-player-stats-by-name-and-season-request";
+import { GetNbaLiveScoresResponse } from "../../models/services/get-nba-live-scores-response";
 
 export const NBA_API_ROOT = '/nba-api';
 
@@ -23,6 +24,7 @@ export const GET_NBA_PLAYERS_BY_TEAM_AND_SEASON = `${NBA_API_ROOT}/players-by-te
 export const GET_NBA_PLAYERS_BY_STATS_NAME_AND_SEASON = `${NBA_API_ROOT}/player-stats-by-name-and-season/get`;
 export const GET_NBA_TEAM_AGG_GAME_STATS = `${NBA_API_ROOT}/team-agg-game-stats/get`;
 export const GET_NBA_TEAM_STATS = `${NBA_API_ROOT}/team-stats/get`;
+export const GET_NBA_LIVE_SCORES = `${NBA_API_ROOT}/live-scores/get`;
 
 export function getNbaMatchups(): Promise<AxiosResponse<WebApiRes>> {
   return axios.get<WebApiRes>(`${RUST_SERVER}${GET_NBA_LINEUPS}`);
@@ -50,4 +52,8 @@ export function getNbaTeamAggGameStats(req: GetNbaTeamAggGameStatsRequest) {
 
 export function getNbaTeamStats(req: GetNbaTeamStatsRequest) {
   return axios.post<NbaTeamStats[]>(`${RUST_SERVER}${GET_NBA_TEAM_STATS}`, req);
+}
+
+export function getNbaLiveScores() {
+  return axios.get<GetNbaLiveScoresResponse[]>(`${RUST_SERVER}${GET_NBA_LIVE_SCORES}`);
 }

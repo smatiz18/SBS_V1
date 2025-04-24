@@ -26,10 +26,12 @@ import './nba-daily-matchups.scss';
 const NbaDailyMatchups = () => {
   ring2.register();
   /* consts ***********************************************************************/
-  const USE_MOCKS = false;
+  const USE_MOCKS = true;
   const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
   const [showNoMatchupsAvailableContent, setShowNoMatchupsAvailableContent] = useState(false);
   const [lastDataRefreshDate, setLastDataRefreshDate] = useState(getCurrentDateEst());
+  const [lastLiveScoreRefreshDate, setLastLiveScoreRefreshDate] = useState(getCurrentDateEst());
+
   /********************************************************************************/
 
   /* effects **********************************************************************/
@@ -42,7 +44,15 @@ const NbaDailyMatchups = () => {
       setLastDataRefreshDate(getCurrentDateEst());
     }, 15 /* min */ * 60 /* sec */ * 1000 /* ms */);
 
-    return () => clearInterval(interval);
+    const liveScoreInterval = setInterval(() => {
+      console.log('Refreshing Live Score...');
+      refreshLiveScores(USE_MOCKS /* use mock data */);
+      setLastLiveScoreRefreshDate(getCurrentDateEst());
+    }, 15 /* min */ * 60 /* sec */ * 1000 /* ms */);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
   /********************************************************************************/
 
@@ -130,6 +140,12 @@ const NbaDailyMatchups = () => {
         return agg;
       }, {});
     return nbaTeamAggGameStatsMappedByTeamNickname;
+  }
+
+  const refreshLiveScores = async (useMock: boolean) => {
+    if (useMock) {
+      return;
+    }
   }
 
   const fetchInitData = async (useMock: boolean) => {

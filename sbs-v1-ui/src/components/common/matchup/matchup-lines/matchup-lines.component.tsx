@@ -29,7 +29,7 @@ const MatchupLines: React.FC<{
     
     ring2.register();
     /* consts ***********************************************************************/
-    const USE_MOCKS = false;
+    const USE_MOCKS = true;
     const pageLabels = ['Optimal Odds', 'Bookmaker Lines'];
     const oddsApiSport = sportsKeyToOddsApiSports.get(matchup.oddsEvent?.sportKey || '') as OddsApiSports || null;
     const [shouldRender, setShouldRender] = useState(false);
