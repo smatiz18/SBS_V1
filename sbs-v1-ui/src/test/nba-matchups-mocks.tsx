@@ -7923,3 +7923,180 @@ export const grizzliesMagicPlayerOdds = {
         }
     }
 };
+
+
+export const nbaLiveScoresResponse = {
+    "isError": false,
+    "errorMessage": null,
+    "data": {
+        "get": "games/",
+        "parameters": {
+            "live": "all"
+        },
+        "errors": [],
+        "results": 1,
+        "response": [
+            {
+                "id": 15364,
+                "league": "standard",
+                "season": 2024,
+                "date": {
+                    "start": "2025-04-22T02:00:00.000Z",
+                    "end": null,
+                    "duration": null
+                },
+                "stage": 3,
+                "status": {
+                    "clock": "10:28",
+                    "halftime": false,
+                    "short": 2,
+                    "long": "In Play"
+                },
+                "periods": {
+                    "current": 3,
+                    "total": 4,
+                    "endOfPeriod": false
+                },
+                "arena": {
+                    "name": "Ball Arena",
+                    "city": "Denver",
+                    "state": "CO",
+                    "country": null
+                },
+                "teams": {
+                    "visitors": {
+                        "id": 24,
+                        "name": "New York Knicks",
+                        "nickname": "Knicks",
+                        "code": "NYK",
+                        "logo": ""
+                    },
+                    "home": {
+                        "id": 9,
+                        "name": "Cleveland Cavaliers",
+                        "nickname": "Cavaliers",
+                        "code": "CLE",
+                        "logo": ""
+                    }
+                },
+                "scores": {
+                    "visitors": {
+                        "win": 0,
+                        "loss": 0,
+                        "series": {
+                            "win": 0,
+                            "loss": 0
+                        },
+                        "linescore": [
+                            "25",
+                            "30",
+                            "0",
+                            ""
+                        ],
+                        "points": 55
+                    },
+                    "home": {
+                        "win": 0,
+                        "loss": 0,
+                        "series": {
+                            "win": 0,
+                            "loss": 0
+                        },
+                        "linescore": [
+                            "31",
+                            "21",
+                            "4",
+                            ""
+                        ],
+                        "points": 56
+                    }
+                },
+                "officials": [],
+                "timesTied": null,
+                "leadChanges": null,
+                "nugget": null
+            },
+            {
+                "id": 15364,
+                "league": "standard",
+                "season": 2024,
+                "date": {
+                    "start": "2025-04-22T02:00:00.000Z",
+                    "end": null,
+                    "duration": null
+                },
+                "stage": 3,
+                "status": {
+                    "clock": "10:28",
+                    "halftime": false,
+                    "short": 2,
+                    "long": "In Play"
+                },
+                "periods": {
+                    "current": 3,
+                    "total": 4,
+                    "endOfPeriod": false
+                },
+                "arena": {
+                    "name": "Ball Arena",
+                    "city": "Denver",
+                    "state": "CO",
+                    "country": null
+                },
+                "teams": {
+                    "visitors": {
+                        "id": 19,
+                        "name": "Memphis Grizzlies",
+                        "nickname": "Grizzlies",
+                        "code": "MEM",
+                        "logo": ""
+                    },
+                    "home": {
+                        "id": 26,
+                        "name": "Orlando Magic",
+                        "nickname": "Magic",
+                        "code": "ORL",
+                        "logo": ""
+                    }
+                },
+                "scores": {
+                    "visitors": {
+                        "win": 0,
+                        "loss": 0,
+                        "series": {
+                            "win": 0,
+                            "loss": 0
+                        },
+                        "linescore": [
+                            "25",
+                            "30",
+                            "0",
+                            ""
+                        ],
+                        "points": 55
+                    },
+                    "home": {
+                        "win": 0,
+                        "loss": 0,
+                        "series": {
+                            "win": 0,
+                            "loss": 0
+                        },
+                        "linescore": [
+                            "31",
+                            "21",
+                            "4",
+                            ""
+                        ],
+                        "points": 56
+                    }
+                },
+                "officials": [],
+                "timesTied": null,
+                "leadChanges": null,
+                "nugget": null
+            }
+        ]
+    },
+    "cachedDateTime": "2025-04-22T03:29:00.987481Z"
+}

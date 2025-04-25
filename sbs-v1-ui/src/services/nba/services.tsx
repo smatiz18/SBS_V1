@@ -55,5 +55,5 @@ export function getNbaTeamStats(req: GetNbaTeamStatsRequest) {
 }
 
 export function getNbaLiveScores() {
-  return axios.get<GetNbaLiveScoresResponse[]>(`${RUST_SERVER}${GET_NBA_LIVE_SCORES}`);
+  return axios.get<GetNbaLiveScoresResponse>(`${RUST_SERVER}${GET_NBA_LIVE_SCORES}`);
 }

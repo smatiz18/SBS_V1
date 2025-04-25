@@ -11,17 +11,18 @@ import { SportsCategories } from '../../../../models/enums/sports-categories';
 import { NbaTeamStats } from '../../../../models/nba-team-stats';
 import { GetNbaTeamStatsRequest } from '../../../../models/services/get-nba-team-stats-request';
 import { SeasonType } from '../../../../models/enums/season-type';
-import { CURRENT_NBA_SEASON, getCurrentDateEst } from '../../../../utils/utils';
+import { CURRENT_NBA_SEASON, getCurrentDateEst, getHoursAndMinutesEst } from '../../../../utils/utils';
 import { NbaTeamAggGameStatsHistorical } from '../../../../models/nba-team-agg-game-stats-historical';
-import { oddsEventsMockResp, rotoWireDailyMatchupsMockResp } from '../../../../test/nba-matchups-mocks';
+import { nbaLiveScoresResponse, oddsEventsMockResp, rotoWireDailyMatchupsMockResp } from '../../../../test/nba-matchups-mocks';
 import { GetNbaPlayerStatsByNameAndSeasonRequest, Name } from '../../../../models/services/get-nba-player-stats-by-name-and-season-request';
 import { NbaPlayerAggGameStatsHistorical } from '../../../../models/nba-player-agg-game-stats-historical';
 import _ from 'lodash';
 import TooltipIcon from '../../../common/tooltip/tooltip-icon';
 import { motion } from "framer-motion";
 import { ring2 } from 'ldrs'
+import { Game, GetNbaLiveScoresResponse } from '../../../../models/services/get-nba-live-scores-response';
+import { AxiosResponse } from 'axios';
 import './nba-daily-matchups.scss';
-
 
 const NbaDailyMatchups = () => {
   ring2.register();
@@ -146,12 +147,13 @@ const NbaDailyMatchups = () => {
 
   const refreshLiveScores = async (useMock: boolean) => {
     if (useMock) {
-      // idk
+      (nbaLiveScoresResponse.data as unknown as GetNbaLiveScoresResponse).response.map((liveScoreResponse: Game) => {
+        // getHoursAndMinutesE
+      });
     } else {
       getNbaLiveScores()
-        .then((res) => {
-          console.log(res.data);
-
+        .then((res: AxiosResponse<GetNbaLiveScoresResponse>) => {
+          console.log('Live Scores: ', res.data);
         })
         .catch((err) => {
           console.error(err);
