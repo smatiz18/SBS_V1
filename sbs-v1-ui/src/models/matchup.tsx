@@ -3,6 +3,7 @@ import { NbaPlayerAggGameStatsHistorical } from "./nba-player-agg-game-stats-his
 import { NbaTeamAggGameStatsHistorical } from "./nba-team-agg-game-stats-historical";
 import { NbaTeamStats } from "./nba-team-stats";
 import { Event } from "./odds/odds";
+import { Game } from "./services/get-nba-live-scores-response";
 
 export interface Matchup {
     away: TeamInfo,
@@ -11,6 +12,7 @@ export interface Matchup {
     playerAggGameStats: NbaPlayerAggGameStatsHistorical[],
     oddsEvent?: Event,
     dateStart?: any;
+    liveScore?: Game
 }
 
 export interface TeamInfo {

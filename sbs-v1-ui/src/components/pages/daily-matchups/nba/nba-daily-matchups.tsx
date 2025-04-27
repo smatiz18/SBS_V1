@@ -20,7 +20,7 @@ import _ from 'lodash';
 import TooltipIcon from '../../../common/tooltip/tooltip-icon';
 import { motion } from "framer-motion";
 import { ring2 } from 'ldrs'
-import { Game, GetNbaLiveScoresResponse } from '../../../../models/services/get-nba-live-scores-response';
+import { Game, GetNbaLiveScoresResponse, Score, Scores } from '../../../../models/services/get-nba-live-scores-response';
 import { AxiosResponse } from 'axios';
 import './nba-daily-matchups.scss';
 
@@ -29,16 +29,15 @@ const NbaDailyMatchups = () => {
   /* consts ***********************************************************************/
   const USE_MOCKS = true;
   const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
+  const [liveScoresMap, setLiveScoresMap] = useState({} as Record<string, Game>);
   const [showNoMatchupsAvailableContent, setShowNoMatchupsAvailableContent] = useState(false);
   const [lastDataRefreshDate, setLastDataRefreshDate] = useState(getCurrentDateEst());
   const [lastLiveScoreRefreshDate, setLastLiveScoreRefreshDate] = useState(getCurrentDateEst());
-
   /********************************************************************************/
 
   /* effects **********************************************************************/
   useEffect(() => {
     fetchInitData(USE_MOCKS /* use mock data */);
-    refreshLiveScores(USE_MOCKS /* use mock data */);
 
     const initDataInterval = setInterval(() => {
       console.log('Refreshing Data...');
@@ -46,17 +45,20 @@ const NbaDailyMatchups = () => {
       setLastDataRefreshDate(getCurrentDateEst());
     }, 15 /* min */ * 60 /* sec */ * 1000 /* ms */);
 
+    return () => clearInterval(initDataInterval);
+  }, []);
+
+  useEffect(() => {
+    refreshLiveScores(USE_MOCKS /* use mock data */);
+
     const liveScoreInterval = setInterval(() => {
       console.log('Refreshing Live Score...');
       refreshLiveScores(USE_MOCKS /* use mock data */);
       setLastLiveScoreRefreshDate(getCurrentDateEst());
     },  30 /* sec */ * 1000 /* ms */);
 
-    return () => {
-      clearInterval(initDataInterval);
-      clearInterval(liveScoreInterval);
-    };
-  }, []);
+    return () => clearInterval(liveScoreInterval);
+  }, [nbaMatchups]);
   /********************************************************************************/
 
   /* data parsers *****************************************************************/
@@ -146,21 +148,34 @@ const NbaDailyMatchups = () => {
   }
 
   const refreshLiveScores = async (useMock: boolean) => {
-    if (useMock) {
-      (nbaLiveScoresResponse.data as unknown as GetNbaLiveScoresResponse).response.map((liveScoreResponse: Game) => {
-        // getHoursAndMinutesE
-      });
-    } else {
-      getNbaLiveScores()
-        .then((res: AxiosResponse<GetNbaLiveScoresResponse>) => {
-          console.log('Live Scores: ', res.data);
-        })
-        .catch((err) => {
-          console.error(err);
-        })
+    const areAnyGamesLive = () => {
+      return nbaMatchups.some((matchup: Matchup) =>
+        matchup.dateStart < new Date().toISOString() || USE_MOCKS
+      );
+    };
+
+    if (nbaMatchups.length > 0 && areAnyGamesLive()) {
+      const transformAndSetLiveScoresMap = (resp: GetNbaLiveScoresResponse) => {
+        const currLiveScores = resp.response.reduce((prev: any, liveScoreResponse: Game) => {
+          prev[liveScoreResponse.teams.home.nickname] = liveScoreResponse;
+          return prev;
+        }, {});
+
+        setLiveScoresMap(currLiveScores);
+      };
+  
+      if (useMock) {
+        transformAndSetLiveScoresMap(nbaLiveScoresResponse.data as unknown as GetNbaLiveScoresResponse);
+      } else {
+        getNbaLiveScores()
+          .then((res: AxiosResponse<GetNbaLiveScoresResponse>) => {
+            transformAndSetLiveScoresMap(res.data);
+          })
+          .catch((err) => {
+            console.error('Error getting nba live scores!', err);
+          })
+      }
     }
-
-
   }
 
   const fetchInitData = async (useMock: boolean) => {
@@ -256,7 +271,7 @@ const NbaDailyMatchups = () => {
               <div className='main-content'>
                 {
                   nbaMatchups.map((nbaMatchup: Matchup) => (
-                    <MatchupComponent matchup={nbaMatchup} />
+                    <MatchupComponent matchup={nbaMatchup} liveScores={liveScoresMap[nbaMatchup.home.teamNickname]}/>
                   ))
                 }
               </div>

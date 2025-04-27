@@ -12,7 +12,8 @@ import { NbaPlayerAggGameStatsHistorical } from '../../../models/nba-player-agg-
 import { SportsCategories } from '../../../models/enums/sports-categories';
 import { PlayerStatsObj } from '../../../models/nba-player-game-stats-historical';
 import TooltipIcon from '../tooltip/tooltip-icon';
-import StatusCircle from '../status-circle/status-circle';
+import { Game } from '../../../models/services/get-nba-live-scores-response';
+import LiveScoreComponent from '../live-score/live-score.component';
 import './matchup.component.scss';
 
 const useMediaQuery = (query: string): boolean => {
@@ -42,18 +43,18 @@ const useMediaQuery = (query: string): boolean => {
   return matches;
 };
 
-const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
+const MatchupComponent: React.FC<{ matchup: Matchup, liveScores: Game }> = ({ matchup, liveScores }) => {
   const [selectedPlayer, setSelectedPlayer] = useState(matchup.away.projectedPlayers[0] || '');
   const [betOption, setBetOption] = useState(BetOptions.Team);
   const [awayPlayerOptions, setAwayPlayerOptions] = useState(matchup.away.projectedPlayers);
   const [homePlayerOptions, setHomePlayerOptions] = useState(matchup.home.projectedPlayers);
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
-
   /* effects **********************************************************************/
   useEffect(() => {
     setAwayPlayerOptions(matchup.away.projectedPlayers);
     setHomePlayerOptions(matchup.home.projectedPlayers);
   }, [matchup]);
+
   /********************************************************************************/
   /* event handlers ***************************************************************/
   const handleBetOptionsToggleChange = (event: any) => {
@@ -109,27 +110,7 @@ const MatchupComponent: React.FC<{ matchup: Matchup }> = ({ matchup }) => {
   /********************************************************************************/
   return (
     <div className="matchup-component">
-
-      <div className="live-score-container">
-        <div className="status-circle-wrapper">
-          <StatusCircle />
-        </div>
-        <div className="score-row">
-          <div className="team-score">
-            <div className="team-nickname">Wolves</div>
-            <div className="live-score">42</div>
-          </div>
-
-          <span className="score-divider">–</span>
-
-          <div className="team-score">
-            <div className="team-nickname">Lakers</div>
-            <div className="live-score">53</div>
-          </div>
-        </div>
-
-        <div className="game-status">Q2 | 2:30</div>
-      </div>
+      <LiveScoreComponent matchup={matchup} liveScores={liveScores}/>
       {
         isSmallScreen && 
           <div className='date-start'>
