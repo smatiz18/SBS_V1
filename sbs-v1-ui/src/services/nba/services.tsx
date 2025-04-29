@@ -13,7 +13,6 @@ import { NbaTeamAggGameStatsHistorical } from "../../models/nba-team-agg-game-st
 import { WebApiRes } from "../../models/services/web-api-res";
 import { NbaPlayerAggGameStatsHistorical } from "../../models/nba-player-agg-game-stats-historical";
 import { GetNbaPlayerStatsByNameAndSeasonRequest } from "../../models/services/get-nba-player-stats-by-name-and-season-request";
-import { GetNbaLiveScoresResponse } from "../../models/services/get-nba-live-scores-response";
 
 export const NBA_API_ROOT = '/nba-api';
 
@@ -55,5 +54,5 @@ export function getNbaTeamStats(req: GetNbaTeamStatsRequest) {
 }
 
 export function getNbaLiveScores() {
-  return axios.get<GetNbaLiveScoresResponse>(`${RUST_SERVER}${GET_NBA_LIVE_SCORES}`);
+  return axios.get<WebApiRes>(`${RUST_SERVER}${GET_NBA_LIVE_SCORES}`);
 }

@@ -1,16 +1,29 @@
 @use '../../../variables';
+@import '../../../mixins';
 
 .live-score-container {
+    @include animated-gradient(
+        $direction: 130deg,
+        $color-1: rgba(variables.$dk-dark-gray, .95),
+        $color-2: rgba(variables.$sbs-purple-blue-main, 0.85),
+        $transition: .3s
+    );
+
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
-    background-color: variables.$dk-dark-gray;
     margin: -20px 0px 20px 0px;
     padding: 0px 20px 20px 20px;
     width: 100%;
-    border: 1px solid variables.$fd-gray;
+    border: 1px solid rgb(variables.$dk-dark-gray, .25);
     border-radius: 10px 10px 4px 4px;
+    min-height: 97.5px;
+    max-height: 97.5px;
+
+    .waveform-wrapper {
+        margin: auto;
+    }
   
     .status-circle-wrapper {
         width: 100%;
@@ -38,17 +51,22 @@
                 .team-nickname {
                     font-size: 0.875rem;
                     font-weight: 400;
-                    color: variables.$text-subtle-lighter;
+                    color: variables.$silver;
                     text-transform: uppercase;
                     letter-spacing: 0.5px;
                 }
         
                 .live-score {
+                    @include glass-morphism(
+                        $background-color: rgb(variables.$dk-dark-gray, .25),
+                        $blur: 12px,
+                        $border-color: rgb(variables.$dk-dark-gray, .25)
+                    );
+
                     font-size: 1.375rem;
                     font-weight: 500;
                     letter-spacing: 0.5px;
                     color: variables.$text-color;
-                    background-color: rgb(variables.$fd-gray, .35);
                     padding: 6px 14px;
                     border-radius: 4px;
                     min-width: 60px;
@@ -73,7 +91,7 @@
         .game-status {
           font-size: 0.875rem;
           font-weight: 400;
-          color: variables.$text-subtle-lighter;
+          color: variables.$silver;
           letter-spacing: 0.5px;
           text-transform: uppercase;
         }

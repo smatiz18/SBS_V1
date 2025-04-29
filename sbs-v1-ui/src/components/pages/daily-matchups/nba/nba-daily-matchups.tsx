@@ -19,15 +19,16 @@ import { NbaPlayerAggGameStatsHistorical } from '../../../../models/nba-player-a
 import _ from 'lodash';
 import TooltipIcon from '../../../common/tooltip/tooltip-icon';
 import { motion } from "framer-motion";
-import { ring2 } from 'ldrs'
-import { Game, GetNbaLiveScoresResponse, Score, Scores } from '../../../../models/services/get-nba-live-scores-response';
+import { waveform } from 'ldrs'
+import { Game, GetNbaLiveScoresResponse } from '../../../../models/services/get-nba-live-scores-response';
 import { AxiosResponse } from 'axios';
+import { WebApiRes } from '../../../../models/services/web-api-res';
 import './nba-daily-matchups.scss';
 
 const NbaDailyMatchups = () => {
-  ring2.register();
+  waveform.register();
   /* consts ***********************************************************************/
-  const USE_MOCKS = true;
+  const USE_MOCKS = false;
   const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
   const [liveScoresMap, setLiveScoresMap] = useState({} as Record<string, Game>);
   const [showNoMatchupsAvailableContent, setShowNoMatchupsAvailableContent] = useState(false);
@@ -168,8 +169,8 @@ const NbaDailyMatchups = () => {
         transformAndSetLiveScoresMap(nbaLiveScoresResponse.data as unknown as GetNbaLiveScoresResponse);
       } else {
         getNbaLiveScores()
-          .then((res: AxiosResponse<GetNbaLiveScoresResponse>) => {
-            transformAndSetLiveScoresMap(res.data);
+          .then((res: AxiosResponse<WebApiRes>) => {
+            transformAndSetLiveScoresMap(res.data.data);
           })
           .catch((err) => {
             console.error('Error getting nba live scores!', err);
@@ -245,7 +246,7 @@ const NbaDailyMatchups = () => {
         {'No Matchups Available :('}
       </div>
     );
-  }
+  };
 
   return (
     <div className='daily-matchups-container'>
@@ -282,14 +283,12 @@ const NbaDailyMatchups = () => {
       {
         nbaMatchups.length == 0 && !showNoMatchupsAvailableContent && 
           <div className='loader-wrapper'>
-              <l-ring-2
-                size="30"
-                stroke="5"
-                stroke-length="0.25"
-                bg-opacity="0.1"
-                speed="0.8" 
-                color="rgb(71 85 105 / 1)" 
-              ></l-ring-2> 
+            <l-waveform
+              size="30"
+              stroke="3.25"
+              speed="1" 
+              color="rgb(71 85 105 / 1)" 
+            ></l-waveform> 
           </div>
       }
       {showNoMatchupsAvailableContent && noMatchupsContent()}

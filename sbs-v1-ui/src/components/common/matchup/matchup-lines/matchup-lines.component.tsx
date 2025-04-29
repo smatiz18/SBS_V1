@@ -18,7 +18,7 @@ import { Bookmakers } from "../../../../models/enums/bookmakers";
 import { grizzliesMagicPlayerOdds, grizzliesMagicTeamOdds, knicksCavsPlayersOdds, knicksCavsTeamOdds } from "../../../../test/nba-matchups-mocks";
 import TooltipIcon from "../../../common/tooltip/tooltip-icon";
 import { getCurrentDateEst } from "../../../../utils/utils";
-import { ring2 } from 'ldrs';
+import { waveform } from 'ldrs';
 import { motion } from "framer-motion";
 import './matchup-lines.component.scss';
 
@@ -27,9 +27,9 @@ const MatchupLines: React.FC<{
     betOption: BetOptions, 
     selectedPlayerName: string}> = ({matchup, betOption, selectedPlayerName}) => {  
     
-    ring2.register();
+    waveform.register();
     /* consts ***********************************************************************/
-    const USE_MOCKS = true;
+    const USE_MOCKS = false;
     const pageLabels = ['Optimal Odds', 'Bookmaker Lines'];
     const oddsApiSport = sportsKeyToOddsApiSports.get(matchup.oddsEvent?.sportKey || '') as OddsApiSports || null;
     const [shouldRender, setShouldRender] = useState(false);
@@ -170,14 +170,12 @@ const MatchupLines: React.FC<{
             {
                 !shouldRender && 
                     <div className='loader-wrapper'>
-                        <l-ring-2
-                        size="30"
-                        stroke="5"
-                        stroke-length="0.25"
-                        bg-opacity="0.1"
-                        speed="0.8" 
-                        color="rgb(71 85 105 / 1)" 
-                        ></l-ring-2> 
+                        <l-waveform
+                            size="30"
+                            stroke="3.25"
+                            speed="1" 
+                            color="rgb(71 85 105 / 1)" 
+                        ></l-waveform>
                     </div>
             }
             <div className="pagination-wrapper">

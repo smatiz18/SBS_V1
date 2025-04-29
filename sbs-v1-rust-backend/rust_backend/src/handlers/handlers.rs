@@ -292,7 +292,7 @@ pub async fn get_nba_players_by_team_and_season(
                 let cached_resp_obj = CachedWebApiResponse {
                     _id: cached_resp_id,
                     cached_date_time,
-                    response: resp_obj_as_web_api_res,
+                    response: resp_obj_as_web_api_res.clone(),
                     wait_refresh,
                 };
                 
@@ -307,7 +307,7 @@ pub async fn get_nba_players_by_team_and_season(
                     error!("Unable to cache response");
                 }
 
-                HttpResponse::Ok().json(resp_obj)
+                HttpResponse::Ok().json(resp_obj_as_web_api_res)
             },
             Err(e) => {
                 error!("Failed to parse response: {:?}", e);
@@ -340,11 +340,15 @@ pub async fn get_nba_live_scores(app_state: web::Data<AppState>) -> impl Respond
     
     let web_api_res = get_nba_live_scores_rapid_api().await;
     if web_api_res.data.is_some() {
-        match serde_json::from_value::<GetNbaLiveScoresResponse>(web_api_res.data.unwrap()) {
+        match serde_json::from_value::<GetNbaLiveScoresResponse>(web_api_res.clone().data.unwrap()) {
             Ok(resp_obj) => {
                 info!("Returned nba live scores");
                 info!("Caching response!");
                 
+                if cached_response_opt.is_some() {
+                    cached_response_opt.unwrap().response = web_api_res.clone();
+                }
+
                 let wait_refresh = 30 /* seconds */ * 
                     1000 /* millseconds */;
 
@@ -360,7 +364,7 @@ pub async fn get_nba_live_scores(app_state: web::Data<AppState>) -> impl Respond
                 let cached_resp_obj = CachedWebApiResponse {
                     _id: cached_resp_id,
                     cached_date_time,
-                    response: resp_obj_as_web_api_res,
+                    response: resp_obj_as_web_api_res.clone(),
                     wait_refresh,
                 };
                 
@@ -375,7 +379,7 @@ pub async fn get_nba_live_scores(app_state: web::Data<AppState>) -> impl Respond
                     error!("Unable to cache response");
                 }
 
-                HttpResponse::Ok().json(resp_obj)
+                HttpResponse::Ok().json(resp_obj_as_web_api_res)
             },
             Err(e) => {
                 error!("Failed to parse response: {:?}", e);

@@ -1,0 +1,54 @@
+@import './variables.scss';
+
+// Glass Morphism Effect for Dark Mode
+@mixin glass-morphism(
+  $background-color: rgb(variables.$dk-dark-gray, .25),
+  $blur: 12px,
+  $border-color: rgb(variables.$dk-dark-gray, .25) 
+) {
+  background: $background-color;
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  border: 1px solid $border-color;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+// Animated Gradient Background for Dark Mode
+@mixin animated-gradient(
+  $direction: 130deg,
+  $color-1:  rgba(variables.$dk-dark-gray, .95),
+  $color-2: rgba(variables.$sbs-purple-blue-main, 0.85),
+  $transition: $transition-medium
+) {
+  background: linear-gradient($direction, $color-1, $color-2);
+  background-size: 200% 200%;
+  transition: background-position $transition ease;
+  
+  &:hover {
+    background-position: 50% 50%;
+  }
+}
+
+// Gradient Text for Dark Mode
+@mixin gradient-text(
+  $direction: to right,
+  $color-1: variables.$text-subtle,
+  $color-2: variables.$text-subtle-lighter
+) {
+  background: linear-gradient($direction, $color-1, $color-2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+// Subtle Pattern for Dark Mode
+@mixin subtle-pattern(
+  $background-color: rgba(variables.$dk-dark-gray, .95),
+  $pattern-color: rgba(variables.$fd-gray, .45),
+  $pattern-size: 20px
+) {
+  background-color: $background-color;
+  background-image: radial-gradient($pattern-color 1px, transparent 1px);
+  background-size: $pattern-size $pattern-size;
+}
