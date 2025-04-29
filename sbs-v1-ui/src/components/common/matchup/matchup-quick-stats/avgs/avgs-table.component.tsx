@@ -251,7 +251,12 @@ const AvgsTable: React.FC<{
                         if (colHeader === 'Agg') {
                             return 'Points';
                         } else if (colHeader === 'σ') {
-                            return stdDeviation(points);
+                            const slice = colIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX];
+                            if (slice !== undefined && points !== undefined && slice !== 'all') {
+                                return stdDeviation(sliceLast(points, slice));
+                            } else if (slice === 'all') {
+                                return stdDeviation(points);
+                            }
                         } else if (colHeader.props?.id !== undefined) {
                             const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                             if (slice !== undefined && points !== undefined && slice !== 'all') {
@@ -269,7 +274,12 @@ const AvgsTable: React.FC<{
                         if (colHeader === 'Agg') {
                             return 'Assists';
                         } else if (colHeader === 'σ') {
-                            return stdDeviation(assists);
+                            const slice = colIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX];
+                            if (slice !== undefined && assists !== undefined && slice !== 'all') {
+                                return stdDeviation(sliceLast(assists, slice));
+                            } else if (slice === 'all') {
+                                return stdDeviation(assists);
+                            }
                         } else if (colHeader.props?.id !== undefined) {
                             const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                             if (slice !== undefined && assists !== undefined && slice !== 'all') {
@@ -288,7 +298,12 @@ const AvgsTable: React.FC<{
                         if (colHeader === 'Agg') {
                             return 'Rebounds';
                         } else if (colHeader === 'σ') {
-                            return stdDeviation(rebounds);
+                            const slice = colIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX];
+                            if (slice !== undefined && rebounds !== undefined && slice !== 'all') {
+                                return stdDeviation(sliceLast(rebounds, slice));
+                            } else if (slice === 'all') {
+                                return stdDeviation(rebounds);
+                            }
                         } else if (colHeader.props?.id !== undefined) {
                             const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                             if (slice !== undefined && rebounds !== undefined && slice !== 'all') {
@@ -306,7 +321,12 @@ const AvgsTable: React.FC<{
                         if (colHeader === 'Agg') {
                             return 'Pts + Ass';
                         } else if (colHeader === 'σ') {
-                            return stdDeviation(ptsAss);
+                            const slice = colIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX];
+                            if (slice !== undefined && ptsAss !== undefined && slice !== 'all') {
+                                return stdDeviation(sliceLast(ptsAss, slice));
+                            } else if (slice === 'all') {
+                                return stdDeviation(ptsAss);
+                            }
                         } else if (colHeader.props?.id !== undefined) {
                             const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                             if (slice !== undefined && ptsAss !== undefined && slice !== 'all') {
@@ -324,7 +344,12 @@ const AvgsTable: React.FC<{
                         if (colHeader === 'Agg') {
                             return 'Pts + Reb';
                         } else if (colHeader === 'σ') {
-                            return stdDeviation(ptsReb);
+                            const slice = colIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX];
+                            if (slice !== undefined && ptsReb !== undefined && slice !== 'all') {
+                                return stdDeviation(sliceLast(ptsReb, slice));
+                            } else if (slice === 'all') {
+                                return stdDeviation(ptsReb);
+                            }
                         } else if (colHeader.props?.id !== undefined) {
                             const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                             if (slice !== undefined && ptsReb !== undefined && slice !== 'all') {
@@ -342,7 +367,12 @@ const AvgsTable: React.FC<{
                         if (colHeader === 'Agg') {
                             return 'Pts + Reb + Ass';
                         } else if (colHeader === 'σ') {
-                            return stdDeviation(ptsRebAss);
+                            const slice = colIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX];
+                            if (slice !== undefined && ptsRebAss !== undefined && slice !== 'all') {
+                                return stdDeviation(sliceLast(ptsRebAss, slice));
+                            } else if (slice === 'all') {
+                                return stdDeviation(ptsRebAss);
+                            }
                         } else if (colHeader.props?.id !== undefined) {
                             const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                             if (slice !== undefined && ptsRebAss !== undefined && slice !== 'all') {
@@ -360,7 +390,12 @@ const AvgsTable: React.FC<{
                         if (colHeader === 'Agg') {
                             return 'Threes';
                         } else if (colHeader === 'σ') {
-                            return stdDeviation(threes);
+                            const slice = colIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX];
+                            if (slice !== undefined && threes !== undefined && slice !== 'all') {
+                                return stdDeviation(sliceLast(threes, slice));
+                            } else if (slice === 'all') {
+                                return stdDeviation(threes);
+                            }
                         } else if (colHeader.props?.id !== undefined) {
                             const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                             if (slice !== undefined && threes !== undefined && slice !== 'all') {
@@ -378,7 +413,12 @@ const AvgsTable: React.FC<{
                         if (colHeader === 'Agg') {
                             return '3 Pt. %';
                         } else if (colHeader === 'σ') {
-                            return stdDeviation(threePPct);
+                            const slice = colIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX];
+                            if (slice !== undefined && threePPct !== undefined && slice !== 'all') {
+                                return stdDeviation(sliceLast(threePPct, slice));
+                            } else if (slice === 'all') {
+                                return stdDeviation(threePPct);
+                            }
                         } else if (colHeader.props?.id !== undefined) {
                             const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                             if (slice !== undefined && threePPct !== undefined && slice !== 'all') {
@@ -396,7 +436,12 @@ const AvgsTable: React.FC<{
                         if (colHeader === 'Agg') {
                             return 'Field Goals';
                         } else if (colHeader === 'σ') {
-                            return stdDeviation(fieldGoals);
+                            const slice = colIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX];
+                            if (slice !== undefined && fieldGoals !== undefined && slice !== 'all') {
+                                return stdDeviation(sliceLast(fieldGoals, slice));
+                            } else if (slice === 'all') {
+                                return stdDeviation(fieldGoals);
+                            }
                         } else if (colHeader.props?.id !== undefined) {
                             const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                             if (slice !== undefined && fieldGoals !== undefined && slice !== 'all') {
@@ -414,7 +459,12 @@ const AvgsTable: React.FC<{
                         if (colHeader === 'Agg') {
                             return 'Field Goal %';
                         } else if (colHeader === 'σ') {
-                            return stdDeviation(fgp);
+                            const slice = colIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX];
+                            if (slice !== undefined && fgp !== undefined && slice !== 'all') {
+                                return stdDeviation(sliceLast(fgp, slice));
+                            } else if (slice === 'all') {
+                                return stdDeviation(fgp);
+                            }
                         } else if (colHeader.props?.id !== undefined) {
                             const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                             if (slice !== undefined && fgp !== undefined && slice !== 'all') {
@@ -432,7 +482,12 @@ const AvgsTable: React.FC<{
                         if (colHeader === 'Agg') {
                             return 'Free Throws';
                         } else if (colHeader === 'σ') {
-                            return stdDeviation(freeThrows);
+                            const slice = colIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX];
+                            if (slice !== undefined && freeThrows !== undefined && slice !== 'all') {
+                                return stdDeviation(sliceLast(freeThrows, slice));
+                            } else if (slice === 'all') {
+                                return stdDeviation(freeThrows);
+                            }
                         } else if (colHeader.props?.id !== undefined) {
                             const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                             if (slice !== undefined && freeThrows !== undefined && slice !== 'all') {
@@ -450,7 +505,12 @@ const AvgsTable: React.FC<{
                         if (colHeader === 'Agg') {
                             return 'Free Throw %';
                         } else if (colHeader === 'σ') {
-                            return stdDeviation(freeThrowPct);
+                            const slice = colIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX];
+                            if (slice !== undefined && freeThrowPct !== undefined && slice !== 'all') {
+                                return stdDeviation(sliceLast(freeThrowPct, slice));
+                            } else if (slice === 'all') {
+                                return stdDeviation(freeThrowPct);
+                            }
                         } else if (colHeader.props?.id !== undefined) {
                             const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                             if (slice !== undefined && freeThrowPct !== undefined && slice !== 'all') {
@@ -468,7 +528,12 @@ const AvgsTable: React.FC<{
                         if (colHeader === 'Agg') {
                             return 'Steals';
                         } else if (colHeader === 'σ') {
-                            return stdDeviation(steals);
+                            const slice = colIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX];
+                            if (slice !== undefined && steals !== undefined && slice !== 'all') {
+                                return stdDeviation(sliceLast(steals, slice));
+                            } else if (slice === 'all') {
+                                return stdDeviation(steals);
+                            }
                         } else if (colHeader.props?.id !== undefined) {
                             const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                             if (slice !== undefined && steals !== undefined && slice !== 'all') {
@@ -486,7 +551,12 @@ const AvgsTable: React.FC<{
                         if (colHeader === 'Agg') {
                             return 'Blocks';
                         } else if (colHeader === 'σ') {
-                            return stdDeviation(blocks);
+                            const slice = colIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX];
+                            if (slice !== undefined && blocks !== undefined && slice !== 'all') {
+                                return stdDeviation(sliceLast(blocks, slice));
+                            } else if (slice === 'all') {
+                                return stdDeviation(blocks);
+                            }
                         } else if (colHeader.props?.id !== undefined) {
                             const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                             if (slice !== undefined && blocks !== undefined && slice !== 'all') {
@@ -504,7 +574,12 @@ const AvgsTable: React.FC<{
                         if (colHeader === 'Agg') {
                             return 'Turnovers';
                         } else if (colHeader === 'σ') {
-                            return stdDeviation(turnovers);
+                            const slice = colIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX];
+                            if (slice !== undefined && turnovers !== undefined && slice !== 'all') {
+                                return stdDeviation(sliceLast(turnovers, slice));
+                            } else if (slice === 'all') {
+                                return stdDeviation(turnovers);
+                            }
                         } else if (colHeader.props?.id !== undefined) {
                             const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                             if (slice !== undefined && turnovers !== undefined && slice !== 'all') {
@@ -522,7 +597,12 @@ const AvgsTable: React.FC<{
                         if (colHeader === 'Agg') {
                             return 'Plus Minus';
                         } else if (colHeader === 'σ') {
-                            return stdDeviation(plusMinus);
+                            const slice = colIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX];
+                            if (slice !== undefined && plusMinus !== undefined && slice !== 'all') {
+                                return stdDeviation(sliceLast(plusMinus, slice));
+                            } else if (slice === 'all') {
+                                return stdDeviation(plusMinus);
+                            }
                         } else if (colHeader.props?.id !== undefined) {
                             const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                             if (slice !== undefined && plusMinus !== undefined && slice !== 'all') {
@@ -540,7 +620,12 @@ const AvgsTable: React.FC<{
                         if (colHeader === 'Agg') {
                             return 'Min';
                         } else if (colHeader === 'σ') {
-                            return stdDeviation(min);
+                            const slice = colIdxToAggValMap[PLAYER_COMP_AGG_COL_IDX];
+                            if (slice !== undefined && min !== undefined && slice !== 'all') {
+                                return stdDeviation(sliceLast(min, slice));
+                            } else if (slice === 'all') {
+                                return stdDeviation(min);
+                            }
                         } else if (colHeader.props?.id !== undefined) {
                             const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                             if (slice !== undefined && min !== undefined && slice !== 'all') {
@@ -586,7 +671,12 @@ const AvgsTable: React.FC<{
                             } else if (colHeader === 'Agg') {
                                 return 'q1';
                             } else if (colHeader === 'σ') {
-                                return stdDeviation(q1s);
+                                const slice = colIdxToAggValMap[TEAM_COMP_AGG_COL_IDX];
+                                if (slice !== undefined && q1s !== undefined && slice !== 'all') {
+                                    return stdDeviation(sliceLast(q1s, slice));
+                                } else if (slice === 'all') {
+                                    return stdDeviation(q1s);
+                                }  
                             } else if (colHeader.props?.id !== undefined) {
                                 const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                                 if (slice !== undefined && q1s !== undefined && slice !== 'all') {
@@ -606,7 +696,12 @@ const AvgsTable: React.FC<{
                             } else if (colHeader === 'Agg') {
                                 return 'q2';
                             } else if (colHeader === 'σ') {
-                                return stdDeviation(q2s);
+                                const slice = colIdxToAggValMap[TEAM_COMP_AGG_COL_IDX];
+                                if (slice !== undefined && q2s !== undefined && slice !== 'all') {
+                                    return stdDeviation(sliceLast(q2s, slice));
+                                } else if (slice === 'all') {
+                                    return stdDeviation(q2s);
+                                }  
                             } else if (colHeader.props?.id !== undefined) {
                                 const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                                 if (slice !== undefined && q2s !== undefined && slice !== 'all') {
@@ -627,7 +722,12 @@ const AvgsTable: React.FC<{
                             } else if (colHeader === 'Agg') {
                                 return 'h1';
                             } else if (colHeader === 'σ') {
-                                return stdDeviation(h1s);
+                                const slice = colIdxToAggValMap[TEAM_COMP_AGG_COL_IDX];
+                                if (slice !== undefined && h1s !== undefined && slice !== 'all') {
+                                    return stdDeviation(sliceLast(h1s, slice));
+                                } else if (slice === 'all') {
+                                    return stdDeviation(h1s);
+                                }  
                             } else if (colHeader.props?.id !== undefined) {
                                 const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                                 if (slice !== undefined && h1s !== undefined && slice !== 'all') {
@@ -647,7 +747,12 @@ const AvgsTable: React.FC<{
                             } else if (colHeader === 'Agg') {
                                 return 'q3';
                             } else if (colHeader === 'σ') {
-                                return stdDeviation(q3s);
+                                const slice = colIdxToAggValMap[TEAM_COMP_AGG_COL_IDX];
+                                if (slice !== undefined && q3s !== undefined && slice !== 'all') {
+                                    return stdDeviation(sliceLast(q3s, slice));
+                                } else if (slice === 'all') {
+                                    return stdDeviation(q3s);
+                                }                              
                             } else if (colHeader.props?.id !== undefined) {
                                 const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                                 if (slice !== undefined && q3s !== undefined && slice !== 'all') {
@@ -667,7 +772,12 @@ const AvgsTable: React.FC<{
                             } else if (colHeader === 'Agg') {
                                 return 'q4';
                             } else if (colHeader === 'σ') {
-                                return stdDeviation(q4s);
+                                const slice = colIdxToAggValMap[TEAM_COMP_AGG_COL_IDX];
+                                if (slice !== undefined && q4s !== undefined && slice !== 'all') {
+                                    return stdDeviation(sliceLast(q4s, slice));
+                                } else if (slice === 'all') {
+                                    return stdDeviation(q4s);
+                                }  
                             } else if (colHeader.props?.id !== undefined) {
                                 const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                                 if (slice !== undefined && q4s !== undefined && slice !== 'all') {
@@ -688,7 +798,12 @@ const AvgsTable: React.FC<{
                             } else if (colHeader === 'Agg') {
                                 return 'h2';
                             } else if (colHeader === 'σ') {
-                                return stdDeviation(h2s);
+                                const slice = colIdxToAggValMap[TEAM_COMP_AGG_COL_IDX];
+                                if (slice !== undefined && h2s !== undefined && slice !== 'all') {
+                                    return stdDeviation(sliceLast(h2s, slice));
+                                } else if (slice === 'all') {
+                                    return stdDeviation(h2s);
+                                }                            
                             } else if (colHeader.props?.id !== undefined) {
                                 const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                                 if (slice !== undefined && h2s !== undefined && slice !== 'all') {
@@ -708,7 +823,12 @@ const AvgsTable: React.FC<{
                             } else if (colHeader === 'Agg') {
                                 return 'total';
                             } else if (colHeader === 'σ') {
-                                return stdDeviation(totals);
+                                const slice = colIdxToAggValMap[TEAM_COMP_AGG_COL_IDX];
+                                if (slice !== undefined && totals !== undefined && slice !== 'all') {
+                                    return stdDeviation(sliceLast(totals, slice));
+                                } else if (slice === 'all') {
+                                    return stdDeviation(totals);
+                                }  
                             } else if (colHeader.props?.id !== undefined) {
                                 const slice = colIdxToAggValMap[parseInt(colHeader.props?.id)];
                                 if (slice !== undefined && totals !== undefined && slice !== 'all') {
