@@ -1,37 +1,64 @@
 @use '../variables';
+@import '../mixins';
 
 /* Typography */
 h1, h2, h3, p {
-    margin: 0 0 10px;
+  margin: 0 0 10px;
 }
 
 h1 {
-    font-size: 1.8rem;
-    color: variables.$header-text-color;
+  font-size: 1.8rem;
+  color: variables.$header-text-color;
 }
 
 h2 {
-    font-size: 1.5rem;
-    color: variables.$header-text-color;
+  font-size: 1.5rem;
+  color: variables.$header-text-color;
 }
 
 h3 {
-    font-size: 1.2rem;
-    color: variables.$header-text-color;
+  font-size: 1.2rem;
+  color: variables.$header-text-color;
 }
 
 p {
-    font-size: 1rem;
-    color: variables.$paragraph-text-color;
+  font-size: 1rem;
+  color: variables.$paragraph-text-color;
 }
 
 .main-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 
-    .nav-bar-container {
-        display: flex;
-        width: 100%;
+  .nav-bar-container {
+    display: flex;
+    width: 100%;
+  }
+
+  .pages-container {
+    flex: 1;
+  }
+
+  .footer-container {
+    flex-shrink: 0;
+    display: flex;
+    min-height: 4rem;
+
+    @include gradient(
+      $direction: 130deg,
+      $color-1: rgba(variables.$dk-dark-gray, .95),
+      $color-2: rgba(variables.$sbs-purple-blue-main, 0.85),
+      $transition: .3s
+    );
+
+    .content {
+        margin: auto;
+        text-align: center;
+        font-size: smaller;
+        color: variables.$text-subtle-lighter;
+        width: 700px;
+        height: 100%;
     }
+  }
 }

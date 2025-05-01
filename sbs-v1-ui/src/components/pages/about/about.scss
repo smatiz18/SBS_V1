@@ -23,7 +23,7 @@
     .about-content {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 20px 40px 40px 40px;
+        padding: 20px 40px 20px 40px;
         color: variables.$white-background-paragraph-color;
 
         @media (max-width: 500px) {
@@ -71,7 +71,7 @@
                 color: variables.$text-subtle-lighter;
                 border-radius: 12px;
                 transition: 0.3s;
-                min-height: 450px;
+                min-height: 460px;
 
                 @media (max-width: 100vh) {
                     height: fit-content;

@@ -67,6 +67,14 @@ const App = () => {
             <Route path="*" element={<Container path={PageRoutes.about} />} />
           </Routes>
         </div>
+        <div className="footer-container">
+          <div className="content">
+            {
+              `Sports Betting Sandbox does not own any team logos or images used herein.
+              All team logos and images are trademarks of, and owned by, their respective leagues and teams, and this application is not affiliated with any of them.`
+            }
+          </div>
+        </div>
       </BrowserRouter>
     </div>
   );

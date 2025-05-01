@@ -1,6 +1,5 @@
 @import './variables.scss';
 
-// Glass Morphism Effect for Dark Mode
 @mixin glass-morphism(
   $background-color: rgb(variables.$dk-dark-gray, .25),
   $blur: 12px,
@@ -13,7 +12,6 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-// Animated Gradient Background for Dark Mode
 @mixin animated-gradient(
   $direction: 130deg,
   $color-1:  rgba(variables.$dk-dark-gray, .95),
@@ -29,7 +27,17 @@
   }
 }
 
-// Gradient Text for Dark Mode
+@mixin gradient(
+  $direction: 130deg,
+  $color-1:  rgba(variables.$dk-dark-gray, .95),
+  $color-2: rgba(variables.$sbs-purple-blue-main, 0.85),
+  $transition: $transition-medium
+) {
+  background: linear-gradient($direction, $color-1, $color-2);
+  background-size: 200% 200%;
+  transition: background-position $transition ease;
+}
+
 @mixin gradient-text(
   $direction: to right,
   $color-1: variables.$text-subtle,
@@ -42,13 +50,62 @@
   display: inline-block;
 }
 
-// Subtle Pattern for Dark Mode
-@mixin subtle-pattern(
-  $background-color: rgba(variables.$dk-dark-gray, .95),
-  $pattern-color: rgba(variables.$fd-gray, .45),
-  $pattern-size: 20px
+
+@mixin bg-fade(
+  $color,
+  $direction: to bottom,
+  $start-opacity: 1,
+  $end-opacity: 0
 ) {
-  background-color: $background-color;
-  background-image: radial-gradient($pattern-color 1px, transparent 1px);
-  background-size: $pattern-size $pattern-size;
+  background: linear-gradient(
+    $direction,
+    rgba($color, $start-opacity) 0%,
+    rgba($color, $end-opacity)   100%
+  );
+}
+
+
+// 2. Dual-Tone Mesh (Angular)
+//    Two colors blending at an angle, with opacity fade baked in
+//    Usage: @include mesh-gradient($main-purple, $blue-highlight, 135deg);
+@mixin mesh-gradient(
+  $color1,
+  $color2,
+  $angle: 135deg
+) {
+  background: linear-gradient(
+      $angle,
+      rgba($color1, 1) 0%,
+      rgba($color1, 0) 50%,
+      rgba($color2, 0) 50%,
+      rgba($color2, 1) 100%
+    );
+}
+
+@mixin multi-mesh($c1, $c2, $c3) {
+  background:
+    radial-gradient(circle at top left,    rgba($c1, .8) 0%, transparent 60%),
+    radial-gradient(circle at center,      rgba($c2, .6) 0%, transparent 70%),
+    radial-gradient(circle at bottom right,rgba($c3, .4) 0%, transparent 80%);
+  background-blend-mode: screen;
+}
+
+@mixin noise-fade($color) {
+  $noise: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E";
+  background:
+    linear-gradient(
+      to bottom,
+      rgba($color, 1) 0%,
+      rgba($color, 0) 100%
+    ),
+    url($noise);
+  background-blend-mode: overlay;
+}
+
+@mixin glass-overlay(
+  $overlay-color: rgba($white-background-header-title-color, .5),
+  $blur: 20px
+) {
+  background-color: $overlay-color;
+  backdrop-filter: blur($blur);
 }
