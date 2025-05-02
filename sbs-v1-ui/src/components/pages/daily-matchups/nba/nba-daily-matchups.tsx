@@ -11,7 +11,7 @@ import { SportsCategories } from '../../../../models/enums/sports-categories';
 import { NbaTeamStats } from '../../../../models/nba-team-stats';
 import { GetNbaTeamStatsRequest } from '../../../../models/services/get-nba-team-stats-request';
 import { SeasonType } from '../../../../models/enums/season-type';
-import { CURRENT_NBA_SEASON, getCurrentDateEst, getHoursAndMinutesEst } from '../../../../utils/utils';
+import { CURRENT_NBA_SEASON, getCurrentDateEst } from '../../../../utils/utils';
 import { NbaTeamAggGameStatsHistorical } from '../../../../models/nba-team-agg-game-stats-historical';
 import { nbaLiveScoresResponse, oddsEventsMockResp, rotoWireDailyMatchupsMockResp } from '../../../../test/nba-matchups-mocks';
 import { GetNbaPlayerStatsByNameAndSeasonRequest, Name } from '../../../../models/services/get-nba-player-stats-by-name-and-season-request';
@@ -23,6 +23,7 @@ import { waveform } from 'ldrs'
 import { Game, GetNbaLiveScoresResponse } from '../../../../models/services/get-nba-live-scores-response';
 import { AxiosResponse } from 'axios';
 import { WebApiRes } from '../../../../models/services/web-api-res';
+import { Button } from '@mui/material';
 import './nba-daily-matchups.scss';
 
 const NbaDailyMatchups = () => {
@@ -250,16 +251,22 @@ const NbaDailyMatchups = () => {
 
   return (
     <div className='daily-matchups-container'>
-      <div className='header'>
-        <h1 className='header-title'>NBA Matchups</h1>
-        <div className='date-time-wrapper'>
-          {`@${lastDataRefreshDate}`}
-          <div className='tooltip-icon-wrapper'>
-            <TooltipIcon description='All non odds data is refreshed every 15 min' isLightMode={true} />
+      <div className='header-wrapper'>
+        <div className='header'>
+          <h1 className='header-title'>NBA Matchups</h1>
+          <div className='date-time-wrapper'>
+            {`@${lastDataRefreshDate}`}
+            <div className='tooltip-icon-wrapper'>
+              <TooltipIcon description='All non odds data is refreshed every 15 min' isLightMode={true} />
+            </div>
+          </div>
+        </div>
+        <div className='options-row'>
+          <div className='options-row-item'>
+            <Button variant="contained" sx={{ backgroundColor: '#0342FF', font: 'IBM Plex Sans' }}>Bet Report</Button>
           </div>
         </div>
       </div>
-
       <div className='content'>
         {
           nbaMatchups.length > 0 ? (
