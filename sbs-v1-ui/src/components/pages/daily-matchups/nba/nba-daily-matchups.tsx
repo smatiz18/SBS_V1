@@ -23,7 +23,9 @@ import { waveform } from 'ldrs'
 import { Game, GetNbaLiveScoresResponse } from '../../../../models/services/get-nba-live-scores-response';
 import { AxiosResponse } from 'axios';
 import { WebApiRes } from '../../../../models/services/web-api-res';
-import { Button } from '@mui/material';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { toggleButtonSx, toggleGroupSx } from '../../../../models/form-styles/styles';
+import BetReport from '../../../common/bet-report/bet-report';
 import './nba-daily-matchups.scss';
 
 const NbaDailyMatchups = () => {
@@ -35,6 +37,7 @@ const NbaDailyMatchups = () => {
   const [showNoMatchupsAvailableContent, setShowNoMatchupsAvailableContent] = useState(false);
   const [lastDataRefreshDate, setLastDataRefreshDate] = useState(getCurrentDateEst());
   const [lastLiveScoreRefreshDate, setLastLiveScoreRefreshDate] = useState(getCurrentDateEst());
+  const [pageView, setPageView] = useState('matchups');
   /********************************************************************************/
 
   /* effects **********************************************************************/
@@ -61,6 +64,10 @@ const NbaDailyMatchups = () => {
 
     return () => clearInterval(liveScoreInterval);
   }, [nbaMatchups]);
+
+  const handlePageViewChange = (event: any) => {
+    setPageView(event.target.value);
+  };
   /********************************************************************************/
 
   /* data parsers *****************************************************************/
@@ -253,7 +260,7 @@ const NbaDailyMatchups = () => {
     <div className='daily-matchups-container'>
       <div className='header-wrapper'>
         <div className='header'>
-          <h1 className='header-title'>NBA Matchups</h1>
+          <h1 className='header-title'>{`NBA ${pageView === 'matchups' ? 'Matchups' : 'Bet Report'}`}</h1>
           <div className='date-time-wrapper'>
             {`@${lastDataRefreshDate}`}
             <div className='tooltip-icon-wrapper'>
@@ -262,43 +269,70 @@ const NbaDailyMatchups = () => {
           </div>
         </div>
         <div className='options-row'>
-          <div className='options-row-item'>
-            <Button variant="contained" sx={{ backgroundColor: '#0342FF', font: 'IBM Plex Sans' }}>Bet Report</Button>
+          <div className="toggle-wrapper">
+            <ToggleButtonGroup
+              value={pageView}
+              exclusive
+              onChange={handlePageViewChange}
+              aria-label="text alignment"
+              sx={toggleGroupSx}
+            >
+              <ToggleButton sx={toggleButtonSx} value={'matchups'}>
+                Matchups
+              </ToggleButton>
+              <ToggleButton sx={toggleButtonSx} value={'betReport'}>
+                Bet Report
+              </ToggleButton>
+            </ToggleButtonGroup>
           </div>
         </div>
       </div>
+
       <div className='content'>
         {
-          nbaMatchups.length > 0 ? (
-            <motion.div
-              className="fade-in"
-              initial={{ opacity: 0, transform: "translateY(10px)" }}
-              animate={{ opacity: 1, transform: "translateY(0px)" }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-            >
-              <div className='main-content'>
-                {
-                  nbaMatchups.map((nbaMatchup: Matchup) => (
-                    <MatchupComponent matchup={nbaMatchup} liveScores={liveScoresMap[nbaMatchup.home.teamNickname]}/>
-                  ))
-                }
-              </div>
-            </motion.div>
-          ) : null
+          pageView === 'betReport' && 
+          <div className='bet-report'>
+            <div className='main-content'>
+              <BetReport id={''} />
+            </div>
+          </div>
+        }
+        {
+          pageView === 'matchups' && 
+          <div className="matchups">
+            {
+              nbaMatchups.length > 0 && (
+                <motion.div
+                  className="fade-in"
+                  initial={{ opacity: 0, transform: "translateY(10px)" }}
+                  animate={{ opacity: 1, transform: "translateY(0px)" }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                >
+                  <div className='main-content'>
+                    {
+                      nbaMatchups.map((nbaMatchup: Matchup) => (
+                        <MatchupComponent matchup={nbaMatchup} liveScores={liveScoresMap[nbaMatchup.home.teamNickname]}/>
+                      ))
+                    }
+                  </div>
+                </motion.div>
+              )
+            }
+            {
+              nbaMatchups.length === 0 && !showNoMatchupsAvailableContent && 
+                <div className='loader-wrapper'>
+                  <l-waveform
+                    size="30"
+                    stroke="3.25"
+                    speed="1" 
+                    color="rgb(71 85 105 / 1)" 
+                  ></l-waveform> 
+                </div>
+            }
+            {showNoMatchupsAvailableContent && noMatchupsContent()}
+          </div>
         }
       </div>
-      {
-        nbaMatchups.length == 0 && !showNoMatchupsAvailableContent && 
-          <div className='loader-wrapper'>
-            <l-waveform
-              size="30"
-              stroke="3.25"
-              speed="1" 
-              color="rgb(71 85 105 / 1)" 
-            ></l-waveform> 
-          </div>
-      }
-      {showNoMatchupsAvailableContent && noMatchupsContent()}
       <div className='footer'>
       </div>
     </div>

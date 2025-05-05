@@ -1,0 +1,54 @@
+@use '../../../variables';
+@import '../../../mixins.scss';
+
+
+
+.bet-report-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: max-content;
+
+    .params-wrapper {
+        background-color: variables.$ag-grid-dark-blue-header;
+        padding: 10px 20px;
+        border-radius: 8px;
+        height: 100%;
+
+        .params {
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            display: flex;
+            align-items: center;
+            vertical-align: middle;
+
+            .betting-strategy-params {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                vertical-align: middle;
+                gap: 1rem;
+                padding: 0 2rem;
+
+                .slider-wrapper {
+                    width: 150px;
+                }
+ 
+            }
+
+            .calculate-button-wrapper {
+                display: flex;
+                align-items: center;
+                vertical-align: middle;
+                padding: 0 1rem;
+            }
+        }
+    }
+
+    .content-wrapper, 
+    .content {
+        width: 100%;
+        height: 100%;
+    }
+}

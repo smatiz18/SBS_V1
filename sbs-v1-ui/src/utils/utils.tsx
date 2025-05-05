@@ -33,7 +33,7 @@ export const getBetTypeLabel = (betType: TeamBetTypes | PlayerBetTypes) => {
         default:
             return betType;
     }
-}
+};
 
 export const range = (start: number, end: number): number[] => {
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
@@ -47,14 +47,14 @@ export const sliceLast = (vec: number[], slice: number) => {
     }
 
     return vec.slice(vec.length - slice);
-}
+};
 
 export const sliceFirst = (vec: number[], slice: number) => {
     if (slice >= vec.length) {
         return vec;
     }
     return vec.slice(0, slice);
-}
+};
 
 export const stdDeviation = (vec: number[]) => {
     if (vec.length === 0) return 0;
@@ -62,15 +62,15 @@ export const stdDeviation = (vec: number[]) => {
     const squaredDiffs = vec.map(num => Math.pow(num - mean, 2));
     const variance = squaredDiffs.reduce((acc, diff) => acc + diff, 0) / vec.length;
     return Math.sqrt(variance);
-}
+};
 
 export const sortGameStatsObjs = (stats: GameStats[]) => {
     return stats.sort((a, b) => Date.parse(a.dateStart) - Date.parse(b.dateStart));
-}
+};
 
 export const sortNbaPlayerStatsObjs = (stats: PlayerStatsObj[]) => {
     return stats.sort((a, b) => Date.parse(a.dateStart || '') - Date.parse(b.dateStart || ''));
-}
+};
 
 export const calculateRollingAverages = (vec: number[], period: number) => {
     let rollingAvgs = [];
@@ -119,7 +119,7 @@ export const getCurrentDateEst = () => {
     const date = new Date();
     const zonedDate = toZonedTime(date, EST_TIMEZONE);
     return format(zonedDate, "MM/dd/yyyy,  hh:mm a 'EST'", { timeZone: EST_TIMEZONE });
-}
+};
 
 export const convertUTCStringToESTString = (utcString: string) => {
     // Parse UTC string to Date object
@@ -132,4 +132,42 @@ export const convertUTCStringToESTString = (utcString: string) => {
   
     return estDateString;
 };
-  
+
+export const convertAmericanOddsToDecimalOdds = (americanOdds: number) => {
+    if (americanOdds > 0) {
+        return (americanOdds / 100) + 1;
+    } else {
+        return (100 / -americanOdds) + 1;
+    }
+};
+
+export const calculateKellyCriterion = (
+    fractionalKelly: number,
+    winProbability: number,
+    americanOdds: number
+) => {
+    return fractionalKelly * (winProbability - (1 - winProbability) / (convertAmericanOddsToDecimalOdds(americanOdds)));
+};
+
+export const calculatePayout = (
+    americanOdds: number,
+    wager: number
+) => {
+    return convertAmericanOddsToDecimalOdds(americanOdds) * wager;
+};
+
+export const calculateEV = (
+    winProbability: number,
+    payout: number,
+    wager: number
+) => {
+    return (winProbability * payout) - (1 - winProbability) * -wager;
+};
+
+export const calculateImpliedProbability = (americanOdds: number) => {
+    if (americanOdds > 0) {
+        return 100 / (americanOdds + 100);
+    } else {
+        return -americanOdds / (-americanOdds + 100);
+    }
+}

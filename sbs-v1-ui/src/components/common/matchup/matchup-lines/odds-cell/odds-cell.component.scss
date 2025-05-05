@@ -50,7 +50,9 @@
 
   .sportsbook-description {
     display: flex;
+    align-items: center;
     justify-content: center;
+    line-height: 1rem;
     writing-mode: vertical-rl;
     text-orientation: mixed;    
     font-size: .7rem;
@@ -80,12 +82,14 @@ div[className=".odds-cell-"] {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease-in-out;
 
-  .odds-label {
-    font-size: .7rem;
+  .odds-value {
+    font-weight: 600;
   }
 
+  .odds-label,
   .odds-value {
-    font-size: .7rem;
-    font-weight: 600;
+    font-size: 0.7rem;
+    line-height: 1rem;
+    display: block;
   }
 }

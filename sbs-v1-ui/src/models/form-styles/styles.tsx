@@ -210,3 +210,29 @@ export const toggleGroupSx = {
 export const toggleButtonSx = {
   textTransform: 'none'
 };
+
+export const primaryContainedButtonSx = {
+  fontFamily: sbsFont,
+  textTransform: 'none',
+  borderRadius: '4px',
+  backgroundColor: sbsPurpleBlueMain,
+  fontSize: '1rem',
+  color: 'white',
+  '&:hover': {
+    backgroundColor: darkenSbsPurpleBlueMain,
+  },
+};
+
+export const boxStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '80vw',
+  height: '80vh',
+  bgcolor: 'background.paper',
+  border: `1px solid ${fdGray}`,
+  borderRadius: '10px',
+  boxShadow: 24,
+  p: 4,
+};
