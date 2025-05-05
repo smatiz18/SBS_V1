@@ -202,18 +202,23 @@ def load_nba_player_historical_odds_by_season(season, season_type):
         player_odds_per_game = dict()
         
         for odds in odds_for_game:
-            dk_odds = list(filter(lambda x: x['key'] == 'draftkings' , odds['bookmakerOdds']))[0]
-            player_odds = dict()
-            
-            for market in dk_odds['markets']:
-                for outcome in market['outcomes']:
-                    if 'description' in outcome and outcome['description'] == player_full_name: 
-                        new_market_obj = copy.deepcopy(market)
-                        del new_market_obj['outcomes']
-                        new_market_obj['outcome'] = outcome
-                        player_odds[market['key']] = new_market_obj
-            
-            player_odds_per_game[f'{odds['nbaApiId']}'] = player_odds
+            dk_odds = list(filter(lambda x: x['key'] == 'draftkings' , odds['bookmakerOdds']))
+            if dk_odds:
+                dk_odds = dk_odds[0]
+                player_odds = dict()
+                
+                for market in dk_odds['markets']:
+                    player_outcomes = []
+                    for outcome in market['outcomes']:
+                        if 'description' in outcome and outcome['description'] == player_full_name: 
+                            player_outcomes.append(outcome)
+                            
+                    if player_outcomes:
+                        market_copy = copy.deepcopy(market)
+                        market_copy['outcomes'] = player_outcomes
+                        player_odds[market['key']] = market_copy
+                
+                player_odds_per_game[f'{odds['nbaApiId']}'] = player_odds
         
         player_agg_odds_hist_doc = copy.deepcopy(player_stats)
         del player_agg_odds_hist_doc['playerStats']
@@ -252,20 +257,28 @@ def load_latest_nba_player_historical_odds_by_game_ids(nbaApiIds):
     game_id_to_player_odds = []
     for odds in latest_odds:
         try:
-            markets = odds['bookmakerOdds'][0]['markets']
+            markets = odds['bookmakerOdds'][0]['markets'] # using the first avail odds for now...
             
             player_markets = list(filter(lambda x: x['key'] not in nba_team_market, markets))
             
             odds_for_player = dict()              
             for market in player_markets:
+                
                 outcomes = market['outcomes']
                 
                 for outcome in outcomes:
+                    market_copy = copy.deepcopy(market)
                     name = outcome['description']
-                    if name in odds_for_player:
-                        odds_for_player[name][market['key']] = outcome
-                    else:
-                        odds_for_player[name] = { market['key']: outcome }
+                    
+                    if name not in odds_for_player:
+                        market_copy['outcomes'] = [outcome]
+                        odds_for_player[name] = { market['key']: market_copy }
+                    elif name in odds_for_player and market['key'] not in odds_for_player[name]:
+                        market_copy['outcomes'] = [outcome]
+                        odds_for_player[name][market['key']] = market_copy
+                    elif name in odds_for_player and market['key'] in odds_for_player[name]:
+                        odds_for_player[name][market['key']]['outcomes'].append(outcome)
+                    
             game_id_to_player_odds.append({ odds['nbaApiId']: odds_for_player })
             
         except Exception as e:
@@ -284,7 +297,7 @@ def load_latest_nba_player_historical_odds_by_game_ids(nbaApiIds):
                 player_id = None
                 firstname = None
                 lastname = None
-                if player_name in home_team_players or player_name in home_team_players:
+                if player_name in home_team_players or player_name in away_team_players:
                     if player_name in home_team_players:
                         player_id = home_team_players[player_name]['playerId']
                         firstname = home_team_players[player_name]['playerFirstname']
