@@ -30,8 +30,13 @@ import './nba-daily-matchups.scss';
 
 const NbaDailyMatchups = () => {
   waveform.register();
-  /* consts ***********************************************************************/
+
+  /* feature flags ****************************************************************/    
   const USE_MOCKS = false;
+  const IS_BET_REPORT_LIVE = false;
+  /********************************************************************************/
+
+  /* consts ***********************************************************************/
   const [nbaMatchups, setNbaMatchups] = useState([] as Matchup[]);
   const [liveScoresMap, setLiveScoresMap] = useState({} as Record<string, Game>);
   const [showNoMatchupsAvailableContent, setShowNoMatchupsAvailableContent] = useState(false);
@@ -268,24 +273,26 @@ const NbaDailyMatchups = () => {
             </div>
           </div>
         </div>
-        <div className='options-row'>
-          <div className="toggle-wrapper">
-            <ToggleButtonGroup
-              value={pageView}
-              exclusive
-              onChange={handlePageViewChange}
-              aria-label="text alignment"
-              sx={toggleGroupSx}
-            >
-              <ToggleButton sx={toggleButtonSx} value={'matchups'}>
-                Matchups
-              </ToggleButton>
-              <ToggleButton sx={toggleButtonSx} value={'betReport'}>
-                Bet Report
-              </ToggleButton>
-            </ToggleButtonGroup>
+        {
+          IS_BET_REPORT_LIVE && <div className='options-row'>
+            <div className="toggle-wrapper">
+              <ToggleButtonGroup
+                value={pageView}
+                exclusive
+                onChange={handlePageViewChange}
+                aria-label="text alignment"
+                sx={toggleGroupSx}
+              >
+                <ToggleButton sx={toggleButtonSx} value={'matchups'}>
+                  Matchups
+                </ToggleButton>
+                <ToggleButton sx={toggleButtonSx} value={'betReport'}>
+                  Bet Report
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </div>
           </div>
-        </div>
+        }
       </div>
 
       <div className='content'>
