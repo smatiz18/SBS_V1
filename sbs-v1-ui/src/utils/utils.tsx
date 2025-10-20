@@ -5,7 +5,7 @@ import { GameStats } from "../models/nba-team-agg-game-stats-historical";
 import { PlayerStatsObj } from "../models/nba-player-game-stats-historical";
 
 // TODO ensure this gets updated every season
-export const CURRENT_NBA_SEASON = 2024;
+export const CURRENT_NBA_SEASON = 2025;
 export const EST_TIMEZONE = 'America/New_York';
 
 export const getBetTypeLabel = (betType: TeamBetTypes | PlayerBetTypes) => {

@@ -93,11 +93,6 @@ const BetReport: React.FC<{id: string}> = ({}) => {
     // Column Definitions: Defines the columns to be displayed.
     const [colDefs, setColDefs] = useState([
         { 
-            field: 'modelName',
-            headerName: 'Model',
-            pinned: 'left',
-        },
-        { 
             field: 'description',
             headerName: 'Desc.',
             pinned: 'left',
@@ -218,7 +213,7 @@ const BetReport: React.FC<{id: string}> = ({}) => {
 
     return (
         <div className='bet-report-container'>
-            <ThemeProvider theme={darkTheme}>
+            {/* <ThemeProvider theme={darkTheme}> */}
                 <div className='params-wrapper'>
                     <div className='params'>
                         <div className='param-wrapper'>
@@ -287,7 +282,7 @@ const BetReport: React.FC<{id: string}> = ({}) => {
                         </div>
                     </div>
                 </div>
-            </ThemeProvider>
+            {/* </ThemeProvider> */}
             <div className='content-wrapper'>
                 <div className='content'>
                     <div className='grid-wrapper' style={{ flex: 1 }}>

@@ -432,9 +432,17 @@ nba_season_dates_map = {
         'regular_season_start': '2024-10-22',
         'regular_season_end': '2025-04-13', 
         'playoff_season_start': '2025-04-19',
-        'playoff_season_end': '2025-06-30', # placeholder
+        'playoff_season_end': '2025-06-30',
         'all_season_start': '2024-10-22',
-        'all_season_end': '2025-06-30', # placeholder
+        'all_season_end': '2025-06-30',
+    },
+    2025: {
+        'regular_season_start': '2025-10-21',
+        'regular_season_end': '2026-04-12', 
+        'playoff_season_start': '2026-04-14',
+        'playoff_season_end': '2026-06-30', # placeholder
+        'all_season_start': '2025-10-21',
+        'all_season_end': '2026-06-30', # placeholder
     }
 }
 
