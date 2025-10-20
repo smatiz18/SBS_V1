@@ -42,7 +42,8 @@ pub static NBA_SEASON_DATE_MAP: Lazy<HashMap<u32, SeasonDateObj>> = Lazy::new(||
         }
     );
     map.insert(
-        2025: {
+        2025,
+        SeasonDateObj {
             regular_season_start: '2025-10-21',
             regular_season_end: '2026-04-12', 
             playoff_season_start: '2026-04-14',
