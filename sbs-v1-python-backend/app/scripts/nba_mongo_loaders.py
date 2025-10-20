@@ -738,23 +738,27 @@ def populate_nba_game_stats_for_game_ids(game_ids):
 
     # iterate through games and create the game stats object
     for game in games:
-        game_id_to_applicable_season_dict[game.get('id')] = get_season_types_given_season_and_date(
-            game.get('season'), 
-            game.get('dateStart')
-        )
-        
-        team_home_id = game.get('teamsHomeId')
-        team_visitors_id = game.get('teamsVisitorsId')
-        home_game_stats = map_nba_games_historical_obj_to_game_stats_obj(game, team_home_id)
-        visitor_game_stats = map_nba_games_historical_obj_to_game_stats_obj(game, team_visitors_id)
-        
-        del home_game_stats['teamName']
-        del home_game_stats['teamNickname']
-        del visitor_game_stats['teamName']
-        del visitor_game_stats['teamNickname']
-        
-        team_id_to_game_stats_dict[team_home_id] = home_game_stats
-        team_id_to_game_stats_dict[team_visitors_id] = visitor_game_stats
+        try:
+            game_id_to_applicable_season_dict[game.get('id')] = get_season_types_given_season_and_date(
+                game.get('season'), 
+                game.get('dateStart')
+            )
+            
+            team_home_id = game.get('teamsHomeId')
+            team_visitors_id = game.get('teamsVisitorsId')
+            home_game_stats = map_nba_games_historical_obj_to_game_stats_obj(game, team_home_id)
+            visitor_game_stats = map_nba_games_historical_obj_to_game_stats_obj(game, team_visitors_id)
+            
+            del home_game_stats['teamName']
+            del home_game_stats['teamNickname']
+            del visitor_game_stats['teamName']
+            del visitor_game_stats['teamNickname']
+            
+            team_id_to_game_stats_dict[team_home_id] = home_game_stats
+            team_id_to_game_stats_dict[team_visitors_id] = visitor_game_stats
+
+        except Exception as e:
+            print('unable to transform home games stats or visitor game stats', e)
 
     # find applicable season given game date and append games stats to existing object 
     inserted_game_ids = []
