@@ -3,7 +3,19 @@ import { NbaTeamStats } from '../../../../models/nba-team-stats';
 import './matchup-team-stats.component.scss';
 
 const MatchupTeamStats: React.FC<{teamStats: NbaTeamStats, sportsCategory: SportsCategories, isHome: boolean}> = ({teamStats, sportsCategory, isHome}) => {
-    const getTeamStatsComponentHelper = (label: string, value: string) => {
+  teamStats = teamStats || {
+    totalWins: 0,
+    totalLosses: 0,
+    homeWins: 0,
+    homeLosses: 0,
+    awayWins: 0,
+    awayLosses: 0,
+    lastTenTotalWins: 0,
+    lastTenTotalLosses: 0,
+    totalStreak: '-',
+  };  
+  
+  const getTeamStatsComponentHelper = (label: string, value: string) => {
         return (
           <div className='team-stat'>
             <span className='label'>{label}:</span>

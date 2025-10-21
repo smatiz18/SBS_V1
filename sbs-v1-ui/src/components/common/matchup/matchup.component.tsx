@@ -93,7 +93,7 @@ const MatchupComponent: React.FC<{ matchup: Matchup, liveScores: Game }> = ({ ma
   const getPlayerLineup = (isHome: boolean) => {
     if (matchup.sportsCategory === SportsCategories.NBA) {
       return ((isHome ? matchup.home.projectedPlayers : matchup.away.projectedPlayers) || []).map(player => {
-        const stats = matchup.playerAggGameStats.find((playerStats: NbaPlayerAggGameStatsHistorical) => (
+        const stats = (matchup.playerAggGameStats as any[] || []).find((playerStats: NbaPlayerAggGameStatsHistorical) => (
           `${playerStats.firstname} ${playerStats.lastname}` === player
         ));
         let emoji = getStreakEmojiForNbaPlayerStats(stats);
@@ -217,13 +217,20 @@ const MatchupComponent: React.FC<{ matchup: Matchup, liveScores: Game }> = ({ ma
           }
         </div>
       </div>
+      
       <div className="lines-and-stats">
-        <div className='lines-and-stats-content'>
-          <MatchupLines matchup={{ ...matchup } as MatchupLinesAndStats} betOption={betOption} selectedPlayerName={selectedPlayer}/>
-        </div>
-        <div className="lines-and-stats-content">
-          <MatchupQuickStats matchup={{ ...matchup } as MatchupLinesAndStats} betOption={betOption} selectedPlayerName={selectedPlayer} />
-        </div>
+        {
+          matchup.oddsEvent &&
+          <div className='lines-and-stats-content'>
+            <MatchupLines matchup={{ ...matchup } as MatchupLinesAndStats} betOption={betOption} selectedPlayerName={selectedPlayer}/>
+          </div>
+        }
+        {
+          matchup.playerAggGameStats &&
+          <div className="lines-and-stats-content">
+            <MatchupQuickStats matchup={{ ...matchup } as MatchupLinesAndStats} betOption={betOption} selectedPlayerName={selectedPlayer} />
+          </div>
+        }
       </div>
       <div className="footer"></div>
     </div>
