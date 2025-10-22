@@ -66,7 +66,7 @@ const MatchupComponent: React.FC<{ matchup: Matchup, liveScores: Game }> = ({ ma
   }
 
   const getStreakEmojiForNbaPlayerStats = (stats?: NbaPlayerAggGameStatsHistorical) => {
-    let emoji = '😐';
+    let emoji = '';
     if (stats) {
       if (matchup.sportsCategory === SportsCategories.NBA) {
         const sortedStats: PlayerStatsObj[] = sortNbaPlayerStatsObjs(Object.values(stats.playerStats));
