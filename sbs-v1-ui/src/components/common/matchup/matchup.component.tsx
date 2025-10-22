@@ -167,7 +167,7 @@ const MatchupComponent: React.FC<{ matchup: Matchup, liveScores: Game }> = ({ ma
           </div>
         </div>
       }
-      <TooltipIcon description={`${'🔥'} = 3 game stats avg > 10 game stats avg\n${'🧊'} = 3 game stats avg < 10 game stats avg\n${'😐'} = player data unavailable`} isLightMode={true}/>
+      <TooltipIcon description={`${'🔥'} = 3 game stats avg > 10 game stats avg\n${'🧊'} = 3 game stats avg < 10 game stats avg\n${' '} = player data unavailable`} isLightMode={true}/>
       <div className="matchup-lines-and-stats-settings-container">
         <div
           className={`matchup-lines-and-stats-settings-${betOption === BetOptions.Team ? 'team-view' : 'player-view'}`}
