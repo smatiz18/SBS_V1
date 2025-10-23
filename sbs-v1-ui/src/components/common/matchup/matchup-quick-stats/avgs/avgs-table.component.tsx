@@ -643,7 +643,7 @@ const AvgsTable: React.FC<{
 
     const nbaAvgTeamRows = () => {
         /* calculated avg columns are idx 2,3,4 std dev col is 5 */
-        const teamsAggStats = [matchup.away.teamAggGameStats, matchup.home.teamAggGameStats];
+        const teamsAggStats = [matchup.away.teamAggGameStats, matchup.home.teamAggGameStats].filter(x => x !== undefined) as NbaTeamAggGameStatsHistorical[];
         const rows = teamsAggStats.flatMap((currStats: NbaTeamAggGameStatsHistorical) => {    
             const isHome = matchup.home.teamNickname === currStats.teamNickname;
             const sortedStats = sortGameStatsObjs(Object.values(currStats.gameStats)).filter((x: GameStats) => {
