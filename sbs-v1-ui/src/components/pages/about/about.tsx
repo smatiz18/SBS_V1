@@ -80,7 +80,7 @@ const About = () => {
                             <div className="line"></div>
                         </div>
 
-                        <section className="timeline">
+                        {/* <section className="timeline">
                             <h2>Development Roadmap</h2>
                             <div className="timeline-container">
                                 <div className="timeline-item">
@@ -88,7 +88,7 @@ const About = () => {
                                     <div className="event">🚀 EV Bet Report 🚀</div>
                                 </div>
                             </div>
-                        </section>
+                        </section> */}
 
                         <div className='line-wrapper'>
                             <div className="line"></div>
