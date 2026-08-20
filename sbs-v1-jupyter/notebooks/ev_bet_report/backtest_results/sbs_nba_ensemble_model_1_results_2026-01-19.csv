@@ -1,0 +1,114 @@
+bet_type,player_name,overKellyStake,underKellyStake,line,over_odds,under_odds,teamName,opponentTeamName,dateStart,calculatedAt
+player_assists,Donovan Mitchell,0.00,21.98,5.50,-140.00,110.00,Cleveland Cavaliers,Oklahoma City Thunder,2026-01-19T19:43:00Z,2026-01-19T20:52:24.615572
+player_assists,Isaiah Collier,0.00,8.17,6.50,-130.00,-101.00,Utah Jazz,San Antonio Spurs,2026-01-19T22:10:00Z,2026-01-19T20:52:25.112017
+player_assists,De'Aaron Fox,0.00,37.41,5.50,-155.00,118.00,San Antonio Spurs,Utah Jazz,2026-01-19T22:10:00Z,2026-01-19T20:52:25.114884
+player_assists,Victor Wembanyama,45.25,0.00,3.50,127.00,-168.00,San Antonio Spurs,Utah Jazz,2026-01-19T22:10:00Z,2026-01-19T20:52:25.120627
+player_assists,Tyrese Maxey,0.00,2.65,6.50,-130.00,-101.00,Philadelphia 76ers,Indiana Pacers,2026-01-20T00:10:00Z,2026-01-19T20:52:25.424143
+player_assists,T.J. McConnell,0.00,42.67,4.50,-159.00,121.00,Indiana Pacers,Philadelphia 76ers,2026-01-20T00:10:00Z,2026-01-19T20:52:25.426987
+player_assists,Joel Embiid,0.00,42.53,3.50,-152.00,115.00,Philadelphia 76ers,Indiana Pacers,2026-01-20T00:10:00Z,2026-01-19T20:52:25.429822
+player_assists,Pascal Siakam,0.00,24.03,3.50,-146.00,111.00,Indiana Pacers,Philadelphia 76ers,2026-01-20T00:10:00Z,2026-01-19T20:52:25.432837
+player_assists,Royce O'Neale,0.00,29.96,2.50,-150.00,114.00,Phoenix Suns,Brooklyn Nets,2026-01-20T00:40:00Z,2026-01-19T20:52:25.592551
+player_assists,Jalen Green,24.35,0.00,2.50,115.00,-152.00,Houston Rockets,Brooklyn Nets,2026-01-20T00:40:00Z,2026-01-19T20:52:25.598241
+player_assists,Noah Clowney,0.00,74.37,1.50,-183.00,138.00,Brooklyn Nets,Phoenix Suns,2026-01-20T00:40:00Z,2026-01-19T20:52:25.601209
+player_assists,Dillon Brooks,0.00,4.12,1.50,-135.00,102.00,Houston Rockets,Brooklyn Nets,2026-01-20T00:40:00Z,2026-01-19T20:52:25.604048
+player_assists,Mark Williams,23.99,0.00,1.50,115.00,-151.00,Charlotte Hornets,Brooklyn Nets,2026-01-20T00:40:00Z,2026-01-19T20:52:25.606913
+player_assists,Max Christie,0.00,46.03,1.50,-163.00,123.00,Dallas Mavericks,New York Knicks,2026-01-19T22:10:00Z,2026-01-19T20:52:24.965817
+player_assists,Derrick White,0.00,49.74,4.50,-161.00,122.00,Boston Celtics,Detroit Pistons,2026-01-20T01:10:00Z,2026-01-19T20:52:25.766441
+player_assists,Jaylen Brown,5.57,0.00,4.50,106.00,-140.00,Boston Celtics,Detroit Pistons,2026-01-20T01:10:00Z,2026-01-19T20:52:25.772147
+player_assists,Ausar Thompson,49.53,0.00,2.50,130.00,-172.00,Detroit Pistons,Boston Celtics,2026-01-20T01:10:00Z,2026-01-19T20:52:25.777805
+player_assists,Tobias Harris,54.29,0.00,2.50,133.00,-177.00,Detroit Pistons,Boston Celtics,2026-01-20T01:10:00Z,2026-01-19T20:52:25.780745
+player_assists,Jalen Duren,0.00,44.36,1.50,-153.00,116.00,Detroit Pistons,Boston Celtics,2026-01-20T01:10:00Z,2026-01-19T20:52:25.783597
+player_assists,Davion Mitchell,0.00,15.41,6.50,-134.00,102.00,Miami Heat,Golden State Warriors,2026-01-20T03:10:00Z,2026-01-19T20:52:25.974648
+player_assists,Draymond Green,0.00,17.76,5.50,-142.00,108.00,Golden State Warriors,Miami Heat,2026-01-20T03:10:00Z,2026-01-19T20:52:25.977616
+player_assists,Stephen Curry,7.81,0.00,5.50,107.00,-140.00,Golden State Warriors,Miami Heat,2026-01-20T03:10:00Z,2026-01-19T20:52:25.980438
+player_assists,Jimmy Butler,16.38,0.00,5.50,111.00,-146.00,Golden State Warriors,Miami Heat,2026-01-20T03:10:00Z,2026-01-19T20:52:25.983259
+player_assists,Brandin Podziemski,43.66,0.00,3.50,126.00,-167.00,Golden State Warriors,Miami Heat,2026-01-20T03:10:00Z,2026-01-19T20:52:25.986074
+player_assists,Bam Adebayo,0.00,63.67,2.50,-173.00,131.00,Miami Heat,Golden State Warriors,2026-01-20T03:10:00Z,2026-01-19T20:52:25.988894
+player_assists,Pelle Larsson,0.00,60.40,2.50,-170.00,128.00,Miami Heat,Golden State Warriors,2026-01-20T03:10:00Z,2026-01-19T20:52:25.991716
+player_assists,Andrew Wiggins,0.00,3.95,2.50,-131.00,-101.00,Miami Heat,Golden State Warriors,2026-01-20T03:10:00Z,2026-01-19T20:52:25.994535
+player_assists,Payton Pritchard,0.00,4.12,4.50,-134.00,102.00,Boston Celtics,Detroit Pistons,2026-01-20T01:10:00Z,2026-01-19T20:52:25.769294
+player_assists,Naji Marshall,0.00,49.11,2.50,-167.00,127.00,Dallas Mavericks,New York Knicks,2026-01-19T22:10:00Z,2026-01-19T20:52:24.960080
+player_assists,Aaron Nesmith,0.00,80.42,1.50,-196.00,148.00,Indiana Pacers,Philadelphia 76ers,2026-01-20T00:10:00Z,2026-01-19T20:52:25.438659
+player_assists,Shai Gilgeous-Alexander,3.28,0.00,5.50,105.00,-135.00,Oklahoma City Thunder,Cleveland Cavaliers,2026-01-19T19:43:00Z,2026-01-19T20:52:24.628224
+player_assists,Kris Dunn,14.29,0.00,3.50,110.00,-140.00,Utah Jazz,Washington Wizards,2026-01-19T20:12:00Z,2026-01-19T20:52:24.840285
+player_assists,Alex Sarr,0.00,18.17,2.50,-135.00,105.00,Washington Wizards,LA Clippers,2026-01-19T20:12:00Z,2026-01-19T20:52:24.843155
+player_assists,Evan Mobley,0.00,57.00,3.50,-166.00,130.00,Cleveland Cavaliers,Oklahoma City Thunder,2026-01-19T19:43:00Z,2026-01-19T20:52:24.635603
+player_assists,Jaylon Tyson,95.62,0.00,3.50,170.00,-220.00,Cleveland Cavaliers,Oklahoma City Thunder,2026-01-19T19:43:00Z,2026-01-19T20:52:24.641587
+player_assists,Kyshawn George,0.00,67.08,5.50,-166.00,130.00,Washington Wizards,LA Clippers,2026-01-19T20:12:00Z,2026-01-19T20:52:24.833570
+player_points,Sam Hauser,12.01,0.00,9.50,107.00,-137.00,Boston Celtics,Detroit Pistons,2026-01-20T01:10:00Z,2026-01-19T20:52:25.815033
+player_points,Brook Lopez,7.52,0.00,7.50,105.00,-135.00,Milwaukee Bucks,Washington Wizards,2026-01-19T20:12:00Z,2026-01-19T20:52:24.860491
+player_points,Evan Mobley,0.00,12.84,17.50,-135.00,105.00,Cleveland Cavaliers,Oklahoma City Thunder,2026-01-19T19:43:00Z,2026-01-19T20:52:24.656578
+player_points,Luguentz Dort,44.33,0.00,14.50,124.00,-160.00,Oklahoma City Thunder,Cleveland Cavaliers,2026-01-19T19:43:00Z,2026-01-19T20:52:24.668691
+player_points,Jarrett Allen,37.55,0.00,13.50,120.00,-154.00,Cleveland Cavaliers,Oklahoma City Thunder,2026-01-19T19:43:00Z,2026-01-19T20:52:24.675772
+player_points,Royce O'Neale,0.00,6.31,8.50,-133.00,104.00,Phoenix Suns,Brooklyn Nets,2026-01-20T00:40:00Z,2026-01-19T20:52:25.629700
+player_points_assists,Chet Holmgren,11.32,0.00,19.50,105.00,-135.00,Oklahoma City Thunder,Cleveland Cavaliers,2026-01-19T19:43:00Z,2026-01-19T20:52:24.698469
+player_points_assists,Jarrett Allen,11.32,0.00,15.50,105.00,-135.00,Cleveland Cavaliers,Oklahoma City Thunder,2026-01-19T19:43:00Z,2026-01-19T20:52:24.701598
+player_points_rebounds,Cason Wallace,11.48,0.00,10.50,105.00,-135.00,Oklahoma City Thunder,Cleveland Cavaliers,2026-01-19T19:43:00Z,2026-01-19T20:52:24.740618
+player_points_rebounds,Luguentz Dort,0.00,22.44,17.50,-140.00,110.00,Oklahoma City Thunder,Cleveland Cavaliers,2026-01-19T19:43:00Z,2026-01-19T20:52:24.733944
+player_rebounds,Noah Clowney,5.69,0.00,5.50,113.00,-150.00,Brooklyn Nets,Phoenix Suns,2026-01-20T00:40:00Z,2026-01-19T20:52:25.720425
+player_rebounds,Devin Booker,0.00,17.71,3.50,-147.00,111.00,Phoenix Suns,Brooklyn Nets,2026-01-20T00:40:00Z,2026-01-19T20:52:25.726117
+player_rebounds,Terance Mann,13.47,0.00,3.50,115.00,-151.00,Atlanta Hawks,Phoenix Suns,2026-01-20T00:40:00Z,2026-01-19T20:52:25.731836
+player_rebounds,Donovan Mitchell,3.18,0.00,4.50,110.00,-140.00,Cleveland Cavaliers,Oklahoma City Thunder,2026-01-19T19:43:00Z,2026-01-19T20:52:24.790417
+player_rebounds,Aaron Wiggins,0.00,28.65,4.50,-154.00,120.00,Oklahoma City Thunder,Cleveland Cavaliers,2026-01-19T19:43:00Z,2026-01-19T20:52:24.787570
+player_rebounds,De'Andre Hunter,0.00,45.13,5.50,-166.00,130.00,Cleveland Cavaliers,Oklahoma City Thunder,2026-01-19T19:43:00Z,2026-01-19T20:52:24.784702
+player_rebounds,T.J. McConnell,59.04,0.00,2.50,144.00,-192.00,Indiana Pacers,Philadelphia 76ers,2026-01-20T00:10:00Z,2026-01-19T20:52:25.560373
+player_rebounds,Andrew Nembhard,0.00,49.59,2.50,-176.00,133.00,Indiana Pacers,Philadelphia 76ers,2026-01-20T00:10:00Z,2026-01-19T20:52:25.557464
+player_rebounds,Derrick White,9.73,0.00,4.50,111.00,-147.00,Boston Celtics,Detroit Pistons,2026-01-20T01:10:00Z,2026-01-19T20:52:25.937592
+player_rebounds,Jaylen Brown,0.00,21.26,5.50,-153.00,116.00,Boston Celtics,Detroit Pistons,2026-01-20T01:10:00Z,2026-01-19T20:52:25.926152
+player_rebounds,Royce O'Neale,0.00,31.27,4.50,-156.00,118.00,Phoenix Suns,Brooklyn Nets,2026-01-20T00:40:00Z,2026-01-19T20:52:25.723278
+player_rebounds,Jarace Walker,0.00,32.16,3.50,-162.00,122.00,Indiana Pacers,Philadelphia 76ers,2026-01-20T00:10:00Z,2026-01-19T20:52:25.554248
+player_rebounds,Jimmy Butler,0.00,19.33,5.50,-151.00,115.00,Golden State Warriors,Miami Heat,2026-01-20T03:10:00Z,2026-01-19T20:52:26.141191
+player_rebounds,Kris Dunn,0.00,17.37,3.50,-145.00,114.00,Utah Jazz,Washington Wizards,2026-01-19T20:12:00Z,2026-01-19T20:52:24.930790
+player_rebounds,Kyshawn George,39.58,0.00,4.50,130.00,-166.00,Washington Wizards,LA Clippers,2026-01-19T20:12:00Z,2026-01-19T20:52:24.927911
+player_rebounds,Naji Marshall,0.00,27.56,4.50,-152.00,116.00,Dallas Mavericks,New York Knicks,2026-01-19T22:10:00Z,2026-01-19T20:52:25.072927
+player_rebounds,Mikal Bridges,19.22,0.00,4.50,118.00,-156.00,New York Knicks,Dallas Mavericks,2026-01-19T22:10:00Z,2026-01-19T20:52:25.075851
+player_rebounds,Jalen Brunson,11.48,0.00,3.50,114.00,-150.00,New York Knicks,Dallas Mavericks,2026-01-19T22:10:00Z,2026-01-19T20:52:25.081553
+player_rebounds,Tyrese Maxey,28.19,0.00,4.50,123.00,-162.00,Philadelphia 76ers,Indiana Pacers,2026-01-20T00:10:00Z,2026-01-19T20:52:25.550349
+player_rebounds,Moses Moody,0.00,23.15,2.50,-154.00,117.00,Golden State Warriors,Miami Heat,2026-01-20T03:10:00Z,2026-01-19T20:52:26.158655
+player_rebounds,Pelle Larsson,5.31,0.00,3.50,111.00,-146.00,Miami Heat,Golden State Warriors,2026-01-20T03:10:00Z,2026-01-19T20:52:26.155810
+player_rebounds,Sam Hauser,0.00,23.15,3.50,-154.00,117.00,Boston Celtics,Detroit Pistons,2026-01-20T01:10:00Z,2026-01-19T20:52:25.940409
+player_rebounds,Justin Champagnie,11.48,0.00,5.50,114.00,-145.00,Washington Wizards,LA Clippers,2026-01-19T20:12:00Z,2026-01-19T20:52:24.925026
+player_rebounds,John Collins,7.62,0.00,5.50,110.00,-140.00,Utah Jazz,Washington Wizards,2026-01-19T20:12:00Z,2026-01-19T20:52:24.921995
+player_rebounds,Alex Sarr,0.00,34.85,8.50,-154.00,120.00,Washington Wizards,LA Clippers,2026-01-19T20:12:00Z,2026-01-19T20:52:24.915978
+player_rebounds,Andrew Wiggins,9.46,0.00,5.50,113.00,-150.00,Miami Heat,Golden State Warriors,2026-01-20T03:10:00Z,2026-01-19T20:52:26.144204
+player_rebounds,Al Horford,0.00,0.35,4.50,-140.00,106.00,Boston Celtics,Miami Heat,2026-01-20T03:10:00Z,2026-01-19T20:52:26.147034
+player_rebounds,Harrison Barnes,0.00,37.22,2.50,-165.00,125.00,San Antonio Spurs,Utah Jazz,2026-01-19T22:10:00Z,2026-01-19T20:52:25.393795
+player_rebounds,Stephen Curry,17.34,0.00,4.50,117.00,-155.00,Golden State Warriors,Miami Heat,2026-01-20T03:10:00Z,2026-01-19T20:52:26.152979
+player_rebounds,Stephon Castle,30.68,0.00,5.50,122.00,-161.00,San Antonio Spurs,Utah Jazz,2026-01-19T22:10:00Z,2026-01-19T20:52:25.380290
+player_rebounds,De'Aaron Fox,15.42,0.00,4.50,116.00,-153.00,San Antonio Spurs,Utah Jazz,2026-01-19T22:10:00Z,2026-01-19T20:52:25.383464
+player_threes,Jaden Ivey,59.64,0.00,1.50,158.00,-211.00,Detroit Pistons,Boston Celtics,2026-01-20T01:10:00Z,2026-01-19T20:52:25.971776
+player_threes,Pelle Larsson,75.33,0.00,1.50,174.00,-233.00,Miami Heat,Golden State Warriors,2026-01-20T03:10:00Z,2026-01-19T20:52:26.184915
+player_threes,Bam Adebayo,48.10,0.00,1.50,148.00,-197.00,Miami Heat,Golden State Warriors,2026-01-20T03:10:00Z,2026-01-19T20:52:26.181775
+player_threes,Derrick White,0.00,41.81,2.50,-174.00,131.00,Boston Celtics,Detroit Pistons,2026-01-20T01:10:00Z,2026-01-19T20:52:25.948929
+player_threes,Jaylen Brown,0.00,59.71,1.50,-191.00,144.00,Boston Celtics,Detroit Pistons,2026-01-20T01:10:00Z,2026-01-19T20:52:25.963312
+player_threes,Cade Cunningham,0.00,30.61,1.50,-164.00,124.00,Detroit Pistons,Boston Celtics,2026-01-20T01:10:00Z,2026-01-19T20:52:25.966124
+player_threes,Andrew Wiggins,0.00,6.07,1.50,-146.00,111.00,Miami Heat,Golden State Warriors,2026-01-20T03:10:00Z,2026-01-19T20:52:26.170363
+player_threes,Tobias Harris,36.31,0.00,1.50,139.00,-185.00,Detroit Pistons,Boston Celtics,2026-01-20T01:10:00Z,2026-01-19T20:52:25.968966
+player_threes,Sam Hauser,0.00,10.21,2.50,-149.00,113.00,Boston Celtics,Detroit Pistons,2026-01-20T01:10:00Z,2026-01-19T20:52:25.951816
+player_threes,Moses Moody,41.73,0.00,2.50,143.00,-190.00,Golden State Warriors,Miami Heat,2026-01-20T03:10:00Z,2026-01-19T20:52:26.167501
+player_threes,Kyshawn George,30.56,0.00,1.50,135.00,-175.00,Washington Wizards,LA Clippers,2026-01-19T20:12:00Z,2026-01-19T20:52:24.942367
+player_threes,Terance Mann,0.00,33.93,0.50,-167.00,126.00,Atlanta Hawks,Phoenix Suns,2026-01-20T00:40:00Z,2026-01-19T20:52:25.760587
+player_threes,Alex Sarr,0.00,12.23,0.50,-145.00,114.00,Washington Wizards,LA Clippers,2026-01-19T20:12:00Z,2026-01-19T20:52:24.945455
+player_threes,Kris Dunn,0.00,12.23,0.50,-145.00,114.00,Utah Jazz,Washington Wizards,2026-01-19T20:12:00Z,2026-01-19T20:52:24.948410
+player_threes,Mikal Bridges,0.00,12.23,1.50,-150.00,114.00,New York Knicks,Dallas Mavericks,2026-01-19T22:10:00Z,2026-01-19T20:52:25.091514
+player_threes,Josh Hart,52.90,0.00,1.50,152.00,-202.00,New York Knicks,Dallas Mavericks,2026-01-19T22:10:00Z,2026-01-19T20:52:25.097404
+player_threes,Naji Marshall,37.79,0.00,1.50,158.00,-211.00,Dallas Mavericks,New York Knicks,2026-01-19T22:10:00Z,2026-01-19T20:52:25.100449
+player_threes,Brandon Williams,53.32,0.00,1.50,173.00,-231.00,Dallas Mavericks,New York Knicks,2026-01-19T22:10:00Z,2026-01-19T20:52:25.103343
+player_threes,Jordan Clarkson,0.00,49.10,0.50,-180.00,136.00,Utah Jazz,Dallas Mavericks,2026-01-19T22:10:00Z,2026-01-19T20:52:25.106230
+player_threes,De'Aaron Fox,0.00,51.87,1.50,-183.00,138.00,San Antonio Spurs,Utah Jazz,2026-01-19T22:10:00Z,2026-01-19T20:52:25.403027
+player_threes,Victor Wembanyama,0.00,51.87,1.50,-183.00,138.00,San Antonio Spurs,Utah Jazz,2026-01-19T22:10:00Z,2026-01-19T20:52:25.406613
+player_threes,Kyle Filipowski,0.00,89.96,0.50,-231.00,173.00,Utah Jazz,San Antonio Spurs,2026-01-19T22:10:00Z,2026-01-19T20:52:25.418209
+player_threes,Isaiah Joe,0.00,54.56,4.50,-180.00,140.00,Oklahoma City Thunder,Cleveland Cavaliers,2026-01-19T19:43:00Z,2026-01-19T20:52:24.804897
+player_threes,Davion Mitchell,0.00,91.68,0.50,-235.00,175.00,Miami Heat,Golden State Warriors,2026-01-20T03:10:00Z,2026-01-19T20:52:26.187830
+player_threes,Andrew Nembhard,0.00,19.95,1.50,-155.00,118.00,Indiana Pacers,Philadelphia 76ers,2026-01-20T00:10:00Z,2026-01-19T20:52:25.572271
+player_threes,Joel Embiid,16.19,0.00,1.50,141.00,-187.00,Philadelphia 76ers,Indiana Pacers,2026-01-20T00:10:00Z,2026-01-19T20:52:25.580978
+player_threes,Aaron Wiggins,0.00,30.61,0.50,-160.00,124.00,Oklahoma City Thunder,Cleveland Cavaliers,2026-01-19T19:43:00Z,2026-01-19T20:52:24.824536
+player_threes,Shai Gilgeous-Alexander,0.00,54.56,0.50,-180.00,140.00,Oklahoma City Thunder,Cleveland Cavaliers,2026-01-19T19:43:00Z,2026-01-19T20:52:24.821058
+player_threes,Donovan Mitchell,0.00,3.94,1.50,-140.00,110.00,Cleveland Cavaliers,Oklahoma City Thunder,2026-01-19T19:43:00Z,2026-01-19T20:52:24.813936
+player_threes,De'Andre Hunter,0.00,47.68,1.50,-175.00,135.00,Cleveland Cavaliers,Oklahoma City Thunder,2026-01-19T19:43:00Z,2026-01-19T20:52:24.811041
+player_threes,Luguentz Dort,0.00,23.62,3.50,-154.00,120.00,Oklahoma City Thunder,Cleveland Cavaliers,2026-01-19T19:43:00Z,2026-01-19T20:52:24.808113
+player_threes,John Collins,0.00,40.28,1.50,-166.00,130.00,Utah Jazz,Washington Wizards,2026-01-19T20:12:00Z,2026-01-19T20:52:24.936585
+player_threes,Grayson Allen,0.00,25.41,2.50,-159.00,121.00,Phoenix Suns,Brooklyn Nets,2026-01-20T00:40:00Z,2026-01-19T20:52:25.740491
+player_threes,Jalen Green,0.00,33.93,1.50,-167.00,126.00,Houston Rockets,Brooklyn Nets,2026-01-20T00:40:00Z,2026-01-19T20:52:25.754880
+player_threes,Paul George,2.50,0.00,2.50,132.00,-174.00,Philadelphia 76ers,Indiana Pacers,2026-01-20T00:10:00Z,2026-01-19T20:52:25.569402
+player_threes,Jimmy Butler,0.00,50.49,0.50,-182.00,137.00,Golden State Warriors,Miami Heat,2026-01-20T03:10:00Z,2026-01-19T20:52:26.190796
